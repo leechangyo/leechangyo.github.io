@@ -1,0 +1,3 @@
+bundle exec jekyll serve ： 로컬 시작
+
+jekyll serve --watch : 로컬 와치

@@ -1,0 +1,69 @@
+# Site Info
+title: Chan Blog
+tagline: 'for Robot Artificial Inteligence'
+description: 'blog for Robot Artificial Inteligence'
+url: https://leechangyo.github.io
+# baseurl: /
+logo: '/public/logo.png'
+encoding: utf-8
+
+# Site configurations
+gems:
+  - jekyll-paginate
+markdown: kramdown
+kramdown:
+  input: GFM
+excerpt_separator: "<!-- more -->"
+sass:
+  style: compressed
+  sass_dir: _scss
+paginate: 5
+paginate_path: '/blog/page:num'
+permalink: pretty
+version: 1.0.0
+
+# About/contact
+author:
+  name: chan
+  description: <strong>안녕하세요</strong> 만나서 반갑습니다. 행복한 하루 보내세요~
+  gravatar: 4e29fdf9344e43f141d0e24a2af2bca7 # md5 hash of your email address
+  contact:
+    linkedin:  https://www.linkedin.com/in/chan-gyo-lee-480b1a185/
+    github:    https://github.com/leechangyo
+    facebook:  https://www.facebook.com/changyo.lee
+    instagram:  https://www.instagram.com/changyolee/
+    # :    <hide>
+    email:     mailto:lcgyo@naver.com
+
+# Navigation (2nd level links supported)
+nav:
+  Home:
+    - '/'
+  Contents:
+    - '/blog/'
+    - { Categories: '/blog/categories/' }
+    - { Tags: '/blog/tags/' }
+  About:
+    - '/about/'
+
+#build settings
+markdown: kramdown
+theme: minima
+plugins:
+  # - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-paginate
+
+# Where are tags and categories displayed
+tag_page: '/blog/tags/'
+category_page: '/blog/categories/'
+
+hero:
+  image: /public/img/picture.jpg
+  caption: Life is short. Living in the magnificent scene everyday with loved ones!
+
+# Puglins
+mathjax: true # whether support mathjax
+google_analytics_token: 'UA-146583395-1' # leave blank if you don't want google analytics
+disqus_short_name: 'chan-blog-for-robot-artificial-interligence' # leave blank if you don't want disqus
