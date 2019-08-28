@@ -8,4 +8,4 @@ Hello, My name is chan I am doing the master degree of Mechanical Engineering at
 
 E-mail : lcgyo@naver.com
 
-blog : https://chan.github.io
+blog : https://leechangyo.github.io
