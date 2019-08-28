@@ -3,7 +3,6 @@ title: Chan Blog
 tagline: 'for Robot Artificial Inteligence'
 description: 'blog for Robot Artificial Inteligence'
 url: https://leechangyo.github.io
-# baseurl: /
 logo: '/public/logo.png'
 encoding: utf-8
 
@@ -45,15 +44,6 @@ nav:
     - { Tags: '/blog/tags/' }
   About:
     - '/about/'
-
-#build settings
-markdown: kramdown
-theme: minima
-plugins:
-  # - jekyll-feed
-  - jekyll-seo-tag
-  - jekyll-sitemap
-  - jekyll-paginate
 
 # Where are tags and categories displayed
 tag_page: '/blog/tags/'
