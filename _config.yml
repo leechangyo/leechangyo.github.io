@@ -45,8 +45,6 @@ nav:
     - { Tags: '/blog/tags/' }
   About:
     - '/about/'
-plugins:
-  - jekyll-sitemap
 # Where are tags and categories displayed
 tag_page: '/blog/tags/'
 category_page: '/blog/categories/'
