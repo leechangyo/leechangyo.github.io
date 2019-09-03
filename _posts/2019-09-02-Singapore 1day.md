@@ -28,6 +28,7 @@ tag: 가족여행
 ## 루지 타기
 호텔 주변을 구경하면서 그랩을 타고 루지를 타러 갔다. 루지는 10시부터 탈 수 있어서 9시 반쯤 먼저 가있으면서 주변에 돌아다니고 의자에 앉아 쉬었다. 10시부터 익스프레스 쿠폰을 통해 바로바로 탔다. 운전하는 사진을 찍고 싶었지만 운전중에 사진기를 들수가 없어 케이블카 타고 올라가는 사진 밖에 없었다.. 하하하
 
+<a href="https://imgur.com/5XGObTE"><img src="https://i.imgur.com/5XGObTE.jpg" width="600px" title="source: imgur.com" /></a>
 
 ## VIvo City에서 밥먹기
 
