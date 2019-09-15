@@ -11,10 +11,11 @@ layout: default
   {% endfor %}
   {% endif %}
   </h4>
+  {% include advertisements_square.html %}
   <h4 style="font-weight: 400; line-height: 1.8;"><article>
     {{ content }}
   </article></h4>
-  {% include advertisements.html %}
+  {% include advertisements_horizon.html %}
 </div>
 
 {% for item in site.data.related %}
