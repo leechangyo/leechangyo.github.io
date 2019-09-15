@@ -3,7 +3,7 @@ layout: page
 title: Tags
 ---
 
-{% include advertisements_horizon.html %}
+{% include advertisements_horizon2.html %}
 <div class="tags-expo">
   <div class="tags-expo-list">
     {% for tag in site.tags %}
@@ -22,6 +22,7 @@ title: Tags
       <small class="post-date">{{ post.date | date_to_string }}</small>
       </li>
       </a></h4>
+      {% include advertisements_horizon2.html %}
       {% endfor %}
     </ul><br>
     {% endfor %}

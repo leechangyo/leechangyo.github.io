@@ -3,7 +3,6 @@ layout: page
 title: Categories
 ---
 
-{% include advertisements_horizon.html %}
 <div class="tags-expo">
   <div class="tags-expo-list">
     {% for tag in site.categories %}
@@ -22,6 +21,7 @@ title: Categories
       <small class="post-date">{{ post.date | date_to_string }}</small>
       </li>
       </a></h4>
+      {% include advertisements_horizon.html %}
       {% endfor %}
     </ul><br>
     {% endfor %}
