@@ -54,13 +54,15 @@
       <input type="text" id="search-input" placeholder="검색어 입력" class="input" style="font-size: 1rem; width: 100%; padding: 10px; border: 0px; outline: none; float: left; background: #cecece;" autofocus>
     </div></h4><br>
     {% include advertisements_horizon.html %}
-
       <div id="results">
         <h1></h1>
+        {% include advertisements_horizon.html %}
       <ul class="results"></ul>
       </div>
       <br><ul id="results-container"></ul>
+      {% include advertisements_horizon.html %}
     </div>
+    {% include advertisements_horizon.html %}
 
 
 <!-- Script pointing to jekyll-search.js -->
