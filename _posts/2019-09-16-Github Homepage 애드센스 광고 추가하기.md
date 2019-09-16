@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Github 홈페이지 구글 애드센스 광고 사이드바,게시물 추가하기
 category: Github
 tag: 광고 추가
