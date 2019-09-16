@@ -1,11 +1,7 @@
 ---
 title: Github 홈페이지 구글 애드센스 광고 사이드바,게시물 추가하기
-sitemap :
-  changefreq : daily
-  priority : 1.0
 category: Github
 tag: 광고 추가
-author: chan
 ---
 
 이번 글에서는 github 홈페이지에 구글 애드센스를 추가해보겠습니다.(구글링을 하면 자료가 많지만 제 홈페이지에 적용하는데 좀 오래걸렸습니다.) 그럼 시작하겠습니다.
