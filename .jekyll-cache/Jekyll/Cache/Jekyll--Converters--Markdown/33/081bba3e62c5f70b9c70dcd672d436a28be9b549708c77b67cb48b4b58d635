@@ -1,4 +1,4 @@
-I"�!<p>이번 글에서는 github 홈페이지에 구글 애드센스를 추가해보겠습니다.(구글링을 하면 자료가 많지만 제 홈페이지에 적용하는데 좀 오래걸렸습니다.) 그럼 시작하겠습니다.</p>
+I"�!<p>이번 글에서는 github 홈페이지에 구글 애드센스를 추가해보겠습니다.(구글링을 하면 자료가 많지만 제 홈페이지에 적용하는데 좀 오래걸렸습니다.) 그럼 시작하겠습니다.</p>
 
 <h2 id="구글애드센스-가입">구글애드센스 가입</h2>
 
@@ -52,7 +52,7 @@
 
 <div align="center" style="margin: 1em 0;">
 <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5150894678574694" data-ad-slot="9221331439" data-ad-format="auto" data-full-width-responsive="true"></ins>
-</div>
+     </div>
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
