@@ -1,0 +1,39 @@
+I"�<h2 id="1sudo">1.SUDO</h2>
+<p>SuperUserDo 의미로 Permission이 제한된 작업을 할때 사용한다.</p>
+<ul>
+  <li>$sudo su</li>
+</ul>
+
+<h2 id="2lslist">2.ls(LIST)</h2>
+<p>Folder 나 보고 싶은 Directories &amp; files를 보고 싶을 때 사용 한다.</p>
+<ul>
+  <li>/home$ ls</li>
+</ul>
+
+<h2 id="3cdchanging-directory">3.CD(Changing Directory)</h2>
+<p>터미널에서 자주 쓰는 명령어로 디렉토리를 이동할 때 사용한다.</p>
+<ul>
+  <li>cd some Directories
+    <blockquote>
+      <p>example : /home$ cd url &lt;- url 디렉토리로 이동한다.</p>
+    </blockquote>
+  </li>
+  <li>cd ..  (이전 디렉토리로 이동한다.)</li>
+</ul>
+
+<h2 id="4mkdirmake-directory">4.mkdir(Make Directory)</h2>
+<p>폴더를 생성할 때 쓰인다.</p>
+<ul>
+  <li>~$ mkdir folderName</li>
+</ul>
+
+<h2 id="5cpcopy-and-paste">5.cp(Copy-and-paste)</h2>
+<p>터미널로 부터 폴더나 파일들을 복사하고 붙여 넣을 때 쓰인다.</p>
+<ul>
+  <li>~$ cp src des (src를 복사하여 des에다가 붙여 넣는다.)
+    <blockquote>
+      <p>Permission이 있는 파일 들은 Sudo 명령어를 사용하여 cp 명령어를 사용한다.</p>
+    </blockquote>
+  </li>
+</ul>
+:ET
