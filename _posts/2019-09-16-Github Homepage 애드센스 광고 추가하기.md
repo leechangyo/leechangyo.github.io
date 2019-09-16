@@ -57,6 +57,8 @@ Github 홈페이지에 **광고**를 추가하시려면 우선 구글 애드센�
 
 저장을 하면 이와 같이 코드와 함께 창이 뜹니다. 코드를 복사하고 이제 포스터나, 사이드바에 광고를 기재하는 방법을 해보겠습니다.
 
+{% include advertisements_horizon.html %}
+
 ## 게시물에 광고 삽입
 
 이제 게시물에 광고를 삽입을 하겠습니다. 홈페이지 관리하는 프로젝트의 폴더에 들어가 Include 폴더에 advertisement.html 파일을 만들고, 구글애드센스에서 광고를 복사한 코드를 붙여 넣습니다.
@@ -88,7 +90,7 @@ Github 홈페이지에 **광고**를 추가하시려면 우선 구글 애드센�
 
 ```python
 <div class="fixed-bottom-right">
-  {% include advertisements_small.html %}
+  <!-- {% include advertisements_small.html %} -->
 </div>
 ```
 완료가 되면 이러한 형태로 될 것 입니다.
