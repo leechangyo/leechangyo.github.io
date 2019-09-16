@@ -85,13 +85,9 @@ Github 홈페이지에 **광고**를 추가하시려면 우선 구글 애드센�
 
 **_sidebar.scss**에 위에 코드를 추가가 완료되었으면, include 폴더 -> sidebar.html에 들어갑니다. 들어가시고 맨 아래로 스크롤을 내린다음 다음과 같은 코드를 추가 시켜주시면 됩니다.
 
-```python
-<div class="fixed-bottom-right">
-  <!-- {% include advertisements_small.html %} -->
-</div>
-```
-완료가 되면 이러한 형태로 될 것 입니다.
 <a href="https://imgur.com/FsuWCd9"><img src="https://i.imgur.com/FsuWCd9.png" width="700px" title="source: imgur.com" /></a>
+
+완료가 되면 이러한 형태로 될 것 입니다.
 
 그리고 git commit -> push를 하시고 1분 뒤 홈페이지를 열으시면 오른쪽 빈 공간 사이드 배너에 광고가 나오고, 각 게시물에 광고가 나올 것 입니다.
 
