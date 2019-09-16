@@ -39,28 +39,50 @@ tag: 가족여행
 
 ## 유니버셜 스튜디오 근처 구경
 
-밥을 먹고 체크인까지 약 2시간정도 남아. 유니버셜 스튜디오 근처에 가기로 했다. 유니버셜 스튜디오에서 사진을 찍으면서 놀았다.
+<a href="https://imgur.com/8mV1F3O"><img src="https://i.imgur.com/8mV1F3O.jpg" width="600px" title="source: imgur.com" /></a>
+
+<a href="https://imgur.com/XcVdTDs"><img src="https://i.imgur.com/XcVdTDs.jpg" width="600px" title="source: imgur.com" /></a>
+
+
+밥을 먹고 체크인까지 약 2시간정도 남아. 유니버셜 스튜디오(계획을 하면서 안가기로 했다) 근처에 가기로 했다. 유니버셜 스튜디오 근처에서 지구본과 사진도 찍고 여러 상점을 돌아다녔다. 들어가기전에 마트에 가려고 했지만 주변에 마트가 없어 숙소 근처 패밀리 마트에 가서 물이나 필요한 것들을 삿다.
 
 ## 체크인
 
-할것이 없어서 조기 체크인을 노리고 조기 체크인을 했다. 너무 운이 좋았다.
+<a href="https://imgur.com/M2BAtHg"><img src="https://i.imgur.com/M2BAtHg.jpg" width="600px" title="source: imgur.com" /></a>
+
+할것이 없어서 조기 체크인을 노리고 조기 체크인을 했다. 너무 운이 좋았다. 센토사에있는 Village 호텔의 내부는 깨끗하고 좋았다.
+
 
 ## 짐 정리 후 수영
 
-짐 정리후 수영을 했다. 사람들이 생각보다 많았고 인피니트 수영장 좋았다.
+<a href="https://imgur.com/88Hfxw5"><img src="https://i.imgur.com/88Hfxw5.jpg" width="600px" title="source: imgur.com" /></a>
+
+<a href="https://imgur.com/RLRqTOw"><img src="https://i.imgur.com/RLRqTOw.jpg" width="600px" title="source: imgur.com" /></a>
+
+<a href="https://imgur.com/wShJnqx"><img src="https://i.imgur.com/wShJnqx.jpg" width="600px" title="source: imgur.com" /></a>
+
+짐 정리후 수영을 했다. 사람들이 생각보다 많았고 어린이 수영장과 어른 수영장이 나누어 져있어 편안하게 수영하면서 놀 수 있었다.
 
 ## 한식
 
-엄마가 가져온 라면과 밥을 먹었다. 역시 수영후 먹는 라면과 밥은 맛있다.
+엄마가 가져온 라면과 밥을 먹었다. 역시 수영후 먹는 라면과 밥은 맛있다. 한국 음식이니 사진 없이 넘어가겠다.
 
 ## 휴식 후 저녁 루지 타러 가기
 
-저녁 루지는 더욱 이뻣다. 이제 타는 방법을 알아 재미있었다.
+<a href="https://imgur.com/yGFu0PR"><img src="https://i.imgur.com/yGFu0PR.jpg" width="600px" title="source: imgur.com" /></a>
+
+저녁 루지는 더욱 이뻣다. 저녁에 타는 사람이 더 많아 익스프레스권에 힘을 느낄 수 있었따. 루지는 우리나라에도 있는데 친구들 끼리 가기에도 좋은것 같다.
 
 ## 밀레니언 레이져쇼
 
-8시에 시작하는 밀레니언 레이져쇼를 보러 갔다 생각보다 별로 였다.
+<a href="https://imgur.com/d2Kh1PA"><img src="https://i.imgur.com/d2Kh1PA.jpg" width="600px" title="source: imgur.com" /></a>
+
+루지가 끝나고 계획이 없어 방황을 하다 인터넷을 보니 8시에 시작하는 밀레니언 레이져쇼를 한다고 하여 버스타고 구경하러 갔다. 생각보다 재미가 없고 첫날 무리한 탓에 우리는 일찍 집에 들어가 쉬기로 했따.
 
 ## 복귀 후 휴식
 
-복귀후 나는 수영을 하러 가고 엄마는 휴식과 누나는 감기걸려서 약먹고 쉬었다.
+<a href="https://imgur.com/5jY0auy"><img src="https://i.imgur.com/5jY0auy.jpg" width="600px" title="source: imgur.com" /></a>
+
+<a href="https://imgur.com/6FjE6uH"><img src="https://i.imgur.com/6FjE6uH.jpg" width="600px" title="source: imgur.com" /></a>
+
+복귀후 나는 야간 수영을 했다. 밤에도 여전히 사람이 많았다. 수영을 하면서 해변 근처에 폭죽놀이 하는 것을 구경할 수 있었다. 1시간여 수영을 마치고 내일 일정을 위해 일찍 집에 들어와서 잠을 잤다.
