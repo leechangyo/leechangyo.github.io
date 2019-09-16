@@ -49,6 +49,10 @@
           <h4 class="modal-title">Search</h4>
         </div>
         <div class="modal-body">
+          <div class="fixed-bottom-left">
+            {% include advertisements_small.html %}
+            {% include advertisements_sidebar3.html %}
+            </div>
     <h4><div id="search-container">
       <input type="text" id="search-input" placeholder="검색어 입력" class="input" style="font-size: 1rem; width: 100%; padding: 10px; border: 0px; outline: none; float: left; background: #cecece;" autofocus>
     </div></h4><br>
@@ -59,6 +63,7 @@
       <br><ul id="results-container"></ul>
       <div class="fixed-bottom-left">
         {% include advertisements_sidebar.html %}
+        {% include advertisements_sidebar2.html %}
         </div>
     </div>
 
