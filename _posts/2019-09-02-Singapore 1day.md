@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Singapore 1 Day
 category: Traveling
 tag: 가족여행
