@@ -1,0 +1,97 @@
+I"6<h1 id="what-is-reinforcement-learning">What is Reinforcement Learning?</h1>
+
+<p><em>There are 3 big part in AI</em></p>
+
+<p><a href="https://postimg.cc/zLYZjrbb"><img src="https://i.postimg.cc/jjLxRqRX/41232143.png" width="700px" title="source: imgur.com" /></a></p>
+<ul>
+  <li><strong>Supervised Learning</strong> (i.e. Spam Detection, Image Classification)
+<a href="https://postimg.cc/sQyMbq81"><img src="https://i.postimg.cc/bJS1Sj90/4123124123.png" width="700px" title="source: imgur.com" /></a></li>
+  <li><strong>Unsupervised Learning</strong>(i.e Topic Modeling Web Pages, Clustering Genetic Sequences)
+<a href="https://postimg.cc/VSPvb2z4"><img src="https://i.postimg.cc/MGvQg8Nk/413124123.png" width="700px" title="source: imgur.com" /></a></li>
+  <li><strong>Reinforcement Learning</strong>(i.e Tic-Tac-Toe,Go,Chess, Walking, Super mario, Doom, Starcraft)</li>
+</ul>
+
+<h2 id="1-supervisedunsupervised-interfaces">1. Supervised/Unsupervised Interfaces</h2>
+<ul>
+  <li>as we know about ML Theory and Function
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">SupervisedModel</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+</code></pre></div>    </div>
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">UnsupervisedModel</span><span class="p">:</span>
+<span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="c1">#(e.g cluster assignment)
+</span></code></pre></div>    </div>
+  </li>
+  <li>common theme is “training data”</li>
+  <li>input data: X(N x D Matrix)</li>
+  <li>Tragets: Y (N x 1 vector)</li>
+  <li>“all data is the same”</li>
+  <li>Format doesn’t change whether you’re in biology, finance, economics, etc.</li>
+  <li>fits neatly into one library: scikit-Learn</li>
+  <li>“simplistic”, but still useful:
+    <ul>
+      <li>Face Detection</li>
+      <li>Speech Recognition
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script></li>
+    </ul>
+  </li>
+</ul>
+<div align="center" style="margin: 1em 0;">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5150894678574694" data-ad-slot="9221331439" data-ad-format="auto" data-full-width-responsive="true"></ins>
+     </div>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<h2 id="2-reinforcement-learning">2. Reinforcement Learning</h2>
+<p><a href="https://postimg.cc/0r96nzLv"><img src="https://i.postimg.cc/7P2gx795/12312413.png" width="700px" title="source: imgur.com" /></a></p>
+
+<ul>
+  <li>Not just a static table of data</li>
+  <li>An agent interacts with the world(environment)</li>
+  <li>Can be simulated or real(E.g Vacuum robot)</li>
+  <li>Data comes from sensors
+    <ul>
+      <li>Cameras, Microphones, GPS, accelerometer</li>
+    </ul>
+  </li>
+  <li>Continuous stream of data
+    <ul>
+      <li>Consider past and future</li>
+    </ul>
+  </li>
+  <li>RL agent is “thing” with a lifetime
+    <ul>
+      <li>At each step, decide what to do</li>
+    </ul>
+  </li>
+  <li>An (un)supervised model is just a static object -&gt; input -&gt; output</li>
+</ul>
+
+<h2 id="3-isnt-it-still-supervised-learning">3. isn’t it still supervised learning?</h2>
+<ul>
+  <li>X can represent the state i’m in, Y represent the Target (ideal action to perform in that state)
+    <ul>
+      <li>state = sensor recording from self-driving car</li>
+      <li>state = Video Game ScreenShot</li>
+      <li>state = Chess Board Positions</li>
+    </ul>
+  </li>
+  <li>Yes it is, but for example, consider GO: $ N = 8 x 10^100 $</li>
+  <li>ImageNet, the image Classification benchmark, has $ N=10^6 $ images
+    <ul>
+      <li>Go is 94 orders of magnitude larger</li>
+      <li>Takes ~1 day with good hardware</li>
+    </ul>
+  </li>
+  <li>1 order of magnitude Larger -&gt; 10 days</li>
+  <li>2 order of magnitude Larger -&gt; 100 days</li>
+</ul>
+
+<h2 id="4-on-unusual-or-unexpected-strategies-of-rl">4. On Unusual or Unexpected Strategies of RL</h2>
+<p><a href="https://postimg.cc/8JD4k1sS"><img src="https://i.postimg.cc/W3qHnzvh/123231.png" width="700px" title="source: imgur.com" /></a></p>
+
+<p>Reference
+<a href="https://www.udemy.com/cutting-edge-artificial-intelligence/learn/lecture/14650508#overview">Cutting-Edge Deep-Reinforcement Learning</a></p>
+:ET

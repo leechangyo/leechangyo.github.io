@@ -1,0 +1,58 @@
+I"<h2 id="what-is-reinforcement-learning">What is Reinforcement Learning?</h2>
+
+<p><a href="https://postimg.cc/qNRLDkZb"><img src="https://i.postimg.cc/130jtX0Q/14512412123124123.png" width="700px" title="source: imgur.com" /></a></p>
+
+<ul>
+  <li>Humans/ AIs alike never sense the entire world/universe at once</li>
+  <li>We have sensors which feed signals to our brain from the environment</li>
+  <li>We don’t even know everything that’s going on in a room</li>
+  <li>Thus the Sensors limit the amount of information we get</li>
+  <li>The measurements we get from these sensors(e.g. sight, sound touch) make up a “state”</li>
+  <li>we’ll only discuss finite state spaces</li>
+  <li>state spaces with an infinite number of states are possible too</li>
+</ul>
+
+<p><a href="https://postimg.cc/y3jG9Lkk"><img src="https://i.postimg.cc/hhRRkwnb/444444.png" width="700px" title="source: imgur.com" /></a></p>
+
+<ul>
+  <li>what’s the # of states?
+    <ul>
+      <li>if we simplify the problem so that we can keep adding x’s and o’s even after a player gets 3 in a row</li>
+      <li>Each Location on the board has 3 possibilities: empty, X, O</li>
+      <li>9 Locations on the Board</li>
+      <li>therefore, # states = 3 x 3 … x3 = $ 3^9 $</li>
+    </ul>
+  </li>
+</ul>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<div align="center" style="margin: 1em 0;">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5150894678574694" data-ad-slot="9221331439" data-ad-format="auto" data-full-width-responsive="true"></ins>
+     </div>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<h2 id="recap-so-far">Recap so far</h2>
+
+<h3 id="3-important-terms">3 Important Terms</h3>
+<p><a href="https://postimg.cc/QB0V4TVw"><img src="https://i.postimg.cc/G21YpPRL/4123141231412.jpg" width="700px" title="source: imgur.com" /></a></p>
+<ol>
+  <li>Agent: thing that sense the environment, thing we’re trying to code intelligence/learning into</li>
+  <li>Environment: Real World or simulated world that the agent lives in</li>
+  <li>State: Different Configurations of the environment that the agent can sense</li>
+  <li>Reward
+    <ul>
+      <li>this is what differentiates RL from other types of ML</li>
+      <li>An agent not only tries to maximize its immediate reward, but future rewards as well</li>
+      <li>RL algorithms will find novel ways of accomplishing this</li>
+      <li>Alphago: learning unique/unpredictable strategies that led to beating a world champion</li>
+      <li>Not intuitive to humans, But Rl can figure it out</li>
+    </ul>
+  </li>
+</ol>
+
+<p>Reference
+<a href="https://www.udemy.com/cutting-edge-artificial-intelligence/learn/lecture/14650508#overview">Cutting-Edge Deep-Reinforcement Learning</a></p>
+:ET
