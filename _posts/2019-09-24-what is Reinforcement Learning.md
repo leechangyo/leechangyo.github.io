@@ -58,7 +58,7 @@ class UnsupervisedModel:
   - state = sensor recording from self-driving car
   - state = Video Game ScreenShot
   - state = Chess Board Positions
-- Yes it is, but for example, consider GO: $ N = 8 x 10^100 $
+- Yes it is, but for example, consider GO: $ N = 8 * 10^100 $
 - ImageNet, the image Classification benchmark, has $ N=10^6 $ images
   - Go is 94 orders of magnitude larger
   - Takes ~1 day with good hardware
