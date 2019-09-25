@@ -207,6 +207,7 @@ for t in range(1501):
 - Exploit:
   - Lots of data; distributions are skinny; will only sample near true mean
 - The Bayesian Posterior automatically controls how much exploration/exploitation we do
+- bayesian method(likelihood)를 이용하여 샘플이 많아 질수록 점점 뚜렷하게 잘 찾게 된다.
 
 ```python
 # From the course: Bayesin Machine Learning in Python: A/B Testing
