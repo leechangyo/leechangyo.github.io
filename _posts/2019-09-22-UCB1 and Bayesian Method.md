@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 4. UCB1 and Bayesian Method.md
+title: 4. UCB1 and Bayesian Method
 category: AI
 tag: Reinforcement Learning
 ---
