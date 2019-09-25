@@ -89,3 +89,10 @@ def run_experiment(p1, p2, p3, N):
 
 run_experiment(0.2, 0.25, 0.3, 100000)
 ```
+Reference:
+
+[Artificial Intelligence Reinforcement Learning](https://www.udemy.com/course/artificial-intelligence-reinforcement-learning-in-python/)
+
+[Advance AI : Deep-Reinforcement Learning](https://www.udemy.com/deep-reinforcement-learning-in-python/)
+
+[Cutting-Edge Deep-Reinforcement Learning](https://www.udemy.com/cutting-edge-artificial-intelligence/learn/lecture/14650508#overview)
