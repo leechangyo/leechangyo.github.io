@@ -118,5 +118,10 @@ class UnsupervisedModel:
   - it can spawn new offspring instantly
   - obtain hundreds / thousands of years of experience in the blink of an eye
 
-Reference
-[Cutting-Edge Deep-Reinforcement Learning](https://www.udemy.com/cutting-edge-artificial-intelligence/learn/lecture/14650508#overview)
+  Reference:
+
+  [Artificial Intelligence Reinforcement Learning](https://www.udemy.com/course/artificial-intelligence-reinforcement-learning-in-python/)
+
+  [Advance AI : Deep-Reinforcement Learning](https://www.udemy.com/deep-reinforcement-learning-in-python/)
+
+  [Cutting-Edge Deep-Reinforcement Learning](https://www.udemy.com/cutting-edge-artificial-intelligence/learn/lecture/14650508#overview)
