@@ -6,7 +6,7 @@ tag: Reinforcement Learning
 ---
 
 # Multi Armed Bandit
-<a href="https://postimg.cc/9wdWmWHw"><img src="https://i.postimg.cc/Zng0LRfH/1412314123.png" width="700px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/9wdWmWHw"><img src="https://i.postimg.cc/Zng0LRfH/1412314123.png" width="400px" title="source: imgur.com" /></a>
 - First saw in: bayesian Machine Learning(Probability Algorithm): A/B Testing (Ex. go to a Casino; choice between 3 slot machines)
 - Each (for now) gives reward of 0 or 1
 - win rate is unknown(Ex. Could be 0.1 0.3 0.5)
@@ -96,7 +96,7 @@ else:
 - But we'll learn better ways to adapt
 
 ## 8. Estimating Bandit Rewards
-<a href="https://postimg.cc/7fqTbNqc"><img src="https://i.postimg.cc/fT972Hpw/4124141231241231.png" width="700px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/7fqTbNqc"><img src="https://i.postimg.cc/fT972Hpw/4124141231241231.png" width="400px" title="source: imgur.com" /></a>
 - Assuming bandit rewards are not just coin tosses.
 - The best way to keep track of reward is General Method "Mean"
 - Works for $ 1/0 $ too
@@ -235,7 +235,7 @@ if __name__ == '__main__':
 - Suppose we know the true mean of each bandit is << 10
 - pick a high ceiling as the initial mean estimate
 - before we set initial mean to "0", but this time we set initial value to "10"
-<a href="https://postimg.cc/v10Nmx09"><img src="https://i.postimg.cc/B639MxDh/151212515124123.png" width="700px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/v10Nmx09"><img src="https://i.postimg.cc/B639MxDh/151212515124123.png" width="200px" title="source: imgur.com" /></a>
 - initial sample mean is "too good to be true "
 - All collected data will cause it to go down
 - if the true mean is 1, the sample mean will still approach 1 as I collect more samples

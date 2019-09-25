@@ -1,0 +1,17 @@
+I"s<h1 id="ucb1">UCB1</h1>
+<p><a href="https://postimg.cc/R3d6WKJM"><img src="https://i.postimg.cc/hjW930S7/52139182305921.png" width="700px" title="source: imgur.com" /></a></p>
+
+<ul>
+  <li>Another Method to Solve Explore-Exploit ( also from A/B Testing Classes)</li>
+  <li>Idea: confidence bounds</li>
+  <li>Intuitively, we know that sample mean from 10 samples is less accurate than a sample mean from 1000 samples</li>
+  <li>Chefnoff Hoeffiding bound:
+<a href="https://postimg.cc/YvWgXvG7"><img src="https://i.postimg.cc/T3k93mTK/521252152525215.png" width="700px" title="source: imgur.com" /></a></li>
+  <li>Looks complicated, but leads to a simple algorithm
+<a href="https://postimg.cc/wyGj8kZG"><img src="https://i.postimg.cc/j2swfgXt/1242141413123.png" width="700px" title="source: imgur.com" /></a></li>
+  <li>square(2*ln(N)/N_j) &lt;- “Choose” epsilon equal to this upper bound</li>
+  <li>N = number of times i’ve played in total, N_j = number of times i’ve played bandit j</li>
+  <li>How do we use this formular? Same as optimistic initial values Method</li>
+  <li>just be greedy, but with respect to $X_(UCB-j)</li>
+</ul>
+:ET

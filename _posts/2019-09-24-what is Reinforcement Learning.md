@@ -81,7 +81,7 @@ class UnsupervisedModel:
 - RL is dynamic - if an agent solves a maze, it only know its decisions were correct if it eventually solves the maze
 
 ## 6. On Unusual or Unexpected Strategies of RL
-<a href="https://postimg.cc/F1cfg2rM"><img src="https://i.postimg.cc/59Kw1VZ2/125212425.png" width="700px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/F1cfg2rM"><img src="https://i.postimg.cc/59Kw1VZ2/125212425.png" width="500px" title="source: imgur.com" /></a>
 - Goal of AlphaGO is to win Go, and the goal of a video game agent is high score/live as long as possible
 - what is the goal of an animal/human?
 - Evolutionary psychologists believe in the "selfish Gene" Theory
@@ -98,7 +98,7 @@ class UnsupervisedModel:
 - we might desire riches/money -but why? Maybe natural selection or leads to better health and social status. there are no laws physics which govern riches and gene replication
 - it's a novel solution to the problem
 - AI can also find such strange or unusual ways to achieve a goal
-<a href="https://postimg.cc/xkw6hWWw"><img src="https://i.postimg.cc/500DYJp2/2152314215234.png" width="700px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/xkw6hWWw"><img src="https://i.postimg.cc/500DYJp2/2152314215234.png" width="500px" title="source: imgur.com" /></a>
 - we can replace "getting rich" with any trait(특성) we want
   - being healthy and strong
   - Having strong analytical skills

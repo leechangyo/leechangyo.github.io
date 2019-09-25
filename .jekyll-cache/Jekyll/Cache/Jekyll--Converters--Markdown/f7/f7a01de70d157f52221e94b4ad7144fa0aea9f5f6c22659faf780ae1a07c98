@@ -1,0 +1,9 @@
+I"�<h1 id="ucb1">UCB1</h1>
+<p><a href="https://postimg.cc/R3d6WKJM">&lt;img src=”https://i.postimg.cc/hjW930S7/52139182305921.png”</a></p>
+
+<ul>
+  <li>Another Method to Solve Explore-Exploit ( also from A/B Testing Classes)</li>
+  <li>Idea: confidence bounds</li>
+  <li>Intuitively, we know that sample mean from 10 samples is less accurate than a sample mean from 1000 samples</li>
+</ul>
+:ET
