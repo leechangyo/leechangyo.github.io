@@ -1,0 +1,39 @@
+I"<h1 id="1-native本地的-solution-to-tic-tac-toe">1. Native(本地的) Solution to Tic-Tac-Toe</h1>
+<p><a href="https://postimg.cc/nsyfqDpQ"><img src="https://i.postimg.cc/9MMX5dk1/512124123124.png" width="700px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>Small set of rules to ensure we never lose</li>
+  <li>we enumerate(列举) the rule of Tic-Tac-Toe. but we won’t. still consider what they might be( Ex, if board is empty and it’s our turn, place our piece in the center or corner)(Ex2, if opponent has 2 piece in a row, block the 3rd postion so they don’t win)(Ex3, if we have 2 piece in a row, add a 3rd so we can win the game)</li>
+  <li>Code would like this
+    <div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+<span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">...</span><span class="p">):</span>
+<span class="p">{</span><span class="o">...</span><span class="p">}</span>
+<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="o">...</span><span class="p">):</span>
+<span class="p">{</span><span class="o">...</span><span class="p">}</span>
+</code></pre></div>    </div>
+  </li>
+  <li>Goes against the whole idea of ML</li>
+  <li>We want one algorithm that can generalize(概括) to many problem(E.g neural network can classify pictures of animals, can also classify music)</li>
+  <li>An agent made up of it statements will never be able to do anything other than just play tic-tac-toe(Agent only doing tic-tac-toe)</li>
+  <li>Important: we have a model for how the game works. we know everything about tic-tac-toe</li>
+  <li>We Know what state yields the highest reward(any state where we have 3 pieces in a row)</li>
+  <li>i.e. by doing some action, we know the next state is given the current state(predict)</li>
+  <li>Seems Trivial(不重要的), but not always the case</li>
+</ul>
+
+<h2 id="model">Model</h2>
+
+<ul>
+  <li>the idea of having a model of the environment will come into play later.</li>
+  <li>some algorithms we’ll learn will require us to have a model, like tic-tac-toe</li>
+  <li>other algorithms won’t require us to know anything, we’ll just explore the world and consume information as we go along</li>
+</ul>
+
+<h1 id="2-components-of-a-rl-systems">2. Components of a RL systems</h1>
+<p><a href="https://postimg.cc/qh2qK0V4"><img src="https://i.postimg.cc/xC4zWT6J/512312412312431.png" width="700px" title="source: imgur.com" /></a></p>
+
+<h2 id="state">State</h2>
+<ul>
+  <li>Note that State involves only what the agent can sense, not everything about the environment</li>
+</ul>
+:ET
