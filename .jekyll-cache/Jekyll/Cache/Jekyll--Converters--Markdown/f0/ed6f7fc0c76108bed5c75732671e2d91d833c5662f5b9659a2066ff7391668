@@ -1,0 +1,600 @@
+I"�<h2 id="1-outline">1. Outline</h2>
+<ul>
+  <li>play_game(p1,p2,env)</li>
+  <li>USE OOP approach
+<a href="https://postimg.cc/FYGhnGg0"><img src="https://i.postimg.cc/pdMyr6mc/9695959.png" width="700px" title="source: imgur.com" /></a></li>
+</ul>
+
+<h2 id="2-representing-states">2. representing States</h2>
+<ul>
+  <li>last post, I told you this would be an O(1) lookup (as in an array )</li>
+  <li>Possible solution: Convert the board to tuple of tuples, use as dictionary Key</li>
+  <li>Better: Map Each state to a number, use numpy array</li>
+</ul>
+
+<h2 id="3-mapping-state-to-a-number">3. Mapping state to a number</h2>
+<ul>
+  <li>there are 3 state, “O”, “X”, “Empty”</li>
+  <li>9 array so all possible state is 3^9 = 19683</li>
+  <li>overhead not a problem, these states are unreachable(e.g. 3x’s in a row and 3o’s in a row on the same board)</li>
+  <li>Should remind us of binary numbers(2 Possible symbols in each location vs 3)</li>
+  <li>binary to decimal(小数):
+<a href="https://postimg.cc/BjYZhM4R"><img src="https://i.postimg.cc/cJZKLbj1/5515123.png" width="300px" title="source: imgur.com" /></a></li>
+  <li>For us:
+<a href="https://postimg.cc/dhbQPDZ9"><img src="https://i.postimg.cc/Gp24Dyc6/552152132123.png" width="300px" title="source: imgur.com" /></a></li>
+</ul>
+
+<blockquote>
+  <p>In code</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">k</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">h</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">Length</span><span class="p">):</span>
+  <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">Length</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="n">v</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">:</span>
+      <span class="n">v</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">o</span><span class="p">:</span>
+      <span class="n">v</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">h</span> <span class="o">+</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="o">**</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">v</span>
+    <span class="n">k</span> <span class="o">+</span> <span class="o">=</span> <span class="mi">1</span>
+</code></pre></div></div>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<div align="center" style="margin: 1em 0;">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5150894678574694" data-ad-slot="9221331439" data-ad-format="auto" data-full-width-responsive="true"></ins>
+     </div>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<h2 id="4-initializing-the-value-function">4. Initializing the value function</h2>
+<ul>
+  <li>Recall, we initialize V(s) as :
+    <ul>
+      <li>1 if s == winning terminal state</li>
+      <li>0 if s == lose or draw terminal state</li>
+      <li>0.5 otherwise</li>
+    </ul>
+  </li>
+  <li>how do we find all the “s”?</li>
+</ul>
+
+<h2 id="5-enumerating-state">5. Enumerating state</h2>
+<p><a href="https://postimg.cc/XpKd8Bh5"><img src="https://i.postimg.cc/zX67qnFx/5512334.png" width="500px" title="source: imgur.com" /></a></p>
+
+<ul>
+  <li>lets think which is better ?
+1) Create a “game tree “ of all possible in the game?
+2) Create a permutation(排列) of all possible settings of all possible positions on the board?</li>
+</ul>
+
+<h3 id="game-tree">Game Tree</h3>
+<p><a href="https://postimg.cc/Czp65Dkn"><img src="https://i.postimg.cc/CLRyvsK7/5122342314124.gif" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>Problem : redundant states</li>
+  <li>i.e. see the same state more than once in the tree</li>
+</ul>
+
+<p>Start: 9 choices
+then: 8 choices
+then: 7 choices
+….</p>
+
+<p>9! = 362880 » 3^9</p>
+
+<h3 id="permutation순열">permutation(<a href="https://ko.wikipedia.org/wiki/%EC%88%9C%EC%97%B4]">순열</a>)</h3>
+<p><a href="https://postimg.cc/9DbxxQ0x"><img src="https://i.postimg.cc/jj0GSWbr/521423121.gif" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>How? think binary first:</li>
+  <li>Generate permutation of Length N:
+    <blockquote>
+      <p>0 + Generate permutation of length N -1 <br />
+ 1 + Generate Permutation of Length N - 1</p>
+    </blockquote>
+  </li>
+</ul>
+
+<pre><code class="language-pseudocode"> def generate_all_binary_numbers(N):
+   results = {}
+   child_results = generate_all_binary_numbers(N-1)
+   for prefix in ('0', '1'):
+     for suffix in child_results:
+       new_result = prefix + suffix
+       returns.append(new_result)
+   return results
+
+(base case not shown for simplicity)
+</code></pre>
+<ul>
+  <li>if don’t get about this please check in <a href="https://www.youtube.com/watch?v=fkjv6OEyC0g">here</a></li>
+</ul>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<div align="center" style="margin: 1em 0;">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5150894678574694" data-ad-slot="9221331439" data-ad-format="auto" data-full-width-responsive="true"></ins>
+     </div>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<h3 id="enumerating-states-recursively">Enumerating States Recursively</h3>
+<ul>
+  <li>that is all combinations of inputs an programs that halt</li>
+  <li>Function: get_state_hash_and_winner</li>
+  <li>Returns : List of triples(state, winner, ended)</li>
+  <li>state : configuration of the board as a <a href="https://ko.wikipedia.org/wiki/%ED%95%B4%EC%8B%9C_%ED%95%A8%EC%88%98">hashed</a> int</li>
+  <li>Winner is None if ended is False (즉 승자가 나올떄 까지 계속 돈다)</li>
+  <li>inputs : env, i, j</li>
+</ul>
+
+<pre><code class="language-pseudocode">max_length=0
+while(true):
+  max_length = max_length +1
+  for each program "P" of length &lt;= max_length: # P is finite
+    for each input "I" of length &lt;= max_length:
+      if "env" halts on 'I' after max_length steps:
+        print P,I
+
+</code></pre>
+
+<h3 id="summary">Summary</h3>
+<ul>
+  <li>In order to initialize V(s) to our desired values, we must enumerate all the states</li>
+  <li>we can either search the game tree(9!) or find board permutations($3^9$)</li>
+  <li>9! is super-exponential</li>
+  <li>Enumerating game states Recursively</li>
+  <li>initializing V(s) is different for X and O</li>
+</ul>
+
+<h2 id="6-the-environment-classcode">6. The Environment Class(Code)</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Method</span><span class="p">:</span> <span class="n">__init__</span><span class="p">()</span> <span class="p">:</span> <span class="c1">#initialize Important instance vars
+</span><span class="n">is_empthy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">):</span> <span class="c1"># returns true if(i,j) is empty
+</span><span class="n">reward</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+<span class="n">get_state</span><span class="p">()</span>
+<span class="n">game_over</span><span class="p">()</span>
+<span class="n">draw_board</span><span class="p">()</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Constructor</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Environment</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">board</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">length</span><span class="p">,</span> <span class="n">length</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># represents an x on the board, player 1
+</span>    <span class="bp">self</span><span class="o">.</span><span class="n">o</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># represents an o on the board player 2
+</span>    <span class="bp">self</span><span class="o">.</span><span class="n">winner</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">ended</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">num_states</span> <span class="o">=</span> <span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">length</span><span class="o">*</span><span class="n">length</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>is_empthy</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">is_empthy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+  <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>reward</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">reward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sym</span><span class="p">):</span>
+  <span class="c1"># no reward until game is over
+</span>  <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span><span class="p">():</span>
+    <span class="k">return</span> <span class="mi">0</span>
+  <span class="c1"># if we get here, game is over
+</span>  <span class="c1"># sym will be self.x or self.o
+</span>  <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">winner</span> <span class="o">==</span> <span class="n">sym</span> <span class="k">else</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>get_state</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="c1"># returns the current state, represented as an int
+</span>  <span class="c1"># from 0...|S|-1, where S = set of all possible states
+</span>  <span class="c1"># |S| = 3^(BOARD SIZE), since each cell can have 3 possible values - empty, x, o
+</span>  <span class="c1"># some states are not possible, e.g. all cells are x, but we ignore that detail
+</span>  <span class="c1"># this is like finding the integer represented by a base-3 number
+</span>  <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">h</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">LENGTH</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">LENGTH</span><span class="p">):</span>
+      <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="mi">0</span>
+      <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="mi">1</span>
+      <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">o</span><span class="p">:</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="mi">2</span>
+      <span class="n">h</span> <span class="o">+=</span> <span class="p">(</span><span class="mi">3</span><span class="o">**</span><span class="n">k</span><span class="p">)</span> <span class="o">*</span> <span class="n">v</span> <span class="c1"># Value Funtion
+</span>      <span class="n">k</span> <span class="o">+=</span> <span class="mi">1</span>
+  <span class="k">return</span> <span class="n">h</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>game_over</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">game_over</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_recalculate</span><span class="o">==</span><span class="bp">False</span><span class="p">):</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">force_recalculate</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">ended</span><span class="p">:</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ended</span>
+
+    <span class="c1"># check rows
+</span>    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">LENGTH</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">o</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span> <span class="o">==</span> <span class="n">player</span><span class="o">*</span><span class="n">LENGTH</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">winner</span> <span class="o">=</span> <span class="n">player</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">ended</span> <span class="o">=</span> <span class="bp">True</span>
+          <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="c1"># check columns
+</span>    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">LENGTH</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">o</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[:,</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="nb">sum</span><span class="p">()</span> <span class="o">==</span> <span class="n">player</span><span class="o">*</span><span class="n">LENGTH</span><span class="p">:</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">winner</span> <span class="o">=</span> <span class="n">player</span>
+          <span class="bp">self</span><span class="o">.</span><span class="n">ended</span> <span class="o">=</span> <span class="bp">True</span>
+          <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="c1"># check diagonals
+</span>    <span class="k">for</span> <span class="n">player</span> <span class="ow">in</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">o</span><span class="p">):</span>
+      <span class="c1"># top-left -&gt; bottom-right diagonal
+</span>      <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="o">.</span><span class="n">trace</span><span class="p">()</span> <span class="o">==</span> <span class="n">player</span><span class="o">*</span><span class="n">LENGTH</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">winner</span> <span class="o">=</span> <span class="n">player</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ended</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">True</span>
+      <span class="c1"># top-right -&gt; bottom-left diagonal
+</span>      <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">fliplr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">)</span><span class="o">.</span><span class="n">trace</span><span class="p">()</span> <span class="o">==</span> <span class="n">player</span><span class="o">*</span><span class="n">LENGTH</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">winner</span> <span class="o">=</span> <span class="n">player</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ended</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="c1"># check if draw
+</span>    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="nb">all</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">board</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="bp">False</span><span class="p">):</span>
+      <span class="c1"># winner stays None
+</span>      <span class="bp">self</span><span class="o">.</span><span class="n">winner</span> <span class="o">=</span> <span class="bp">None</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">ended</span> <span class="o">=</span> <span class="bp">True</span>
+      <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="c1"># game is not over
+</span>    <span class="bp">self</span><span class="o">.</span><span class="n">winner</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="k">return</span> <span class="bp">False</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>draw_board</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">draw_board</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">LENGTH</span><span class="p">):</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"-------------"</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">LENGTH</span><span class="p">):</span>
+      <span class="k">print</span><span class="p">(</span><span class="s">"  "</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+      <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"x "</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+      <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">o</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"o "</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"  "</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">""</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"-------------"</span><span class="p">)</span>
+</code></pre></div></div>
+<h2 id="7-the-agent-class">7. The Agent class</h2>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<div align="center" style="margin: 1em 0;">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5150894678574694" data-ad-slot="9221331439" data-ad-format="auto" data-full-width-responsive="true"></ins>
+     </div>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<ul>
+  <li>Contains the AI</li>
+  <li>different from supervised/unsupervised ML, because we don’t just feed it data</li>
+  <li>it has to interact with the Environment</li>
+  <li>one-line update for V(s) is a very small part of the agent, yet responsible for 100% of its intelligence</li>
+</ul>
+
+<blockquote>
+  <p>The Agent Class</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Agent</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">eps</span> <span class="o">=</span> <span class="n">eps</span> <span class="c1"># probability of choosing random action instead of greedy
+</span>    <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha</span> <span class="c1"># learning rate
+</span>    <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">state_history</span> <span class="o">=</span> <span class="p">[]</span>
+
+  <span class="k">def</span> <span class="nf">setV</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">V</span><span class="p">):</span> <span class="c1"># SetV is the allow us to initialize the value function
+</span>    <span class="bp">self</span><span class="o">.</span><span class="n">V</span> <span class="o">=</span> <span class="n">V</span>
+
+  <span class="k">def</span> <span class="nf">set_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sym</span><span class="p">):</span> <span class="c1"># symbol is allow us to give this agent a symbol that it'll use to play on the board
+</span>    <span class="bp">self</span><span class="o">.</span><span class="n">sym</span> <span class="o">=</span> <span class="n">sym</span>
+
+  <span class="k">def</span> <span class="nf">set_verbose</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="c1"># if true, will print values for each position on the board
+</span>    <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">v</span>
+
+  <span class="k">def</span> <span class="nf">reset_history</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">state_history</span> <span class="o">=</span> <span class="p">[]</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Take_action</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">take_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+  <span class="c1"># choose an action based on epsilon-greedy strategy
+</span>  <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span>
+  <span class="n">best_state</span> <span class="o">=</span> <span class="bp">None</span>
+  <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">eps</span><span class="p">:</span>
+    <span class="c1"># take a random action
+</span>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+      <span class="k">print</span><span class="p">(</span><span class="s">"Taking a random action"</span><span class="p">)</span>
+
+    <span class="n">possible_moves</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">LENGTH</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">LENGTH</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">env</span><span class="o">.</span><span class="n">is_empty</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+          <span class="n">possible_moves</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">))</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">possible_moves</span><span class="p">))</span>
+    <span class="n">next_move</span> <span class="o">=</span> <span class="n">possible_moves</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="c1"># choose the best action based on current values of states
+</span>    <span class="c1"># loop through all possible moves, get their values
+</span>    <span class="c1"># keep track of the best value
+</span>    <span class="n">pos2value</span> <span class="o">=</span> <span class="p">{}</span> <span class="c1"># for debugging
+</span>    <span class="n">next_move</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="n">best_value</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">LENGTH</span><span class="p">):</span>
+      <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">LENGTH</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">env</span><span class="o">.</span><span class="n">is_empty</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+          <span class="c1"># what is the state if we made this move?
+</span>          <span class="n">env</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sym</span>
+          <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+          <span class="n">env</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># don't forget to change it back!
+</span>          <span class="n">pos2value</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">state</span><span class="p">]</span>
+          <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">best_value</span><span class="p">:</span>
+            <span class="n">best_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">state</span><span class="p">]</span>
+            <span class="n">best_state</span> <span class="o">=</span> <span class="n">state</span>
+            <span class="n">next_move</span> <span class="o">=</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+
+    <span class="c1"># if verbose, draw the board w/ the values
+</span>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+      <span class="k">print</span><span class="p">(</span><span class="s">"Taking a greedy action"</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">LENGTH</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"------------------"</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">LENGTH</span><span class="p">):</span>
+          <span class="k">if</span> <span class="n">env</span><span class="o">.</span><span class="n">is_empty</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+            <span class="c1"># print the value
+</span>            <span class="k">print</span><span class="p">(</span><span class="s">" </span><span class="si">%.2</span><span class="s">f|"</span> <span class="o">%</span> <span class="n">pos2value</span><span class="p">[(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">)],</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+          <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"  "</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">env</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">env</span><span class="o">.</span><span class="n">x</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="s">"x  |"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">env</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="n">env</span><span class="o">.</span><span class="n">o</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="s">"o  |"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="s">"   |"</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s">""</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">""</span><span class="p">)</span>
+      <span class="k">print</span><span class="p">(</span><span class="s">"------------------"</span><span class="p">)</span>
+
+  <span class="c1"># make the move
+</span>  <span class="n">env</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">next_move</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">next_move</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sym</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>update_state_history</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">update_state_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+  <span class="c1"># cannot put this in take_action, because take_action only happens
+</span>  <span class="c1"># once every other iteration for each player
+</span>  <span class="c1"># state history needs to be updated every iteration
+</span>  <span class="c1"># s = env.get_state() # don't want to do this twice so pass it in
+</span>  <span class="bp">self</span><span class="o">.</span><span class="n">state_history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+</code></pre></div></div>
+<blockquote>
+  <p>update</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+  <span class="c1"># we want to BACKTRACK over the states, so that:
+</span>  <span class="c1"># V(prev_state) = V(prev_state) + alpha*(V(next_state) - V(prev_state))
+</span>  <span class="c1"># where V(next_state) = reward if it's the most current state
+</span>  <span class="c1">#
+</span>  <span class="c1"># NOTE: we ONLY do this at the end of an episode
+</span>  <span class="c1"># not so for all the algorithms we will study
+</span>  <span class="n">reward</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reward</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sym</span><span class="p">)</span>
+  <span class="n">target</span> <span class="o">=</span> <span class="n">reward</span>
+  <span class="k">for</span> <span class="n">prev</span> <span class="ow">in</span> <span class="nb">reversed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_history</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">prev</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="o">*</span><span class="p">(</span><span class="n">target</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">prev</span><span class="p">])</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">V</span><span class="p">[</span><span class="n">prev</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">value</span>
+  <span class="bp">self</span><span class="o">.</span><span class="n">reset_history</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h2 id="8-the-human-classcode">8. The Human Class(Code)</h2>
+
+<blockquote>
+  <p>Human class</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Human</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+  <span class="k">def</span> <span class="nf">set_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sym</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">sym</span> <span class="o">=</span> <span class="n">sym</span>
+
+  <span class="k">def</span> <span class="nf">take_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+      <span class="c1"># break if we make a legal move
+</span>      <span class="n">move</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Enter coordinates i,j for your next move (i,j=0..2): "</span><span class="p">)</span>
+      <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="o">=</span> <span class="n">move</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">','</span><span class="p">)</span>
+      <span class="n">i</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+      <span class="n">j</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">j</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">env</span><span class="o">.</span><span class="n">is_empty</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sym</span>
+        <span class="k">break</span>
+
+  <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+  <span class="k">def</span> <span class="nf">update_state_history</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+
+<span class="c1"># recursive function that will return all
+# possible states (as ints) and who the corresponding winner is for those states (if any)
+# (i, j) refers to the next cell on the board to permute (we need to try -1, 0, 1)
+# impossible games are ignored, i.e. 3x's and 3o's in a row simultaneously
+# since that will never happen in a real game
+</span></code></pre></div></div>
+<blockquote>
+  <p>play games</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">play_game</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">draw</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+  <span class="c1"># loops until the game is over
+</span>  <span class="n">current_player</span> <span class="o">=</span> <span class="bp">None</span>
+  <span class="k">while</span> <span class="ow">not</span> <span class="n">env</span><span class="o">.</span><span class="n">game_over</span><span class="p">():</span>
+    <span class="c1"># alternate between players
+</span>    <span class="c1"># p1 always starts first
+</span>    <span class="k">if</span> <span class="n">current_player</span> <span class="o">==</span> <span class="n">p1</span><span class="p">:</span>
+      <span class="n">current_player</span> <span class="o">=</span> <span class="n">p2</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">current_player</span> <span class="o">=</span> <span class="n">p1</span>
+
+    <span class="c1"># draw the board before the user who wants to see it makes a move
+</span>    <span class="k">if</span> <span class="n">draw</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">draw</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">current_player</span> <span class="o">==</span> <span class="n">p1</span><span class="p">:</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">draw_board</span><span class="p">()</span>
+      <span class="k">if</span> <span class="n">draw</span> <span class="o">==</span> <span class="mi">2</span> <span class="ow">and</span> <span class="n">current_player</span> <span class="o">==</span> <span class="n">p2</span><span class="p">:</span>
+        <span class="n">env</span><span class="o">.</span><span class="n">draw_board</span><span class="p">()</span>
+
+    <span class="c1"># current player makes a move
+</span>    <span class="n">current_player</span><span class="o">.</span><span class="n">take_action</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+    <span class="c1"># update state histories
+</span>    <span class="n">state</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+    <span class="n">p1</span><span class="o">.</span><span class="n">update_state_history</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+    <span class="n">p2</span><span class="o">.</span><span class="n">update_state_history</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="n">draw</span><span class="p">:</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">draw_board</span><span class="p">()</span>
+
+  <span class="c1"># do the value function update
+</span>  <span class="n">p1</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+  <span class="n">p2</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Main</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+  <span class="c1"># train the agent
+</span>  <span class="n">p1</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">()</span>
+  <span class="n">p2</span> <span class="o">=</span> <span class="n">Agent</span><span class="p">()</span>
+
+  <span class="c1"># set initial V for p1 and p2
+</span>  <span class="n">env</span> <span class="o">=</span> <span class="n">Environment</span><span class="p">()</span>
+  <span class="n">state_winner_triples</span> <span class="o">=</span> <span class="n">get_state_hash_and_winner</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+
+
+  <span class="n">Vx</span> <span class="o">=</span> <span class="n">initialV_x</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">state_winner_triples</span><span class="p">)</span>
+  <span class="n">p1</span><span class="o">.</span><span class="n">setV</span><span class="p">(</span><span class="n">Vx</span><span class="p">)</span>
+  <span class="n">Vo</span> <span class="o">=</span> <span class="n">initialV_o</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">state_winner_triples</span><span class="p">)</span>
+  <span class="n">p2</span><span class="o">.</span><span class="n">setV</span><span class="p">(</span><span class="n">Vo</span><span class="p">)</span>
+
+  <span class="c1"># give each player their symbol
+</span>  <span class="n">p1</span><span class="o">.</span><span class="n">set_symbol</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">x</span><span class="p">)</span>
+  <span class="n">p2</span><span class="o">.</span><span class="n">set_symbol</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">o</span><span class="p">)</span>
+
+  <span class="n">T</span> <span class="o">=</span> <span class="mi">10000</span> <span class="c1">#train
+</span>  <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">t</span> <span class="o">%</span> <span class="mi">200</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+    <span class="n">play_game</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">Environment</span><span class="p">())</span>
+
+  <span class="c1"># play human vs. agent
+</span>  <span class="c1"># do you think the agent learned to play the game well?
+</span>  <span class="c1"># human Verification
+</span>  <span class="n">human</span> <span class="o">=</span> <span class="n">Human</span><span class="p">()</span>
+  <span class="n">human</span><span class="o">.</span><span class="n">set_symbol</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">o</span><span class="p">)</span>
+  <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">p1</span><span class="o">.</span><span class="n">set_verbose</span><span class="p">(</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">play_game</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">human</span><span class="p">,</span> <span class="n">Environment</span><span class="p">(),</span> <span class="n">draw</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="c1"># I made the agent player 1 because I wanted to see if it would
+</span>    <span class="c1"># select the center as its starting move. If you want the agent
+</span>    <span class="c1"># to go second you can switch the human and AI.
+</span>    <span class="n">answer</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Play again? [Y/n]: "</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">answer</span> <span class="ow">and</span> <span class="n">answer</span><span class="o">.</span><span class="n">lower</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s">'n'</span><span class="p">:</span>
+      <span class="k">break</span>
+</code></pre></div></div>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<div align="center" style="margin: 1em 0;">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5150894678574694" data-ad-slot="9221331439" data-ad-format="auto" data-full-width-responsive="true"></ins>
+     </div>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<h2 id="9-summary">9. Summary</h2>
+<ul>
+  <li>Would not be able to increase intelligence by learning from experience</li>
+  <li>would not be generalizable to other Environments</li>
+  <li>Components of a RL system (Agent, Environment, state, action, reward)</li>
+  <li>Episodes, terminal states</li>
+  <li>Choosing rewards carefully</li>
+  <li><a href="https://www.quora.com/What-means-credit-assignment-when-talking-about-learning-in-neural-networks">credit assignment</a>(움직임에 따라 승리의 확율을 나타낸다)</li>
+  <li>Delayed Reward</li>
+  <li>Planning intelligently to maximize overall rewards</li>
+  <li>Value function</li>
+  <li>V(s) &lt;- V(s) + α(V(s’)- V(s))</li>
+</ul>
+
+<h3 id="rl-vs-sl">RL vs SL</h3>
+
+<ul>
+  <li>why not use a supervised learning model that maps states -&gt; actions directly</li>
+  <li>i.e model y = f(x) where x = state, y= action</li>
+  <li>how would we come up with labels?</li>
+  <li>very easy for state space to grow too large to enumerate</li>
+  <li>connect-4/ tic-tac-toe is probably the limit</li>
+  <li>imagine: HD graphics 60 FPS video game - we can’t even conceptualize how large the state space</li>
+  <li>thus, how could we create a label for every state?</li>
+  <li>Rewards are delayed(데이터가 없는 상태에서 액션을 즉시 선택하는 것은 올바르지 않기 때문에, 데이터를 쌓은 상태에서 액션을 취하려 Reward Delayed를 한다)</li>
+  <li>but in Rl value function has the “future” built into it</li>
+  <li>if doing SL, and somehow manage to get around a humongous(巨大的) state-space, how would we choose the right actions?</li>
+  <li>instead of letting the value function take care of measuring the future, we need to somehow keep track of what’s best for all future possibilities</li>
+  <li>Rewards can have component of randomness. (E.g same state gives reward of 1 or 0 )(E.g2. we study for our exam tomorrow, then there is a snow storm and our exam is canceled)</li>
+  <li>Next states can also be random</li>
+  <li>In RL, we are never told if a state-action pair is good or not</li>
+  <li>the only way we can find out is if we “discover” it ourselves by performing the action</li>
+  <li>RL is online. after each episode of tic-tac-toe, we get better</li>
+  <li>compare to decision tree - a tree is made based on entire training set</li>
+  <li>if we want to incorporate new data, start training all over again</li>
+</ul>
+
+<p>Reference:</p>
+
+<p><a href="https://www.udemy.com/course/artificial-intelligence-reinforcement-learning-in-python/">Artificial Intelligence Reinforcement Learning</a></p>
+
+<p><a href="https://www.udemy.com/deep-reinforcement-learning-in-python/">Advance AI : Deep-Reinforcement Learning</a></p>
+
+<p><a href="https://www.udemy.com/cutting-edge-artificial-intelligence/learn/lecture/14650508#overview">Cutting-Edge Deep-Reinforcement Learning</a></p>
+:ET

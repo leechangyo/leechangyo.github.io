@@ -109,7 +109,7 @@ while(true):
 
 ```
 
-### Summary Theory
+### Summary
 - In order to initialize V(s) to our desired values, we must enumerate all the states
 - we can either search the game tree(9!) or find board permutations($3^9$)
 - 9! is super-exponential
