@@ -1,0 +1,198 @@
+I"�.<h2 id="1-outline">1. Outline</h2>
+<ul>
+  <li>play_game(p1,p2,env)</li>
+  <li>USE OOP approach
+<a href="https://postimg.cc/FYGhnGg0"><img src="https://i.postimg.cc/pdMyr6mc/9695959.png" width="700px" title="source: imgur.com" /></a></li>
+</ul>
+
+<h2 id="2-representing-states">2. representing States</h2>
+<ul>
+  <li>last post, I told you this would be an O(1) lookup (as in an array )</li>
+  <li>Possible solution: Convert the board to tuple of tuples, use as dictionary Key</li>
+  <li>Better: Map Each state to a number, use numpy array</li>
+</ul>
+
+<h2 id="3-mapping-state-to-a-number">3. Mapping state to a number</h2>
+<ul>
+  <li>there are 3 state, “O”, “X”, “Empty”</li>
+  <li>9 array so all possible state is 3^9 = 19683</li>
+  <li>overhead not a problem, these states are unreachable(e.g. 3x’s in a row and 3o’s in a row on the same board)</li>
+  <li>Should remind us of binary numbers(2 Possible symbols in each location vs 3)</li>
+  <li>binary to decimal(小数):
+<a href="https://postimg.cc/BjYZhM4R"><img src="https://i.postimg.cc/cJZKLbj1/5515123.png" width="300px" title="source: imgur.com" /></a></li>
+  <li>For us:
+<a href="https://postimg.cc/dhbQPDZ9"><img src="https://i.postimg.cc/Gp24Dyc6/552152132123.png" width="300px" title="source: imgur.com" /></a></li>
+</ul>
+
+<blockquote>
+  <p>In code</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">k</span><span class="o">=</span><span class="mi">0</span>
+<span class="n">h</span><span class="o">=</span><span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">Length</span><span class="p">):</span>
+  <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">xrange</span><span class="p">(</span><span class="n">Length</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="n">v</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">:</span>
+      <span class="n">v</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">o</span><span class="p">:</span>
+      <span class="n">v</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="n">h</span> <span class="o">+</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="o">**</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">v</span>
+    <span class="n">k</span> <span class="o">+</span> <span class="o">=</span> <span class="mi">1</span>
+</code></pre></div></div>
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<div align="center" style="margin: 1em 0;">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5150894678574694" data-ad-slot="9221331439" data-ad-format="auto" data-full-width-responsive="true"></ins>
+     </div>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<h2 id="4-initializing-the-value-function">4. Initializing the value function</h2>
+<ul>
+  <li>Recall, we initialize V(s) as :
+    <ul>
+      <li>1 if s == winning terminal state</li>
+      <li>0 if s == lose or draw terminal state</li>
+      <li>0.5 otherwise</li>
+    </ul>
+  </li>
+  <li>how do we find all the “s”?</li>
+</ul>
+
+<h2 id="5-enumerating-state">5. Enumerating state</h2>
+<p><a href="https://postimg.cc/XpKd8Bh5"><img src="https://i.postimg.cc/zX67qnFx/5512334.png" width="500px" title="source: imgur.com" /></a></p>
+
+<ul>
+  <li>lets think which is better ?
+1) Create a “game tree “ of all possible in the game?
+2) Create a permutation(排列) of all possible settings of all possible positions on the board?</li>
+</ul>
+
+<h3 id="game-tree">Game Tree</h3>
+<p><a href="https://postimg.cc/Czp65Dkn"><img src="https://i.postimg.cc/CLRyvsK7/5122342314124.gif" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>Problem : redundant states</li>
+  <li>i.e. see the same state more than once in the tree</li>
+</ul>
+
+<p>Start: 9 choices
+then: 8 choices
+then: 7 choices
+….</p>
+
+<p>9! = 362880 » 3^9</p>
+
+<h3 id="permutation순열">permutation(<a href="https://ko.wikipedia.org/wiki/%EC%88%9C%EC%97%B4]">순열</a>)</h3>
+<p><a href="https://postimg.cc/9DbxxQ0x"><img src="https://i.postimg.cc/jj0GSWbr/521423121.gif" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>How? think binary first:</li>
+  <li>Generate permutation of Length N:
+    <blockquote>
+      <p>0 + Generate permutation of length N -1 <br />
+ 1 + Generate Permutation of Length N - 1</p>
+    </blockquote>
+  </li>
+</ul>
+
+<pre><code class="language-pseudocode"> def generate_all_binary_numbers(N):
+   results = {}
+   child_results = generate_all_binary_numbers(N-1)
+   for prefix in ('0', '1'):
+     for suffix in child_results:
+       new_result = prefix + suffix
+       returns.append(new_result)
+   return results
+
+(base case not shown for simplicity)
+</code></pre>
+<ul>
+  <li>if don’t get about this please check in <a href="https://www.youtube.com/watch?v=fkjv6OEyC0g">here</a></li>
+</ul>
+
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<div align="center" style="margin: 1em 0;">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5150894678574694" data-ad-slot="9221331439" data-ad-format="auto" data-full-width-responsive="true"></ins>
+     </div>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<h3 id="enumerating-states-recursively">Enumerating States Recursively</h3>
+<ul>
+  <li>that is all combinations of inputs an programs that halt</li>
+  <li>Function: get_state_hash_and_winner</li>
+  <li>Returns : List of triples(state, winner, ended)</li>
+  <li>state : configuration of the board as a <a href="https://ko.wikipedia.org/wiki/%ED%95%B4%EC%8B%9C_%ED%95%A8%EC%88%98">hashed</a> int</li>
+  <li>Winner is None if ended is False (즉 승자가 나올떄 까지 계속 돈다)</li>
+  <li>inputs : env, i, j</li>
+</ul>
+
+<pre><code class="language-pseudocode">max_length=0
+while(true):
+  max_length = max_length +1
+  for each program "P" of length &lt;= max_length: # P is finite
+    for each input "I" of length &lt;= max_length:
+      if "env" halts on 'I' after max_length steps:
+        print P,I
+
+</code></pre>
+
+<h3 id="summary-theory">Summary Theory</h3>
+<ul>
+  <li>In order to initialize V(s) to our desired values, we must enumerate all the states</li>
+  <li>we can either search the game tree(9!) or find board permutations($3^9$)</li>
+  <li>9! is super-exponential</li>
+  <li>Enumerating game states Recursively</li>
+  <li>initializing V(s) is different for X and O</li>
+</ul>
+
+<h2 id="6-the-environment-classcode">6. The Environment Class(Code)</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Method</span><span class="p">:</span> <span class="n">__init__</span><span class="p">()</span> <span class="p">:</span> <span class="c1">#initialize Important instance vars
+</span><span class="n">is_empthy</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">):</span> <span class="c1"># returns true if(i,j) is empty
+</span><span class="n">reward</span><span class="p">(</span><span class="n">symbol</span><span class="p">)</span>
+<span class="n">get_state</span><span class="p">()</span>
+<span class="n">game_over</span><span class="p">()</span>
+<span class="n">draw_board</span><span class="p">()</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Constructor</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Environment</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">board</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">length</span><span class="p">,</span> <span class="n">length</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># represents an x on the board, player 1
+</span>    <span class="bp">self</span><span class="o">.</span><span class="n">o</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># represents an o on the board player 2
+</span>    <span class="bp">self</span><span class="o">.</span><span class="n">winner</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">ended</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">num_states</span> <span class="o">=</span> <span class="mi">3</span><span class="o">**</span><span class="p">(</span><span class="n">length</span><span class="o">*</span><span class="n">length</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>is_empthy</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">is_empthy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">):</span>
+  <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">board</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>reward</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">reward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sym</span><span class="p">):</span>
+  <span class="c1"># no reward until game is over
+</span>  <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">game_over</span><span class="p">():</span>
+    <span class="k">return</span> <span class="mi">0</span>
+  <span class="c1"># if we get here, game is over
+</span>  <span class="c1"># sym will be self.x or self.o
+</span>  <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">winner</span> <span class="o">==</span> <span class="n">sym</span> <span class="n">else0</span>
+</code></pre></div></div>
+:ET
