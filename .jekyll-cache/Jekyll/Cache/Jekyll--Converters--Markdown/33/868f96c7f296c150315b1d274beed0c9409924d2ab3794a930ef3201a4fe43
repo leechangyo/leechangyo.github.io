@@ -1,0 +1,60 @@
+I"(	<h1 id="reduction-based-solvers">REDUCTION-BASED SOLVERS</h1>
+<ul>
+  <li>How to exploit knowledge of others for solving own problems?
+    <ul>
+      <li>by translating the problem P to another problem Q (문제를 바꾼다)</li>
+    </ul>
+  </li>
+  <li>Why is it useful?
+    <ul>
+      <li><strong>If anybody improves the solver for Q then we get an improved solver for P for free</strong></li>
+      <li>Staying on the shoulders of giants</li>
+    </ul>
+  </li>
+  <li>Reduction, compilation, re-formulation techniques</li>
+  <li>Boolean satisfiability</li>
+  <li>fast SAT solvers</li>
+  <li>Constraint programming
+    <ul>
+      <li>global constraints for pruning(修剪树枝) search space</li>
+    </ul>
+  </li>
+  <li>Answer set programming
+    <ul>
+      <li>declarative(陈述的) framework</li>
+    </ul>
+  </li>
+  <li>Combinatorial auctions</li>
+</ul>
+
+<h2 id="1-introduction-to-sat">1. Introduction to SAT</h2>
+<ul>
+  <li>Express (model) the problem as a SAT formula in a conjunctive normal form (CNF)</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Boolean variables (true/false values)
+clause = a disjunction(分离) of literals (variables and negated(使无效) variables)
+formula = a conjunction of clauses
+solution = an instantiation of variables such that the formula is satisfied
+</code></pre></div></div>
+
+<blockquote>
+  <p>Example:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(X or Y ) and (not X or not Y)
+[exactly one of X and Y is true]
+</code></pre></div></div>
+<ul>
+  <li>SAT model is expressed as a CNF formula<a href="https://en.wikipedia.org/wiki/Conjunctive_normal_form">Conjunctive normal form</a></li>
+  <li>We can go beyond CNF and use <strong>abstract expressions</strong> that are translated to CNF
+ <a href="https://postimg.cc/GHsT89c5"><img src="https://i.postimg.cc/fT8cP01D/4123333.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>We can even use numerical variables (and constraints).</li>
+</ul>
+
+<h2 id="2-sat-encoding-core-idea">2. SAT encoding: core idea</h2>
+<ul>
+  <li>In MAPF, we do not know the lengths of plans (due to possible re-visits of nodes)!</li>
+  <li>We can encode(把…译成电码) plans of a known length using a layered graph (temporally extended graph).</li>
+</ul>
+:ET

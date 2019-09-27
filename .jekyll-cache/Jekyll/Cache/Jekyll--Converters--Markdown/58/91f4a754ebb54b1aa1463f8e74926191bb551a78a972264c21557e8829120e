@@ -1,0 +1,51 @@
+I"�<h1 id="multi-agent-path-findingmapf">Multi-Agent path finding(MAPF)</h1>
+<p><a href="https://postimg.cc/QF5ChNVj"><img src="https://i.postimg.cc/mgpH3ts1/image.png" width="700px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>Multi-Agent(many robot) play to find the target position and move</li>
+  <li>MAPF problem: Find a collision-free plan(path) for each agent</li>
+  <li>Another name we called it : Cooperative path finding(CPF), Multi-robot path planning, pebble(鹅卵石) motion</li>
+</ul>
+
+<h2 id="1-introduction-to-mapf">1) Introduction to MAPF</h2>
+<p><a href="https://postimg.cc/ZWRRvPfK"><img src="https://i.postimg.cc/bw02M3kb/51212413.png" width="700px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>a graph (directed or undirected)</li>
+  <li>a set of agents(robot), each agent is assigned to two locations(nodes) in the graph(start, destination)</li>
+  <li>Each agent can perform either move(to a neighbouring node) or wait(in the same node) actions</li>
+</ul>
+
+<blockquote>
+  <p>Typical Assumption:
+ all move and wait actions have identical durations(plans for agents are synchronized)</p>
+</blockquote>
+
+<ul>
+  <li><strong>Plan</strong> is a sequence of actions for the agent leading from its start location to its destination
+    <ul>
+      <li>the <strong>length of plan</strong>(for an agent) is defined by the time when the agent reaches its destination and does not leave it anymore.</li>
+    </ul>
+  </li>
+  <li>Find <strong>Plans</strong> for all agents such that the plans <strong>do not collide in time and space</strong> (no two agents are at the same location at the same time)
+<a href="https://postimg.cc/4mscxFjD"><img src="https://i.postimg.cc/Pr8QKgy5/50301230.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>some necessary <strong>conditions for plan existence</strong>:
+    <ul>
+      <li>no two agents are at the same start node</li>
+      <li>no two agents share the same destination node(unless an agent disappears when reaching its destination)</li>
+      <li>the number of agents is strictly smaller than the number of nodes</li>
+    </ul>
+  </li>
+  <li>agent at $v_i$ cannot perform move $v_j$ at the same time when agent at $v_j$ perform move $v_i$</li>
+  <li>Agents may swap position. but agents use the same edges at the same time, swap is not allowed
+<a href="https://postimg.cc/qgyk5JDr"><img src="https://i.postimg.cc/FFn711jY/512124123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Agent can approach node that is currently occupied but will be free before arrival(Agent at $v_i$ cannot perform move $v_j$ if there is another agent at $v_j$)
+<a href="https://postimg.cc/dDxxrrjt"><img src="https://i.postimg.cc/ZKbzkL93/5123124123.png" width="300px" title="source: imgur.com" /></a></li>
+  <li>if any agent is delayed then trains may cause collision during execution</li>
+  <li>to prevent such collisions we may introduce more space between agents</li>
+</ul>
+
+<h3 id="k-robustness">K-robustness</h3>
+<p><a href="https://postimg.cc/3WNK3jwK"><img src="https://i.postimg.cc/J7ctcPVB/512512.png" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>An agent can visit a node, if that node has not been occupied in recent <em>k</em> steps</li>
+</ul>
+:ET

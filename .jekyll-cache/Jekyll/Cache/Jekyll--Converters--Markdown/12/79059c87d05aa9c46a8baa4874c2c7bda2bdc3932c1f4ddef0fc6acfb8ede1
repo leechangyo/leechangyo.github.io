@@ -1,7 +1,0 @@
-I"�<h1 id="native本地的-solution-to-tic-tac-toe">Native(本地的) Solution to Tic-Tac-Toe</h1>
-
-<ul>
-  <li>Small set of rules to ensure we never lose</li>
-  <li>we enumerate(列举) the rule of Tic-Tac-Toe. but we won’t. still consider what they might be( Ex, if board is empty and it’s our turn, place our piece in the center or corner)(Ex2, if opponent has 2 piece in a row, block the 3rd postion so they don’t win)(Ex3, if we have 2 piece in a row, add a 3rd so we can win the game)</li>
-</ul>
-:ET

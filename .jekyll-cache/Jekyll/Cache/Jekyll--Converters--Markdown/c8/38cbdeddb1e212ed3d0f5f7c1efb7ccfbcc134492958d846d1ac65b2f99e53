@@ -1,0 +1,211 @@
+I"�#<h1 id="reduction-based-solvers">REDUCTION-BASED SOLVERS</h1>
+<ul>
+  <li>How to exploit knowledge of others for solving own problems?
+    <ul>
+      <li>by translating the problem P to another problem Q (문제를 바꾼다)</li>
+    </ul>
+  </li>
+  <li>Why is it useful?
+    <ul>
+      <li><strong>If anybody improves the solver for Q then we get an improved solver for P for free</strong></li>
+      <li>Staying on the shoulders of giants</li>
+    </ul>
+  </li>
+  <li>Reduction, compilation, re-formulation techniques</li>
+  <li>Boolean satisfiability</li>
+  <li>fast SAT solvers</li>
+  <li>Constraint programming
+    <ul>
+      <li>global constraints for pruning(修剪树枝) search space</li>
+    </ul>
+  </li>
+  <li>Answer set programming
+    <ul>
+      <li>declarative(陈述的) framework</li>
+    </ul>
+  </li>
+  <li>Combinatorial auctions</li>
+  <li>a Boolean satisfiability (SAT)</li>
+</ul>
+
+<h2 id="1-introduction-to-sat">1. Introduction to SAT</h2>
+<ul>
+  <li>Express (model) the problem as a SAT formula in a conjunctive normal form (CNF)</li>
+  <li>a Boolean satisfiability (SAT)
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Boolean variables (true/false values)
+clause = a disjunction(分离) of literals (variables and negated(使无效) variables)
+formula = a conjunction of clauses
+solution = an instantiation of variables such that the formula is satisfied
+</code></pre></div>    </div>
+  </li>
+</ul>
+
+<blockquote>
+  <p>Example:</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(X or Y ) and (not X or not Y)
+[exactly one of X and Y is true]
+</code></pre></div></div>
+<ul>
+  <li>SAT model is expressed as a CNF formula<a href="https://en.wikipedia.org/wiki/Conjunctive_normal_form">Conjunctive normal form</a></li>
+  <li>We can go beyond CNF and use <strong>abstract expressions</strong> that are translated to CNF
+ <a href="https://postimg.cc/GHsT89c5"><img src="https://i.postimg.cc/fT8cP01D/4123333.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>We can even use numerical variables (and constraints).</li>
+</ul>
+
+<h2 id="2-sat-encoding-core-idea">2. SAT encoding: core idea</h2>
+<p><a href="https://postimg.cc/PN0zFgJ0"><img src="https://i.postimg.cc/TY37hG62/412333312.png" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>In MAPF, we do not know the lengths of plans (due to possible re-visits of nodes)!</li>
+  <li>We can encode(把…译成电码) plans of a known length using a layered graph (temporally extended graph).</li>
+  <li>Each layer corresponds to one time slice and indicates positions of agents at that time</li>
+</ul>
+
+<h2 id="3-sat-encoding-with-all-different">3. SAT encoding with all-different</h2>
+<ul>
+  <li>Uses multi-valued state variables (logarithmic encoding) encoding position of agents in layers (∧ = And, ∨ = OR)
+<a href="https://postimg.cc/v1RBVdYL"><img src="https://i.postimg.cc/hGv7NSNw/43123123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Agent waits or moves to a neighbor
+<a href="https://postimg.cc/G9T5Mwds"><img src="https://i.postimg.cc/xj6V1nZg/5123331.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>No-train constraint
+<a href="https://postimg.cc/nXSKbr1V"><img src="https://i.postimg.cc/DznxGbJG/41242131231231.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Agents are not at the same nodes
+<a href="https://postimg.cc/TL0g0PhX"><img src="https://i.postimg.cc/nrb2HjJM/1413321.png" width="500px" title="source: imgur.com" /></a></li>
+</ul>
+
+<h2 id="4-direct-sat-encoding">4. Direct SAT encoding</h2>
+<ul>
+  <li>Directly encodes positions of agents in layers
+<a href="https://postimg.cc/Bj3ZSBMM"><img src="https://i.postimg.cc/2Sb1xHvR/412312312312.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Agent is placed at exactly one node in each layer (¬ 논리 부정)
+<a href="https://postimg.cc/BLHwnHhB"><img src="https://i.postimg.cc/gJT94K8Q/31231231231.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>No two agents are placed at the same node in each layer
+<a href="https://postimg.cc/xN0CsGhs"><img src="https://i.postimg.cc/ZnNd5Vch/413123123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Agent waits or moves to a neighbor
+<a href="https://postimg.cc/3ycFQNYC"><img src="https://i.postimg.cc/9MW8TwkS/41231231231223.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>No-swap and no-train (nodes before and after move are empty)
+<a href="https://postimg.cc/WFKVZGjF"><img src="https://i.postimg.cc/L548rDbT/41231412312.png" width="500px" title="source: imgur.com" /></a></li>
+</ul>
+
+<h3 id="5-comparison-of-sat-encodings">5. Comparison of SAT encodings</h3>
+<p>Finding makespan optimal solutions
+<a href="https://postimg.cc/MM8630NC"><img src="https://i.postimg.cc/TwKKwC93/4141313123.png" width="500px" title="source: imgur.com" /></a>
+(composition with Independence Detection (OD+ID))</p>
+
+<h3 id="6-mixed-model">6. Mixed model</h3>
+<ul>
+  <li>Using layered graph describing agent positions at each time step
+    <ul>
+      <li>$B_tav$ : agent a occupies vertex(顶点) v at time t</li>
+    </ul>
+  </li>
+  <li>Constraints:
+    <ul>
+      <li>each agent occupies exactly one vertex at each time
+<a href="https://postimg.cc/vcDpwgrD"><img src="https://i.postimg.cc/kXy98WDN/412312413312.png" width="500px" title="source: imgur.com" /></a></li>
+      <li>no two agents occupy the same vertex at any time.
+<a href="https://postimg.cc/rKmD4k47"><img src="https://i.postimg.cc/SNLCwQxQ/1412312312321.png" width="500px" title="source: imgur.com" /></a></li>
+      <li>if agent a occupies vertex v at time t, then a occupies a neighboring vertex or stay at v at time t + 1.
+<a href="https://postimg.cc/R3FRN8RR"><img src="https://i.postimg.cc/QMgnnZKR/412313312.png" width="500px" title="source: imgur.com" /></a></li>
+    </ul>
+  </li>
+  <li>Preprocessing:
+    <ul>
+      <li>$B_tav$ = 0 if agent a cannot reach vertex v at time t or a cannot reach the destination being at v at time t</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import sat
+
+def path (N,As):
+  K = len(As)
+  lower_upper_bounds(As,LB,UB) # Incremental generation of layers
+  between(LB,UB,M),
+  B = new_array(M+1, K,N),
+  B :: 0..1,
+
+  % Initialize the first and last states(Setting the initial and destination locations)
+  foreach(循环) (A in 1..K)
+    (V,FV) = As[A]
+    B[1,A,V] = 1,
+    B[M+1,A,FV] = 1
+  end,
+
+  % Each agent occupies exactly one vertex
+  foreach(T in 1..M+1, A in 1..K)
+    sum([B[T,A,V]] : V in 1..N) #=1
+  end,
+
+  % No two agents occupy the same vertex (No Conflict between agents)
+  foreach ( T in 1..M+1, V in 1..K)
+    sum([B[T,A,V] : A in 1..K]) # =1
+
+  % Every Transition is valid(Agent moves to a neighboring vertex)
+  foreach (T in 1..M, A in 1..K, V in 1..N)
+    neibs(V,neibs),
+    B[T,A,V] # =&gt;
+    sum([B[T+1, A, U]: U in neibs]) #&gt;= 1
+  end,
+
+  % K-robustness
+  foreach(T in 1..M1, A in 1..K, V in 1..N)
+  B[T,A,V] # =&gt; sum([B[Prev,A2,V]:
+                    A2 in 1..K, A2!=A
+                    prev in max(1,T-L)..T]) # = 0
+  end,
+
+  solve(B)
+  output_plan(B)
+
+</code></pre></div></div>
+<p><a href="https://postimg.cc/dhr1GmsT"><img src="https://i.postimg.cc/T3HDMCBQ/Capture123123.png" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>Picat provides assignment and loop statements for programming everyday things.</li>
+  <li>a Boolean satisfiability (SAT)</li>
+  <li>Assembly Sequence Planning (ASP)</li>
+</ul>
+
+<h2 id="7-objectives-in-sat">7. Objectives in SAT</h2>
+<ul>
+  <li><strong>Makespan (minimize the maximum end time)</strong>
+    <ul>
+      <li>incrementally add layers until a solution found</li>
+    </ul>
+  </li>
+  <li><strong>Sum of cost (minimize the sum of end times)</strong>
+    <ul>
+      <li>incrementally add layers and look for the SOC optimal solution in each iteration (makespan + SOC optimal)</li>
+      <li>generate more layers (upper bound) and then optimize SOC (naïve)</li>
+      <li>incrementally add layers and increase the cost limit until a solution is found [Surynek et al, ECAI 2016]</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="8-demo">8. DEMO</h2>
+<ul>
+  <li>Objective
+    <ul>
+      <li>How to develop robust and scalable AI technology for dealing with complex dynamic application scenarios?</li>
+    </ul>
+  </li>
+  <li>What’s needed?
+    <ul>
+      <li>a model scenario</li>
+      <li>Robotic intra-logistics (물류)</li>
+    </ul>
+  </li>
+  <li>why?
+    <ul>
+      <li>rich : multi-faceted, full of variations</li>
+      <li>scalable : layout, objects, granularity(粒度)</li>
+      <li>measurable : makespan, energy, quality of service</li>
+      <li>integrative(综合的) : mapf, data, constraints, decisions</li>
+      <li>relevant : industry 4.0</li>
+    </ul>
+  </li>
+  <li>Robotics systems for logistics(物流) and warehouse automation based on many mobile robots and movable shelves</li>
+  <li>Main tasks: order fulfillment(routing(路由), order picking, replenishment(补充))</li>
+</ul>
+:ET

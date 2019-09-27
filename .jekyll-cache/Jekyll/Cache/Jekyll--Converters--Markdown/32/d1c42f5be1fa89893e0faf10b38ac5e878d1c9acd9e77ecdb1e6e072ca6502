@@ -1,0 +1,14 @@
+I"�<h1 id="reduction-based-solvers">REDUCTION-BASED SOLVERS</h1>
+<ul>
+  <li>How to exploit knowledge of others for solving own problems?
+    <ul>
+      <li>by translating the problem P to another problem Q (문제를 바꾼다)</li>
+    </ul>
+  </li>
+  <li>Why is it useful?
+    <ul>
+      <li><strong>If anybody improves the solver for Q then we get an improved solver for P for free</strong></li>
+    </ul>
+  </li>
+</ul>
+:ET
