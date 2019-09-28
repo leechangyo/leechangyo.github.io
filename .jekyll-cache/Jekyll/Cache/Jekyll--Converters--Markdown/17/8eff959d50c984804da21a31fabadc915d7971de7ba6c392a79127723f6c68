@@ -1,0 +1,9 @@
+I"v<h1 id="markov-decision-processes">Markov Decision Processes</h1>
+<ul>
+  <li>this section: formalize some RL concepts we already know about</li>
+  <li>Agent, Environment, action, state, reward, episode</li>
+  <li>Formal Framework: Markov Decision Processes(MDPs)</li>
+</ul>
+
+<h2 id="1-typical-game-by-soving-mdps-is-gridword">1. Typical Game by soving MDPs is GridWord</h2>
+:ET
