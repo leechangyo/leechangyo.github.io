@@ -1,0 +1,30 @@
+I"<h1 id="value-function--the-bellman-equation">Value Function &amp; The Bellman Equation</h1>
+<p><a href="https://postimg.cc/ZCfNJ0tQ">&lt;img src=”https://i.postimg.cc/jST4QJ8R/22.png”</a></p>
+<ul>
+  <li>The full derivation(起源) can be tough if our probability skills are not yet strong enough</li>
+</ul>
+
+<h2 id="1-expected-values">1. Expected Values</h2>
+<ul>
+  <li>why is this strange to many people?</li>
+  <li>Consider a coin toss: Heads = Win, Tails = Lose</li>
+  <li>Numerically: H = 1, T = 0</li>
+  <li>suppose, P(W) = 60%</li>
+  <li><strong>Expected Value is 0.6 x 1 + 0.4 * 0 = 0.6</strong></li>
+  <li>The “Expected Value” is a “Value” I can “never expect”
+<a href="https://postimg.cc/Mvs9gWs6">&lt;img src=”https://i.postimg.cc/NjtZ9FmH/22.png”</a></li>
+  <li>What’s the point of expected values?</li>
+  <li>it tells us the <strong>mean/average</strong> (E.g. we gather up all the heights of students in the call and calculate the mean- no student may have the mean height, but it’s a useful statistic)</li>
+  <li>it doesn’t matter if a coin flip will never give me 0.6, it just an average
+<a href="https://postimg.cc/8fQ2J18Q">&lt;img src=”https://i.postimg.cc/BbX4z6M6/2222.png”</a></li>
+</ul>
+
+<h2 id="2-probability-trees">2. probability Trees</h2>
+<ul>
+  <li>our expected reward is the weighted sum of each possible outcome(weighted by the probability at the corresponding branch)
+<a href="https://postimg.cc/kDYjpJYn">&lt;img src=”https://i.postimg.cc/zX8933nR/12.png”</a></li>
+  <li>the same concept extends to any number of possible outcomes</li>
+  <li>in general: Expected value = p(e1) x value(e1) + p(e2) x value(e2) + ….
+<a href="https://postimg.cc/qt9JwHfQ">&lt;img src=”https://i.postimg.cc/xCdX096r/33212.png”</a></li>
+</ul>
+:ET

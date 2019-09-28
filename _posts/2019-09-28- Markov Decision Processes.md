@@ -91,7 +91,7 @@ is the Markov Property limiting? Not necessarily
 ## 8. State-Transition probability - p(s'|s,a)
 <a href="https://postimg.cc/BL5dTRGP"><img src="https://i.postimg.cc/W3xTvPW8/44.png" width="500px" title="source: imgur.com" /></a>
 - State Diagram
-- p(s'|s,a)
+- p(s' I s,a)
 - why is this stochastic? if i press "jump" button, doesn't it always do the same thing?
 - Recall: state is only derived from what agent senses, it's not the environment itself
 - State can be imperfect representation of environment

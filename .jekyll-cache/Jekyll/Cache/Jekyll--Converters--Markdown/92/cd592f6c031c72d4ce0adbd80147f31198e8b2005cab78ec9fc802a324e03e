@@ -1,0 +1,242 @@
+I"�1<h1 id="value-function--the-bellman-equation">Value Function &amp; The Bellman Equation</h1>
+<p><a href="https://postimg.cc/ZCfNJ0tQ"><img src="https://i.postimg.cc/jST4QJ8R/22.png" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>The full derivation(起源) can be tough if our probability skills are not yet strong enough</li>
+</ul>
+
+<h2 id="1-expected-values">1. Expected Values</h2>
+<ul>
+  <li>why is this strange to many people?</li>
+  <li>Consider a coin toss: Heads = Win, Tails = Lose</li>
+  <li>Numerically: H = 1, T = 0</li>
+  <li>suppose, P(W) = 60%</li>
+  <li><strong>Expected Value is 0.6 x 1 + 0.4 * 0 = 0.6</strong></li>
+  <li>The “Expected Value” is a “Value” I can “never expect”
+<a href="https://postimg.cc/Mvs9gWs6"><img src="https://i.postimg.cc/NjtZ9FmH/22.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>What’s the point of expected values?</li>
+  <li>it tells us the <strong>mean/average</strong> (E.g. we gather up all the heights of students in the call and calculate the mean- no student may have the mean height, but it’s a useful statistic)</li>
+  <li>it doesn’t matter if a coin flip will never give me 0.6, it just an average
+<a href="https://postimg.cc/8fQ2J18Q"><img src="https://i.postimg.cc/BbX4z6M6/2222.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>x is state()</li>
+</ul>
+
+<h2 id="2-probability-trees">2. probability Trees</h2>
+<ul>
+  <li>our expected reward is the weighted sum of each possible outcome(weighted by the probability at the corresponding branch)
+<a href="https://postimg.cc/kDYjpJYn"><img src="https://i.postimg.cc/zX8933nR/12.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>the same concept extends to any number of possible outcomes</li>
+  <li>in general: Expected value = p(e1) x value(e1) + p(e2) x value(e2) + ….
+<a href="https://postimg.cc/qt9JwHfQ"><img src="https://i.postimg.cc/xCdX096r/33212.png" width="500px" title="source: imgur.com" /></a></li>
+</ul>
+
+<h2 id="3-why-are-averages-important">3. Why are averages important?</h2>
+<p><a href="https://postimg.cc/H8M6fKLp"><img src="https://i.postimg.cc/nrRNQfbQ/22.png" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>A subsection(分部) of a tree is also a tree – recursion(递归)</li>
+  <li>After Arriving in this state, what happens next can be considered Random</li>
+  <li>Hence, we cannot say: “if i reach this state, i will get X reward”</li>
+  <li>we can only say: “if i reach this state, i will get X reward on <strong>average</strong>”</li>
+</ul>
+
+<h2 id="4-a-fundamental-concept-of-the-value-function">4. A fundamental concept of The Value Function</h2>
+<ul>
+  <li>At each state s, i will get a reward R</li>
+  <li>overall return G, is the sum of rewards i get</li>
+  <li>we want to be able to answer:
+    <ul>
+      <li>“if i am in state, s what is the sum of reward i will get in the future, on average?”</li>
+      <li>we say: V(s) = E(GIs)</li>
+    </ul>
+  </li>
+  <li>“I” means “givens” - anything to the left is random/ right is not random</li>
+  <li>note : this is called a “conditional expectation”</li>
+  <li>Value Function is equal to Expected function of Total Return by state
+<a href="https://postimg.cc/gwQzsXXf"><img src="https://i.postimg.cc/bJNZz1zN/2223123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Every Game we play is just a series of states and rewards</li>
+  <li>Let’s pretend everything is deterministic for now, e.g. E(3) = 3</li>
+  <li>The value of a state is just the sum of all future rewards(if they are deterministic)
+    <ul>
+      <li>V($s_1$) = $r_2$ + $r_3$ + $r_4$ + … + $r_N$</li>
+      <li>V($s_2$) =         $r_3$ + $r_4$ + … + $r_N$</li>
+      <li>Key: V($s_1$) = $r_2$ + V($s_2$)</li>
+    </ul>
+  </li>
+  <li>Discounted Version
+    <ul>
+      <li>V($s_1$) = $r_2$ + ɣ$r_3$ + ɣ$r_4$ + … + $r_N$</li>
+      <li>V($s_2$) =         ɣ$r_3$ + ɣ$r_4$ + … + ɣ$r_N$</li>
+      <li>Key: V($s_1$) = $r_2$ + ɣV($s_2$)</li>
+      <li>(still assuming everything is deterministic)</li>
+    </ul>
+  </li>
+  <li>In more general terms
+    <ul>
+      <li>Let’s make s = current state, s’=next state</li>
+      <li>Let’s make r = reward(reall means R(s,s’)- the reward i get from going from s to s’)</li>
+      <li><strong>V(s) = E[r + ɣV(s’)]</strong></li>
+      <li>this is the essence of the bellman equation
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script></li>
+    </ul>
+  </li>
+</ul>
+<div align="center" style="margin: 1em 0;">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5150894678574694" data-ad-slot="9221331439" data-ad-format="auto" data-full-width-responsive="true"></ins>
+     </div>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<ul>
+  <li>Expansion
+    <ul>
+      <li>V(s) = E[r + ɣE(r’+ɣV(s’’))]</li>
+      <li>V(s) = E[r + ɣE(r’+ɣE(r’‘+…))]</li>
+      <li>understanding this “Structure”</li>
+    </ul>
+  </li>
+  <li>putting more details back in
+    <ul>
+      <li>s is “given” - we’ve already arrived here</li>
+      <li><strong>V(s) = E[r + ɣV(s’) I s]</strong></li>
+    </ul>
+  </li>
+  <li>Expansion again
+    <ul>
+      <li>V(s) = state-value function</li>
+      <li>Q(s,a) = action-value function</li>
+      <li><strong>Q(s,a) = E[GIs,a] = E[r + ɣV(s’) I s,a]</strong></li>
+      <li>to understand how Q anv V are related, we need to look at policies(something that tells us what action a to do, given what state we are in)</li>
+    </ul>
+  </li>
+  <li>we know earlier(informally) with tic-tac-Toe</li>
+  <li>if any discrepancies(差异) between then and now, consider everything from here onward to be more correct</li>
+  <li>Value Function is determined by a policy and has state “s” as parameter</li>
+  <li><em>only</em> future rewards</li>
+  <li>value of all terminal states is thus 0</li>
+  <li>the state value of the terminal state in an episodic problem should always be zero, the value of a state is the expected sum of all future rewards when starting in that state and following a specific policy. for the terminal state, this is zero - there are no more rewards to be end
+0
+<a href="https://postimg.cc/v1MsYJgS"><img src="https://i.postimg.cc/xdNTRY0Y/33321.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Recursiveness(递归性)
+<a href="https://postimg.cc/f39k0nB7"><img src="https://i.postimg.cc/nLdmgnmW/31243.png" width="500px" title="source: imgur.com" /></a></li>
+</ul>
+
+<h2 id="5-some-algebra">5. Some Algebra</h2>
+<ul>
+  <li>since the expected value is over π, that means we can express it as a possibility distribute
+    <ul>
+      <li>π = π(a I s)</li>
+    </ul>
+  </li>
+  <li>the expected values are linear operators, so we can find each term one at a time
+<a href="https://postimg.cc/3yzyNJhF"><img src="https://i.postimg.cc/26SnHVXM/412333.png" width="500px" title="source: imgur.com" /></a>
+    <ul>
+      <li>policy with in return action value in respect to state</li>
+      <li>reward and probabilty with return reward in respect to state and action</li>
+    </ul>
+  </li>
+  <li>in terms of p(s’,r I s,a)
+<a href="https://postimg.cc/676sZdW9"><img src="https://i.postimg.cc/R0KvjR2n/23131.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>we can do this for anything
+    <ul>
+      <li>it’s just a general expression of expected values, we can use it on anything
+<a href="https://postimg.cc/SnH2N7cv"><img src="https://i.postimg.cc/FKHjpTzN/2313123.png" width="500px" title="source: imgur.com" /></a></li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="so-lets-do-it-for-all-of-vs">So let’s do it for all of V(s)</h3>
+<p><a href="https://postimg.cc/Ny4cPQGk"><img src="https://i.postimg.cc/vBRZTmpk/412123123.png" width="500px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/GTpGs3t7"><img src="https://i.postimg.cc/6qr0gyXX/12312313.png" width="500px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/WFybXsSf"><img src="https://i.postimg.cc/KjGkczTF/12413123.png" width="500px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/MchFD4Vm"><img src="https://i.postimg.cc/W33c2c4C/4123124123.png" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>E(E(X)) = E(X)</li>
+  <li>we can do this infinity and it won’t change the answer</li>
+  <li>E(A+B) = E(A+E(B))</li>
+  <li>Therefore if i have one expected value like that, i can insert another expected value in there</li>
+  <li><strong>Law of total expectation: E(X)=E(E(X I Y))</strong></li>
+  <li><strong>E(E(G(t+1) I ANY)) = E(G(t+1))</strong></li>
+  <li>now we know that any condition or expectation could go in that spot</li>
+  <li>pick <strong>ANY</strong> = S(t+1) = s’
+<a href="https://postimg.cc/rDdH6MVL"><img src="https://i.postimg.cc/7ZXr2Zjb/412312312.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>if i want to know what to do next i just look at what is the reward i get by going there whay is this has to do with how to find an optimal policy.</li>
+  <li>Key: No need to enumerate all possible future(which could be infinity long), in order to choose every action</li>
+</ul>
+
+<h2 id="6-bellman-equation">6. Bellman Equation</h2>
+<ul>
+  <li>Richard bellman</li>
+  <li>Pioneered “dynamic programming”</li>
+  <li>Bottom-up approach</li>
+  <li>DP(dynamic programming) is also one of the solution we’ll study for MDPs
+<a href="https://postimg.cc/2qG9h6Th"><img src="https://i.postimg.cc/pTMNN5FG/43123123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>State-value Fucntion
+<a href="https://postimg.cc/xcgkrVsg"><img src="https://i.postimg.cc/SxbcMyc0/4141412312.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Action-value function
+<a href="https://postimg.cc/zysH7S21"><img src="https://i.postimg.cc/wBv56wh3/41241241.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Space Required is quadratic: ISI x IAI</li>
+</ul>
+
+<h2 id="7-bellman-equation-by-example">7. Bellman Equation by Example</h2>
+<ul>
+  <li>Simple models with just a handful of states, easy to solve by hand</li>
+  <li>Big Picture perspective: All we want to do is “solve for V(S)”</li>
+  <li><strong>‘Value Function’ represent how good is a state for an agent to be in</strong></li>
+</ul>
+
+<h3 id="example-1">Example 1</h3>
+<p><a href="https://postimg.cc/FfzCbv66"><img src="https://i.postimg.cc/d0jMYtjJ/421312312.png" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>probability of going to end, from start, is 1</li>
+  <li>Reward for landing in end is 1</li>
+  <li>Discount factor ɣ = 0.9</li>
+  <li>Question: what problem are we solving again?</li>
+  <li>if we said, “find V(s)”, we are right</li>
+  <li>In particular, we want:
+    <ul>
+      <li>V(START)</li>
+      <li>V(End)</li>
+    </ul>
+  </li>
+  <li>Try it ourselves before moving on</li>
+  <li><strong>Remember</strong> “Value” is sum of all Future rewards</li>
+  <li>Value of Terminal state is always 0</li>
+  <li>V(end) = 0</li>
+  <li>V(start) = 1</li>
+  <li>Note: ɣ only applies to future rewards</li>
+  <li>V(start) = R + ɣ(End)</li>
+</ul>
+
+<h3 id="example-2">Example 2</h3>
+<p><a href="https://postimg.cc/mtGH7Sqf"><img src="https://i.postimg.cc/Hsr9DZ9x/414124124.png" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>Everything is still deterministic</li>
+  <li>Discount factor ɣ = 0.9</li>
+  <li>V(End)=0 (terminal state)</li>
+  <li>V(Mid)=1 (Takes the role of V(Start) From Example 1)</li>
+  <li>V(Start) = R(Start,Mid) + ɣV(Mid) = 0 + 0.9 x 1 = 0.9</li>
+</ul>
+
+<h3 id="example-3">Example 3</h3>
+<p><a href="https://postimg.cc/sBqFvmcb"><img src="https://i.postimg.cc/rmFqZYty/421412312.png" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>V(End) = 0 (unaffected)</li>
+  <li>V(Mid) = 1 (Also unaffected, only calculated from future rewards)</li>
+  <li>V(Star) = R(Start,Mid) + ɣV(Mid) = -0.1 + 0.9*1 = 0.8</li>
+</ul>
+
+<h3 id="example-4">Example 4</h3>
+<p><a href="https://postimg.cc/yWXZXbZh"><img src="https://i.postimg.cc/wxnQHKxr/55123.pngg" width="500px" title="source: imgur.com" /></a></p>
+<ul>
+  <li>Start at S1</li>
+  <li>Discount factor ɣ = 0.9</li>
+  <li>Nuance: What do these Probabilities refer to?</li>
+  <li>we model games as MDPs - not just coin flips</li>
+  <li>as an intelligent agent, our policy tells me what action to do : π(a I s).</li>
+  <li>Important : Does not tell me where we go</li>
+  <li>p(s’,r I s,a) tells me where i end up</li>
+  <li>this example oversimplifies MDPs, but is easier to verbalize</li>
+</ul>
+
+<p><a href="https://postimg.cc/7ftg34Mj"><img src="https://i.postimg.cc/8zNtVPFk/123121.png" width="500px" title="source: imgur.com" /></a></p>
+:ET

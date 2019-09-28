@@ -1,0 +1,196 @@
+I"� <h1 id="value-function--the-bellman-equation">Value Function &amp; The Bellman Equation</h1>
+<p><a href="https://postimg.cc/ZCfNJ0tQ">&lt;img src=”https://i.postimg.cc/jST4QJ8R/22.png”width=”500px” title=”source: imgur.com” /&gt;</a></p>
+<ul>
+  <li>The full derivation(起源) can be tough if our probability skills are not yet strong enough</li>
+</ul>
+
+<h2 id="1-expected-values">1. Expected Values</h2>
+<ul>
+  <li>why is this strange to many people?</li>
+  <li>Consider a coin toss: Heads = Win, Tails = Lose</li>
+  <li>Numerically: H = 1, T = 0</li>
+  <li>suppose, P(W) = 60%</li>
+  <li><strong>Expected Value is 0.6 x 1 + 0.4 * 0 = 0.6</strong></li>
+  <li>The “Expected Value” is a “Value” I can “never expect”
+<a href="https://postimg.cc/Mvs9gWs6">&lt;img src=”https://i.postimg.cc/NjtZ9FmH/22.png”width=”500px” title=”source: imgur.com” /&gt;</a></li>
+  <li>What’s the point of expected values?</li>
+  <li>it tells us the <strong>mean/average</strong> (E.g. we gather up all the heights of students in the call and calculate the mean- no student may have the mean height, but it’s a useful statistic)</li>
+  <li>it doesn’t matter if a coin flip will never give me 0.6, it just an average
+<a href="https://postimg.cc/8fQ2J18Q">&lt;img src=”https://i.postimg.cc/BbX4z6M6/2222.png”width=”500px” title=”source: imgur.com” /&gt;</a></li>
+  <li>x is state()</li>
+</ul>
+
+<h2 id="2-probability-trees">2. probability Trees</h2>
+<ul>
+  <li>our expected reward is the weighted sum of each possible outcome(weighted by the probability at the corresponding branch)
+<a href="https://postimg.cc/kDYjpJYn">&lt;img src=”https://i.postimg.cc/zX8933nR/12.png”width=”500px” title=”source: imgur.com” /&gt;</a></li>
+  <li>the same concept extends to any number of possible outcomes</li>
+  <li>in general: Expected value = p(e1) x value(e1) + p(e2) x value(e2) + ….
+<a href="https://postimg.cc/qt9JwHfQ">&lt;img src=”https://i.postimg.cc/xCdX096r/33212.png”width=”500px” title=”source: imgur.com” /&gt;</a></li>
+</ul>
+
+<h2 id="3-why-are-averages-important">3. Why are averages important?</h2>
+<p><a href="https://postimg.cc/H8M6fKLp">&lt;img src=”https://i.postimg.cc/nrRNQfbQ/22.png”width=”500px” title=”source: imgur.com” /&gt;</a></p>
+<ul>
+  <li>A subsection(分部) of a tree is also a tree – recursion(递归)</li>
+  <li>After Arriving in this state, what happens next can be considered Random</li>
+  <li>Hence, we cannot say: “if i reach this state, i will get X reward”</li>
+  <li>we can only say: “if i reach this state, i will get X reward on <strong>average</strong>”</li>
+</ul>
+
+<h2 id="4-a-fundamental-concept-of-the-value-function">4. A fundamental concept of The Value Function</h2>
+<ul>
+  <li>At each state s, i will get a reward R</li>
+  <li>overall return G, is the sum of rewards i get</li>
+  <li>we want to be able to answer:
+    <ul>
+      <li>“if i am in state, s what is the sum of reward i will get in the future, on average?”</li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>we say: V(s) = E(G</td>
+              <td>s)</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>”</td>
+          <td>” means “givens” - anything to the left is random/ right is not random</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>note : this is called a “conditional expectation”</li>
+  <li>Value Function is equal to Expected function of Total Return by state
+<a href="https://postimg.cc/gwQzsXXf">&lt;img src=”https://i.postimg.cc/bJNZz1zN/2223123.png”width=”500px” title=”source: imgur.com” /&gt;</a></li>
+  <li>Every Game we play is just a series of states and rewards</li>
+  <li>Let’s pretend everything is deterministic for now, e.g. E(3) = 3</li>
+  <li>The value of a state is just the sum of all future rewards(if they are deterministic)
+    <ul>
+      <li>V($s_1$) = $r_2$ + $r_3$ + $r_4$ + … + $r_N$</li>
+      <li>V($s_2$) =         $r_3$ + $r_4$ + … + $r_N$</li>
+      <li>Key: V($s_1$) = $r_2$ + V($s_2$)</li>
+    </ul>
+  </li>
+  <li>Discounted Version
+    <ul>
+      <li>V($s_1$) = $r_2$ + ɣ$r_3$ + ɣ$r_4$ + … + $r_N$</li>
+      <li>V($s_2$) =         ɣ$r_3$ + ɣ$r_4$ + … + ɣ$r_N$</li>
+      <li>Key: V($s_1$) = $r_2$ + ɣV($s_2$)</li>
+      <li>(still assuming everything is deterministic)</li>
+    </ul>
+  </li>
+  <li>In more general terms
+    <ul>
+      <li>Let’s make s = current state, s’=next state</li>
+      <li>Let’s make r = reward(reall means R(s,s’)- the reward i get from going from s to s’)</li>
+      <li><strong>V(s) = E[r + ɣV(s’)]</strong></li>
+      <li>this is the essence of the bellman equation
+<script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script></li>
+    </ul>
+  </li>
+</ul>
+<div align="center" style="margin: 1em 0;">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5150894678574694" data-ad-slot="9221331439" data-ad-format="auto" data-full-width-responsive="true"></ins>
+     </div>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<ul>
+  <li>Expansion
+    <ul>
+      <li>V(s) = E[r + ɣE(r’+ɣV(s’’))]</li>
+      <li>V(s) = E[r + ɣE(r’+ɣE(r’‘+…))]</li>
+      <li>understanding this “Structure”</li>
+    </ul>
+  </li>
+  <li>putting more details back in
+    <ul>
+      <li>s is “given” - we’ve already arrived here</li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>**V(s) = E[r + ɣV(s’)</td>
+              <td>s]**</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li>Expansion again
+    <ul>
+      <li>V(s) = state-value function</li>
+      <li>Q(s,a) = action-value function</li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>**Q(s,a) = E[G</td>
+              <td>s,a] = E[r + ɣV(s’)</td>
+              <td>s,a]**</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+      <li>to understand how Q anv V are related, we need to look at policies(something that tells us what action a to do, given what state we are in)</li>
+    </ul>
+  </li>
+  <li>we know earlier(informally) with tic-tac-Toe</li>
+  <li>if any discrepancies(差异) between then and now, consider everything from here onward to be more correct</li>
+  <li>Value Function is determined by a policy and has state “s” as parameter</li>
+  <li><em>only</em> future rewards</li>
+  <li>value of all terminal states is thus 0</li>
+  <li>the state value of the terminal state in an episodic problem should always be zero, the value of a state is the expected sum of all future rewards when starting in that state and following a specific policy. for the terminal state, this is zero - there are no more rewards to be end
+0
+<a href="https://postimg.cc/v1MsYJgS">&lt;img src=”https://i.postimg.cc/xdNTRY0Y/33321.png”width=”500px” title=”source: imgur.com” /&gt;</a></li>
+  <li>Recursiveness(递归性)
+<a href="https://postimg.cc/f39k0nB7">&lt;img src=”https://i.postimg.cc/nLdmgnmW/31243.png”width=”500px” title=”source: imgur.com” /&gt;</a></li>
+</ul>
+
+<h2 id="5-some-algebra">5. Some Algebra</h2>
+<ul>
+  <li>since the expected value is over π, that means we can express it as a possibility distribute
+    <ul>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>π = π(a</td>
+              <td>s)</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li>the expected values are linear operators, so we can find each term one at a time
+<a href="https://postimg.cc/3yzyNJhF">&lt;img src=”https://i.postimg.cc/26SnHVXM/412333.png”width=”500px” title=”source: imgur.com” /&gt;</a>
+    <ul>
+      <li>policy with in return action value in respect to state</li>
+      <li>reward and probabilty with return reward in respect to state and action</li>
+    </ul>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>in terms of p(s’,r</td>
+          <td>s,a)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<p><a href="https://postimg.cc/7ftg34Mj">&lt;img src=”https://i.postimg.cc/8zNtVPFk/123121.png”width=”500px” title=”source: imgur.com” /&gt;</a></p>
+:ET
