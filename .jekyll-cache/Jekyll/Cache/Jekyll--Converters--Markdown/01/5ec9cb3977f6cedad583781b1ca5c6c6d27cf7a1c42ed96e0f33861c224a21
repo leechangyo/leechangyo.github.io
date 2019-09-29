@@ -1,0 +1,67 @@
+I" <h1 id="intro-to-dynamic-programming">intro to Dynamic Programming</h1>
+<ul>
+  <li>Solutions to MDPs</li>
+  <li>Centrepiece of MDP: The bellman Equation
+<a href="https://postimg.cc/5XWK8Hhk"><img src="https://i.postimg.cc/zGymZK05/4141313123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>if we look carefully, this can be used to solve for V(s) Directly</li>
+  <li>I S I equations, I S I unknowns(linear Problem)</li>
+  <li>Many entries(进入(指行动)) will be 0, since transitions s -&gt; s’ are sparse</li>
+  <li>Instead, we will use <strong>Iterative Policy evaluation</strong></li>
+</ul>
+
+<h2 id="1-iterative-policy-evaluation">1. Iterative Policy evaluation</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def iterative_policy_evaluation(π):
+  initialize V(s) = 0 for all s ∈ S
+  while true :
+    ∆ = 0
+    for each s ∈ S:
+      old_v = V(s)
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/cvDD2DKP"><img src="https://i.postimg.cc/cJWVK2d1/4121241314123.png" width="500px" title="source: imgur.com" /></a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     ∆ = max(∆, I V(s) - old_v I )
+     if ∆ &lt; Threshold: break
+
+     return V(s)
+</code></pre></div></div>
+
+<ul>
+  <li>Technically, it’s defined where V(s) at iteration k+1 is updated from V(s) at iteration k</li>
+  <li>But we can update V(s) “in place”, to use the most recently updated values</li>
+  <li>Converges(汇集) Faster
+<a href="https://postimg.cc/0MJPbKR2"><img src="https://i.postimg.cc/Ssgs1cg8/51212.png" width="500px" title="source: imgur.com" /></a></li>
+</ul>
+
+<h3 id="definition">Definition</h3>
+<ul>
+  <li>What we just did(Finding V(s) given a policy) is called the <strong>Prediction Problem</strong></li>
+  <li>Finding the optimal policy is called the <strong>Control Problem</strong></li>
+</ul>
+
+<h2 id="2-designing-our-rl-program">2. Designing our RL Program</h2>
+<ul>
+  <li>Let’s recap how to do this in supervised learning</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class MyModel;
+  def fit(x,y):
+    # our job
+  def predict(x)
+    # our job
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># boilerplate
+Xtrain, Ytrain, Xtest, Ytest = get_data() # 1. Get Data
+Model = MyModel() # 2. Instantiate Model
+model.fit(Xtrain,Ytrain) # 3. Train Model
+model.score(Xtest, ytest) # 4. Evaluation Model
+</code></pre></div></div>
+
+<ul>
+  <li>RL Program is not supervised learning but there is still a pattern to be followed</li>
+  <li>Same as bandit section: several algorithms, but all have the same interface</li>
+  <li>Only the algorithm is different, not the layout</li>
+  <li>Applies to all the RL algorithms</li>
+</ul>
+:ET

@@ -1,0 +1,389 @@
+I"TB<h1 id="intro-to-dynamic-programming">intro to Dynamic Programming</h1>
+<ul>
+  <li>Solutions to MDPs</li>
+  <li>Centrepiece of MDP: The bellman Equation
+<a href="https://postimg.cc/5XWK8Hhk"><img src="https://i.postimg.cc/zGymZK05/4141313123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>if we look carefully, this can be used to solve for V(s) Directly</li>
+  <li>I S I equations, I S I unknowns(linear Problem)</li>
+  <li>Many entries(进入(指行动)) will be 0, since transitions s -&gt; s’ are sparse</li>
+  <li>Instead, we will use <strong>Iterative Policy evaluation</strong></li>
+</ul>
+
+<h2 id="1-iterative-policy-evaluation">1. Iterative Policy evaluation</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def iterative_policy_evaluation(π):
+  initialize V(s) = 0 for all s ∈ S
+  while true :
+    ∆ = 0
+    for each s ∈ S:
+      old_v = V(s)
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/cvDD2DKP"><img src="https://i.postimg.cc/cJWVK2d1/4121241314123.png" width="500px" title="source: imgur.com" /></a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     ∆ = max(∆, I V(s) - old_v I )
+     if ∆ &lt; Threshold: break
+
+     return V(s)
+</code></pre></div></div>
+
+<ul>
+  <li>Technically, it’s defined where V(s) at iteration k+1 is updated from V(s) at iteration k</li>
+  <li>But we can update V(s) “in place”, to use the most recently updated values</li>
+  <li>Converges(汇集) Faster
+<a href="https://postimg.cc/0MJPbKR2"><img src="https://i.postimg.cc/Ssgs1cg8/51212.png" width="500px" title="source: imgur.com" /></a></li>
+</ul>
+
+<h3 id="definition">Definition</h3>
+<ul>
+  <li>What we just did(Finding V(s) given a policy) is called the <strong>Prediction Problem</strong></li>
+  <li>Finding the optimal policy is called the <strong>Control Problem</strong></li>
+</ul>
+
+<h2 id="2-designing-our-rl-program">2. Designing our RL Program</h2>
+<ul>
+  <li>Let’s recap how to do this in supervised learning</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class MyModel;
+  def fit(x,y):
+    # our job
+  def predict(x)
+    # our job
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># boilerplate
+Xtrain, Ytrain, Xtest, Ytest = get_data() # 1. Get Data
+Model = MyModel() # 2. Instantiate Model
+model.fit(Xtrain,Ytrain) # 3. Train Model
+model.score(Xtest, ytest) # 4. Evaluation Model
+</code></pre></div></div>
+
+<ul>
+  <li>RL Program is not supervised learning but there is still a pattern to be followed</li>
+  <li>Same as bandit section: several algorithms, but all have the same interface</li>
+  <li>Only the algorithm is different, not the layout</li>
+  <li>Applies to all the RL algorithms</li>
+  <li>Designing our RL Program, there are t types of problems
+    <ol>
+      <li>Prediction Problem： Given a policy, find V(s)</li>
+    </ol>
+    <ul>
+      <li>Goal: Find V(s)
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>given: policy
+V(s) = initial value
+for t in range(max_iterations):
+states, actions, rewards = play_game(policy)
+update V(s) given (state, actions, rewards)
+print useful info (change in V(s) vs time, final V(s), policy)
+</code></pre></div>        </div>
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2. Control Problem : Find the optimal policy and the corresponding value function
+</code></pre></div>        </div>
+      </li>
+      <li>Goal : find the optimal Policy</li>
+      <li>note : Policy may not be explicitly represented
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>initialize value function and Policy
+for t in range（max_iterations):
+states, actions, rewards = play_game(policy)
+update Value function and policy to (states, actions,rewards) using the algorithm
+print useful info (change in V(s) vs time, final V(s), final policy)
+</code></pre></div>        </div>
+        <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div align="center" style="margin: 1em 0;">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5150894678574694" data-ad-slot="9221331439" data-ad-format="auto" data-full-width-responsive="true"></ins>
+     </div>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<h2 id="3-iterative-policy-evaluation">3. Iterative Policy Evaluation</h2>
+<ul>
+  <li>we will look at 2 different Policies</li>
+  <li>First: Completely random(Uniform) policy</li>
+  <li>which is relavant?
+    <ul>
+      <li>π(a I s)</li>
+      <li>p(s’,r I s,a)</li>
+    </ul>
+  </li>
+  <li>Answer : <strong>π(a I s)</strong></li>
+  <li>for a uniformly random policy, this will be 1/IA(s)I</li>
+  <li>A(s) = set of possible actions from state s</li>
+  <li>
+    <p>p(s’,r I s,a) is only relevant when state transitions are random</p>
+  </li>
+  <li>Second: policy we we’ll look at is Completely deterministic</li>
+  <li>from start position, we go Directly to goal</li>
+  <li>otherwise, we go Directly to losing state</li>
+</ul>
+
+<h2 id="4-policy-improvement">4. Policy Improvement</h2>
+<ul>
+  <li><strong>THe control Problem</strong></li>
+  <li>How to find better policies -&gt; optimal policy</li>
+  <li>what we know so far : how to find V/Q given a fixed policy
+<a href="https://postimg.cc/1nt01PFQ"><img src="https://i.postimg.cc/RF1gfZVN/521151.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>using the current policy, we simply get the state-value function
+<a href="https://postimg.cc/Y4SLhRCN"><img src="https://i.postimg.cc/BvTT7wWz/1241413123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>can we change just this one action for s? i.e. choose a != π(s)</li>
+  <li>Yes</li>
+  <li>we have a finite set of actions, so just go through each one until we get a better Q
+<a href="https://postimg.cc/0b8kkQQD"><img src="https://i.postimg.cc/WbZh7qcW/4124131231131.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>this looks complicated, but it’s very simple</li>
+  <li>all it’s saying is, if the policy for state s is to currently go “up”</li>
+  <li>just check “left”, “right”, and “down” to see if we can get a bigger Q</li>
+  <li>if so, change our policy for state <strong>s</strong> to the <strong>new action</strong></li>
+  <li>Formally, we’re finding a new policy π’, that gives us a givver value than we had before:
+<a href="https://postimg.cc/7bSMzxkK"><img src="https://i.postimg.cc/66mHD31x/41231231231231221.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>if we have Q:
+<a href="https://postimg.cc/t1VDmWKj"><img src="https://i.postimg.cc/g0g5jK4n/4124123123123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>if we have V:
+<a href="https://postimg.cc/21g7v3VX"><img src="https://i.postimg.cc/9fQ867VV/4124213123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Notice : it’s greedy</li>
+  <li>we never consider globally the value function at all states</li>
+  <li>only look at current state s</li>
+  <li>notice: it uses an imperfect version of $V_π$(s)</li>
+  <li>once we change π. $V_π$(s) also changes</li>
+  <li>when are we finished changing the policy, it doesn’t change when we try policy Improvement, V(s) also doesn’t change</li>
+  <li>”&lt;” when still improving = when finished
+<a href="https://postimg.cc/7bSMzxkK"><img src="https://i.postimg.cc/66mHD31x/41231231231231221.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>if we found optimal policy, Value function is always same in state</li>
+</ul>
+
+<h2 id="5-policy-iteration">5. Policy Iteration</h2>
+<ul>
+  <li>this is what use to find the optimal policy</li>
+  <li>problem we encountered last lecture: when we change the policy, the value function becomes out of date</li>
+  <li>How do we fix the out-of-date value function?</li>
+  <li>simply recalculate it given the new policy</li>
+  <li>we already know how to find V given π:
+    <ul>
+      <li>iterative policy Evaluation</li>
+    </ul>
+  </li>
+  <li>High-level: alternate between policy evaluation and policy improvement</li>
+  <li>keep doing this until policy doesn’t change</li>
+  <li>Don’t need to check value function for convergence, because once policy becomes constant so will value</li>
+</ul>
+
+<h3 id="step-of-policy-iteration">Step of Policy Iteration</h3>
+<ol>
+  <li>Randomly initialize V(s) and the policy π(s)</li>
+  <li>V(s) = iterative_policy_evaluation(π)</li>
+  <li>algorithm</li>
+</ol>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>policy_changed = False
+for s in all_state:
+  old_a = policy(s)
+  policy(s) = argmax[a]{sum[s',r]{p(s',r I s, a )[ r+ gamma*V(s')]}}
+  if policy(s) != old_a: policy_changed = true
+if policy_changed: go back to step 2
+</code></pre></div></div>
+
+<h2 id="6-example-windy-gridworld">6. Example (Windy Gridworld)</h2>
+<ul>
+  <li>recall, we have 2 probability distributions to deal with:
+    <ul>
+      <li>π(a I s)</li>
+      <li>p(s’,r I s,a)</li>
+    </ul>
+  </li>
+  <li>so far, p(s’,r I s,a) has been deterministic</li>
+  <li>in windy Gridworld, it’s not</li>
+  <li>imagine we are walking on a windy street. we try to walk straight but wind push we back or left.</li>
+  <li>same thins in windy Gridworld</li>
+  <li>if agent tries to go “up”, it will do so with probability 0.5</li>
+  <li>But it can also go “left”, “down”, or “right” with probability 0.5/3</li>
+</ul>
+
+<blockquote>
+  <p>code</p>
+</blockquote>
+
+<pre><code class="language-pyhton"># https://deeplearningcourses.com/c/artificial-intelligence-reinforcement-learning-in-python
+# https://www.udemy.com/artificial-intelligence-reinforcement-learning-in-python
+from __future__ import print_function, division
+from builtins import range
+# Note: you may need to update your version of future
+# sudo pip install -U future
+
+
+import numpy as np
+from grid_world import standard_grid, negative_grid
+from iterative_policy_evaluation import print_values, print_policy
+
+SMALL_ENOUGH = 1e-3
+GAMMA = 0.9
+ALL_POSSIBLE_ACTIONS = ('U', 'D', 'L', 'R')
+
+# next state and reward will now have some randomness
+# you'll go in your desired direction with probability 0.5
+# you'll go in a random direction a' != a with probability 0.5/3
+
+if __name__ == '__main__':
+  # this grid gives you a reward of -0.1 for every non-terminal state
+  # we want to see if this will encourage finding a shorter path to the goal
+  grid = negative_grid(step_cost=-1.0)
+# what is the step_cost? for example, if we are three steps away from the goal
+# we get minus three reward before we even have a chance to get to the goal
+# if we are only one step away from the losing state, then we only get minus one reward
+  # grid = negative_grid(step_cost=-0.1)
+  # grid = standard_grid()
+
+  # print rewards
+  print("rewards:")
+  print_values(grid.rewards, grid)
+
+  # state -&gt; action
+  # we'll randomly choose an action and update as we learn
+  policy = {}
+  for s in grid.actions.keys():
+    policy[s] = np.random.choice(ALL_POSSIBLE_ACTIONS)
+
+  # initial policy
+  print("initial policy:")
+  print_policy(policy, grid)
+
+  # initialize V(s)
+  V = {}
+  states = grid.all_states()
+  for s in states:
+    # V[s] = 0
+    if s in grid.actions:
+      V[s] = np.random.random()
+    else:
+      # terminal state
+      V[s] = 0
+
+  # repeat until convergence - will break out when policy does not change
+  while True:
+
+    # policy evaluation step - we already know how to do this!
+    while True:
+      biggest_change = 0
+      for s in states:
+        old_v = V[s]
+#         print(old_v)
+
+        # V(s) only has value if it's not a terminal state
+        new_v = 0
+        if s in policy:
+          for a in ALL_POSSIBLE_ACTIONS:
+            if a == policy[s]:
+              p = 0.5
+            else:
+              p = 0.5/3
+            grid.set_state(s)
+            r = grid.move(a)
+            new_v += p*(r + GAMMA * V[grid.current_state()])
+          V[s] = new_v
+          biggest_change = max(biggest_change, np.abs(old_v - V[s]))
+
+      if biggest_change &lt; SMALL_ENOUGH:
+        break
+
+    # policy improvement step
+    is_policy_converged = True
+    for s in states:
+      if s in policy:
+        old_a = policy[s]
+        new_a = None
+        best_value = float('-inf')
+        # loop through all possible actions to find the best current action
+        for a in ALL_POSSIBLE_ACTIONS: # chosen action
+          v = 0
+          for a2 in ALL_POSSIBLE_ACTIONS: # resulting action
+            if a == a2:
+              p = 0.5
+            else:
+              p = 0.5/3
+            grid.set_state(s)
+            r = grid.move(a2)
+            v += p*(r + GAMMA * V[grid.current_state()])
+          if v &gt; best_value:
+            best_value = v
+            new_a = a
+        policy[s] = new_a
+        if new_a != old_a:
+          is_policy_converged = False
+
+    if is_policy_converged:
+      break
+
+  print("values:")
+  print_values(V, grid)
+  print("policy:")
+  print_policy(policy, grid)
+  # result: every move is as bad as losing, so lose as quickly as possible
+</code></pre>
+
+<h2 id="6-value-iteration">6. Value Iteration</h2>
+<ul>
+  <li>Alternative technique for solving the <strong>control Problem</strong> called value iteration</li>
+  <li>Previous technique: policy Iteration</li>
+  <li>Disadvantage of policy iteration:
+    <ul>
+      <li>iterative algorithm
+        <ul>
+          <li>inside another iterative algorithm</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Value Iteration is that Policy evaluation step ends when V coverages</li>
+  <li>is there a point before V Converges, s.t the resulting greedy policy wouldn’t change?</li>
+  <li>Yes</li>
+  <li>therefore, we don’t need to wait for policy evaluation to finish. just do a few steps</li>
+  <li>because the policy improvement step will find the same policy anyway</li>
+  <li>Value iteration takes this one step further</li>
+  <li>it combines policy evaluation and policy improvement into one step:
+<a href="https://postimg.cc/bsP2bky5"><img src="https://i.postimg.cc/ZKBPGx1J/4121313132.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>what is the difference? <em>taking the max over all possible action</em></li>
+  <li>Iterative, but don’t need to wait for (k)th iteration of V finish before calculating (k+1)th</li>
+  <li>just update it “in-place(在正确的位置)” as before</li>
+  <li>since policy improvement uses <strong>argmax</strong>, by taking the max, we’re just doing the next policy evaluation step without calculating policy explicitly
+<a href="https://postimg.cc/r0tQdxVm"><img src="https://i.postimg.cc/bJmMB94Q/41242131312.png" width="500px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/SjkgQ20y"><img src="https://i.postimg.cc/NGrS4mpr/1221.png" width="500px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/WDxxf2td"><img src="https://i.postimg.cc/MTGxHHSm/141123131.png" width="500px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/5QVTbnB1"><img src="https://i.postimg.cc/L5YpkWhq/4124141241312.png" width="500px" title="source: imgur.com" /></a></li>
+</ul>
+
+<h2 id="7-summary">7. Summary</h2>
+<ul>
+  <li>Last section : Defined Markov Decision Process</li>
+  <li>This section : one method for finding solutions to MDP: Dynamic Programming</li>
+  <li><strong>Prediction Problem</strong>： Iterative Policy evaluation</li>
+  <li><strong>Control Problem</strong>: Policy iteration, Value iteration
+    <ul>
+      <li>finding the optimal policy and optimal value function</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="asynchronous不同时存在-dynamic-programming">Asynchronous(不同时存在) Dynamic Programming</h3>
+<ul>
+  <li>Every DP algorithm we looked at involved looping through entire set of states</li>
+  <li>Recall that for many realistic games, state space is ridiculously large</li>
+  <li>thus, even one iteration can take a long time</li>
+  <li>one way to speed up: update V(s) “in-place”</li>
+  <li>we can take that one step further: Asynchronous(不同时存在) Dynamic Programming</li>
+  <li>instead of looping through all states, loop through a few or only one</li>
+  <li>Choose based one which states are most-visited
+    <ul>
+      <li>can be learned by playing the game</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="generalized-policy-iteration">Generalized Policy iteration</h3>
+<ul>
+  <li>Main concept behind policy iteration: we iteratively alternate between 2 steps - policy evaluation and policy improvement</li>
+  <li>Converge when bellman’s equation becomes true(i.e. V(s) = right-hand side)
+<a href="https://postimg.cc/ctKCG7Ss"><img src="https://i.postimg.cc/L5D1fvQZ/412312313.png" width="500px" title="source: imgur.com" /><a></a></a></li>
+</ul>
+:ET

@@ -1,0 +1,152 @@
+I"�<h1 id="intro-to-dynamic-programming">intro to Dynamic Programming</h1>
+<ul>
+  <li>Solutions to MDPs</li>
+  <li>Centrepiece of MDP: The bellman Equation
+<a href="https://postimg.cc/5XWK8Hhk"><img src="https://i.postimg.cc/zGymZK05/4141313123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>if we look carefully, this can be used to solve for V(s) Directly</li>
+  <li>I S I equations, I S I unknowns(linear Problem)</li>
+  <li>Many entries(进入(指行动)) will be 0, since transitions s -&gt; s’ are sparse</li>
+  <li>Instead, we will use <strong>Iterative Policy evaluation</strong></li>
+</ul>
+
+<h2 id="1-iterative-policy-evaluation">1. Iterative Policy evaluation</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def iterative_policy_evaluation(π):
+  initialize V(s) = 0 for all s ∈ S
+  while true :
+    ∆ = 0
+    for each s ∈ S:
+      old_v = V(s)
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/cvDD2DKP"><img src="https://i.postimg.cc/cJWVK2d1/4121241314123.png" width="500px" title="source: imgur.com" /></a></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>     ∆ = max(∆, I V(s) - old_v I )
+     if ∆ &lt; Threshold: break
+
+     return V(s)
+</code></pre></div></div>
+
+<ul>
+  <li>Technically, it’s defined where V(s) at iteration k+1 is updated from V(s) at iteration k</li>
+  <li>But we can update V(s) “in place”, to use the most recently updated values</li>
+  <li>Converges(汇集) Faster
+<a href="https://postimg.cc/0MJPbKR2"><img src="https://i.postimg.cc/Ssgs1cg8/51212.png" width="500px" title="source: imgur.com" /></a></li>
+</ul>
+
+<h3 id="definition">Definition</h3>
+<ul>
+  <li>What we just did(Finding V(s) given a policy) is called the <strong>Prediction Problem</strong></li>
+  <li>Finding the optimal policy is called the <strong>Control Problem</strong></li>
+</ul>
+
+<h2 id="2-designing-our-rl-program">2. Designing our RL Program</h2>
+<ul>
+  <li>Let’s recap how to do this in supervised learning</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class MyModel;
+  def fit(x,y):
+    # our job
+  def predict(x)
+    # our job
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># boilerplate
+Xtrain, Ytrain, Xtest, Ytest = get_data() # 1. Get Data
+Model = MyModel() # 2. Instantiate Model
+model.fit(Xtrain,Ytrain) # 3. Train Model
+model.score(Xtest, ytest) # 4. Evaluation Model
+</code></pre></div></div>
+
+<ul>
+  <li>RL Program is not supervised learning but there is still a pattern to be followed</li>
+  <li>Same as bandit section: several algorithms, but all have the same interface</li>
+  <li>Only the algorithm is different, not the layout</li>
+  <li>Applies to all the RL algorithms</li>
+  <li>Designing our RL Program, there are t types of problems
+    <ol>
+      <li>Prediction Problem： Given a policy, find V(s)</li>
+    </ol>
+    <ul>
+      <li>Goal: Find V(s)
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>given: policy
+V(s) = initial value
+for t in range(max_iterations):
+states, actions, rewards = play_game(policy)
+update V(s) given (state, actions, rewards)
+print useful info (change in V(s) vs time, final V(s), policy)
+</code></pre></div>        </div>
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2. Control Problem : Find the optimal policy and the corresponding value function
+</code></pre></div>        </div>
+      </li>
+      <li>Goal : find the optimal Policy</li>
+      <li>note : Policy may not be explicitly represented
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>initialize value function and Policy
+for t in range（max_iterations):
+states, actions, rewards = play_game(policy)
+update Value function and policy to (states, actions,rewards) using the algorithm
+print useful info (change in V(s) vs time, final V(s), final policy)
+</code></pre></div>        </div>
+        <script async="" src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div align="center" style="margin: 1em 0;">
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-5150894678574694" data-ad-slot="9221331439" data-ad-format="auto" data-full-width-responsive="true"></ins>
+     </div>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<h2 id="3-iterative-policy-evaluation">3. Iterative Policy Evaluation</h2>
+<ul>
+  <li>we will look at 2 different Policies</li>
+  <li>First: Completely random(Uniform) policy</li>
+  <li>which is relavant?
+    <ul>
+      <li>π(a I s)</li>
+      <li>p(s’,r I s,a)</li>
+    </ul>
+  </li>
+  <li>Answer : <strong>π(a I s)</strong></li>
+  <li>for a uniformly random policy, this will be 1/IA(s)I</li>
+  <li>A(s) = set of possible actions from state s</li>
+  <li>
+    <p>p(s’,r I s,a) is only relevant when state transitions are random</p>
+  </li>
+  <li>Second: policy we we’ll look at is Completely deterministic</li>
+  <li>from start position, we go Directly to goal</li>
+  <li>otherwise, we go Directly to losing state</li>
+</ul>
+
+<h2 id="4-policy-improvement">4. Policy Improvement</h2>
+<ul>
+  <li><strong>THe control Problem</strong></li>
+  <li>How to find better policies -&gt; optimal policy</li>
+  <li>what we know so far : how to find V/Q given a fixed policy
+<a href="https://postimg.cc/1nt01PFQ"><img src="https://i.postimg.cc/RF1gfZVN/521151.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>using the current policy, we simply get the state-value function
+<a href="https://postimg.cc/Y4SLhRCN"><img src="https://i.postimg.cc/BvTT7wWz/1241413123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>can we change just this one action for s? i.e. choose a != π(s)</li>
+  <li>Yes</li>
+  <li>we have a finite set of actions, so just go through each one until we get a better Q
+<a href="https://postimg.cc/0b8kkQQD"><img src="https://i.postimg.cc/WbZh7qcW/4124131231131.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>this looks complicated, but it’s very simple</li>
+  <li>all it’s saying is, if the policy for state s is to currently go “up”</li>
+  <li>just check “left”, “right”, and “down” to see if we can get a bigger Q</li>
+  <li>if so, change our policy for state <strong>s</strong> to the <strong>new action</strong></li>
+  <li>Formally, we’re finding a new policy π’, that gives us a givver value than we had before:
+<a href="https://postimg.cc/7bSMzxkK"><img src="https://i.postimg.cc/66mHD31x/41231231231231221.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>if we have Q:
+<a href="https://postimg.cc/t1VDmWKj"><img src="https://i.postimg.cc/g0g5jK4n/4124123123123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>if we have V:
+<a href="https://postimg.cc/21g7v3VX"><img src="https://i.postimg.cc/9fQ867VV/4124213123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Notice : it’s greedy</li>
+  <li>we never consider globally the value function at all states</li>
+  <li>only look at current state s</li>
+  <li>notice: it uses an imperfect version of $V_π$(s)</li>
+  <li>once we change π. $V_π$(s)</li>
+</ul>
+:ET
