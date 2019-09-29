@@ -310,7 +310,7 @@ if __name__ == '__main__':
 - since policy improvement uses **argmax**, by taking the max, we're just doing the next policy evaluation step without calculating policy explicitly
 <a href="https://postimg.cc/r0tQdxVm"><img src="https://i.postimg.cc/bJmMB94Q/41242131312.png" width="500px" title="source: imgur.com" /></a>
 <a href="https://postimg.cc/SjkgQ20y"><img src="https://i.postimg.cc/NGrS4mpr/1221.png" width="500px" title="source: imgur.com" /></a>
-<a href="https://postimg.cc/WDxxf2td"><img src="https://i.postimg.cc/MTGxHHSm/141123131.png" width="300px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/WDxxf2td"><img src="https://i.postimg.cc/MTGxHHSm/141123131.png" width="200px" title="source: imgur.com" /></a>
 <a href="https://postimg.cc/5QVTbnB1"><img src="https://i.postimg.cc/L5YpkWhq/4124141241312.png" width="500px" title="source: imgur.com" /></a>
 
 ## 7. Summary
