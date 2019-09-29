@@ -1,0 +1,18 @@
+I"K<h1 id="montel-carlomc-methods">Montel Carlo(MC) Methods</h1>
+<ul>
+  <li>Last Section: Dynamic Programming</li>
+  <li>would that work for self-driving cars or video games?</li>
+  <li>can i just set the state of the agent?</li>
+  <li>“god-mode” capabilities?</li>
+  <li><strong>MC Methods learn purely from experience</strong></li>
+  <li>Montel Carlo usually refers to any method with a significant random component</li>
+  <li>Random Component in RL is the return</li>
+  <li>With MC, instead of calculating the true expected value of G, <strong>we calculate its sample mean</strong>
+<a href="https://postimg.cc/6yrZL1Rr"><img src="https://i.postimg.cc/c4jcWpLb/22222.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Need to assume episode tasks only</li>
+  <li>Episode must terminate before we calculate return</li>
+  <li>Not “fully” online since we need to wait for entire episode to finish before updating</li>
+  <li>(full online mean is update after every action)</li>
+  <li>monte carlo methods is not fully online which mean it is updated after episode to finish</li>
+</ul>
+:ET

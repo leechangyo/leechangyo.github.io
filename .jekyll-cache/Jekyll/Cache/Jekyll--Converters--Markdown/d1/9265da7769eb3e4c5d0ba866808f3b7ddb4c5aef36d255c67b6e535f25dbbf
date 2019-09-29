@@ -1,0 +1,406 @@
+I"U:<h1 id="montel-carlomc-methods-introduction">Montel Carlo(MC) Methods Introduction</h1>
+<ul>
+  <li>Last Section: Dynamic Programming</li>
+  <li>would that work for self-driving cars or video games?</li>
+  <li>can i just set the state of the agent?</li>
+  <li>“god-mode” capabilities?</li>
+  <li><strong>MC Methods learn purely from experience</strong></li>
+  <li>Montel Carlo usually refers to any method with a significant random component</li>
+  <li>Random Component in RL is the return</li>
+  <li>With MC, instead of calculating the true expected value of G, <strong>we calculate its sample mean</strong>
+<a href="https://postimg.cc/6yrZL1Rr"><img src="https://i.postimg.cc/c4jcWpLb/22222.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Need to assume episode tasks only</li>
+  <li>Episode must terminate before we calculate return</li>
+  <li>Not “fully” online since we need to wait for entire episode to finish before updating</li>
+  <li>(full online mean is update after every action)</li>
+  <li>monte carlo methods is not fully online which mean it is updated after episode to finish</li>
+  <li>Should Remind you of multi-armed bandit</li>
+  <li><strong>Multi-Armed bandit : average reward after every action</strong></li>
+  <li>MDPs: average the return</li>
+  <li>One way to think of MC-MDP is every state is a separate multi-armed bandit problem</li>
+  <li>Follow the same pattern</li>
+  <li>Prediction Problem(Finding Value given policy)</li>
+  <li>Control Problem(finding optimal policy)</li>
+</ul>
+
+<h2 id="1-monte-carlo-for-prediction-problem">1. Monte Carlo for prediction Problem</h2>
+<ul>
+  <li>Recall what V(s) is :
+ <a href="https://postimg.cc/t1yqhpWb"><img src="https://i.postimg.cc/hGQXRGGX/4124131233.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Any expected value can be approximated like
+<a href="https://postimg.cc/rzYYWjxF"><img src="https://i.postimg.cc/dtqMbS0d/41241231321312.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>“i” is episode, “t” is steps</li>
+</ul>
+
+<h3 id="how-do-we-generate-g">How do we generate G?</h3>
+<ul>
+  <li>just play a bunch of episode, log the states and reward sequences
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>s1 s2 s3 ... sT
+r1 r2 r3 ... rT
+</code></pre></div>    </div>
+  </li>
+  <li>
+    <p>Calculate G from Definition:
+G(t) = r(t+1)+gamma*G(t+1)</p>
+  </li>
+  <li>very helpful to calculate G by iterating through states in reverse order</li>
+  <li>Once we have(s,G) pairs, average them for each s</li>
+</ul>
+
+<h3 id="multiple-visits-to-s">Multiple Visits to s</h3>
+<ul>
+  <li>what if we see the same state more than once in an episode</li>
+  <li>E.g. we see s at t=1 and t=3</li>
+  <li>which return should we use? G(1) or G(3</li>
+  <li>First-visit method :
+    <ul>
+      <li>Use t = 1 only</li>
+    </ul>
+  </li>
+  <li>Every-visit method :
+    <ul>
+      <li>Use both t=1 and t=3 as samples</li>
+    </ul>
+  </li>
+  <li>Surprisingly, it has been proven that both lead to same answer</li>
+</ul>
+
+<blockquote>
+  <p>First-Visit MC Pseudocode</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def first_visit_monte_carlo_prediction(π, N):
+  V = random initialization
+  all_return = {} # default = []
+  do N times:
+    states, returns = play_episode
+    for s, g in zip(states, returns):
+      if not seen s in this episode yet:
+        all_return[s].append(g)
+        V(s) = sample_mean(all_returns[s])
+  return V
+</code></pre></div></div>
+
+<h3 id="sample-mean">Sample Mean</h3>
+<ul>
+  <li>Notice how we store all returns in a list</li>
+  <li>Didn’t we discuss how that’s inefficient?</li>
+  <li>Can also use previous mean to calculate current mean</li>
+  <li>Can also use moving average for non-stationary problems</li>
+  <li>Everything we learned before still applies
+<a href="https://postimg.cc/6yrZL1Rr"><img src="https://i.postimg.cc/c4jcWpLb/22222.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>Rules of probability still apply</li>
+  <li><a href="https://ko.wikipedia.org/wiki/%EC%A4%91%EC%8B%AC_%EA%B7%B9%ED%95%9C_%EC%A0%95%EB%A6%AC">Central limit Theorem</a></li>
+  <li>Variance of estimate = Variance of RV(Random Value) / N</li>
+</ul>
+
+<blockquote>
+  <p>Calculating Returns from Rewards</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>s = grid.current_state()
+states_and_rewards = [(s,0)]
+while not game_over:
+  a = policy(s)
+  r = grid.move(a)
+  s = grid.current_state()
+  states_and_rewards.append((s,r))
+
+G = 0
+states_and_returns = []
+for s,r in reverse(states_and_rewards):
+  states_and_returns.((s,G))
+  G = r + gamma*G
+states_and_returns.reverse
+</code></pre></div></div>
+
+<h3 id="mc">MC</h3>
+<ul>
+  <li>Recall: one Disadvantage of DP is that <strong>we need to loop through all states</strong></li>
+  <li>MC: only update V for visited states</li>
+  <li>We don’t even need to know what all the states are, we can just discover them as we play</li>
+</ul>
+
+<h2 id="2-mc-for-windy-gridworld">2. MC for Windy Gridworld</h2>
+<ul>
+  <li>Windy Gridworld, different policy</li>
+  <li>Policy/transitions were deterministic, MC not really needed</li>
+  <li>in windy gridworld, p(s’r I s,a) not deterministic</li>
+  <li>with this policy, we try to get to goal</li>
+  <li>Values can be -ve, if overall wind pushes us to losing state more often</li>
+</ul>
+
+<blockquote>
+  <p>code</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># https://deeplearningcourses.com/c/artificial-intelligence-reinforcement-learning-in-python
+# https://www.udemy.com/artificial-intelligence-reinforcement-learning-in-python
+from __future__ import print_function, division
+from builtins import range
+# Note: you may need to update your version of future
+# sudo pip install -U future
+
+
+import numpy as np
+from grid_world import standard_grid, negative_grid
+from iterative_policy_evaluation import print_values, print_policy
+
+SMALL_ENOUGH = 1e-3
+GAMMA = 0.9
+ALL_POSSIBLE_ACTIONS = ('U', 'D', 'L', 'R')
+
+# NOTE: this is only policy evaluation, not optimization
+
+def random_action(a):
+  # choose given a with probability 0.5
+  # choose some other a' != a with probability 0.5/3
+  p = np.random.random()
+  if p &lt; 0.5:
+    return a
+  else:
+    tmp = list(ALL_POSSIBLE_ACTIONS)
+    tmp.remove(a)
+    return np.random.choice(tmp)
+
+def play_game(grid, policy):
+  # returns a list of states and corresponding returns
+
+  # reset game to start at a random position
+  # we need to do this, because given our current deterministic policy
+  # we would never end up at certain states, but we still want to measure their value
+  start_states = list(grid.actions.keys())
+  start_idx = np.random.choice(len(start_states))
+  grid.set_state(start_states[start_idx])
+# random start
+
+  s = grid.current_state()
+  states_and_rewards = [(s, 0)] # list of tuples of (state, reward)
+  while not grid.game_over():
+    a = policy[s]
+    a = random_action(a)
+    r = grid.move(a)
+    s = grid.current_state()
+    states_and_rewards.append((s, r))
+  # calculate the returns by working backwards from the terminal state
+  G = 0
+  states_and_returns = []
+  first = True
+  for s, r in reversed(states_and_rewards):
+    # the value of the terminal state is 0 by definition
+    # we should ignore the first state we encounter
+    # and ignore the last G, which is meaningless since it doesn't correspond to any move
+    if first:
+      first = False
+    else:
+      states_and_returns.append((s, G))
+    G = r + GAMMA*G
+  states_and_returns.reverse() # we want it to be in order of state visited
+  return states_and_returns
+
+
+if __name__ == '__main__':
+  # use the standard grid again (0 for every step) so that we can compare
+  # to iterative policy evaluation
+  grid = standard_grid()
+
+  # print rewards
+  print("rewards:")
+  print_values(grid.rewards, grid)
+
+  # state -&gt; action
+  # found by policy_iteration_random on standard_grid
+  # MC method won't get exactly this, but should be close
+  # values:
+  # ---------------------------
+  #  0.43|  0.56|  0.72|  0.00|
+  # ---------------------------
+  #  0.33|  0.00|  0.21|  0.00|
+  # ---------------------------
+  #  0.25|  0.18|  0.11| -0.17|
+  # policy:
+  # ---------------------------
+  #   R  |   R  |   R  |      |
+  # ---------------------------
+  #   U  |      |   U  |      |
+  # ---------------------------
+  #   U  |   L  |   U  |   L  |
+  policy = {
+    (2, 0): 'U',
+    (1, 0): 'U',
+    (0, 0): 'R',
+    (0, 1): 'R',
+    (0, 2): 'R',
+    (1, 2): 'U',
+    (2, 1): 'L',
+    (2, 2): 'U',
+    (2, 3): 'L',
+  }
+
+  # initialize V(s) and returns
+  V = {}
+  returns = {} # dictionary of state -&gt; list of returns we've received
+  states = grid.all_states()
+  for s in states:
+    if s in grid.actions:
+      returns[s] = []
+    # 빈값을 넣어는다 initializize
+    else:
+      # terminal state or state we can't otherwise get to
+      V[s] = 0
+
+  # repeat until convergence
+# 5000 iterative
+  for t in range(5000):
+
+    # generate an episode using pi
+    states_and_returns = play_game(grid, policy)
+    seen_states = set()
+    for s, G in states_and_returns:
+      # check if we have already seen s
+      # called "first-visit" MC policy evaluation
+      if s not in seen_states:
+        returns[s].append(G)
+        V[s] = np.mean(returns[s])
+        seen_states.add(s)
+
+  print("values:")
+  print_values(V, grid)
+  print("policy:")
+  print_policy(policy, grid)
+</code></pre></div></div>
+
+<h2 id="2-mc-for-control-problem">2. MC for Control Problem</h2>
+<ul>
+  <li>Let’s now move on to control problem</li>
+  <li>Can we use MC?</li>
+  <li>Problem: we only have V(s) for a given policy, we don’t know what actions will lead to better V(s) because   we can’t do look-ahead search</li>
+  <li>only play episode and get states/returns</li>
+  <li><strong>key is to use Q(s,a)</strong></li>
+  <li>we can choose argmax[a]{Q,a}</li>
+</ul>
+
+<h3 id="mc-for-qsa">MC for Q(s,a)</h3>
+<ul>
+  <li>simple modification</li>
+  <li>instead of list of tuples(s,G)</li>
+  <li>return list of triples(s,a,G)</li>
+</ul>
+
+<h3 id="problem-with-qsa">Problem with Q(s,a)</h3>
+<ul>
+  <li>with V(s) we only need ISI different estimates</li>
+  <li>with Q(s,a) we need IsI x IAI different estimates</li>
+  <li>Many more iterations of MC are needed</li>
+  <li>should remind us of explore-exploit dilemma</li>
+  <li>if we follow a fixed policy, we only do 1 action per state</li>
+  <li>we can only fill in ISI / (ISI x IAI) = 1 / IAI values in Q</li>
+  <li>Can fix it by using the “exploring-starts” methods</li>
+  <li>we choose a random initial state and a random initial action</li>
+  <li>thereafter follow policy</li>
+  <li>this is consistent with our definition of Q :
+<a href="https://postimg.cc/f3ZhyB7H"><img src="https://i.postimg.cc/pd5V0Smt/442131313.png" width="500px" title="source: imgur.com" /></a></li>
+</ul>
+
+<h3 id="back-to-control-problem">Back to Control Problem</h3>
+<ul>
+  <li>if we think actually, we’ll realize we already know the answer</li>
+  <li>Generalized policy iteration:
+    <ul>
+      <li>Alternate between policy evaluation and policy improvement</li>
+    </ul>
+  </li>
+  <li>we know how to do evaluation</li>
+  <li>policy improvement same as always : π(s) = $argmax_s$Q(s,a)
+<a href="https://postimg.cc/LhmBDfDr"><img src="https://i.postimg.cc/fW92wf9T/412312312312312.png" width="500px" title="source: imgur.com" /></a></li>
+</ul>
+
+<h3 id="problem-with-mc">Problem with MC</h3>
+<ul>
+  <li>Problem: same as before - we have an iterative algorithm inside an iterative algorithm</li>
+  <li>For Q we need lots of samples</li>
+</ul>
+
+<h2 id="3-solution">3. Solution</h2>
+<ul>
+  <li>Similar value iteration</li>
+  <li>Do not start a fresh MC evaluation on each round
+    <ul>
+      <li>would take too long to collect samples</li>
+    </ul>
+  </li>
+  <li>instead, just keep updating the same Q</li>
+  <li><strong>Do policy improvement after every episode</strong></li>
+  <li>therefore, generate only one episode per iteration</li>
+</ul>
+
+<blockquote>
+  <p>Pseudocode
+```
+Q = random, pi =random</p>
+</blockquote>
+
+<p>While True :
+  s, a = randomly select from S and A
+  states_actions_returns = play_game(start=(s,a))
+  for s,a,G in state_actions_returns:
+    returns(s,a).append(G)
+    Q(s,a) = average(returns(s,a))
+  for s in states:
+    pi(s) = argmax[a]{Q(s,a)}
+```</p>
+
+<h3 id="another-problem-with-mc">Another Problem with MC</h3>
+<ul>
+  <li>What if policy includes an action that bumps into a wall?</li>
+  <li>we end up in same state as before</li>
+  <li>if we follow this policy, episode will never finish</li>
+  <li>Hack:</li>
+  <li>if we end up in same state after doing action, give this a reward of -100, and end the episode</li>
+</ul>
+
+<h3 id="mc-es">MC-ES</h3>
+<ul>
+  <li>Interesting fact: this converges even though the samples for Q are for different policies</li>
+  <li><strong>if Q is suboptimal, then policy will change, causing Q to change</strong></li>
+  <li><strong>we can only achieve stability when both value and policy converge to optimal value and optimal policy</strong></li>
+  <li>Another interesting fact: this has never been formally proven</li>
+</ul>
+
+<h2 id="4-mc-control-without-es">4. MC Control without ES</h2>
+<ul>
+  <li>Disadvantage of previous control method : needs exploring starts</li>
+  <li>Could be infeasible(不可能的) for games we are not playing in “god-mode”</li>
+  <li>E.g Self-driving car</li>
+  <li>remove need for ES(exploring starts)</li>
+  <li>Recall: all the techniques we learned for the multi-armed bandit are applicable here</li>
+  <li>let’s not be greedy, but epsilon-greedy instead</li>
+  <li>code modification:
+    <ul>
+      <li>Remove exploring starts</li>
+      <li>change policy to sometimes be random</li>
+    </ul>
+  </li>
+  <li>Epsilon-soft
+    <ul>
+      <li>some sources refer to a method call <strong>“epsilon-soft”</strong></li>
+      <li>Idea: We want a lower limit for every action to be selected
+<a href="https://postimg.cc/WFZ9LPCt"><img src="https://i.postimg.cc/pTG3jWBQ/412413131231.png" width="500px" title="source: imgur.com" /></a></li>
+    </ul>
+  </li>
+  <li>But we also use epsilon to decide if we want to explore:
+<a href="https://postimg.cc/r0GPRkJ3"><img src="https://i.postimg.cc/qRWVYBCJ/5125213123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>From now on, we’ll just refer to this as epsilon-greedy</li>
+</ul>
+
+<h3 id="추가-설명">추가 설명</h3>
+<ul>
+  <li>즉 해보지 않은 행동에 대해서도 가끔 선택할 수 있게 하는 방법</li>
+  <li>방법에는 두가지가 있다
+    <ul>
+      <li>On-policy : 결정했던 행동들을 가지고 정책을 평가 발전한다</li>
+      <li>Off-Policy : 다른 방법에 의해 만들어진 데이터로 정책 평가와 발전한다</li>
+    </ul>
+  </li>
+</ul>
+:ET
