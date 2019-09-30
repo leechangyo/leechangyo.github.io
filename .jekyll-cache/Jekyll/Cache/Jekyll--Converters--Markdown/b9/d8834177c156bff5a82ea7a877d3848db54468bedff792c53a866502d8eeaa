@@ -1,0 +1,92 @@
+I"�<h1 id="approximation-methods">Approximation Methods</h1>
+<ul>
+  <li>Major Disadvantage of methods we’ve learned</li>
+  <li>V - Need to estimate ISI values</li>
+  <li>Q - Need to estimate ISI x IAI values</li>
+  <li>ISI and IAI can be very large</li>
+  <li>solution : Approximation</li>
+  <li>Recall: neural networks are universal function approximator</li>
+  <li>First, we do feature extraction: convert state s to <strong>feature vector x</strong>
+<a href="https://postimg.cc/VSsNgQMT"><img src="https://i.postimg.cc/N0mrgQ0g/414141412312.png" width="300px" title="source: imgur.com" /><a></a></a></li>
+  <li>we want a function, parameterized by theta, that accurately approximates V
+<a href="https://postimg.cc/yJBDGp3q"><img src="https://i.postimg.cc/MGf1vhWG/123131.png" width="300px" title="source: imgur.com" /><a></a></a></li>
+</ul>
+
+<h2 id="1-linear-approximation">1. Linear Approximation</h2>
+<ul>
+  <li>Function approximation methods requires us to use models that are differentiable</li>
+  <li>Can’t use something like decision tree or k-nearest neighbour</li>
+  <li>in sequal(查询语言) to this section, we will use deep learning methods, which are differentiable</li>
+  <li>Neural networks don’t require us to engineer features beforehand, but it can help</li>
+  <li>FOr Approximation methods, we will need linear regression and gradient descent</li>
+</ul>
+
+<h2 id="2-section-outline">2. Section outline</h2>
+<ul>
+  <li>MC prediction</li>
+  <li>TD(0) prediction</li>
+  <li>SARSA</li>
+</ul>
+
+<h2 id="3-sanity明智-checking">3. Sanity(明智) Checking</h2>
+<ul>
+  <li>we can always sanity check our work by comparing to non-approximated versions</li>
+  <li>we expect approximation to be close, but perhaps not exactly equal</li>
+  <li>Obstacle we may encounter: our code is implemented perfectly, but our model is bad</li>
+  <li>Linear models are not very expressive</li>
+  <li>if we extract a poor set of features, model won’t learn value function well</li>
+  <li>will need to put in manual work to do feature engineering</li>
+</ul>
+
+<h2 id="4-linear-model">4. Linear Model</h2>
+<ul>
+  <li>Supervised learning aka,<strong>Function Approximation</strong></li>
+  <li>The function we are trying to approximate is V(s) or Q(s,a)</li>
+  <li>Rewards are real numbers</li>
+  <li>So returns, which are sums of rewards are real number</li>
+  <li>2 Supervised learning techniques
+    <ul>
+      <li>Classification</li>
+      <li>regression</li>
+    </ul>
+  </li>
+  <li>we are doing regression</li>
+</ul>
+
+<h2 id="5-error">5. Error</h2>
+<ul>
+  <li>Supervised Learning methods have cost Functions</li>
+  <li>Regression means squared error is the appropriate choice</li>
+  <li>Squared difference between V and estimate of V
+<a href="https://postimg.cc/m1G258rz"><img src="https://i.postimg.cc/Gt489fwQ/121231231231.png" width="300px" title="source: imgur.com" /><a></a></a></li>
+  <li>Replace V with its definition</li>
+  <li>But we don’t know this expected value
+<a href="https://postimg.cc/s1rvggVY"><img src="https://i.postimg.cc/9X4T1DKn/124123124123.png" width="300px" title="source: imgur.com" /><a></a></a></li>
+  <li>as we learned from MC(Monte Carlo), we can replace the expected value with its sample means
+<a href="https://postimg.cc/0MrZ60G4"><img src="https://i.postimg.cc/DZPNMCS7/433.png" width="300px" title="source: imgur.com" /><a></a></a></li>
+  <li>Alternatively, we can treat each G_(i,s) as a training sample</li>
+  <li>And try to minimize all the <strong>individual squared differences</strong> simultaneously(just like linear regression)
+<a href="https://postimg.cc/m1kDWtsC"><img src="https://i.postimg.cc/4ybht92L/41241312321.png" width="300px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/XZKcpDyx"><img src="https://i.postimg.cc/vmkP2J8R/412313124123.png" width="300px" title="source: imgur.com" /><a></a></a></a></a></li>
+</ul>
+
+<h2 id="6-stochastic-gradient-descent">6. stochastic Gradient Descent</h2>
+<ul>
+  <li>we can now do stochastic(随机的) gradient decent</li>
+  <li>Move in direction of gradient of error wrt only one sample at a time</li>
+</ul>
+
+<h3 id="gradient-descent-설명">Gradient Descent 설명</h3>
+<ul>
+  <li>Neural Network의 loss function의 현 weight의 기울기(gradient)를 구하고 Loss를 줄이는 방향으로 업데이트 나가는 방법
+<a href="https://postimg.cc/XGVhJ5XG"><img src="https://i.postimg.cc/0QmqVdsf/124141312312.png" width="500px" title="source: imgur.com" /><a></a></a></li>
+  <li>Loss function (ERROR) 는 현재 가중치(weight)에서 틀린 정도를 알려주는 함수이다.</li>
+  <li>즉, 현재 네트워크의 weight에서 내가 가진 데이터를 집어 넣으면 에러가 생길 것이다. 거기에 미분을 하면 에러를 줄이는 방향을 알 수 있다.</li>
+  <li>그 방향으로 정해진 Learning rate를 통해서 weight를 이동시킨다. 이것을 반복해서 학습하는 것이다.</li>
+  <li><strong>즉 Gradient Descent는 현재 네트워크의 Weight에 어떤 데이터를 넣을 떄 에러값을 미분해서 에러의 방향(Gradient)을 알애체고 그 방향으로 정해진 Learning rate를 통해서 weight을 이동시킨다(Descent).</strong>
+<a href="https://postimg.cc/kR47V4fs"><img src="https://i.postimg.cc/fy7yrSdG/141412412312312.png" width="500px" title="source: imgur.com" /><a></a></a></li>
+  <li>Gradient Descent의 단점은 가진 데이터를 다 넣으면 전체 에러가 계산이 될 것이다.</li>
+  <li>그렇기 때문에 최적값을 찾아 나가기 위해서 한칸 전진할 때마다 모든 데이터 셋을 넣어주어야 해야하기 때문에 학습이 굉장히 오래 걸리는 문제가 발생하게 된다.</li>
+  <li>그럼 Gradient Descent 말고 더 빠른 Optimizer 는 없을까? 그것이 바로 <strong>stochastic Gradient Descent</strong> 이다.</li>
+</ul>
+:ET

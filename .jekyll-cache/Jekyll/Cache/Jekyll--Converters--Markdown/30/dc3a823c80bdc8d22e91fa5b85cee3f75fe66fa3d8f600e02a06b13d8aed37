@@ -1,0 +1,23 @@
+I"
+<h1 id="approximation-methods">Approximation Methods</h1>
+<ul>
+  <li>Major Disadvantage of methods we’ve learned</li>
+  <li>V - Need to estimate ISI values</li>
+  <li>Q - Need to estimate ISI x IAI values</li>
+  <li>ISI and IAI can be very large</li>
+  <li>solution : Approximation</li>
+  <li>Recall: neural networks are universal function approximator</li>
+  <li>First, we do feature extraction: convert state s to <strong>feature vector x</strong>
+<a href="https://postimg.cc/VSsNgQMT"><img src="https://i.postimg.cc/N0mrgQ0g/414141412312.png" width="300px" title="source: imgur.com" /><a></a></a></li>
+  <li>we want a function, parameterized by theta, that accurately approximates V
+<a href="https://postimg.cc/yJBDGp3q"><img src="https://i.postimg.cc/MGf1vhWG/123131.png" width="300px" title="source: imgur.com" /><a></a></a></li>
+</ul>
+
+<h2 id="1-linear-approximation">1. Linear Approximation</h2>
+<ul>
+  <li>Function approximation methods requires us to use models that are differentiable</li>
+  <li>Can’t use something like decision tree or k-nearest neighbour</li>
+  <li>in sequal(查询语言) to this section, we will use deep learning methods, which are differentiable</li>
+  <li>Neural networks don’t require us to engineer features beforehand, but it can help</li>
+</ul>
+:ET

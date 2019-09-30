@@ -1,0 +1,55 @@
+I"�	<h1 id="approximation-methods">Approximation Methods</h1>
+<ul>
+  <li>Major Disadvantage of methods we’ve learned</li>
+  <li>V - Need to estimate ISI values</li>
+  <li>Q - Need to estimate ISI x IAI values</li>
+  <li>ISI and IAI can be very large</li>
+  <li>solution : Approximation</li>
+  <li>Recall: neural networks are universal function approximator</li>
+  <li>First, we do feature extraction: convert state s to <strong>feature vector x</strong>
+<a href="https://postimg.cc/VSsNgQMT"><img src="https://i.postimg.cc/N0mrgQ0g/414141412312.png" width="300px" title="source: imgur.com" /><a></a></a></li>
+  <li>we want a function, parameterized by theta, that accurately approximates V
+<a href="https://postimg.cc/yJBDGp3q"><img src="https://i.postimg.cc/MGf1vhWG/123131.png" width="300px" title="source: imgur.com" /><a></a></a></li>
+</ul>
+
+<h2 id="1-linear-approximation">1. Linear Approximation</h2>
+<ul>
+  <li>Function approximation methods requires us to use models that are differentiable</li>
+  <li>Can’t use something like decision tree or k-nearest neighbour</li>
+  <li>in sequal(查询语言) to this section, we will use deep learning methods, which are differentiable</li>
+  <li>Neural networks don’t require us to engineer features beforehand, but it can help</li>
+  <li>FOr Approximation methods, we will need linear regression and gradient descent</li>
+</ul>
+
+<h2 id="2-section-outline">2. Section outline</h2>
+<ul>
+  <li>MC prediction</li>
+  <li>TD(0) prediction</li>
+  <li>SARSA</li>
+</ul>
+
+<h2 id="3-sanity明智-checking">3. Sanity(明智) Checking</h2>
+<ul>
+  <li>we can always sanity check our work by comparing to non-approximated versions</li>
+  <li>we expect approximation to be close, but perhaps not exactly equal</li>
+  <li>Obstacle we may encounter: our code is implemented perfectly, but our model is bad</li>
+  <li>Linear models are not very expressive</li>
+  <li>if we extract a poor set of features, model won’t learn value function well</li>
+  <li>will need to put in manual work to do feature engineering</li>
+</ul>
+
+<h2 id="4-linear-model">4. Linear Model</h2>
+<ul>
+  <li>Supervised learning aka,<strong>Function Approximation</strong></li>
+  <li>The function we are trying to approximate is V(s) or Q(s,a)</li>
+  <li>Rewards are real numbers</li>
+  <li>So returns, which are sums of rewards are real number</li>
+  <li>2 Supervised learning techniques
+    <ul>
+      <li>Classification</li>
+      <li>regression</li>
+    </ul>
+  </li>
+  <li>we are doing regression</li>
+</ul>
+:ET
