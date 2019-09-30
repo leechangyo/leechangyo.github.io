@@ -1,0 +1,34 @@
+I"�<h1 id="temporal-difference-td-learning">Temporal Difference (TD) Learning</h1>
+<ul>
+  <li>this section is a 3rd technique for solving MDPs</li>
+  <li>TD = Temporal Difference(TD) Learning</li>
+  <li>Combines ideas from DP and MC</li>
+  <li>Disadvantage of DP: requires full model of environment, never learns from experience</li>
+  <li>MC and TD learn from experience</li>
+  <li>MC can only update after completing episode, but DP uses Bootstrapping(Making an initial estimate)</li>
+  <li>We will see that TD also uses Bootstrapping and is fully online, can update value during an episode
+    <h2 id="1-td-learning">1. TD Learning</h2>
+  </li>
+  <li>Same approach as before</li>
+  <li>First Predict Problem</li>
+  <li>them control problem</li>
+  <li>2 control methods:
+    <ul>
+      <li>SARSA</li>
+      <li>Q-Learning</li>
+    </ul>
+  </li>
+  <li>Model-Free Reinforcement Learning</li>
+  <li>TD methods learn directly from episode of experience.</li>
+  <li>no Knowledge of MDP Transition / rewards</li>
+  <li>TD learns from incomplete episodes by Bootstrapping</li>
+  <li>TD updates a guess towards a guess
+<a href="https://postimg.cc/fkPHCsWG"><img src="https://i.postimg.cc/28kPzjsS/41231312313.png" width="500px" title="source: imgur.com" /><a></a></a></li>
+  <li>MC와 다른점은, MC는 실제 에피소드가 끝나고 받게 되는 보상을 사용하여 Value Function을 업데이트 하였다</li>
+  <li>TD에서는 실제 보상과 다음 step에 대한 미래추정가치를 사용해서 학습한다.</li>
+  <li>이때 사용하는 보상과 Value Function의 합을 TD Target
+-그리고 TD Target 과 실제 V(S)와의 차이를 TD error라고 표현한다.
+<a href="https://postimg.cc/FfJFfNRh"><img src="https://i.postimg.cc/TPtK4Pv5/14141241313.png" width="500px" title="source: imgur.com" /><a></a></a></li>
+  <li>MC에서의 Value function이 업데이트 되는 과정이 왼쪽(에피소드가 전체적으로 끝나서 그의 보상을 나누어 단계별로 업데이트)</li>
+</ul>
+:ET

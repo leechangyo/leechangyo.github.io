@@ -285,7 +285,7 @@ if __name__ == '__main__':
   - Alternate between policy evaluation and policy improvement
 - we know how to do evaluation
 - policy improvement same as always : π(s) = $argmax_s$Q(s,a)
-<a href="https://postimg.cc/LhmBDfDr"><img src="https://i.postimg.cc/fW92wf9T/412312312312312.png" width="500px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/LhmBDfDr"><img src="https://i.postimg.cc/fW92wf9T/412312312312312.png" width="300px" title="source: imgur.com" /></a>
 
 ### Problem with MC
 - Problem: same as before - we have an iterative algorithm inside an iterative algorithm
@@ -370,7 +370,7 @@ While True :
 ### How often will we reach off-policy states?
 - Consider a state K steps away from the start
 - the probability that we get there by pure exploration is small
-<a href="https://postimg.cc/bSZSFQJh"><img src="https://i.postimg.cc/D0gQ0638/51511313131.png" width="500px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/bSZSFQJh"><img src="https://i.postimg.cc/D0gQ0638/51511313131.png" width="300px" title="source: imgur.com" /></a>
 - we need to run MC many times to converge for these states
 
 ## 5. MC Summary
@@ -378,8 +378,8 @@ While True :
 - this section: learn from experience
 - main idea: approximate the expected return with sample mean
 - First-visit and every-visit
-<a href="https://postimg.cc/8FWF2hLd"><img src="https://i.postimg.cc/g0tv6sJ7/51231231231232.png" width="500px" title="source: imgur.com" /></a>
-<a href="https://postimg.cc/bZnNrqdp"><img src="https://i.postimg.cc/bwCG6JhD/512123123123123.png" width="500px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/8FWF2hLd"><img src="https://i.postimg.cc/g0tv6sJ7/51231231231232.png" width="300px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/bZnNrqdp"><img src="https://i.postimg.cc/bwCG6JhD/512123123123123.png" width="300px" title="source: imgur.com" /></a>
 
 ### MC VS DP
 - MC can be more efficient than DP because we don't need to loop through all states

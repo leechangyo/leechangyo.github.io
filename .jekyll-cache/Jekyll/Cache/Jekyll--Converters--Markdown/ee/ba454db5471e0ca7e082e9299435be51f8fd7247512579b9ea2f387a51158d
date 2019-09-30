@@ -1,0 +1,69 @@
+I"�<h1 id="temporal-difference-td-learning">Temporal Difference (TD) Learning</h1>
+<ul>
+  <li>this section is a 3rd technique for solving MDPs</li>
+  <li>TD = Temporal Difference(TD) Learning</li>
+  <li>Combines ideas from DP and MC</li>
+  <li>Disadvantage of DP: requires full model of environment, never learns from experience</li>
+  <li>MC and TD learn from experience</li>
+  <li>MC can only update after completing episode, but DP uses Bootstrapping(Making an initial estimate)</li>
+  <li>We will see that TD also uses Bootstrapping and is fully online, can update value during an episode
+    <h2 id="1-td-learning">1. TD Learning</h2>
+  </li>
+  <li>Same approach as before</li>
+  <li>First Predict Problem</li>
+  <li>them control problem</li>
+  <li>2 control methods:
+    <ul>
+      <li>SARSA</li>
+      <li>Q-Learning</li>
+    </ul>
+  </li>
+  <li>Model-Free Reinforcement Learning</li>
+  <li>TD methods learn directly from episode of experience.</li>
+  <li>no Knowledge of MDP Transition / rewards</li>
+  <li>TD learns from incomplete episodes by Bootstrapping</li>
+  <li>TD updates a guess towards a guess
+<a href="https://postimg.cc/fkPHCsWG"><img src="https://i.postimg.cc/28kPzjsS/41231312313.png" width="500px" title="source: imgur.com" /><a></a></a></li>
+  <li>MC와 다른점은, MC는 실제 에피소드가 끝나고 받게 되는 보상을 사용하여 Value Function을 업데이트 하였다</li>
+  <li>TD에서는 실제 보상과 다음 step에 대한 미래추정가치를 사용해서 학습한다.</li>
+  <li>이때 사용하는 보상과 Value Function의 합을 TD Target
+-그리고 TD Target 과 실제 V(S)와의 차이를 TD error라고 표현한다.
+<a href="https://postimg.cc/FfJFfNRh"><img src="https://i.postimg.cc/TPtK4Pv5/14141241313.png" width="500px" title="source: imgur.com" /><a></a></a></li>
+  <li>MC에서의 Value function이 업데이트 되는 과정이 왼쪽(에피소드가 전체적으로 끝나서 그의 보상을 나누어 단계별로 업데이트)</li>
+  <li>TD는 각 단계별로 업데이트가 되는 과정으로 오른쪽 그림</li>
+  <li>TD의 장점은 에피소드 중간에서도 학습을 하게 된다는 것이다.</li>
+  <li>MC에서는 에피소드가 끝날때까지 기다렸다가 업데이트가 발생하고 학습하기 떄문이다.</li>
+  <li>TD는 종료 없는 연속적인 에피소드에서도 학습할 수 있다.</li>
+  <li>Return $G_t$ = R(t+1)+ɣR(t+2)+…+ɣ^(t-1)$R_T) is unbiased estimate of $v_π$($S_t$)</li>
+  <li>True TD Target  R(t+1)+ɣV(S(t+1)) is biased estimate of $v_π$($S_t$)</li>
+  <li>TD Target is much lower variance than the return:
+    <ul>
+      <li>return depends on many random actions, transitions, rewards</li>
+      <li>TD Target depends on one random action, transition, reward</li>
+    </ul>
+  </li>
+  <li>V policy가 실제 G에 대해서 unbias라 할때는 TD Target도 V policy를 추종하기 unbias이다. 하지만 TD Target에 V policy를 추정하는 V(St+1)를 사용하기에  실제값이 아니라 실제값을 추정하는 값임으로 bias가 발생한다. 그리고 TD Target은 단지 하나의 step에서만 계산하기에 noise가 작게 되므로 상대적으로 variance가 낮게 나타난다.</li>
+  <li>MC has high variance, zero bias
+    <ul>
+      <li>good convergence properties</li>
+      <li>even with function approximation</li>
+      <li>not very sensitive to inital value</li>
+      <li>very simple to understand and use</li>
+    </ul>
+  </li>
+  <li>TD has low variance, some bias
+    <ul>
+      <li>Usually more efficient than MC</li>
+      <li>TD(0) converges to $v_π$(s)</li>
+      <li>but not always with function approximation</li>
+      <li>More sensitive to intial value</li>
+    </ul>
+  </li>
+  <li>Compare on vairance between MC and TD
+<a href="https://postimg.cc/hhyS0pYJ"><img src="https://i.postimg.cc/L6Rn2WBV/41241313123.png" width="500px" title="source: imgur.com" /><a></a></a></li>
+  <li>Bootstrapping이 더 학습하는데 효율적이다.</li>
+  <li>MC and TD converge : V(s) -&gt; $v_π$(s) as experience -&gt; ∞</li>
+  <li>but what about batch solution for finite experience
+<a href="https://postimg.cc/RqDW0S4b"><img src="https://i.postimg.cc/QxX10CPs/41241312312312312312.png" width="300px" title="source: imgur.com" /><a></a></a></li>
+</ul>
+:ET

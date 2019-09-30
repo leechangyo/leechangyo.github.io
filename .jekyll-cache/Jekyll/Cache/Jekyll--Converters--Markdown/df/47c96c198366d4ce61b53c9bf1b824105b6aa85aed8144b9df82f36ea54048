@@ -1,0 +1,28 @@
+I"ö<h1 id="temporal-difference-td-learning">Temporal Difference (TD) Learning</h1>
+<ul>
+  <li>this section is a 3rd technique for solving MDPs</li>
+  <li>TD = Temporal Difference(TD) Learning</li>
+  <li>Combines ideas from DP and MC</li>
+  <li>Disadvantage of DP: requires full model of environment, never learns from experience</li>
+  <li>MC and TD learn from experience</li>
+  <li>MC can only update after completing episode, but DP uses Bootstrapping(Making an initial estimate)</li>
+  <li>We will see that TD also uses Bootstrapping and is fully online, can update value during an episode
+    <h2 id="1-td-learning">1. TD Learning</h2>
+  </li>
+  <li>Same approach as before</li>
+  <li>First Predict Problem</li>
+  <li>them control problem</li>
+  <li>2 control methods:
+    <ul>
+      <li>SARSA</li>
+      <li>Q-Learning</li>
+    </ul>
+  </li>
+  <li>Model-Free Reinforcement Learning</li>
+  <li>TD methods learn directly from episode of experience.</li>
+  <li>no Knowledge of MDP Transition / rewards</li>
+  <li>TD learns from incomplete episodes by Bootstrapping</li>
+  <li>TD updates a guess towards a guess
+<a href="https://postimg.cc/fkPHCsWG"><img src="https://i.postimg.cc/28kPzjsS/41231312313.png" width="500px" title="source: imgur.com" /><a></a></a></li>
+</ul>
+:ET
