@@ -1,0 +1,472 @@
+I"0<h1 id="example-1">Example 1</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+/*functions / methods */
+//parameter
+void welcome(); //declaration of function, procedure
+bool isNumber(string);
+void enterName();
+double add(double a, double b) {return a + b;}
+void changeValueTo10(int a)
+{
+  a = 10;
+}
+int main()
+{
+   // welcome();
+   /* enterName();
+    enterName();
+    enterName();*/
+    char ch;
+    cout &lt;&lt; "Do you want to end the program? (Y/N)" &lt;&lt; endl;
+
+    cin &gt;&gt; ch;
+    if (ch == 'Y' || ch == 'y')
+    return 0;
+   // cout &lt;&lt; add(4,5);
+    int a = 5;
+
+    changeValueTo10(a);
+
+    cout &lt;&lt; a;
+
+    return 0;
+}
+
+void welcome()
+{
+    cout &lt;&lt; "HEllo, welcome in my program!! :-)" &lt;&lt; endl;
+}
+bool isNumber(string tmp)
+{
+    if (tmp[0] == '0')
+        return false;
+    for (int i = 0; i &lt; tmp.length(); i++)
+    {
+        if (!(tmp[i] &gt;= 48 &amp;&amp; tmp[i] &lt;= 57))
+            return false;
+    }
+
+    return true;
+}
+void enterName()
+{
+    string tmp;
+
+    cout &lt;&lt; "Enter the number: " &lt;&lt; endl;
+    cin &gt;&gt; tmp; //124
+
+    if (isNumber(tmp))
+        cout &lt;&lt; "Number entered properly " &lt;&lt; endl;
+    else
+        cout &lt;&lt; "Number wasn't entered properly " &lt;&lt; endl;
+}
+
+</code></pre></div></div>
+
+<h1 id="example-2">Example 2</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#define PI 3.14
+using namespace std;
+// the belows are declaration of function
+void initMenu();
+void menuDecision(int);
+double areaCircle(double);
+double areaSquare(double);
+double areaRectangle(double, double);
+double areaTriangle(double, double);
+int main()
+{
+    int choice;
+    char cont;
+    do
+    {
+        system("cls"); //clear screen = cls
+        initMenu();
+
+        cin &gt;&gt; choice;
+
+        menuDecision(choice);
+
+        do
+        {
+            cout &lt;&lt; "Do you want to continue the program? (Y/N)" &lt;&lt; endl;
+            cin &gt;&gt; cont;
+        } while(cont != 'y' &amp;&amp; cont != 'Y' &amp;&amp; cont != 'N' &amp;&amp; cont != 'n');
+
+
+    } while(cont == 'y' || cont == 'Y');
+
+    return 0;
+}
+void initMenu()
+{
+    cout &lt;&lt; "Enter option:" &lt;&lt; endl;
+    cout &lt;&lt; "1. Circle" &lt;&lt; endl;
+    cout &lt;&lt; "2. Square" &lt;&lt; endl;
+    cout &lt;&lt; "3. Rectangle" &lt;&lt; endl;
+    cout &lt;&lt; "4. Triangle" &lt;&lt; endl;
+}
+void menuDecision(int choice)
+{
+    double r, a, b, h;
+    switch(choice)
+    {
+        case 1:
+            cout &lt;&lt; "Enter the radius: " &lt;&lt; endl;
+            cin &gt;&gt; r;
+            areaCircle(r);
+            break;
+        case 2:
+            cout &lt;&lt; "Enter the side of a square: " &lt;&lt; endl;
+            cin &gt;&gt; a;
+            areaSquare(a);
+            break;
+        case 3:
+            cout &lt;&lt; "Enter the width and height of a rectangle: " &lt;&lt; endl;
+            cin &gt;&gt; a &gt;&gt; b;
+            areaRectangle(a, b);
+            break;
+        case 4:
+            cout &lt;&lt; "Enter the base and height of a triangle: " &lt;&lt; endl;
+            cin &gt;&gt; a &gt;&gt; h;
+            areaTriangle(a, h);
+            break;
+        default:
+            cout &lt;&lt; "You didn't choose any of the option from above" &lt;&lt; endl;
+
+    }
+}
+double areaCircle(double r)
+{
+    double result = PI * r * r;
+
+    cout &lt;&lt; "The area of a circle that radius is " &lt;&lt; r &lt;&lt; " = " &lt;&lt; result &lt;&lt; endl;
+
+    return result;
+}
+double areaSquare(double a)
+{
+    double result = a * a;
+
+    cout &lt;&lt; "The area of a square that side is " &lt;&lt; a &lt;&lt; " = " &lt;&lt; result &lt;&lt; endl;
+
+    return result;
+}
+double areaRectangle(double a, double b)
+{
+    double result = a * b;
+
+    cout &lt;&lt; "The area of a rectangle that first side is " &lt;&lt; a &lt;&lt; " the second side is " &lt;&lt; b &lt;&lt; " = " &lt;&lt; result &lt;&lt; endl;
+
+    return result;
+}
+double areaTriangle(double a, double h)
+{
+    double result = (1/2.0) * a * h;
+
+    cout &lt;&lt; "The area of a rectangle that first side is " &lt;&lt; a &lt;&lt; " the second side is " &lt;&lt; h &lt;&lt; " = " &lt;&lt; result &lt;&lt; endl;
+
+    return result;
+}
+
+</code></pre></div></div>
+
+<h1 id="example-3">Example 3</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+/* overloading functions */
+int power(int, int);
+double power(double, int);
+int main()
+{
+
+    cout &lt;&lt; power(2, 6) &lt;&lt; endl;
+
+    return 0;
+}
+
+/*
+    2 ^ 3 = 2 * 2 * 2
+
+    2 ^ 1 = 2
+    2 ^ 2 = 4
+    2 ^ 3 = 8
+*/
+int power(int b, int e) // b = 8, e = 1
+{
+    int tmp = b; //tmp = 2
+    int i = 0;
+
+    while(i++ &lt; e)
+    {
+        cout &lt;&lt; tmp &lt;&lt; " ^ " &lt;&lt; i &lt;&lt; " = " &lt;&lt; b &lt;&lt; endl;
+        if (i != e)
+            b *= tmp; //b = b * tmp;
+    }
+
+    return b;
+}
+double power(double b, int e)
+{
+    double tmp = b; //tmp = 2
+    while(e-- &gt; 1)
+        b *= tmp; //b = b * tmp;
+
+    return b;
+}
+
+</code></pre></div></div>
+<h1 id="example-4">Example 4</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+/*scope / range of varables */
+
+int globalVariable;
+
+main()
+{
+    int localVariable;
+/*
+    cout &lt;&lt; "value of globalVariable: " &lt;&lt; globalVariable &lt;&lt; endl;
+    cout &lt;&lt; "value of localVariable: " &lt;&lt; localVariable &lt;&lt; endl;
+*/
+    int a = 10;
+/*
+    if (a == 10)
+    {
+        int result = a * 10;
+    }
+
+
+
+    cout &lt;&lt; result &lt;&lt; endl;*/
+
+    int nr, result = 0;
+    int i = 0;
+    for (; i &lt; 3; i++) // 3,2,3 - will the result be 8??? NOOOOOOOOO, we have to assign 0 to the result!
+    {
+        cout &lt;&lt; "Enter " &lt;&lt; (i + 1) &lt;&lt; " number" &lt;&lt; endl;
+        cin &gt;&gt; nr;
+        result += nr; //result = result + nr;
+    }
+
+    cout &lt;&lt; result &lt;&lt; endl;
+    cout &lt;&lt; "we added " &lt;&lt; i &lt;&lt; " numbers" &lt;&lt; endl;
+}
+</code></pre></div></div>
+
+<h1 id="example-5">Example 5</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+
+double minValue(double tab[]);
+double maxValue(double tab[]);
+
+
+int main ()
+{
+    double tab[5];
+
+    for (int i = 0; i &lt; 5; i++)
+    {
+        cout &lt;&lt; "Input " &lt;&lt; i+1 &lt;&lt; " number: ";
+        cin &gt;&gt; tab[i];
+    }
+
+    cout &lt;&lt; "The minimum value was: " &lt;&lt; minValue(tab) &lt;&lt; endl;
+    cout &lt;&lt; "The maximum value was: " &lt;&lt; maxValue(tab) &lt;&lt; endl;
+
+    return 0;
+}
+
+double minValue(double tab[])
+{
+    double minValue = tab[0];
+
+    for (int i = 1; i &lt; 5; i++)
+    {
+        if (minValue &gt; tab[i])
+            minValue = tab[i];
+
+    }
+
+    return minValue;
+}
+double maxValue(double tab[])
+{
+    double maxValue = tab[0];
+
+    for (int i = 1; i &lt; 5; i++)
+    {
+        if (maxValue &lt; tab[i])
+            maxValue = tab[i];
+
+    }
+
+    return maxValue;
+}
+
+</code></pre></div></div>
+<p><a href="https://postimg.cc/3dw3wh7t"><img src="https://i.postimg.cc/nc4r0VWf/412413132.png" width="300px" title="source: https://stackoverflow.com/questions/25475384/when-and-why-do-i-need-to-use-cin-ignore-in-c/41191428" /><a></a></a></p>
+<h1 id="example-6">Example 6</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;limits&gt; // to make "cin.ignore(numeric_limits&lt;streamsize&gt;::max(), '\n');"r active
+#define PI 3.14
+using namespace std;
+/*validating data
+    buffer - temporary array
+*/
+void initMenu();
+void menuDecision(int);
+double areaCircle(double);
+double areaSquare(double);
+double areaRectangle(double, double);
+double areaTriangle(double, double);
+bool isValid(string);
+bool isValid();
+int main()
+{
+    int choice;
+    char cont;
+    do
+    {
+        system("cls"); //clear screen = cls
+        initMenu();
+
+        while(!(cin &gt;&gt; choice))
+        {
+            //cout &lt;&lt; "state before: " &lt;&lt; cin.rdstate() &lt;&lt; endl;
+            cin.clear();
+            //cout &lt;&lt; "state after: " &lt;&lt; cin.rdstate() &lt;&lt; endl;
+            cin.ignore(numeric_limits&lt;streamsize&gt;::max(), '\n'); // skip the '\n' charcter left in the input buffer
+            // 정수를 입력받은 후에 문자열을 입력받지 않고 다음 코드로 넘어간다. 버퍼에 정수값을 누른 엔터가 남아있어 그렇다. getline을 이용하기 위해서는 정수값을 입력받은뒤 ignore을 사용한다.
+
+            system("cls");
+            initMenu();
+            cout &lt;&lt; "You've just typed the wrong data to the input. " &lt;&lt; endl;
+        }
+
+        menuDecision(choice);
+
+        do
+        {
+            cout &lt;&lt; "Do you want to continue the program? (Y/N)" &lt;&lt; endl;
+            cin &gt;&gt; cont; //asdfg
+            cin.ignore(numeric_limits&lt;streamsize&gt;::max(), '\n');
+
+        } while(cont != 'y' &amp;&amp; cont != 'Y' &amp;&amp; cont != 'N' &amp;&amp; cont != 'n');
+
+
+    } while(cont == 'y' || cont == 'Y');
+
+    return 0;
+}
+void initMenu()
+{
+    cout &lt;&lt; "Enter option:" &lt;&lt; endl;
+    cout &lt;&lt; "1. Circle" &lt;&lt; endl;
+    cout &lt;&lt; "2. Square" &lt;&lt; endl;
+    cout &lt;&lt; "3. Rectangle" &lt;&lt; endl;
+    cout &lt;&lt; "4. Triangle" &lt;&lt; endl;
+}
+void menuDecision(int choice)
+{
+    double r, a, b, h;
+    switch(choice)
+    {
+        case 1:
+
+            do { cout &lt;&lt; "Enter the radius: " &lt;&lt; endl; cin &gt;&gt; r; } while(!isValid());
+            areaCircle(r);
+            break;
+        case 2:
+            cout &lt;&lt; "Enter the side of a square: " &lt;&lt; endl;
+            do { cin &gt;&gt; a; } while(!isValid("The data is wrong, please type it again:"));
+            areaSquare(a);
+            break;
+        case 3:
+            cout &lt;&lt; "Enter the width and height of a rectangle: " &lt;&lt; endl;
+            do { cin &gt;&gt; a &gt;&gt; b; } while(!isValid("The data is wrong, please type it again:"));
+            areaRectangle(a, b);
+            break;
+        case 4:
+            cout &lt;&lt; "Enter the base and height of a triangle: " &lt;&lt; endl;
+            do { cin &gt;&gt; a &gt;&gt; h; } while(!isValid("The data is wrong, please type it again:"));
+            areaTriangle(a, h);
+            break;
+        default:
+            cout &lt;&lt; "You didn't choose any of the option from above" &lt;&lt; endl;
+
+    }
+}
+double areaCircle(double r)
+{
+    double result = PI * r * r;
+
+    cout &lt;&lt; "The area of a circle that radius is " &lt;&lt; r &lt;&lt; " = " &lt;&lt; result &lt;&lt; endl;
+
+    return result;
+}
+double areaSquare(double a)
+{
+    double result = a * a;
+
+    cout &lt;&lt; "The area of a square that side is " &lt;&lt; a &lt;&lt; " = " &lt;&lt; result &lt;&lt; endl;
+
+    return result;
+}
+double areaRectangle(double a, double b)
+{
+    double result = a * b;
+
+    cout &lt;&lt; "The area of a rectangle that first side is " &lt;&lt; a &lt;&lt; " the second side is " &lt;&lt; b &lt;&lt; " = " &lt;&lt; result &lt;&lt; endl;
+
+    return result;
+}
+double areaTriangle(double a, double h)
+{
+    double result = (1/2.0) * a * h;
+
+    cout &lt;&lt; "The area of a rectangle that first side is " &lt;&lt; a &lt;&lt; " the second side is " &lt;&lt; h &lt;&lt; " = " &lt;&lt; result &lt;&lt; endl;
+
+    return result;
+}
+bool isValid(string error_msg)
+{
+    if (cin.rdstate()) //state is wrong when it is not equal to 0
+    {
+        cin.clear();
+        cin.ignore(numeric_limits&lt;streamsize&gt;::max(), '\n');
+        system("cls");
+        initMenu();
+        cout &lt;&lt; error_msg &lt;&lt; endl;
+        return false;
+    }
+
+    return true;
+}
+bool isValid()
+{
+    if (cin.rdstate()) //state is wrong when it is not equal to 0 // state is not wrong when it is equal to 0
+    {
+        cin.clear();
+        cin.ignore(numeric_limits&lt;streamsize&gt;::max(), '\n'); // skip the enter key left in the buffer
+        system("cls");
+        initMenu();
+        return false;
+    }
+
+    return true;
+}
+
+
+</code></pre></div></div>
+:ET

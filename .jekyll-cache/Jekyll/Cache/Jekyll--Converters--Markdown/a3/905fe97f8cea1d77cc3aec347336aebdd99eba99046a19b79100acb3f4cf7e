@@ -1,0 +1,64 @@
+I"X	<h1 id="project-start">Project start</h1>
+<ul>
+  <li>Create Project folder</li>
+  <li>and it will be two folder : sources, Headers.</li>
+  <li>and create main.cpp
+    <blockquote>
+      <p>main.cpp</p>
+    </blockquote>
+  </li>
+</ul>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include "ourfirstlibrary.h"
+</span><span class="n">using</span> <span class="n">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="cm">/* preprocessor directives and multi-file project */</span>
+
+<span class="cp">#define PI 3.14
+</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">showHelp</span><span class="p">();</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">a</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="err">```</span><span class="n">c</span>
+
+<span class="o">-</span> <span class="n">and</span> <span class="n">create</span> <span class="n">outfirstlibrary</span><span class="p">.</span><span class="n">h</span>
+<span class="o">&gt;</span> <span class="n">outfirstlibrary</span><span class="p">.</span><span class="n">h</span>
+
+</code></pre></div></div>
+<p>#ifndef OURFIRSTLIBRARY_H_INCLUDED
+#define OURFIRSTLIBRARY_H_INCLUDED</p>
+
+<p>extern int a; //external (oustide) it means that here we do not reserve MEMORY for variable a
+/**
+    this is going to help you
+*/
+void showHelp();</p>
+
+<p>#endif // OURFIRSTLIBRARY_H_INCLUDED</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+- and create outfirstlibrary.cpp
+&gt; outfirstlibrary.cpp
+
+
+```c
+#include &lt;iostream&gt;
+#include "ourfirstlibrary.h"
+using namespace std;
+
+int a = 50;
+void showHelp()
+{
+    cout &lt;&lt; "this is help" &lt;&lt; endl;
+}
+</code></pre></div></div>
+
+<ul>
+  <li>Head file은 cpp 파일들을 연결시켜주는 역할을 한다. (python 으로 치면 import를 하기 위해 만들어저있는 파일들)</li>
+  <li>head file이 이용되는 이유는 각 파일마다 분류가 나누어 져있는데 나중에 Main 클래스에다가 Import하기 위함이다.</li>
+</ul>
+:ET

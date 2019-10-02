@@ -1,0 +1,15 @@
+I"<h1 id="protectedhttpnlpkookminackrsskanglectcppppphtm">(Protected)[http://nlp.kookmin.ac.kr/sskang/lect/cpp/ppp.htm]</h1>
+<ul>
+  <li>보호(protected) 멤버
+    <ol>
+      <li>필요성</li>
+    </ol>
+    <ul>
+      <li>파생클래스에게만 접근이 허용되는 비공개(private) 멤버
+    2. 속성</li>
+      <li>기본클래스의 비공개(private) 멤버의 속성을 그대로 유지</li>
+      <li>다만, 파생클래스의 접근이 허용된다는 점만이 private과 다름!</li>
+    </ul>
+  </li>
+</ul>
+:ET

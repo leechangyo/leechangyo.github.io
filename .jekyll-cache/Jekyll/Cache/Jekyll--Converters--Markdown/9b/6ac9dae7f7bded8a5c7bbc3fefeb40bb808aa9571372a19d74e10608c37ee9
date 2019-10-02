@@ -1,0 +1,62 @@
+I"�<h1 id="exception">Exception</h1>
+<ul>
+  <li>python try ~ except과 같은 원리이다</li>
+  <li>try ~ catch
+    <ul>
+      <li>try를 하고 오류가 생기면</li>
+      <li>Catch해서 break하겠다라는 의미이다.</li>
+      <li>python보다 추가된건 void 옆에 throw 를 지정해 줘서 catch에 날려버린다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="example">Example</h2>
+<blockquote>
+  <p>Exception.cpp</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+/* Exceptions - handling exceptions */
+class DivisionByZeroException
+{
+    public:
+        void getErrorMessage() { cout &lt;&lt; "Error: Do not divide by zero"; }
+};
+
+double division(double a, double b) throw(DivisionByZeroException)
+{
+    if (b == 0)
+        throw DivisionByZeroException();
+    return a / b;
+}
+int main()
+{
+    double result;
+
+    try
+    {
+        result = division(5, 0);
+
+        cout &lt;&lt; "the result is " &lt;&lt; result &lt;&lt; endl;
+    }
+    catch(DivisionByZeroException e)
+    {
+        e.getErrorMessage();
+    }
+    catch(...)
+    {
+        cout &lt;&lt; "This is a message that will be shown, when other catch instructions wont be invoked " &lt;&lt; endl;
+    }
+//    cout &lt;&lt; "lalal" &lt;&lt; endl;
+
+    return 0;
+}
+</code></pre></div></div>
+
+<h1 id="namespaces">Namespaces</h1>
+
+<h2 id="example-1">Example</h2>
+:ET

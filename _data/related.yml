@@ -1,10 +1,6 @@
-- post: cohesion
+- post: what is Reinforcement Learning
   related:
-  - word2vecpos2
-  - word2vecpos
-  - BranchingEntropy
-  - nounontology2
-  - nounontology
+  - Defining Reinforcement Learning
 - post: nounontology2
   related:
   - nounontology

@@ -1,0 +1,141 @@
+I"<h1 id="exercise">Exercise</h1>
+
+<blockquote>
+  <p>main.cpp</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;conio.h&gt;
+#include &lt;cstdlib&gt;
+#include "library.h"
+#include "book.h"
+#include "user.h"
+
+using namespace std;
+
+
+int main()
+{
+    const Book book1("Arkadiusz Wlodarczyk", "C++ course", 2009);
+    const Book book2("Wioletta Kozik", "JAVA course", 2016);
+    const Book book3("Adrian Szuszkiewicz", "C# course", 2002);
+    const Book book4 = book3;
+    const Book book5 = book3;
+    const Book book6 = book3;
+
+    Library library(5);
+    Librarian librarian("Foo", "Bar", 5);
+    Borrower borrower("Edek", "Czytacz", 5);
+
+    library.addBook(book1);
+    library.addBook(book2);
+    library.addBook(book3);
+    library.addBook(book4);
+    library.addBook(book6);
+
+    int position;
+    char choice;
+
+    while (true)
+    {
+        library.showBooks();
+        borrower.showBooks();
+        cout &lt;&lt; "Would you like to Borrow - B/b or Return - R/r: ";
+		cin &gt;&gt; choice;
+
+        switch(choice)
+        {
+        case 'b':
+        case 'B':
+            {
+                cout &lt;&lt; "Which book would you like to rent, POSITION IN LIBRARY: ";
+                cin &gt;&gt; position;
+                librarian.lendBook(library, borrower, position);
+                break;
+            }
+        case 'r':
+        case 'R':
+            {
+                cout &lt;&lt; "Which book would you like to return, POSITION IN USER: ";
+                cin &gt;&gt; position;
+                borrower.returnBook(library, position);
+                break;
+            }
+		default:
+			break;
+        }
+        system("cls");
+    }
+    return 0;
+}
+</code></pre></div></div>
+
+<blockquote>
+  <p>library.h</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#ifndef LIBRARY_H_INCLUDED
+#define LIBRARY_H_INCLUDED
+
+#include "book.h"
+#include "user.h"
+
+class Library
+{
+    private:
+        int currentAmountOfBooks;
+        int maxAmountOfBooks;
+        Book* books;
+
+    public:
+        void addBook(const Book&amp;);
+        Book&amp; getBook(int);
+        void showBooks();
+
+        friend void Librarian::lendBook(Library&amp;, Borrower&amp;, int);
+
+        Library(int);
+        ~Library();
+};
+
+
+#endif // LIBRARY_H_INCLUDED
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>book.h</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#ifndef BOOK_H_INCLUDED
+#define BOOK_H_INCLUDED
+
+#include &lt;iostream&gt;
+
+class Book
+{
+    private:
+        std::string title;
+        std::string author;
+        int publicationYear;
+        int bookId;
+
+    public:
+        static int numberOfBooks;
+
+        std::string getTitle() const;
+        std::string getAuthor() const;
+        int getPublicationYear() const;
+        int getBookId() const;
+
+        Book(const Book&amp;);
+        Book(std::string, std::string, int);
+        Book();
+        ~Book();
+};
+
+
+#endif // BOOK_H_INCLUDED
+
+</code></pre></div></div>
+:ET

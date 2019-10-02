@@ -1,0 +1,138 @@
+I"š<h1 id="exercise">Exercise</h1>
+<blockquote>
+  <p>Main.cpp</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include "farm.h"
+
+using namespace std;
+/* polymorphism, virtual functions, abstract class */
+void voiceOfAnimal(Animal *);
+void voiceOfAnimal(Animal &amp;);
+int main()
+{
+
+    Dog dog;
+    Cat cat;
+    Cow cow;
+/*
+    cout &lt;&lt; animal.getVoice() &lt;&lt; endl;
+    cout &lt;&lt; dog.getVoice() &lt;&lt; endl;
+    cout &lt;&lt; cat.getVoice() &lt;&lt; endl;
+    cout &lt;&lt; cow.getVoice() &lt;&lt; endl;
+    */
+    voiceOfAnimal(&amp;cow); // why we use &amp; because it is for class usually. so it took as reference
+
+
+
+    return 0;
+}
+void voiceOfAnimal(Animal *p)
+{
+    cout &lt;&lt; p-&gt;getVoice() &lt;&lt; endl;
+}
+void voiceOfAnimal(Animal &amp;p)
+{
+    cout &lt;&lt; p.getVoice() &lt;&lt; endl;
+}
+</code></pre></div></div>
+
+<blockquote>
+  <p>farm.h</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#ifndef FARM_H_INCLUDED
+#define FARM_H_INCLUDED
+#include &lt;iostream&gt;
+
+using namespace std;
+
+class Animal
+{
+        protected:
+            string voice;
+        public:
+            Animal();
+            ~Animal();
+            virtual string getVoice() = 0;
+};
+class Dog : public Animal
+{
+            string sign;
+        public:
+            Dog();
+            ~Dog();
+            string getVoice() { return voice + " " + sign; }
+};
+class Cat : public Animal
+{
+            string sign;
+        public:
+            Cat();
+            ~Cat();
+            string getVoice() { return voice  + " " +  sign; }
+};
+class Cow : public Animal
+{
+            string sign;
+        public:
+            Cow();
+            ~Cow();
+            string getVoice() { return voice  + " " +  sign; }
+};
+
+#endif // FARM_H_INCLUDED
+</code></pre></div></div>
+
+<blockquote>
+  <p>point.cpp</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include "point.h"
+
+
+using namespace std;
+
+Point::Point(int x)
+{
+    this-&gt;x = x;
+    cout &lt;&lt; "The constructor from the Point class has just been invoked" &lt;&lt; endl;
+}
+Point::~Point()
+{
+    cout &lt;&lt; "The destructor from the Point class has just been invoked" &lt;&lt; endl;
+}
+void Point::setX(int x)
+{
+    this-&gt;x = x;
+    cout &lt;&lt; "Im from Point" &lt;&lt; endl;
+}
+
+Point2D::Point2D(int x, int y) : Point(x) // parents
+{
+    this-&gt;y = y;
+    cout &lt;&lt; "The constructor from the Point2D class has just been invoked" &lt;&lt; endl;
+}
+Point2D::~Point2D()
+{
+    cout &lt;&lt; "The destructor from the Point2D class has just been invoked" &lt;&lt; endl;
+}
+
+void Point2D::setY(int y)
+{
+    this-&gt;y = y;
+}
+void Point2D::setXY(int x, int y)
+{
+    setX(x);
+    setY(y);
+}
+void Point2D::setX(int x)
+{
+    this-&gt;x = x;
+    cout &lt;&lt; "Im from Point2D" &lt;&lt; endl;
+}
+</code></pre></div></div>
+:ET

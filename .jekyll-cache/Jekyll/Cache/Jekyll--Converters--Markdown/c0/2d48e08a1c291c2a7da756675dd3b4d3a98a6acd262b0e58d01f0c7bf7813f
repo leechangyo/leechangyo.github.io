@@ -1,0 +1,597 @@
+I"�Z<h1 id="pointer"><a href="https://ko.wikibooks.org/wiki/C_%ED%94%84%EB%A1%9C%EA%B7%B8%EB%9E%98%EB%B0%8D_%EC%9E%85%EB%AC%B8/%ED%8F%AC%EC%9D%B8%ED%84%B0">Pointer</a></h1>
+<ul>
+  <li>변수(Variable)가 무엇인가? 변수는 <em>메모리 공간</em> 이다. 컴퓨터에 꽃혀있는 RAM 내 어딘가를 의미한다. 그리고 RAM에 있는 메모리 공간에는 일련번호가 붙어있고, 모든 변수는 일련번호와 크기가 정해져있다. 단지 일련번호를 외워가며 프로그램을 작성할 수 없으니 일련번호와 이름을 비교하는 비교표를 컴파일러가 작성하고, 프로그래머는 그 비교표에 있는 이름을 외워서 프로그램을 작성하면 컴파일러가 나중에 이름을 일련변호로 변환하는 작업을 해준다.</li>
+  <li>포인터 역시 위에서 언급한 변수의 한 종류이다. 다른 변수와의 차이점이라면 위에서 말한 ‘메모리 공간의 일련번호’를 저장할 수 있는 변수다. 정수형 변수에는 정수값이, 부동소수형 변수에는 부동소수 값이, 그리고 포인터형 변수에는 ‘메모리 공간의 일련번호’가 저장된다.</li>
+  <li>즉 ‘포인터=메모리 공간의 일련번호’</li>
+  <li>그럼 메모리 공간의 일련본호 – 주소 따위를 저장해서 무엇에 쓰냐라는 문제가 대두 된다. 컴파일러가 알아서 이름을 주소로 바꾸어주는데 굳이 주소를 다루어야 할 필요가 있겠는가? 답은 보나마나 ‘물론’이다. 처음에 C라는 언어는 운영체제를 만들기 위해 만들어진 언어이며 하드웨어를 다루는데 가장 유리했던 언어이다. 포인터가 바로 그 <strong>‘하드웨어를 다루는 힘’</strong> 이다.
+    <h2 id="기본-포인터">기본 포인터</h2>
+  </li>
+  <li>‘변수=메모리 공간’이고 ‘포인터=메모리 공간의 주소를 저장하는 변수’이었으니, 결국 포인터는 <strong>‘변수의 위치를 저장하는 변수’</strong> 라는 의미가 된다.</li>
+  <li>아래 코드를 잠시 보자</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;stdio.h&gt;
+int main (int argc, char * argv[])
+{
+    int var = 10;
+    int *vp = &amp;var;
+
+    printf("The value of pointer: %x\n", vp);
+    printf("The value before: %d, %d\n", var, *vp);
+    var = 20;
+    printf("The value after: %d, %d\n", var, *vp);
+    *vp = 30;
+    printf("The value then: %d, %d\n", var, *vp);
+    return 0;
+}
+
+</code></pre></div></div>
+<ul>
+  <li>5번 라인에서 vp라는 변수를 선언하면서 이름 앞에 (asterisk)가 붙어있는 걸 볼 수 있다. 실상 이 별표의 타입 일부로 ‘int (asterisk)’가 하나의 타입이 된다. ‘int (asterisk)’의 의미는 ‘정수값을 저장하는 메모리 공간의 주소를 저장할 수 있는 변수’이다. 다음과 같은 이유에 의해 ‘주소가 저장되는 변수’에도 불구하고 일반적인 변수의 타입이 추가로 붙는다.
+    <ol>
+      <li>변수에 타입이 있는 이유는 변수에 저장되어있는 데이터를 처리할 방법을 컴파일러에게 알려주기 위함이다</li>
+      <li>포인터 변수에 주소를 넣는 이유는 그 주소 자체가 필요 해서가 아니라 주소에 해당되는 메모리 공간에 저장되어있는 데이터가 필요해서 이다.</li>
+      <li>결국 포인터 변수에 타입이 존재하는 이유는 포인터 변수에 저장되어있는 주소위치에 있는 데이터를 처리할 방법을 컴파일러에게 알려주기 위함이다.</li>
+    </ol>
+  </li>
+  <li>또한 5번 라인에서 vp에 값을 대입할 때 &amp; 연산자를 사용하는 것을 볼 수 있다. &amp;는 레퍼런스 연산자(reference operator)라 부르며, 변수의 주소를 알아내는데 사용된다. 결국 5번라인은 ‘정수형 포인터 vp를 만들고, var의 주소를 알아내서 vp에 저장한다’ 라는 의미가 된다.</li>
+  <li>반복해서 설명 되었듯이 포인터는 메모리 주소 - 메모리 공간의 일련번호 이다. 결국 vp에 저장되는 값은 실제로는 정수값 이다. 그렇기 때문에 7번라인에 보는 것 과 같이 그 값을 인쇄해 보면 정수값으로 인쇄된다.</li>
+  <li>8, 10, 12번 라인에 걸쳐서 변수 vp 앞에 * 연산자가 붙어있는 것을 볼 수 있다.[1] * 연산자는 포인터 연산자라고 하며, 포인터변수에 저장되어있는 메모리 주소에 해당되는 메모리 공간에 저장되어있는 값을 액세스 하려는 경우에 사용된다. 변수 vp에는 변수 var의 주소가 저장되어 있으므로 결국 (asterisk)vp를 통해 액세스되는 데이터는 var를 통해 액세스 되는 데이터와 동일하다. 9번과 11번 에서보면 var를 수정해서 보여지는 결과난 (asterisk)vp를 통해서 수정해서 보여지는 결과나 같은 것을 보면 유추가 가능할 것 이다.</li>
+</ul>
+
+<h1 id="double-pointer"><a href="https://www.quora.com/What-do-the-two-asterisks-signify-in-C++-when-passing-int-**array">Double Pointer</a></h1>
+<ul>
+  <li>consider this code
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int i = 42;
+int *pi = &amp;i;
+int **ppi = &amp;pi;
+</code></pre></div>    </div>
+  </li>
+  <li>As you can see, the variable “i” is an int which I’ve set to the value 42.</li>
+  <li>pi is a <strong>pointer-to-int</strong>, which I’ve set to the address of i.</li>
+  <li>ppi is a <strong>pointer-to-pointer-to-int</strong>, which I’ve set to the address of pi.</li>
+  <li><em>So that’s all the double-asterisk means. It means “pointer-to-pointer”</em></li>
+  <li><strong>A pointer is a variable that holds a memory address. A pointer to a pointer simply holds the memory address of another pointer.</strong></li>
+  <li>In typical usage:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int i;
+</code></pre></div>    </div>
+  </li>
+  <li>This is called a “scalar” in computer science, which just means “an atomic quantity that can hold one value at a time”.
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int *pi;
+</code></pre></div>    </div>
+  </li>
+  <li>This is <strong>typically an array of ints.</strong> That is, <strong>it is a variable that stores the memory location of a block of memory that stores a series of ints</strong>. Syntactically, the C++ language will let you treat <strong>pi as an array</strong>. Thus, you can write:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for (int x = 0; x &lt; 10; ++x) pi[x] = x;
+</code></pre></div>    </div>
+  </li>
+  <li>This would store the values 0, 1, 2, 3, etc. in the first 10 spots of the memory block pointed to by pi.</li>
+  <li>so then,
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int **ppi;
+</code></pre></div>    </div>
+  </li>
+  <li>When you see this in code, <strong>it’s typically being used as a pointer to an array of pointers.</strong> In other words, <strong>a 2-dimensional array.</strong> <strong>It points to a block of memory that stores pointers, each of which points to a block of memory that stores ints.</strong> Again, C++ will let you treat it this way and write:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for (int x = 0; x &lt; 10; ++x) {
+  for (int y = 0; y &lt; 10; ++y) {
+      ppi[y][x] = 42;
+  }
+}
+</code></pre></div>    </div>
+  </li>
+  <li>Conceptually, what this is doing is setting all of the cells in a 10x10 block of a matrix to the value 42.</li>
+  <li>Now, having said all of that, you asked “what does it mean when passing….”</li>
+  <li>Consider this:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>void func ( int i ) {
+  // do something
+}
+</code></pre></div>    </div>
+  </li>
+  <li>Obviously, that’s a function that takes an integer argument. Simple.</li>
+  <li>Now this:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>void func ( int *pi ) {
+  // do something
+}
+</code></pre></div>    </div>
+  </li>
+  <li>Without anything else to go on but this function declaration, there are two possibilities:
+    <ol>
+      <li>This is a function that takes an array of integers as an argument</li>
+      <li>This is a function that takes an integer, passed by reference, as an argument.</li>
+    </ol>
+  </li>
+  <li>“Passed by reference” means that rather than merely(仅仅) passing a value to the function, <strong>I’m going to pass a pointer to (a.k.a. “reference to”) the value.</strong>d <strong>The reason to do this is so that the function will have the power to change the value.</strong></li>
+  <li>Here’s a super-simple usage that you might see:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>private:
+  int _myData;
+public:
+  void get_data ( int *pData ) {
+     *pData = _myData;
+  }
+</code></pre></div>    </div>
+  </li>
+  <li>When calling get_data, <strong>you’d pass it the address to the variable you want to store the data in</strong>, and the function would fill it in for you. That’s why you pass it by reference.</li>
+  <li>Now we come at last to this:
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>void func ( int **ppi ) {
+  // do something
+}
+</code></pre></div>    </div>
+  </li>
+  <li>What is this? Well, it’s either:
+    <ol>
+      <li>A function that takes a 2-dimensional array (matrix) of integers as an argument, or</li>
+      <li>A function that takes an array of integers, passed by reference, as an argument</li>
+    </ol>
+  </li>
+  <li>Once again, if it’s the latter, the reason would be that the function needs the ability to change the memory address the array points to — that is, point it somewhere else.</li>
+</ul>
+
+<h1 id="example-1">Example 1</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+/* POINTERS ARE ordinary variables that can store addresses of variables */
+int main()
+{
+    int var = 5;
+    int a = 20;
+
+    cout &lt;&lt; *&amp;var &lt;&lt; endl;
+
+    int * const p = &amp;var; //that asterisk here is just used to INFORM about that this variable is a POINTER so it is a variable that can point to address of another variable
+
+   // p = &amp;var;
+
+    cout &lt;&lt; *p &lt;&lt; endl; //that asterisk here is used to RETRIEVE (GET) value FROM indicated (pointed) area in our memory (address)
+
+    //*p = 20;
+//    var = 60;
+    *p = 60;
+    cout &lt;&lt; "var: " &lt;&lt; var &lt;&lt; endl;
+    cout &lt;&lt; "*p: "&lt;&lt; *p &lt;&lt; endl;
+    cout &lt;&lt; "a: "&lt;&lt; a &lt;&lt; endl;
+
+    int * const p_const = &amp;a; //this is a pointer that has to be initialized when defined, because it cannot change after defining the thing that it is pointing to (address)
+
+    const int * p_2 = &amp;a; //this is a pointer that cannot change the value that is under address its pointing to.
+
+    const int * const p_3 = &amp;a; //this is a pointer that cannot change the value that is under address its pointing to and also it cant change the address
+
+    cout &lt;&lt; endl &lt;&lt; endl &lt;&lt; endl;
+
+    int ordinary_var = 10;
+
+    int *ordinary_p = &amp;ordinary_var;
+
+    cout &lt;&lt; "ordinary_var: " &lt;&lt; ordinary_var &lt;&lt; endl; //integer value
+    cout &lt;&lt; "&amp;ordinary_var: " &lt;&lt; &amp;ordinary_var &lt;&lt; endl; //integer value
+    cout &lt;&lt; "ordinary_p: " &lt;&lt; ordinary_p &lt;&lt; endl; //address
+    cout &lt;&lt; "*ordinary_p: " &lt;&lt; *ordinary_p &lt;&lt; endl; //integer value from pointed place (ordinary_var)
+    cout &lt;&lt; "&amp;ordinary_p: " &lt;&lt; &amp;ordinary_p &lt;&lt; endl; //address of pointer itself
+
+    int ** p_pointing_to_address_of_pointer = &amp;ordinary_p;
+
+    cout &lt;&lt; "p_pointing_to_address_of_pointer: " &lt;&lt; p_pointing_to_address_of_pointer &lt;&lt; endl;
+
+    return 0;
+}
+
+</code></pre></div></div>
+
+<h1 id="c_str"><a href="https://www.geeksforgeeks.org/basic_string-c_str-function-in-c-stl/">c_str()</a></h1>
+<ul>
+  <li>The basic_string::c_str() is a builtin function in C++ which returns a pointer to an array that contains a null-terminated sequence of characters representing the current value of the basic_string object. This array includes the same sequence of characters that make up the value of the basic_string object plus an additional terminating null-character at the end.</li>
+  <li>Retrun Value : The function returns a constant Null terminated pointer to the character array storage of the string.
+```
+// C++ code for illustration of
+// basic_string::c_str function
+#include &lt;bits/stdc++.h&gt;
+#include <string>
+using namespace std;</string></li>
+</ul>
+
+<p>int main()
+{
+    // declare a example string
+    string s1 = “GeeksForGeeks”;</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// check if the size of the string is same as the
+// size of character pointer given by c_str
+if (s1.size() == strlen(s1.c_str())) {
+    cout &lt;&lt; "s1.size is equal to strlen(s1.c_str()) " &lt;&lt; endl;
+}
+else {
+    cout &lt;&lt; "s1.size is not equal to strlen(s1.c_str())" &lt;&lt; endl;
+}
+
+// print the string
+printf("%s \n", s1.c_str()); } ```
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+// C++ code for illustration of
+// basic_string::c_str function
+#include &lt;bits/stdc++.h&gt;
+#include &lt;string&gt;
+using namespace std;
+
+int main()
+{
+    // declare a example string
+    string s1 = "Aditya";
+
+    // print the characters of the string
+    for (int i = 0; i &lt; s1.length(); i++) {
+        cout &lt;&lt; "The " &lt;&lt; i + 1 &lt;&lt; "th character of string " &lt;&lt; s1
+             &lt;&lt; " is " &lt;&lt; s1.c_str()[i] &lt;&lt; endl;
+    }
+}
+</code></pre></div></div>
+
+<h1 id="example-2">Example 2</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+int main()
+{
+    string text = "this a test"; // t r a l a \0
+
+/*
+    for (int i = 0; i &lt; text.length(); i++)
+    {
+        cout &lt;&lt; text[i] &lt;&lt; endl;
+    }
+*/
+  /*  char ch = text[0];
+
+   // cout &lt;&lt; ch &lt;&lt; endl;
+
+    char characters[] = "123asdfasdfasdf4";
+
+    cout &lt;&lt; characters[0] &lt;&lt; endl;
+    cout &lt;&lt; *(characters) &lt;&lt; endl;
+
+    cout &lt;&lt; characters[1] &lt;&lt; endl;
+    cout &lt;&lt; *(characters+1) &lt;&lt; endl;
+
+    char *p = characters;
+
+    cout &lt;&lt; p[0] &lt;&lt; endl;
+    cout &lt;&lt; *(p) &lt;&lt; endl;
+
+    cout &lt;&lt; p[1] &lt;&lt; endl;
+    cout &lt;&lt; *(p+1) &lt;&lt; endl;
+*/
+    const char * text2 = text.c_str();
+
+    cout &lt;&lt; text2 &lt;&lt; endl;
+
+    char array[] = "here is a text";
+
+    string test = array;
+
+    cout &lt;&lt; test &lt;&lt; endl;
+
+
+    const char * a = "this is a test 12512412";
+
+    cout &lt;&lt; a[0] &lt;&lt; endl;
+
+    char b[] = "this a test 124124";
+
+    b[0] ='g';
+    cout &lt;&lt; b &lt;&lt; endl;
+
+    char * const dynamic_array = new char[50];
+    dynamic_array[0] = 'k';
+    dynamic_array[1] = '\0';
+    //dynamic_array = "lalala";
+
+    cout &lt;&lt; dynamic_array &lt;&lt; endl;
+
+    delete [] dynamic_array;
+
+    string array_of_string[5] = "this i a text that will be in all of the elements of strings";
+    array_of_string[0] = "afsdf";
+    cout &lt;&lt; array_of_string[0] &lt;&lt; endl;
+    cout &lt;&lt; array_of_string[1] &lt;&lt; endl;
+    cout &lt;&lt; array_of_string[2] &lt;&lt; endl;
+    return 0;
+}
+
+</code></pre></div></div>
+
+<h1 id="dynamic-memory"><a href="https://blockdmask.tistory.com/302">Dynamic memory</a></h1>
+<ul>
+  <li>new는 <strong>힙에 메모리할당</strong>을 해주고 <strong>생성자를 호출</strong> 해주며 <strong>해당 타입으로 변환</strong> 까지 해주는 함수입니다.</li>
+  <li>New 가 하는 일은
+    <ul>
+      <li>메모리 할당</li>
+      <li>생성자 호출</li>
+      <li>타입 변환</li>
+    </ul>
+  </li>
+  <li>Delete 가 하는 일은
+    <ul>
+      <li>소멸자 호출</li>
+      <li>메모리 해제</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+using namespaec std;
+class Position
+{
+  public:
+     Position() // 생성자
+     {
+       count &lt;&lt; 2) new에 의해 생성자 호출됨 &lt;&lt; endl;
+     }
+     ~Position()
+     {
+       count &lt;&lt; 3) Delete에 의해 소멸자 호출 됨 &lt;&lt;endl;
+     }
+};
+
+int main()
+{
+  Position* prt = new Position();
+  count &lt;&lt; 1) new 메모리 할당 끝 : 생성자 콜 &lt;&lt; endl;
+  delete(prt); // 메모리 해제
+  return 0;
+}
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+/* dynamic allocation of memory */
+
+int main()
+{
+   // int var = 41240;
+   /*
+
+    int amount;
+
+    cout &lt;&lt; "How many numbers would you like to store in an array? " &lt;&lt; endl;
+    cin &gt;&gt; amount;
+
+    int *p = new (nothrow) int[amount];
+
+    if (p != NULL)
+    {
+        for (int i = 0; i &lt; amount; i++)
+        {
+            cout &lt;&lt; "Enter the " &lt;&lt; (i+1) &lt;&lt; " number: " &lt;&lt; endl;
+            cin &gt;&gt; p[i];
+        }
+
+        for (int i = 0; i &lt; amount; i++)
+        {
+            cout &lt;&lt; "p [ " &lt;&lt; i &lt;&lt; " ] =  " &lt;&lt; p[i] &lt;&lt; endl;
+        }
+    }
+    else
+        cout &lt;&lt; "Not enough memory " &lt;&lt; endl;
+*/
+
+    {
+        int *p = new int;
+
+        cout &lt;&lt; p &lt;&lt; endl;
+
+        delete p;
+
+        p = new int;
+
+        cout &lt;&lt; p &lt;&lt; endl;
+
+        delete p;
+    }
+
+
+    //cout &lt;&lt; "var: " &lt;&lt; var &lt;&lt; endl;
+
+
+    //delete []p;
+    return 0;
+}
+</code></pre></div></div>
+
+<h1 id="example-3">Example 3</h1>
+<p><a href="https://postimg.cc/mcG5BVZN"><img src="https://i.postimg.cc/DzWkQYtD/array.jpg" width="500px" title="source: imgur.com" /><a></a></a></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+//void multiplyBy(int &amp;, int);
+int *multiplyBy(int *, int);
+void multiplyArrayBy(int *, int, int);
+
+int main()
+{
+
+    int a = 10;
+
+    int *b = multiplyBy(&amp;a, 5);
+
+    *b = 999;
+    cout &lt;&lt; a &lt;&lt; endl;
+    cout &lt;&lt; *b &lt;&lt; endl;
+
+
+    int array[10];
+    cout &lt;&lt; sizeof(array)/sizeof(array[0]) &lt;&lt; endl;
+    // 한 어레이에 4바이트 이니까 총 40바이트 하나당 4바이트를 나누면 10 개
+
+    for (int i = 0; i &lt; sizeof(array)/sizeof(array[0]); i++)
+    {
+        array[i] = i;
+     //   cout &lt;&lt; "array [" &lt;&lt; i &lt;&lt; "] = " &lt;&lt; array[i] &lt;&lt; endl;
+    }
+    multiplyArrayBy(&amp;array[0], 5, sizeof(array)/sizeof(array[0])); // &amp;array[0] == array
+    for (int i = 0; i &lt; sizeof(array)/sizeof(array[0]); i++)
+    {
+       cout &lt;&lt; "array [" &lt;&lt; i &lt;&lt; "] = " &lt;&lt; array[i] &lt;&lt; endl;
+    }
+
+    return 0;
+}
+int *multiplyBy(int * var, int amount)
+{
+    //int * var = &amp;a;
+    *var =  *var * amount;
+
+    return var;
+}
+void multiplyArrayBy(int *array, int amount, int sizeOfArray)
+{
+    while(sizeOfArray--)
+        array[sizeOfArray] *= amount;
+}
+</code></pre></div></div>
+<h1 id="example-4">Example 4</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;time.h&gt;
+
+using namespace std;
+/* LOTTERY - pseudo-random numbers generator - drawing numbers */
+void lottery(int, int);
+
+int main()
+{
+//  srand(time(NULL)); //seeds
+
+ //   int nr = rand() % 49 + 1; //[1, 49]
+
+   // cout &lt;&lt; nr &lt;&lt; endl;
+
+
+
+    lottery(49, 6);
+
+    return 0;
+}
+void lottery(int total_balls, int balls_to_draw)
+{
+    if (total_balls &lt; balls_to_draw)
+        return;
+
+     srand(time(NULL)); //seeds
+
+     int *balls = new int[balls_to_draw];
+
+     for (int i = 0; i &lt; balls_to_draw; i++)
+     {
+         balls[i] = rand() % total_balls + 1;
+
+         for (int j = 0; j &lt; i + 1; j++)
+         {
+            if(balls[i] == balls[j] &amp;&amp; i != j)
+            {
+                i--;
+                break;
+            }
+            else if (j == i)
+                cout &lt;&lt; balls[i] &lt;&lt; endl;
+         }
+     }
+
+     delete[] balls;
+}
+</code></pre></div></div>
+
+<h1 id="example-5">Example 5</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+int main()
+{
+    int a[3];
+    a[0] = 0;
+    a[1] = 20;
+    a[2] = 40;
+    short int zm;
+    int *const p = &amp;a[0];
+
+    cout &lt;&lt; p &lt;&lt; endl;
+    cout &lt;&lt; a &lt;&lt; endl;
+
+    cout &lt;&lt; endl &lt;&lt; endl &lt;&lt; endl;
+
+    cout &lt;&lt; &amp;a[0] &lt;&lt; endl;
+    cout &lt;&lt; &amp;a[1] &lt;&lt; endl;
+    cout &lt;&lt; &amp;a[2] &lt;&lt; endl;
+
+    cout &lt;&lt; endl &lt;&lt; endl &lt;&lt; endl;
+
+    cout &lt;&lt; a &lt;&lt; endl;
+    cout &lt;&lt; a + 1 &lt;&lt; endl;
+    cout &lt;&lt; a + 2 &lt;&lt; endl;
+    //this is kind of same as array a[0],a[1].a[2]
+
+    cout &lt;&lt; endl &lt;&lt; endl &lt;&lt; endl;
+
+    cout &lt;&lt; *a &lt;&lt; endl;
+    cout &lt;&lt; *(a + 1) &lt;&lt; endl;
+    cout &lt;&lt; *(a + 2) &lt;&lt; endl;
+
+    cout &lt;&lt; endl &lt;&lt; endl &lt;&lt; endl;
+
+    cout &lt;&lt; a[0] &lt;&lt; endl;
+    cout &lt;&lt; a[1] &lt;&lt; endl;
+    cout &lt;&lt; a[2] &lt;&lt; endl;
+
+   // cout &lt;&lt; a++ &lt;&lt; endl; // a++  a = a + 1
+
+    int * p2 = &amp;a[0];
+
+    cout &lt;&lt; *p2 &lt;&lt; endl;  // 0
+    cout &lt;&lt; ++*p2 &lt;&lt; endl; //1
+    cout &lt;&lt; *++p2 &lt;&lt; endl; //20
+    cout &lt;&lt; *p2++ &lt;&lt; endl; //20
+    cout &lt;&lt; *p2 &lt;&lt; endl; //40
+    return 0;
+}
+
+</code></pre></div></div>
+
+<h1 id="static_cast">Static_cast&lt;&gt;</h1>
+<ul>
+  <li>explicit way in C++
+```
+#include <iostream></iostream></li>
+</ul>
+
+<p>using namespace std;
+/* TYPE CASTING */</p>
+
+<p>int main()
+{
+    double var = 5.6;</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int a = 5;
+int b = 7;
+cout &lt;&lt; (double)a / b &lt;&lt; endl;
+
+cout &lt;&lt; (int) var &lt;&lt; endl; //explict way C
+
+int x = 444;
+short y = x; //implicit way of casting
+
+cout &lt;&lt; y &lt;&lt; endl;
+
+cout &lt;&lt;  int(var) &lt;&lt; endl; //explict way C
+cout &lt;&lt;  static_cast&lt;int&gt;(var) &lt;&lt; endl; //explict way in C++
+
+
+char ch;
+
+cin &gt;&gt; ch;
+
+cout &lt;&lt; (int)ch &lt;&lt; endl;
+return 0; } ``` # COST의 활용 - const 키워드와 함께 정의한 변수의 값는 수정이 불가능하다. 즉 상수화 되어버리는데, 프로그래밍시에 바뀌어서는 안될값이 있을 경우 활용할 수 있다. 코드가 길어질 경우 실수로 변수의 값이 바뀌어 지는것을 방지할 수 있다.
+</code></pre></div></div>
+:ET

@@ -1,0 +1,355 @@
+I"T <h1 id="example-1">Example 1</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+/* loops - break and continue */
+
+main()
+{
+    /*
+        1 2 3 4 5  6  7  8  9  10
+        2 4 6 8 10 12 14 16 18 20
+        3 6 9 12 15 ....
+        4 ...
+        5 ...
+    */
+/*
+    for (int i = 1; i &lt;= 10; i++) //amount of rows, length of column
+    {
+
+        if (i == 5)
+            continue; //EVERYTHING AFTER continue instruction WONT BE executed BUT LOOP WON'T END BECAUSE OF IT
+
+        if (i == 5)
+            break; //EVERYTHING after break WON't be executed AND we are LEAVING the ACTUAL LOOP
+
+
+        for (int j = 1; j &lt;= 10; j++) //amount of columns, length of row
+        {
+            if (j == 5)
+                continue;
+            cout.width(4);
+            cout &lt;&lt; i * j;
+        }
+        cout &lt;&lt; endl;
+    }
+*/
+
+
+    for (int i = 1, j = 1; i &lt;= 10; i++)
+    {
+        cout.width(4); // 4 spaces
+        cout &lt;&lt; i * j;
+
+        if (i == 10)
+        {
+            j++;
+            i = 0;
+            cout &lt;&lt; endl;
+        }
+
+        if (j == 10 + 1)
+            break;
+    }
+}
+
+
+</code></pre></div></div>
+
+<h1 id="example-2">Example 2</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+main()
+{
+    const int SIZEOFARRAY = 10;
+    int i = 0;
+    int array[SIZEOFARRAY];
+
+    while(i &lt; SIZEOFARRAY) //i = 0
+    {
+        array[i] = 10 * i;
+        cout &lt;&lt; array[i++] &lt;&lt; endl;
+    }
+
+}
+</code></pre></div></div>
+
+<h1 id="example-3">Example 3</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+
+main ()
+{
+     int pin, checkPin;
+     int counter = 5;
+
+     cout &lt;&lt; "Input your pin number for the first time: ";
+     cin &gt;&gt; pin;
+
+     system("cls");
+
+     do
+     {
+         cout &lt;&lt; "Input your pin(" &lt;&lt; counter &lt;&lt; " tries left): ";
+         cin &gt;&gt; checkPin;
+
+         system("cls");
+         counter--;
+
+     } while ((checkPin != pin) &amp;&amp; (counter &gt; 0));
+
+     if (checkPin == pin)
+     {
+        cout &lt;&lt; "Correct pin, welcome !";
+     }
+     else
+        cout &lt;&lt; "You have entered a wrong PIN code for 5 times !";
+
+}
+
+
+</code></pre></div></div>
+<h1 id="example-4">Example 4</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+main ()
+{
+    char coordinates[3][3];
+    char value = '1';
+
+    for (int i = 0; i &lt; 3; i++)
+    {
+        cout &lt;&lt; endl &lt;&lt; endl;
+        for (int j = 0; j &lt; 3; j++)
+        {
+            coordinates[i][j] = value;
+            value++;
+
+            cout.width(5);
+            cout &lt;&lt; coordinates[i][j] &lt;&lt; " ";
+
+        }
+        cout &lt;&lt; endl &lt;&lt; endl;
+    }
+
+}
+</code></pre></div></div>
+
+<h1 id="example-5">Example 5</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+
+main ()
+{
+    char coordinates[3][3];
+    int startingValue = '1';
+    int player = 2;
+
+    for (int i = 0; i &lt; 3; i++)
+    {
+        for (int j = 0; j &lt; 3; j++)
+        {
+            coordinates[i][j] = startingValue;
+            startingValue++;
+        }
+    }
+
+    while (true)
+    {
+        for (int i = 0; i &lt; 3; i++)
+        {
+            cout &lt;&lt; endl &lt;&lt; endl;
+            for (int j = 0; j &lt; 3; j++)
+            {
+                cout.width(5);
+                cout &lt;&lt; coordinates[i][j] &lt;&lt; " ";
+            }
+            cout &lt;&lt; endl &lt;&lt; endl;
+        }
+
+        int xCoordinate, yCoordinate;
+
+        if (player % 2 == 0)
+        {
+            cout &lt;&lt; "Input x and y coordinates of a cell to put X (7 is on x:1 y:3)" &lt;&lt; endl;
+
+            cout &lt;&lt; "x: ";
+            cin &gt;&gt; xCoordinate;
+
+            cout &lt;&lt; "y: ";
+            cin &gt;&gt; yCoordinate;
+
+            coordinates[yCoordinate-1][xCoordinate-1] = 'X';
+            player = 1;
+            system("cls");
+        }
+        else
+        {
+
+            cout &lt;&lt; "Input x and y coordinates of a cell to put O (7 is on x:1 y:3)" &lt;&lt; endl;
+
+            cout &lt;&lt; "x: ";
+            cin &gt;&gt; xCoordinate;
+
+            cout &lt;&lt; "y: ";
+            cin &gt;&gt; yCoordinate;
+
+            coordinates[yCoordinate-1][xCoordinate-1] = 'O';
+            player = 2;
+            system("cls");
+
+        }
+    }
+}
+
+
+</code></pre></div></div>
+
+<h1 id="example-6">Example 6</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+
+main ()
+{
+    char coordinates[3][3];
+    int startingValue = '1';
+    int player = 2;
+    bool moveAccepted;
+
+    for (int i = 0; i &lt; 3; i++)
+    {
+        for (int j = 0; j &lt; 3; j++)
+        {
+            coordinates[i][j] = startingValue;
+            startingValue++;
+        }
+    }
+
+    while (true)
+    {
+
+        int xCoordinate, yCoordinate;
+
+
+            do
+            {
+                for (int i = 0; i &lt; 3; i++)
+                {
+                    cout &lt;&lt; endl &lt;&lt; endl;
+                    for (int j = 0; j &lt; 3; j++)
+                    {
+                        cout.width(5);
+                        cout &lt;&lt; coordinates[i][j] &lt;&lt; " ";
+                    }
+                    cout &lt;&lt; endl &lt;&lt; endl;
+                }
+
+                if (player % 2 == 0)
+                {
+                    cout &lt;&lt; "Input x and y coordinates (values from 1 to 3) of a cell to put X (7 is on x:1 y:3)" &lt;&lt; endl;
+                }
+                else
+                {
+                    cout &lt;&lt; "Input x and y coordinates (values from 1 to 3) of a cell to put O (7 is on x:1 y:3)" &lt;&lt; endl;
+                }
+
+                do
+                {
+                    cout &lt;&lt; "x: ";
+                    cin &gt;&gt; xCoordinate;
+
+                } while(xCoordinate &lt;= 0 || xCoordinate &gt; 3);
+
+
+                do
+                {
+                    cout &lt;&lt; "y: ";
+                    cin &gt;&gt; yCoordinate;
+
+                } while(yCoordinate &lt;= 0 || yCoordinate &gt; 3);
+
+                if (coordinates[yCoordinate-1][xCoordinate-1] != 'X' &amp;&amp; coordinates[yCoordinate-1][xCoordinate-1] != 'O')
+                {
+                    if (player % 2 == 0)
+                    {
+                        coordinates[yCoordinate-1][xCoordinate-1] = 'X';
+                        player = 1;
+                    }
+                    else
+                    {
+                        coordinates[yCoordinate-1][xCoordinate-1] = 'O';
+                        player = 2;
+                    }
+                    moveAccepted = true;
+                    system ("cls");
+                }
+                else
+                {
+                    moveAccepted = false;
+                    system ("cls");
+                }
+            } while(moveAccepted == false);
+
+
+
+        }
+}
+
+
+</code></pre></div></div>
+
+<h1 id="example-7">Example 7</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+
+using namespace std;
+
+main ()
+{
+    int chosenNumbersSum = 0;
+    char choice;
+
+    for (int i = 1; ; i++)
+    {
+
+        cout &lt;&lt; "The current sum is: " &lt;&lt; chosenNumbersSum &lt;&lt; endl &lt;&lt; endl;
+        cout &lt;&lt; "Do you want to add " &lt;&lt; i &lt;&lt; " ?" &lt;&lt; endl;
+
+        cout &lt;&lt; "Y - yes / N - no / Anything else - end : ";
+        cin &gt;&gt; choice;
+
+        if (choice == 'Y' || choice == 'y')
+        {
+            chosenNumbersSum += i;
+        }
+        else if (choice == 'N' || choice == 'n')
+        {
+            system ("cls");
+            continue;
+        }
+        else
+        {
+            system ("cls");
+            break;
+        }
+        system ("cls");
+    }
+
+    cout &lt;&lt; "Good bye !";
+
+}
+
+</code></pre></div></div>
+:ET

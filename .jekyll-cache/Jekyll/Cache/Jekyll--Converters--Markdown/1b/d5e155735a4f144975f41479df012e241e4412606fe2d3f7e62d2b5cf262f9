@@ -1,0 +1,425 @@
+I"»%<h1 id="exercise">Exercise</h1>
+
+<blockquote>
+  <p>main.cpp</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;conio.h&gt;
+#include &lt;cstdlib&gt;
+#include "library.h"
+#include "book.h"
+#include "user.h"
+
+using namespace std;
+
+
+int main()
+{
+    const Book book1("Arkadiusz Wlodarczyk", "C++ course", 2009);
+    const Book book2("Wioletta Kozik", "JAVA course", 2016);
+    const Book book3("Adrian Szuszkiewicz", "C# course", 2002);
+    const Book book4 = book3;
+    const Book book5 = book3;
+    const Book book6 = book3;
+
+    Library library(5);
+    Librarian librarian("Foo", "Bar", 5);
+    Borrower borrower("Edek", "Czytacz", 5);
+
+    library.addBook(book1);
+    library.addBook(book2);
+    library.addBook(book3);
+    library.addBook(book4);
+    library.addBook(book6);
+
+    int position;
+    char choice;
+
+    while (true)
+    {
+        library.showBooks();
+        borrower.showBooks();
+        cout &lt;&lt; "Would you like to Borrow - B/b or Return - R/r: ";
+		cin &gt;&gt; choice;
+
+        switch(choice)
+        {
+        case 'b':
+        case 'B':
+            {
+                cout &lt;&lt; "Which book would you like to rent, POSITION IN LIBRARY: ";
+                cin &gt;&gt; position;
+                librarian.lendBook(library, borrower, position);
+                break;
+            }
+        case 'r':
+        case 'R':
+            {
+                cout &lt;&lt; "Which book would you like to return, POSITION IN USER: ";
+                cin &gt;&gt; position;
+                borrower.returnBook(library, position);
+                break;
+            }
+		default:
+			break;
+        }
+        system("cls");
+    }
+    return 0;
+}
+</code></pre></div></div>
+
+<blockquote>
+  <p>library.h</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#ifndef LIBRARY_H_INCLUDED
+#define LIBRARY_H_INCLUDED
+
+#include "book.h"
+#include "user.h"
+
+class Library
+{
+    private:
+        int currentAmountOfBooks;
+        int maxAmountOfBooks;
+        Book* books;
+
+    public:
+        void addBook(const Book&amp;);
+        Book&amp; getBook(int);
+        void showBooks();
+
+        friend void Librarian::lendBook(Library&amp;, Borrower&amp;, int);
+
+        Library(int);
+        ~Library();
+};
+
+
+#endif // LIBRARY_H_INCLUDED
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>book.h</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#ifndef BOOK_H_INCLUDED
+#define BOOK_H_INCLUDED
+
+#include &lt;iostream&gt;
+
+class Book
+{
+    private:
+        std::string title;
+        std::string author;
+        int publicationYear;
+        int bookId;
+
+    public:
+        static int numberOfBooks;
+
+        std::string getTitle() const;
+        std::string getAuthor() const;
+        int getPublicationYear() const;
+        int getBookId() const;
+
+        Book(const Book&amp;);
+        Book(std::string, std::string, int);
+        Book();
+        ~Book();
+};
+
+
+#endif // BOOK_H_INCLUDED
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>user.h</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#ifndef USER_H_INCLUDED
+#define USER_H_INCLUDED
+#include &lt;string&gt;
+#include "book.h"
+
+class Library;
+
+class User
+{
+protected:
+    std::string name;
+    std::string lastName;
+
+public:
+    std::string getName();
+    std::string getLastName();
+    User(std::string, std::string);
+};
+
+class Borrower: public User
+{
+protected:
+    friend class Librarian;
+    int userAmountOfBooks;
+    int maxAmountOfBooks;
+    Book* booksInPossesion;
+
+public:
+    Borrower(std::string, std::string, int);
+
+    ~Borrower();
+    Borrower(const Borrower&amp;) = delete;
+    Borrower&amp; operator= (const Borrower&amp;) = delete;
+
+    void returnBook(Library&amp;, int);
+    Book&amp; getBook(int id);
+    void showBooks();
+};
+
+class Librarian: public Borrower
+{
+
+public:
+    Librarian(std::string, std::string, int);
+    void lendBook(Library&amp;, Borrower&amp;, int);
+};
+
+
+#endif // USER_H_INCLUDED
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>book.cpp</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include "book.h"
+
+int Book::numberOfBooks = 0;
+
+std::string Book::getTitle() const
+{
+    return this-&gt;title;
+}
+
+std::string Book::getAuthor() const
+{
+    return this-&gt;author;
+}
+
+int Book::getPublicationYear() const
+{
+    return this-&gt;publicationYear;
+}
+
+int Book::getBookId() const
+{
+    return this-&gt;bookId;
+}
+
+Book::Book(const Book&amp; bookToCopy)
+{
+    this-&gt;title = bookToCopy.getTitle();
+    this-&gt;author = bookToCopy.getAuthor();
+    this-&gt;publicationYear = bookToCopy.getPublicationYear();
+    this-&gt;bookId = Book::numberOfBooks++;
+}
+
+Book::Book(std::string author, std::string title, int publicationYear)
+{
+    this-&gt;author = author;
+    this-&gt;title = title;
+    this-&gt;publicationYear = publicationYear;
+    this-&gt;bookId = numberOfBooks++;
+}
+
+Book::Book()
+{
+
+}
+
+Book::~Book()
+{
+
+}
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>library.cpp</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include "library.h"
+
+
+void Library::addBook(const Book&amp; book)
+{
+    if (currentAmountOfBooks &lt; maxAmountOfBooks)
+    {
+        this-&gt;books[currentAmountOfBooks] = book;
+        this-&gt;currentAmountOfBooks++;
+    }
+    else
+    {
+
+    }
+}
+
+Book&amp; Library::getBook(int position)
+{
+    if (position &lt; currentAmountOfBooks)
+    {
+        return books[position];
+    }
+    else
+    {
+        return books[0];
+    }
+}
+
+void Library::showBooks()
+{
+    std::cout &lt;&lt; "LIBRARY BOOKS: " &lt;&lt; std::endl;
+    for (int i = 0; i &lt; currentAmountOfBooks; i++)
+    {
+        std::cout &lt;&lt; "BOOK ID: " &lt;&lt; getBook(i).getBookId() &lt;&lt; "  ";
+        std::cout &lt;&lt; "POSITION IN LIBRARY: " &lt;&lt; i &lt;&lt; "  ";
+        std::cout &lt;&lt; "Author: " &lt;&lt; getBook(i).getAuthor() &lt;&lt; "  ";
+        std::cout &lt;&lt; "Title: " &lt;&lt; getBook(i).getTitle() &lt;&lt; "  ";
+        std::cout &lt;&lt; "Publication Year: " &lt;&lt; getBook(i).getPublicationYear() &lt;&lt; std::endl;
+    }
+    std::cout &lt;&lt; std::endl;
+}
+
+Library::Library(int maxAmountOfBooks)
+{
+    this-&gt;currentAmountOfBooks = 0;
+    this-&gt;maxAmountOfBooks = maxAmountOfBooks;
+    this-&gt;books = new Book[maxAmountOfBooks];
+}
+
+Library::~Library()
+{
+    delete[] books;
+}
+</code></pre></div></div>
+
+<blockquote>
+  <p>user.cpp</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include "user.h"
+
+#include "library.h"
+
+std::string User::getName()
+{
+    return this-&gt;name;
+}
+
+std::string User::getLastName()
+{
+    return this-&gt;lastName;
+}
+
+User::User(std::string name, std::string lastName)
+{
+    this-&gt;name = name;
+    this-&gt;lastName = lastName;
+}
+
+Borrower::Borrower(std::string name, std::string lastName, int maxAmountOfBooks)
+        : User (name, lastName)
+{
+    this-&gt;userAmountOfBooks = 0;
+    this-&gt;maxAmountOfBooks = maxAmountOfBooks;
+    booksInPossesion = new Book[maxAmountOfBooks];
+}
+
+Borrower::~Borrower()
+{
+    delete[] booksInPossesion;
+}
+
+void Borrower::returnBook(Library&amp; libraryToReturnTo, int position)
+{
+    if (position &lt; this-&gt;userAmountOfBooks &amp;&amp; this-&gt;userAmountOfBooks &gt; 0)
+    {
+        libraryToReturnTo.addBook(booksInPossesion[position]);
+
+        for(int i = 0; i &lt; maxAmountOfBooks-1; i++)
+        {
+            if (i &gt;= position)
+                booksInPossesion[i] = booksInPossesion[i+1];
+        }
+        this-&gt;userAmountOfBooks--;
+    }
+    else
+    {
+    }
+}
+
+Book&amp; Borrower::getBook(int position)
+{
+    if (position &lt; this-&gt;userAmountOfBooks)
+    {
+        return booksInPossesion[position];
+    }
+    else
+    {
+        return booksInPossesion[0];
+    }
+}
+
+void Borrower::showBooks()
+{
+    std::cout &lt;&lt; getName() &lt;&lt; " " &lt;&lt; getLastName() &lt;&lt; " BOOKS: " &lt;&lt; std::endl;
+    for (int i = 0; i &lt; userAmountOfBooks; i++)
+    {
+        std::cout &lt;&lt; "BOOK ID: " &lt;&lt; getBook(i).getBookId() &lt;&lt; "  ";
+        std::cout &lt;&lt; "POSITION IN USER: " &lt;&lt; i &lt;&lt; "  ";
+        std::cout &lt;&lt; "Author: " &lt;&lt; getBook(i).getAuthor() &lt;&lt; "  ";
+        std::cout &lt;&lt; "Title: " &lt;&lt; getBook(i).getTitle() &lt;&lt; "  ";
+        std::cout &lt;&lt; "Publication Year: " &lt;&lt; getBook(i).getPublicationYear() &lt;&lt; std::endl;
+    }
+    std::cout &lt;&lt; std::endl;
+}
+
+Librarian::Librarian(std::string name, std::string lastName, int maxAmountOfBooks)
+        : Borrower(name, lastName, maxAmountOfBooks)
+    {}
+
+void Librarian::lendBook(Library&amp; libraryToLendFrom, Borrower&amp; personToLendTo, int position)
+{
+    if (libraryToLendFrom.currentAmountOfBooks &gt; 0)
+    {
+        if (personToLendTo.userAmountOfBooks &lt; personToLendTo.maxAmountOfBooks &amp;&amp; position &lt; libraryToLendFrom.currentAmountOfBooks)
+        {
+            personToLendTo.booksInPossesion[personToLendTo.userAmountOfBooks] = libraryToLendFrom.books[position];
+
+            for(int i = 0; i &lt; libraryToLendFrom.maxAmountOfBooks-1; i++)
+            {
+                if (i &gt;= position)
+                    libraryToLendFrom.books[i] = libraryToLendFrom.books[i+1];
+            }
+
+            libraryToLendFrom.currentAmountOfBooks--;
+            personToLendTo.userAmountOfBooks++;
+        }
+        else
+        {
+        }
+    }
+    else
+    {
+    }
+}
+
+</code></pre></div></div>
+:ET

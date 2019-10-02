@@ -1,0 +1,225 @@
+I"}<h1 id="example-1">Example 1</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+/* enum - enumeration - 0 1 2 3 4 */
+
+enum dayOfWeek {M = 1, TU, W, TH, F, SA, SN};
+
+string getDay(dayOfWeek);
+int main()
+{
+    dayOfWeek d = M;
+
+    cout &lt;&lt; d &lt;&lt; endl;
+
+    cout &lt;&lt; dayOfWeek(W) &lt;&lt; endl;
+
+    int i;
+    cout &lt;&lt; "Enter the day of a week " &lt;&lt; endl;
+    //....
+    cin &gt;&gt; i;
+    cout &lt;&lt; getDay(dayOfWeek(i)) &lt;&lt; endl;
+
+    return 0;
+}
+string getDay(dayOfWeek d)
+{
+    switch(d)
+    {
+        case M:
+            return "Monday";
+        case TU:
+            return "Tuesday";
+        case W:
+            return "Wednesday";
+        case TH:
+            return "Thursday";
+        case F:
+            return "Friday";
+        case SA:
+            return "Saturday";
+        case SN:
+            return "Sunday";
+        default:
+            return "You typed something wrong!";
+    }
+}
+
+</code></pre></div></div>
+
+<h1 id="example-2">Example 2</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+/*reference variables */
+int main()
+{
+    string name_2 = "lala";
+    string name = "Agnes";
+
+    cout &lt;&lt; "Value of Variable: " &lt;&lt; name &lt;&lt; " addres of Variable is: " &lt;&lt; &amp;name &lt;&lt; endl;
+
+    const string &amp; nr_6 = name;
+
+
+    cout &lt;&lt; "Value of Variable: " &lt;&lt; nr_6 &lt;&lt; " addres of Variable is: " &lt;&lt; &amp;nr_6 &lt;&lt; endl;
+
+    //nr_6 = name_2;
+    //nr_6 = "Scott";
+    name = "Scott";
+
+
+    cout &lt;&lt; "Value of Variable: " &lt;&lt; name &lt;&lt; " addres of Variable is: " &lt;&lt; &amp;name &lt;&lt; endl;
+
+    cout &lt;&lt; "Value of Variable: " &lt;&lt; nr_6 &lt;&lt; " addres of Variable is: " &lt;&lt; &amp;nr_6 &lt;&lt; endl;
+
+    /*
+        Ref. var. must be initialized when created
+        Ref var can't change associations / connections
+        Ref var must be the same type as assocaited variable
+    */
+
+    return 0;
+}
+
+</code></pre></div></div>
+
+<h1 id="example-3">Example 3</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+int &amp; swap(int &amp;, int &amp;);
+
+int main()
+{
+    int a = 10;
+    int b = 20;
+
+    int &amp;c = swap(a, b);
+
+    c = 100;
+
+    cout &lt;&lt; "a: " &lt;&lt; a &lt;&lt; endl;
+    cout &lt;&lt; "b: " &lt;&lt; b &lt;&lt; endl;
+    cout &lt;&lt; "c: " &lt;&lt; c &lt;&lt; endl;
+
+    return 0;
+}
+// when use it in class, in class they are not used in reference
+// but when we call from outside of main class, it use in other class with &amp;
+// so when we called value from main to void, void use it reference
+int &amp; swap(int &amp;x, int &amp;y)
+{
+    int t;
+    t = x;
+    x = y;
+    y = t;
+    //x at the end is 20
+    return x;
+}
+
+</code></pre></div></div>
+<h1 id="example-4">Example 4</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+int main ()
+{
+
+    string name = "Cassandra";
+    string &amp;cassie = name;
+    string &amp;cassey = name;
+    string &amp;sandra = name;
+
+    cout &lt;&lt; name &lt;&lt; " " &lt;&lt; &amp;name &lt;&lt; endl;
+    cout &lt;&lt; cassie &lt;&lt; " " &lt;&lt; &amp;cassie &lt;&lt; endl;
+    cout &lt;&lt; cassey &lt;&lt; " " &lt;&lt; &amp;cassey &lt;&lt; endl;
+    cout &lt;&lt; sandra &lt;&lt; " " &lt;&lt; &amp;sandra &lt;&lt; endl;
+
+
+
+
+    return 0;
+}
+</code></pre></div></div>
+
+<h1 id="example-5">Example 5</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+void setValue(int&amp;);
+
+int main ()
+{
+    int a;
+
+    setValue(a);
+
+    cout &lt;&lt; "Variable a is equal to: " &lt;&lt; a;
+
+    return 0;
+}
+
+void setValue(int &amp;variableToSet)
+{
+    cout &lt;&lt; "Input the value: ";
+    cin &gt;&gt; variableToSet;
+}
+
+
+</code></pre></div></div>
+
+<h1 id="example-6">Example 6</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+void checkIfTheSame(int&amp;, int&amp;);
+
+int main ()
+{
+
+    int a = 4;
+    int b = 3;
+    int c = a;
+    int &amp;d = a;
+    // take a reference a
+    // so this d is same as a
+
+    checkIfTheSame(a, b);
+    checkIfTheSame(a, c);
+    checkIfTheSame(a, d);
+
+    return 0;
+}
+
+void checkIfTheSame(int &amp;firstVariable, int &amp;secondVariable)
+{
+    if (firstVariable == secondVariable &amp;&amp; &amp;firstVariable == &amp;secondVariable)
+    {
+        cout &lt;&lt; "The variables are completely the same !";
+    }
+    else if (firstVariable == secondVariable &amp;&amp; &amp;firstVariable != &amp;secondVariable)
+    {
+		cout &lt;&lt; firstVariable &lt;&lt; " " &lt;&lt; &amp;firstVariable &lt;&lt; endl;
+        cout &lt;&lt; secondVariable &lt;&lt; " " &lt;&lt; &amp;secondVariable &lt;&lt; endl;
+        cout &lt;&lt; "The variables have got same values but they are different variables !" &lt;&lt; endl;
+        // because c is have different reference
+    }
+    else
+    {
+        cout &lt;&lt; firstVariable &lt;&lt; " " &lt;&lt; &amp;firstVariable &lt;&lt; endl;
+        cout &lt;&lt; secondVariable &lt;&lt; " " &lt;&lt; &amp;secondVariable &lt;&lt; endl;
+        cout &lt;&lt; "The variables are different !" &lt;&lt; endl;
+    }
+}
+
+
+
+</code></pre></div></div>
+:ET

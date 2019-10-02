@@ -1,0 +1,57 @@
+I"l<h1 id="exercise-1library">Exercise 1(Library)</h1>
+
+<blockquote>
+  <p>Main.cpp</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include "library.h"
+#include "book.h"
+
+using namespace std;
+
+
+int main()
+{
+
+    Book book1;
+    Library library;
+
+    book1.author = "Arkadiusz Wlodarczyk";
+    book1.title = "C++ course";
+    book1.publicationYear = 2009;
+
+    library.addBook(book1);
+
+    cout &lt;&lt; "Author: " &lt;&lt; library.getBook(0).author &lt;&lt; "  ";
+    cout &lt;&lt; "Title: " &lt;&lt; library.getBook(0).title &lt;&lt; "  ";
+    cout &lt;&lt; "Publication Year: " &lt;&lt; library.getBook(0).publicationYear &lt;&lt; endl;
+
+
+    return 0;
+}
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>book.h</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#ifndef BOOK_H_INCLUDED
+#define BOOK_H_INCLUDED
+
+#include &lt;iostream&gt;
+
+class Book
+{
+    public:
+        std::string title;
+        std::string author;
+        int publicationYear;
+};
+
+
+#endif // BOOK_H_INCLUDED
+
+</code></pre></div></div>
+:ET

@@ -1,0 +1,12 @@
+I"E<h1 id="protectedhttpnlpkookminackrsskanglectcppppphtm">(Protected)[http://nlp.kookmin.ac.kr/sskang/lect/cpp/ppp.htm]</h1>
+<ul>
+  <li>보호(protected) 멤버
+    <ol>
+      <li>필요성</li>
+    </ol>
+    <ul>
+      <li>파생클래스에게만 접근이 허용되는 비공개(private) 멤버</li>
+    </ul>
+  </li>
+</ul>
+:ET

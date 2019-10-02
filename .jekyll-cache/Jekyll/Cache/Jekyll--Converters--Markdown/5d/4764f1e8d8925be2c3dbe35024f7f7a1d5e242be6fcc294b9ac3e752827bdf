@@ -1,0 +1,194 @@
+I"�2<h1 id="class">Class</h1>
+<ul>
+  <li>Class는 파이썬과 마찬가지로 프로젝트를 함에 있어 알고리즘을 나누는 역할을 한다.</li>
+  <li>예로 어떤 클래스는 더하기를, 어떤 클래스를 곱하기를 역할을 나눠주고 Main Class에다가 합쳐 Main클래스를 간결하게 해준다.</li>
+</ul>
+
+<h1 id="exercise-1">Exercise 1</h1>
+<blockquote>
+  <p>Main.cpp</p>
+</blockquote>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include "people.h"
+</span><span class="n">using</span> <span class="n">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="cm">/* classes */</span>
+
+<span class="kt">void</span> <span class="nf">test</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">PersonalData</span> <span class="o">*</span><span class="n">pointer</span> <span class="o">=</span> <span class="n">new</span> <span class="n">PersonalData</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+
+    <span class="n">delete</span> <span class="p">[]</span><span class="n">pointer</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+
+    <span class="n">PersonalData</span> <span class="n">person</span><span class="p">(</span><span class="mi">20</span><span class="p">);</span>
+    <span class="n">PersonalData</span> <span class="n">person2</span><span class="p">(</span><span class="mi">50</span><span class="p">);</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">person</span><span class="p">.</span><span class="n">getAge</span><span class="p">()</span><span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">person2</span><span class="p">.</span><span class="n">getAge</span><span class="p">()</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+
+   <span class="c1">// test();</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>people.h</p>
+</blockquote>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#ifndef PEOPLE_H_INCLUDED
+#define PEOPLE_H_INCLUDED
+</span>
+<span class="n">class</span> <span class="n">PersonalData</span>
+<span class="p">{</span>
+    <span class="nl">private:</span>
+        <span class="kt">short</span> <span class="n">age</span><span class="p">;</span> <span class="c1">// the first argument taken</span>
+        <span class="kt">int</span> <span class="o">*</span><span class="n">p</span><span class="p">;</span>
+    <span class="nl">public:</span>
+        <span class="n">PersonalData</span><span class="p">();</span> <span class="c1">// 인수가 없으면 이 클래스로 가고 있으면 아래 클래스로 간다.</span>
+        <span class="n">PersonalData</span><span class="p">(</span><span class="kt">short</span><span class="p">);</span>
+        <span class="o">~</span><span class="n">PersonalData</span><span class="p">();</span>
+        <span class="cm">/**
+            This function is setting age. If age is lower than 0, then age = 10.
+        */</span>
+        <span class="kt">void</span> <span class="n">setAge</span><span class="p">(</span><span class="kt">int</span><span class="p">);</span>
+        <span class="kt">short</span> <span class="n">getAge</span><span class="p">()</span> <span class="p">{</span><span class="k">return</span> <span class="n">age</span><span class="p">;}</span>
+<span class="p">};</span>
+
+<span class="cp">#endif // PEOPLE_H_INCLUDED
+</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>people.cpp</p>
+</blockquote>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "people.h"
+#include &lt;iostream&gt;
+</span>
+<span class="n">using</span> <span class="n">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="kt">void</span> <span class="n">PersonalData</span><span class="o">::</span><span class="n">setAge</span><span class="p">(</span><span class="kt">int</span> <span class="n">age</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">age</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">this</span><span class="o">-&gt;</span><span class="n">age</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">else</span>
+        <span class="n">this</span><span class="o">-&gt;</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">PersonalData</span><span class="o">::</span><span class="n">PersonalData</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Constructor has been just invoked "</span> <span class="o">&lt;&lt;</span> <span class="o">++</span><span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">age</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+
+    <span class="n">p</span> <span class="o">=</span> <span class="n">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+<span class="p">}</span>
+<span class="n">PersonalData</span><span class="o">::</span><span class="n">PersonalData</span><span class="p">(</span><span class="kt">short</span> <span class="n">age</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span><span class="s">"this is diff cons"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">this</span><span class="o">-&gt;</span><span class="n">age</span> <span class="o">=</span> <span class="n">age</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">PersonalData</span><span class="o">::~</span><span class="n">PersonalData</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">static</span> <span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Destructor has been just invoked "</span> <span class="o">&lt;&lt;</span> <span class="o">++</span><span class="n">j</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+    <span class="n">delete</span> <span class="p">[]</span> <span class="n">p</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<ul>
+  <li>Result
+<a href="https://postimg.cc/w7YszT1N"><img src="https://i.postimg.cc/HsV0QrH6/323131.png" width="500px" title="source: imgur.com" /><a></a></a></li>
+</ul>
+
+<h1 id="exercise-2">Exercise 2</h1>
+<blockquote>
+  <p>Main.cpp</p>
+</blockquote>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include &lt;iostream&gt;
+#include "position.h"
+</span>
+<span class="n">using</span> <span class="n">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="n">Position</span> <span class="n">dog</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">);</span>
+
+    <span class="n">dog</span><span class="p">.</span><span class="n">getPosition</span><span class="p">();</span>
+    <span class="n">dog</span><span class="p">.</span><span class="n">setPosition</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">);</span>
+    <span class="n">dog</span><span class="p">.</span><span class="n">getPosition</span><span class="p">();</span>
+
+    <span class="k">const</span> <span class="n">Position</span> <span class="n">house</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mi">200</span><span class="p">);</span>
+
+    <span class="n">house</span><span class="p">.</span><span class="n">getPosition</span><span class="p">();</span>
+<span class="c1">//    house.setPosition(444, 444);</span>
+    <span class="c1">//house.getPosition();</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>Position.h</p>
+</blockquote>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#ifndef POSITION_H_INCLUDED
+#define POSITION_H_INCLUDED
+</span>
+<span class="n">class</span> <span class="n">Position</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">;</span>
+    <span class="nl">public:</span>
+        <span class="n">Position</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span><span class="kt">int</span><span class="p">);</span>
+        <span class="o">~</span><span class="n">Position</span><span class="p">();</span>
+        <span class="kt">void</span> <span class="n">getPosition</span><span class="p">()</span> <span class="k">const</span><span class="p">;</span>
+        <span class="kt">void</span> <span class="n">setPosition</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="cp">#endif // POSITION_H_INCLUDED
+</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>position.cpp</p>
+</blockquote>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include "position.h"
+#include &lt;iostream&gt;
+</span>
+<span class="n">using</span> <span class="n">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="n">Position</span><span class="o">::</span><span class="n">Position</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">this</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+    <span class="n">this</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="n">Position</span><span class="o">::~</span><span class="n">Position</span><span class="p">()</span>
+<span class="p">{</span>
+
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Position</span><span class="o">::</span><span class="n">getPosition</span><span class="p">()</span> <span class="k">const</span>
+<span class="p">{</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"x : "</span> <span class="o">&lt;&lt;</span> <span class="n">x</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"y : "</span> <span class="o">&lt;&lt;</span> <span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kt">void</span> <span class="n">Position</span><span class="o">::</span><span class="n">setPosition</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="kt">int</span> <span class="n">y</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">this</span><span class="o">-&gt;</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+    <span class="n">this</span><span class="o">-&gt;</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h1 id="example-3">Example 3</h1>
+:ET

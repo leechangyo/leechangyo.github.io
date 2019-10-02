@@ -1,0 +1,496 @@
+I"8<h1 id="templates"><a href="http://tcpschool.com/cpp/cpp_template_function">Templates</a></h1>
+<ul>
+  <li>템플릿(template)이란 매개변수의 타입에 따라 함수나 클래스를 생성하는 메커니즘을 의미합니다.</li>
+  <li>템플릿은 타입이 매개변수에 의해 표현되므로, 매개변수화 타입(parameterized type)이라고도 불립니다</li>
+  <li>템플릿을 사용하면 타입마다 별도의 함수나 클래스를 만들지 않고, 여러 타입에서 동작할 수 있는 단 하나의 함수나 클래스를 작성하는 것이 가능합니다.</li>
+</ul>
+
+<h2 id="2-function-template함수-템플릿">2. Function Template(함수 템플릿)</h2>
+<ul>
+  <li>C++에서 함수 템플릿(function template)이란 함수의 일반화된 선언을 의미합니다</li>
+  <li>함수 템플릿을 사용하면 같은 알고리즘을 기반으로 하면서, 서로 다른 타입에서 동작하는 함수를 한 번에 정의할 수 있습니다.</li>
+  <li>임의의 타입으로 작성된 함수에 특정 타입을 매개변수로 전달하면, C++ 컴파일러는 해당 타입에 맞는 함수를 생성해 줍니다</li>
+</ul>
+
+<blockquote>
+  <p>문법
+```
+template <typename 타입이름=""></typename></p>
+</blockquote>
+
+<p>함수의 원형</p>
+
+<p>{</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// 함수의 본체
+</code></pre></div></div>
+
+<p>}</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+- 위에서 정의된 타입 이름은 함수의 원형과 본체에서 임의의 타입으로 사용할 수 있습니다
+- **이렇게 정의된 함수 템플릿을 호출할 때 매개변수로 int형을 전달하면, 함수의 원형과 본체에서 정의된 타입 이름은 모두 int형으로 바뀌게 됩니다.**
+
+&gt; 예제
+
+</code></pre></div></div>
+<p>template <typename T=""></typename></p>
+
+<p>void Swap(T&amp; a, T&amp; b);</p>
+
+<p>int main(void)</p>
+
+<p>{</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>int c = 2, d = 3;
+
+cout &lt;&lt; "c : " &lt;&lt; c &lt;&lt; ", d : " &lt;&lt; d &lt;&lt; endl;
+
+Swap(c, d);
+
+cout &lt;&lt; "c : " &lt;&lt; c &lt;&lt; ", d : " &lt;&lt; d &lt;&lt; endl;
+
+
+
+string e = "hong", f = "kim";
+
+cout &lt;&lt; "e : " &lt;&lt; e &lt;&lt; ", f : " &lt;&lt; f &lt;&lt; endl;
+
+Swap(e, f);
+
+cout &lt;&lt; "e : " &lt;&lt; e &lt;&lt; ", f : " &lt;&lt; f &lt;&lt; endl;
+
+return 0;
+</code></pre></div></div>
+
+<p>}</p>
+
+<p>template <typename T=""></typename></p>
+
+<p>void Swap(T&amp; a, T&amp; b)</p>
+
+<p>{</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>T temp;
+
+temp = a;
+
+a = b;
+
+b = temp;
+</code></pre></div></div>
+
+<p>}</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+&gt; 실행 결과
+
+</code></pre></div></div>
+<p>c : 2, d : 3</p>
+
+<p>c : 3, d : 2</p>
+
+<p>e : hong, f : kim</p>
+
+<p>e : kim, f : hong</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+- 함수 템플릿이 각각의 타입에 대해 처음으로 호출될 때, C++ 컴파일러는 해당 타입의 인스턴스를 생성합니다.
+- 이렇게 생성된 인스턴스는 해당 타입에 대해 특수화된 템플릿 함수입니다.
+- 이 인스턴스는 함수 템플릿에 해당 타입이 사용될 때마다 호출됩니다.
+
+## 3. 명시적 특수화(explicit specialization)
+- C++의 함수 템플릿은 특정 타입에 대한 명시적 특수화를 제공하여, 해당 타입에 대해 특별한 동작을 정의할 수 있게 해줍니다.
+- 컴파일러는 호출된 함수에 정확히 대응하는 특수화된 정의를 발견하면, 더는 템플릿을 찾지 않고 해당 정의를 사용합니다.
+- 앞서 정의된 함수 템플릿 Swap의 double형에 대한 명시적 특수화는 다음과 같습니다.
+
+&gt; 함수 템플릿 원형
+
+</code></pre></div></div>
+<p>template <typename T=""></typename></p>
+
+<p>void Swap(T&amp; a, T&amp; b);</p>
+
+<p>template <typename T=""> void Swap(T&amp; a, T&amp; b);</typename></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+&gt; double형을 위한 명시적 특수화
+
+</code></pre></div></div>
+<p>template &lt;&gt; void Swap<double>(double&amp;, double&amp;) { ... };</double></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+# [Typedef](https://wikidocs.net/419)
+- typedef는 새로운 타입을 만드는 것이 아니라 타입의 새로운 별칭을 정의하는 키워드 입니다
+</code></pre></div></div>
+<p>typedef int TypedefInt;
+TypedefInt a;</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+- 이 키워드가 템플릿과 무슨 관계인지 설명하겠습니다
+- typedef는 클래스 안에서 타입의 새로운 별칭을 지을 수 있습니다
+
+</code></pre></div></div>
+<p>class MyTypeClass
+ {
+ public:
+     typedef int Type1;
+ };
+ int main()
+ {
+     MyTypeClass a;
+     MyTypeClass::Type1 b;
+     return 0;
+ }</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- a는 MyTypeClass의 객체, b는 int 변수
+
+</code></pre></div></div>
+<p>class MyTypeClass
+{
+public:
+    typedef int Type1;
+private:
+    typedef double Type2;
+};
+int main()
+{
+    MyTypeClass a;
+    MyTypeClass::Type1 b;
+    MyTypeClass::Type2 c;  //에러
+    return 0;
+}</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+</code></pre></div></div>
+<p>class MyTypeClass
+{
+public:
+    typedef int Type1;
+    void f()
+    {
+        Type2 c;
+    }
+private:
+    typedef double Type2;
+};
+int main()
+{
+    MyTypeClass a;
+    MyTypeClass::Type1 b;
+    return 0;
+}</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- typedef은 클래스 안에서도 타입의 별칭을 만들 수 있을 뿐 아니라 외부접근 제한 까지 영향을 받습니다.
+- typedef는 템플릿 파라미터로 받은 데이터 타입이 필요할 때가 있습니다
+
+</code></pre></div></div>
+<p>#include <iostream></iostream></p>
+
+<p>template<typename T="">
+class MyTempClass
+{
+public:
+    typedef T TempType;
+};
+int main()
+{
+    MyTempClass<int> a;
+    MyTempClass<int>::TempType b;
+    MyTempClass<double> c;
+    MyTempClass<double>::TempType d;
+    return 0;
+}</double></double></int></int></typename></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- 이렇게 타입안에 타입의 객체를 호출 할 수 있습니다. **이렇게 템플릿 매개변수에 종속된 것을 의존 이름(dependent name)** 이라고 합니다
+- 클래스안에 중첩된 경우가 있는데 **중첩 의존 이름(nested dependent name)** 이라고 합니다.
+- 확히 하면 클래스 안에 TempType 이라는 타입이 있으니까 **중첩 의존 타입 이름(nested dependent type name)** 이라고 합니다.
+
+# Exercise 1
+
+&gt; main.cpp
+
+</code></pre></div></div>
+<p>#include <iostream>
+#include "point.h"</iostream></p>
+
+<p>using namespace std;
+/* function templates generalization*/</p>
+
+<p>void operationOnPoints();</p>
+
+<p>template&lt;typename T, typename T2&gt;
+T add(T var1, T2 var2)
+{
+    return var1 + var2;
+}
+/*
+template&lt;&gt;
+Point2D add(Point2D var1, Point2D var2)
+{
+    Point2D tmp;</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tmp.setX(var1.getX() + var2.getX());
+tmp.setY(var1.getY() + var2.getY());
+
+return tmp; } */ typedef Point&lt;int&gt; PointInt; int main() {
+operationOnPoints();
+
+//cout &lt;&lt; add&lt;double, double&gt;(2, 5.6) &lt;&lt; endl;
+</code></pre></div></div>
+
+<p>// cout « static_cast<int>(6.5) &lt;&lt; endl;</int></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>return 0; } void operationOnPoints() {  //   PointInt a(5);
+Point&lt;int*&gt; b(49);
+
+//cout &lt;&lt; a.getX() &lt;&lt; endl;
+//cout &lt;&lt; b.getX() &lt;&lt; endl; }
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+&gt; point.h
+
+</code></pre></div></div>
+<p>#ifndef POINT_H_INCLUDED
+#define POINT_H_INCLUDED
+#include <iostream></iostream></p>
+
+<p>using namespace std;</p>
+
+<p>template<typename T="">
+class Point //base, parent, superclass
+{
+    protected:
+        T x;
+    public:
+        Point(T =0);
+        ~Point();
+        T getX();
+        void setX(T);
+};
+template<typename T="">
+Point<T>::Point(T x)
+{
+    this-&gt;x = x;
+    cout &lt;&lt; "The constructor from the Point class has just been invoked" &lt;&lt; endl;
+}
+template<typename T="">
+Point<T>::~Point()
+{
+    cout &lt;&lt; "The destructor from the Point class has just been invoked" &lt;&lt; endl;
+}
+template<typename T="">
+void Point<T>::setX(T x)
+{
+    this-&gt;x = x;
+    cout &lt;&lt; "Im from Point" &lt;&lt; endl;
+}
+template<typename T="">
+T Point<T>::getX()
+{
+    return this-&gt;x;
+}
+template&lt;&gt;
+double Point<double>::getX()
+{
+    cout &lt;&lt;"this function will be executed only when Point<double>" &lt;&lt; endl;
+    return this-&gt;x;
+}</double></double></T></typename></T></typename></T></typename></T></typename></typename></p>
+
+<p>template<typename K="">
+class Point&lt;K*&gt;
+{
+    public:
+        Point(K a=0) { cout &lt;&lt; "you can't use pointers here"; }
+};</typename></p>
+
+<p>template <typename T="">
+class Point2D : public Point<T> //derived, child, subclass
+{
+    protected:
+        T y;
+    public:
+        Point2D(T =0, T =0);
+        ~Point2D();
+        T getY() { return y; }
+        void setY(T);
+        void setX(T);
+        void setXY(T, T);
+        Point2D operator+(Point2D);</T></typename></p>
+
+<p>};
+template <typename T="">
+Point2D<T>::Point2D(T x, T y) : Point<T>(x)
+{
+    this-&gt;y = y;
+    cout &lt;&lt; "The constructor from the Point2D class has just been invoked" &lt;&lt; endl;
+}
+template <typename T="">
+Point2D<T>::~Point2D()
+{
+    cout &lt;&lt; "The destructor from the Point2D class has just been invoked" &lt;&lt; endl;
+}
+template <typename T="">
+void Point2D<T>::setY(T y)
+{
+    this-&gt;y = y;
+}
+template <typename T="">
+void Point2D<T>::setXY(T x, T y)
+{
+    setX(x);
+    setY(y);
+}
+template <typename T="">
+void Point2D<T>::setX(T x)
+{
+    this-&gt;x = x;
+    cout &lt;&lt; "Im from Point2D" &lt;&lt; endl;
+}
+template <typename T="">
+Point2D<T> Point2D<T>::operator+(Point2D o)
+{
+    Point2D tmp;</T></T></typename></T></typename></T></typename></T></typename></T></typename></T></T></typename></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tmp.setX(this-&gt;getX() + o.getX());
+tmp.setY(this-&gt;getY() + o.getY());
+
+return tmp; } /* class Point3D : public Point2D {
+</code></pre></div></div>
+
+<p>};
+*/</p>
+
+<p>template&lt;&gt;
+class Point<char>
+{
+        public:
+            Point(char a=0) { cout &lt;&lt; "this is from Point<char>";}
+};
+/*
+    class Point2D : public Point
+    everything what is inside Point (excluding constructor and destructor) will be in Point2D
+    private - CANNOT ACCESS
+    protected - protected
+    public - public</char></char></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Point2D : protected Point
+everything what is inside Point (excluding constructor and destructor) will be in Point2D
+private - CANNOT ACCESS
+protected - protected
+public - protected
+
+
+class Point2D : private Point
+everything what is inside Point (excluding constructor and destructor) will be in Point2D
+private - CANNOT ACCESS
+protected - private
+public - private
+</code></pre></div></div>
+
+<p>*/
+#endif // POINT_H_INCLUDED</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+# Exercise 2
+
+&gt; main.cpp
+
+</code></pre></div></div>
+<p>#include <iostream>
+#include "point.h"</iostream></p>
+
+<p>using namespace std;
+/* function templates generalization*/</p>
+
+<p>void operationOnPoints();</p>
+
+<p>template&lt;typename T, typename T2&gt;
+T add(T var1, T2 var2)
+{
+    return var1 + var2;
+}
+/*
+template&lt;&gt;
+Point2D add(Point2D var1, Point2D var2)
+{
+    Point2D tmp;</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tmp.setX(var1.getX() + var2.getX());
+tmp.setY(var1.getY() + var2.getY());
+
+return tmp; } */ int main() {
+operationOnPoints();
+
+//cout &lt;&lt; add&lt;double, double&gt;(2, 5.6) &lt;&lt; endl;
+</code></pre></div></div>
+
+<p>// cout « static_cast<int>(6.5) &lt;&lt; endl;</int></p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>return 0; } void operationOnPoints() {
+Point2D p1(10, 67);
+Point2D p2(50, 3); // 60,70
+
+Point2D sum = add(p1,p2);
+
+cout &lt;&lt; sum.getX() &lt;&lt; endl;
+cout &lt;&lt; sum.getY() &lt;&lt; endl;
+</code></pre></div></div>
+
+<p>}</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+&gt; point.h
+
+</code></pre></div></div>
+<p>#ifndef POINT_H_INCLUDED
+#define POINT_H_INCLUDED</p>
+
+<p>class Point //base, parent, superclass
+{
+    protected:
+        int x;
+    public:
+        Point(int =0);
+        ~Point();
+        int getX() { return x; }
+        void setX(int);
+};
+class Point2D : public Point //derived, child, subclass
+{
+    protected:
+        int y;
+    public:
+        Point2D(int =0, int =0);
+        ~Point2D();
+        int getY() { return y; }
+        void setY(int);
+        void setX(int);
+        void setXY(int, int);
+        Point2D operator+(Point2D);</p>
+
+<p>};
+class Point3D : public Point2D
+{</p>
+
+<p>};</p>
+
+<p>/*
+    class Point2D : public Point
+    everything what is inside Point (excluding constructor and destructor) will be in Point2D
+    private - CANNOT ACCESS
+    protected - protected
+    public - public</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>class Point2D : protected Point
+everything what is inside Point (excluding constructor and destructor) will be in Point2D
+private - CANNOT ACCESS
+protected - protected
+public - protected
+
+
+class Point2D : private Point
+everything what is inside Point (excluding constructor and destructor) will be in Point2D
+private - CANNOT ACCESS
+protected - private
+public - private
+</code></pre></div></div>
+
+<p>*/
+#endif // POINT_H_INCLUDED
+```</p>
+
+<blockquote>
+  <p>point.cpp</p>
+</blockquote>
+:ET

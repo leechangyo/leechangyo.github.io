@@ -1,0 +1,136 @@
+I"�<h1 id="static-variables-and-functionshttpsju3ungithubioglobal-static">(Static-Variables-and-Functions)[https://ju3un.github.io/global-static/]</h1>
+<ul>
+  <li>프로그래밍을 처음 배울 때 우리는 지역 변수, 전역 변수라는 용어를 흔히 들을 수 있다.</li>
+  <li>지역 변수는 말그대로 정의되는 시점에서 생성되고 초기화되며, 정의된 스코프(블록)이 끝나는 지점에서 소멸한다.</li>
+</ul>
+
+<h3 id="전역-변수global-variable와-정적-변수static-variable">전역 변수(Global Variable)와 정적 변수(Static Variable)</h3>
+
+<h1 id="exercise">Exercise</h1>
+<blockquote>
+  <p>Main.cpp</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include "farm.h"
+
+using namespace std;
+/* polymorphism, virtual functions, abstract class */
+void voiceOfAnimal(Animal *);
+void voiceOfAnimal(Animal &amp;);
+int main()
+{
+
+    Dog dog;
+    Cat cat;
+    Cow cow;
+/*
+    cout &lt;&lt; animal.getVoice() &lt;&lt; endl;
+    cout &lt;&lt; dog.getVoice() &lt;&lt; endl;
+    cout &lt;&lt; cat.getVoice() &lt;&lt; endl;
+    cout &lt;&lt; cow.getVoice() &lt;&lt; endl;
+    */
+    voiceOfAnimal(&amp;cow); // why we use &amp; because it is for class usually. so it took as reference
+
+
+
+    return 0;
+}
+void voiceOfAnimal(Animal *p)
+{
+    cout &lt;&lt; p-&gt;getVoice() &lt;&lt; endl;
+}
+void voiceOfAnimal(Animal &amp;p)
+{
+    cout &lt;&lt; p.getVoice() &lt;&lt; endl;
+}
+</code></pre></div></div>
+
+<blockquote>
+  <p>farm.h</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#ifndef FARM_H_INCLUDED
+#define FARM_H_INCLUDED
+#include &lt;iostream&gt;
+
+using namespace std;
+
+class Animal
+{
+        protected:
+            string voice;
+        public:
+            Animal();
+            ~Animal();
+            virtual string getVoice() = 0; // 가상함수로 선언하여 유도 클래스 Getvoice를 쓸 수 있게 함
+};
+class Dog : public Animal
+{
+            string sign;
+        public:
+            Dog();
+            ~Dog();
+            string getVoice() { return voice + " " + sign; }
+};
+class Cat : public Animal
+{
+            string sign;
+        public:
+            Cat();
+            ~Cat();
+            string getVoice() { return voice  + " " +  sign; }
+};
+class Cow : public Animal
+{
+            string sign;
+        public:
+            Cow();
+            ~Cow();
+            string getVoice() { return voice  + " " +  sign; }
+};
+
+#endif // FARM_H_INCLUDED
+</code></pre></div></div>
+
+<blockquote>
+  <p>farm.cpp</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include "farm.h"
+
+
+Animal::~Animal()
+{
+
+}
+Dog::Dog()
+{
+    sign = "D";
+    voice = "hau";
+}
+Dog::~Dog()
+{
+
+}
+Cat::Cat()
+{
+    sign = "C";
+    voice = "meow";
+}
+Cat::~Cat()
+{
+
+}
+Cow::Cow()
+{
+    sign = "CO";
+    voice = "moooo";
+}
+Cow::~Cow()
+{
+
+}
+
+</code></pre></div></div>
+:ET

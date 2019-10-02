@@ -1,0 +1,204 @@
+I"Á<h1 id="example-1">Example 1</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+struct book
+{
+    string author;
+    string title;
+    int publicationYear;
+};
+
+void setBook(book&amp;);
+
+int main()
+{
+    book book1, book2, book3;
+
+    setBook(book1);
+    setBook(book2);
+    setBook(book3);
+
+    return 0;
+}
+
+void setBook(book &amp;bookToSet)
+{
+    cout &lt;&lt; "Who is the author of the book: ";
+    cin &gt;&gt; bookToSet.author; // kind of def in python
+    cout &lt;&lt; "What is the title of the book: ";
+    cin &gt;&gt; bookToSet.title;
+    cout &lt;&lt; "In what year was the book published: ";
+    cin &gt;&gt; bookToSet.publicationYear;
+}
+
+</code></pre></div></div>
+
+<h1 id="example-2">Example 2</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+struct book
+{
+    string author;
+    string title;
+    int publicationYear;
+};
+
+void setBook(book&amp;);
+void showBook(book);
+
+int main()
+{
+    book book1, book2, book3;
+
+    setBook(book1);
+    setBook(book2);
+    setBook(book3);
+
+
+    showBook(book1);
+    showBook(book2);
+    showBook(book3);
+    return 0;
+}
+
+void setBook(book &amp;bookToSet)
+{
+    cout &lt;&lt; "Who is the author of the book: ";
+    getline(cin, bookToSet.author);
+    cout &lt;&lt; "What is the title of the book: ";
+    getline(cin, bookToSet.title);
+    cout &lt;&lt; "In what year was the book published: ";
+    cin &gt;&gt; bookToSet.publicationYear;
+    cin.ignore();
+}
+void showBook(book bookToShow)
+{
+    cout &lt;&lt; endl &lt;&lt; bookToShow.author &lt;&lt;  " " &lt;&lt; bookToShow.title &lt;&lt;  " " &lt;&lt; bookToShow.publicationYear &lt;&lt; endl;
+}
+
+</code></pre></div></div>
+
+<h1 id="example-3">Example 3</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+int main ()
+{
+
+    int arraySize;
+
+    cout &lt;&lt; "Input the size of the dynamic array you want to create: ";
+    cin &gt;&gt; arraySize;
+
+    int *dynamicArray = new int[arraySize];
+
+
+    for (int i = 0; i &lt; arraySize; i++)
+    {
+        cout &lt;&lt; "Input " &lt;&lt; i+1 &lt;&lt; " number: ";
+        cin &gt;&gt; *(dynamicArray+i);
+    }
+
+    for (int i = 0; i &lt; arraySize; i++)
+    {
+        cout &lt;&lt; "Number " &lt;&lt; i+1 &lt;&lt; ": " &lt;&lt; *(dynamicArray+i) &lt;&lt; endl;
+    }
+
+    delete []dynamicArray;
+
+
+}
+
+
+</code></pre></div></div>
+
+<h1 id="example-4">Example 4</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+int main ()
+{
+
+    int a = 5;
+    int *p = &amp;a;
+    int **pp = &amp;p;
+
+    cout &lt;&lt; "Value of the variable a is equal to: " &lt;&lt; a &lt;&lt; endl;
+    cout &lt;&lt; "The address of the variable a is equal to: " &lt;&lt; &amp;a &lt;&lt; endl;
+    cout &lt;&lt; "The value stored in the pointer p is equal to: " &lt;&lt; p &lt;&lt; endl;
+    cout &lt;&lt; "To get the value of the variable a using pointer p one has to point to the address in the pointer p, *p = " &lt;&lt; *p &lt;&lt; endl &lt;&lt; endl;
+    cout &lt;&lt; "Pointer p has its own address which is: " &lt;&lt; &amp;p &lt;&lt; endl;
+    cout &lt;&lt; "The value stored in the pointer pp is equal to: " &lt;&lt; pp &lt;&lt; endl;
+    cout &lt;&lt; "To get the value of the pointer p using pointer pp one has to point to the address in the pointer pp, *pp = " &lt;&lt; *pp &lt;&lt; endl;
+    cout &lt;&lt; "To get the value of he variable a using pointer pp one has to point to the address in the pointer pp and p, **pp = " &lt;&lt; **pp &lt;&lt; endl;
+
+    return 0;
+}
+</code></pre></div></div>
+
+<h1 id="example-5">Example 5</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+int main ()
+{
+    int charactersNumber;
+
+    cout &lt;&lt; "How many characters would you like to input: ";
+    cin &gt;&gt; charactersNumber;
+
+    char *characters = new char[charactersNumber];
+
+    for (int i = 0; i &lt; charactersNumber; i++)
+    {
+        cout &lt;&lt; i+1 &lt;&lt; " character: ";
+        cin &gt;&gt; characters[i];
+    }
+
+    cout &lt;&lt; "The inputted string of characters was: ";
+
+    for (int i = 0; i &lt; charactersNumber; i++)
+    {
+        cout &lt;&lt; *(characters+i);
+    }
+
+
+    delete [] characters;
+
+
+    return 0;
+}
+</code></pre></div></div>
+
+<h1 id="example-6">Example 6</h1>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+using namespace std;
+
+int main ()
+{
+    int arr[5];
+    int *pArr = arr;
+
+    for (int i = 0; i &lt; 5; i++)
+    {
+        cout &lt;&lt; "Input " &lt;&lt; i+1 &lt;&lt; " number: ";
+        cin &gt;&gt; *(pArr++);
+    }
+
+    for (int i = 0; i &lt; 5; i++)
+    {
+        cout &lt;&lt; "Number " &lt;&lt; i+1 &lt;&lt; ": " &lt;&lt; arr[i] &lt;&lt; endl;
+    }
+
+    return 0;
+}
+</code></pre></div></div>
+:ET

@@ -1,7 +1,0 @@
-I"<h1 id="markov-decision-processes">Markov Decision Processes</h1>
-<ul>
-  <li>this section: formalize some RL concepts we already know about</li>
-  <li>Agent, Environment, action, state, reward, episode</li>
-  <li>Formal Framework: Markov Decision Processes(MDPs)</li>
-</ul>
-:ET
