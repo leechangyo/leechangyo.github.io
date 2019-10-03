@@ -1,0 +1,79 @@
+I"r<h1 id="deep-learning">Deep Learning</h1>
+<p><a href="https://postimg.cc/gn4x7Fc6"><img src="https://i.postimg.cc/mgW7tB0V/413131312.png" width="700px" title="source:imgur.com" /><a></a></a></p>
+<ul>
+  <li>Deep Learning is a name for <strong>Neural network</strong></li>
+  <li>in its simplest form, it’s just a bunch of logistic regressions stacked together</li>
+  <li>layers in between input and output are called <strong>hidden leyers</strong></li>
+  <li>we call this network a “feedforward neural network”</li>
+  <li>Nonlinear activation functions <strong>(f)</strong> make it a nonlinear function approximator
+<a href="https://postimg.cc/RNfLj06b"><img src="https://i.postimg.cc/X711BGV3/4131313.png" width="500px" title="source:imgur.com" /><a></a></a></li>
+</ul>
+
+<h2 id="training">Training</h2>
+<ul>
+  <li>Despite the complexity, training hasn’t changed since logistic regression, we still just do gradient descent
+<a href="https://postimg.cc/fkF3Q463"><img src="https://i.postimg.cc/Yq2QgMRx/4124123131.png" width="300px" title="source:imgur.com" /><a></a></a></li>
+  <li>problem: not as robust with deep networks. sensitive to hyperparameters:
+    <ul>
+      <li>Learning rate, # hidden units, # hidden layers, activation fcn, optimizer(AdaGrad, RMSprop, Adam, etc) which have their own hyperparameters</li>
+      <li>we won’t know what works until we try</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="feature-engineering">Feature Engineering</h2>
+<ul>
+  <li>As with all ML models, input is a feature vector x</li>
+  <li><strong>Neural networks are nice because they save us from having to do lots of manual feature engineering</strong></li>
+  <li>Nonlinear characteristics of NNs have been shown to learn features automatically and hierarchically between layers</li>
+  <li>Ex
+    <ul>
+      <li>layer 1 : edges</li>
+      <li>layer 2 : groups of edges</li>
+      <li>layer 3 : eye, nose, lips, ears</li>
+      <li>layer 4 : entire faces</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="working-with-images">Working with images</h2>
+<ul>
+  <li>as a human, one of our main sensory(感觉的) input</li>
+  <li>as a robot navigating the real-world, images are also one of our main sensory input</li>
+  <li>images also make up states in video games</li>
+  <li>thus we’ll need to know how to work with images to play Atary environments in Open Gym</li>
+  <li>Luckily we have tools for this: <strong>Convolutional neural network</strong></li>
+  <li>Does 2-D Convolutions before the fully-connected layers</li>
+  <li>(All layers in a feedforward network are fully-connected)</li>
+  <li>Convolutional Layers have filter which are mush smaller than the image</li>
+  <li>Also, instead of working with 1-D feature vectors, we work with the 2-D image directly(3-D if color)
+<a href="https://postimg.cc/MnQhTBP0"><img src="https://i.postimg.cc/y8QBLX0G/412412313.jpg" width="700px" title="source:imgur.com" /><a></a></a></li>
+  <li>idea: slide kernal/filter across the image and multiply by a patch to get output</li>
+  <li>Aside from the sliding, it works exactly like a fully-connected layer</li>
+  <li>Multiplication and nonlinear activation</li>
+  <li>Concept of <strong>shared weights</strong></li>
+  <li>smaller # of parameters, takes up less space and trains faster
+<a href="https://postimg.cc/VJ4zqpPs"><img src="https://i.postimg.cc/Gpn9CnMD/412312312412.png" width="700px" title="source:imgur.com" /><a></a></a></li>
+</ul>
+
+<h2 id="working-with-sequences">Working with sequences</h2>
+<ul>
+  <li>In RL, not only are we interested in images, but sequences too</li>
+  <li><strong>Main tool: recurrent neural networks</strong></li>
+  <li>Episode is made of sequence of states, actions and rewards</li>
+  <li>Any Network where a node loops back to an earlier node is recurrent
+<a href="https://postimg.cc/0M1ffWsj"><img src="https://i.postimg.cc/vBcNGk2r/12312.jpg" width="700px" title="source:imgur.com" /><a></a></a></li>
+  <li>Typically don’t think of individual recurrent connections, but recurrent layers or units, e.g <strong>LSTM or GRU</strong></li>
+  <li>we think of them as black boxs: input -&gt; box -&gt; outpu</li>
+  <li>since output depends on previous inputs, it means the black box has “memory”</li>
+  <li>useful because we can make decisions based on previous frames/ states
+<a href="https://postimg.cc/18HnTvw4"><img src="https://i.postimg.cc/XvMfrhvK/12.png" width="700px" title="source:imgur.com" /><a></a></a></li>
+</ul>
+
+<h2 id="classification-vs-regression">Classification vs Regression</h2>
+<ul>
+  <li>we mostly focused on multi-class classification</li>
+  <li>softmax on multiple output nodes + cross entropy</li>
+  <li>in RL we want to predict a real-value scalar(the value function)</li>
+</ul>
+:ET

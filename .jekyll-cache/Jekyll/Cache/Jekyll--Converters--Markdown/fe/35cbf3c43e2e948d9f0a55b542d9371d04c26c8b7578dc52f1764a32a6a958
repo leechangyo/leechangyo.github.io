@@ -1,0 +1,9 @@
+I"�<h1 id="deep-learning">Deep Learning</h1>
+<ul>
+  <li>Deep Learning is a name for <strong>Neural network</strong></li>
+  <li>in its simplest form, it’s just a bunch of logistic regressions stacked together</li>
+  <li>layers in between input and output are called <strong>hidden leyers</strong></li>
+  <li>we call this network a “feedforward neural network”</li>
+  <li>Nonlinear activation functions <strong>(f)</strong> make it a nonlinear function approximator</li>
+</ul>
+:ET
