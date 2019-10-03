@@ -172,7 +172,7 @@ if policy_changed: go back to step 2
 
 > code
 
-```pyhton
+```python
 # https://deeplearningcourses.com/c/artificial-intelligence-reinforcement-learning-in-python
 # https://www.udemy.com/artificial-intelligence-reinforcement-learning-in-python
 from __future__ import print_function, division

@@ -1,0 +1,47 @@
+I"�<h1 id="review">Review</h1>
+<ul>
+  <li>Multi-armed bandit Review(Bayesian machine learning: A/B Testing)</li>
+  <li>Explore-exploit dilemma</li>
+  <li>4 Algorithms:
+    <ul>
+      <li>Epsilon-greedy</li>
+      <li>Optimistic initial Value</li>
+      <li>UCB1</li>
+      <li>Thompson Sampling</li>
+    </ul>
+  </li>
+  <li>Basic definitions in RL</li>
+  <li>Tic-Tac-Toe</li>
+  <li>MDPs</li>
+  <li>Policies state-value functions, action-value funtions</li>
+  <li>Return</li>
+  <li>3 methods:
+    <ul>
+      <li>Dynamic Programming(direct application of bellman’s Equation)
+        <ul>
+          <li>Policy iteration, Value iteration</li>
+        </ul>
+      </li>
+      <li>Monte Carlo
+        <ul>
+          <li>Learning from experience</li>
+          <li>Not fully online</li>
+        </ul>
+      </li>
+      <li>Temporal Difference Learning
+        <ul>
+          <li>Fully online with bootstrapping</li>
+          <li>Also learn from experience</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Approximation Methods</li>
+  <li>Tabular methods can be infeasible for large state spaces
+    <ul>
+      <li>action value funtion을 Q-table로 작성하여 푸는 방법</li>
+    </ul>
+  </li>
+  <li>differential models(feature engineering)</li>
+</ul>
+:ET

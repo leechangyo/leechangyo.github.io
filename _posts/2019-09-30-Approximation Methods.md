@@ -265,6 +265,9 @@ x = [
   - Sources have stated approximation for off-policy control methods do not have good convergence characteristics (utton & Barto)
   - we are encouraged to modify SARSA to use Q-learning instead
   - Recall: with Q-learning the a' we use in update is not necessarily the action we will take next
+  - but **it has been done** at "Deep Q Learning"
+  - we're encouraged to modify SARSA to use Q-Learning instead
+
 
   Reference:
 

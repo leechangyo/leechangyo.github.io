@@ -1,0 +1,305 @@
+I"�5<h1 id="review">Review</h1>
+<ul>
+  <li>Multi-armed bandit Review(Bayesian machine learning: A/B Testing)</li>
+  <li>Explore-exploit dilemma</li>
+  <li>4 Algorithms:
+    <ul>
+      <li>Epsilon-greedy</li>
+      <li>Optimistic initial Value</li>
+      <li>UCB1</li>
+      <li>Thompson Sampling</li>
+    </ul>
+  </li>
+  <li>Basic definitions in RL</li>
+  <li>Tic-Tac-Toe</li>
+  <li>MDPs</li>
+  <li>Policies state-value functions, action-value funtions</li>
+  <li>Return</li>
+  <li>3 methods:
+    <ul>
+      <li>Dynamic Programming(direct application of bellman’s Equation)
+        <ul>
+          <li>Policy iteration, Value iteration</li>
+        </ul>
+      </li>
+      <li>Monte Carlo
+        <ul>
+          <li>Learning from experience</li>
+          <li>Not fully online</li>
+        </ul>
+      </li>
+      <li>Temporal Difference Learning
+        <ul>
+          <li>Fully online with bootstrapping</li>
+          <li>Also learn from experience</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Approximation Methods</li>
+  <li>Tabular methods can be infeasible for large state spaces
+    <ul>
+      <li>action value funtion을 Q-table로 작성하여 푸는 방법</li>
+    </ul>
+  </li>
+  <li>differential models(feature engineering)
+    <h2 id="1-review-of-mdps">1. Review of MDPs</h2>
+  </li>
+  <li>Markov decision Processes</li>
+  <li>MDPs a collection of 5 things:
+    <ul>
+      <li>set of all states</li>
+      <li>set of all actions</li>
+      <li>set of all rewards</li>
+      <li>state transition probabilities</li>
+      <li>Discount factor(gamma)</li>
+    </ul>
+  </li>
+  <li>States
+    <ul>
+      <li>State represents what the sensors of our agent measure from the environment</li>
+      <li>In GridWorld, that would be our position on the board</li>
+      <li>in tic-tac-toe: specific configuration of pieces on the board</li>
+      <li>Video game: pixel on the screen</li>
+      <li>Maybe also : # of lives we have left, health, etc</li>
+      <li>For an AI to be as human as possible maybe we should require it to learn that only from pixels on the screen</li>
+    </ul>
+  </li>
+  <li>Actions
+    <ul>
+      <li>Anything the agent can do while in a state</li>
+      <li>tic-tac-toe: placing a piece on the board</li>
+      <li>Video game: moving up/down/left/right, pressing an action button</li>
+    </ul>
+  </li>
+  <li>Rewards
+    <ul>
+      <li>Agent receives a reward at every time step</li>
+      <li>reward are real-valued</li>
+      <li>goal of agent is to maximize total future reward</li>
+      <li>careful to define rewards the right way</li>
+      <li>Ex. Robot trying to solve a maze receives a reward of 0 at every step and 1 for solving the maze</li>
+      <li>possible that robot will never solve the maze, or solve it very inefficiently</li>
+      <li>it has only experience 0 reward, thinks that is the best it can do, no incentive to not act randomly</li>
+      <li>better solution is -1 reward at every time step</li>
+      <li>now it has incentive to solve the maze as quickly as possible</li>
+      <li>“Negative” and “Positive” don’t have connotations(含义) when it comes to RL agents</li>
+      <li>just a number on a scale</li>
+      <li>E.g -3 is better reward than -300</li>
+      <li>been debated whether or not we should override the default rewards</li>
+      <li>in real world environment, we would be the ones defining rewards</li>
+    </ul>
+  </li>
+  <li>State-transition probabilities
+    <ul>
+      <li>At first glance, might seem unnecessary</li>
+      <li><strong>p(s’,r I s,a)</strong></li>
+      <li>if we do action a while in state s, won’t i always go to s?</li>
+      <li>GridWorld: action “up”, should always take us to the square above</li>
+      <li>Not all environments are deterministic - have a source of randomness</li>
+      <li>reading of the state can be imperfect</li>
+      <li>may only reflect partial knowledge</li>
+    </ul>
+  </li>
+  <li>Makrov propertys
+    <ul>
+      <li>p[s(t+1),r(t+1)I s(t), a(t), s(t-1), a(t-1),…,(s1),a(1)]=p[s(t+1),r(t+1) I s(t), a(t)]</li>
+      <li>as usual by “Markov” we mean first-order Markov</li>
+      <li>A.K.a <strong>Markov assumption</strong></li>
+      <li>p(s’,r I s,a)</li>
+      <li>Note: ‘ don’t mean t+1</li>
+    </ul>
+  </li>
+  <li>Discount factor
+    <ul>
+      <li>we would rather get $100 now than $100 years from now</li>
+      <li>we would like to maximize total future reward</li>
+      <li>the further we look into the future, the harder it is to predict</li>
+      <li>therefore, discount future rewards to make them “matter less”</li>
+      <li>we can then define the return:
+<a href="https://postimg.cc/cK74Z9bq"><img src="https://i.postimg.cc/43qK6jv3/412312312.png" width="500px" title="source: imgur.com" /><a></a></a></li>
+    </ul>
+  </li>
+  <li>Value Function
+    <ul>
+      <li>Because rewards are probabilistic, and return are sums of rewards, they are also probabilistic</li>
+      <li>can define <strong>the expected value</strong> - call this the <strong>Value Funtion</strong></li>
+      <li>The expected return from being in state s
+<a href="https://postimg.cc/629RNGz0"><img src="https://i.postimg.cc/9M9BZd7v/41212312312.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+    </ul>
+  </li>
+  <li>State-Value and Action-Value
+    <ul>
+      <li>State-Value: V(s), Action-Value: Q(s,a)</li>
+      <li>Typically use Q for learning the optimal policy (control problem)</li>
+      <li>Finding V or Q given a fixed policy is called the prediction problem</li>
+      <li>Policy denoted by π, can be deterministic or probabilistic
+<a href="https://postimg.cc/cv0dhMJX"><img src="https://i.postimg.cc/W1Jt25cL/32312312.png" width="500px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/N51gRPQK"><img src="https://i.postimg.cc/ncWCb65G/412321312.png" width="500px" title="source: imgur.com" /><a></a></a></a></a></li>
+    </ul>
+  </li>
+  <li>When to use Q(s,a)
+    <ul>
+      <li>Q(s,a) is better for the control problem since it is indexed by action, tells us what the best action is given a state</li>
+      <li>With V(s) we need to actually do the action, and see what the next state s’ is, to determine the best action</li>
+      <li>Not feasible to “reset” a state in the real world
+<a href="https://postimg.cc/KRFXhcyY"><img src="https://i.postimg.cc/jdnRNCgy/4112313321.png" width="500px" title="source: imgur.com" /><a></a></a></li>
+    </ul>
+  </li>
+  <li>Episodes
+    <ul>
+      <li>E.g one run of tic-tac-toe</li>
+      <li>Typically an agent will need to play many episodes to learn an optimal policy</li>
+      <li>Tasks that end are called <strong>episodic tasks</strong></li>
+      <li>Tasks that last forever are called <strong>continuous task</strong></li>
+      <li>Terminal state - the state at which an episode ends</li>
+      <li>Since the value function is the expected <strong>future</strong> reward after arriving in a state, the value of any terminal state is 0</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="2-dynamic-programming">2. Dynamic Programming</h2>
+<ul>
+  <li>Pioneered by Richard Bellman</li>
+  <li>The bellman Equations for MDPs allow us to define the value function recursively
+<a href="https://postimg.cc/5XWK8Hhk"><img src="https://i.postimg.cc/zGymZK05/4141313123.png" width="500px" title="source: imgur.com" /></a></li>
+  <li>if we look carefully, this is actually a linear system of equations:
+    <ul>
+      <li>V(s1)= $a_11$V(s1) + $a_12$V(s1) + … + $a_1N$V(sN)</li>
+      <li>V(s2)= $a_21$V(s2) + $a_22$V(s1) + … + $a_2N$V(sN)</li>
+    </ul>
+  </li>
+  <li>but since this is machine learning we are more interested in iterative solutions</li>
+  <li>prediction problem: Given a polic, find the value function</li>
+  <li>simply keep recalculating the right side and assign it to the left until there is no more change</li>
+  <li>bellman’s equation says they should be equal</li>
+  <li>one “trick” : don’t update set of V(s)’s only from previous set of V(s)’s, just update V(s) in-place -it’s faster</li>
+  <li>Policy Iteration
+    <ul>
+      <li>For solving the control problem
+        <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>while not converged:
+Step 1) Policy evaluation on current policy
+Step 2) Policy Improvement (take the argmax over Q(s,a))
+</code></pre></div>        </div>
+      </li>
+      <li><strong>Policy iteration is inefficient</strong></li>
+      <li>outer loop is iterative</li>
+      <li>policy evaluation(inner loop) is also iterative</li>
+      <li>iterative algorithm inside another</li>
+    </ul>
+  </li>
+  <li>Value Iteration
+    <ul>
+      <li>Instead of waiting for policy evaluation to converge just do iteration</li>
+      <li>overall it will still converge</li>
+      <li>Furthermore, we don’t need to explicitly do the policy improvement step at all</li>
+      <li><strong>Since it’s the argmax, then taking the max in the policy evaluation step in equivalent</strong></li>
+      <li>Taking the max appears again in Q-Learning
+<a href="https://postimg.cc/bsP2bky5"><img src="https://i.postimg.cc/ZKBPGx1J/4121313132.png" width="500px" title="source: imgur.com" /></a></li>
+    </ul>
+  </li>
+  <li>lays the ground work, but is not very practical</li>
+  <li>we need to loop through all state on every iteration</li>
+  <li>state space may be very large or infinite</li>
+  <li>requires us to know p(s’,r I s,a)</li>
+  <li>calculating that can be infeasible</li>
+  <li>doesn’t learn from experience</li>
+  <li>MC and TD learning do, no model of the environment needed</li>
+</ul>
+
+<h2 id="3-monte-carlo-methodsmc">3. Monte Carlo Methods(MC)</h2>
+<ul>
+  <li>Unlike DP, MC is all about learning from experience</li>
+  <li><strong>Expected values can be approximated by sample means</strong></li>
+  <li>Play a bund of episodes, gather returns, average them
+<a href="https://postimg.cc/rzYYWjxF"><img src="https://i.postimg.cc/dtqMbS0d/41241231321312.png" width="400px" title="source: imgur.com" /></a></li>
+  <li>only gives us values for states we encountered</li>
+  <li>if we never encountered a state, its value is unknown</li>
+  <li>what about the control problem?</li>
+  <li>we return to the ide of policy iteration</li>
+  <li>Montel Carlo control
+    <ol>
+      <li>initialize random policy</li>
+      <li>while not converged:
+        <ul>
+          <li>play an episode, calculate returns for each state</li>
+          <li>Do policy improvement based on current Q(s,a)(take the argmax)</li>
+          <li>Look-ahead search with V(s) is not practical if we don’t have full control over environment, so we use Q(s,a)</li>
+          <li>Unusual/interesting: the averaged returns are for difference policies, yet it still converged</li>
+        </ul>
+      </li>
+    </ol>
+  </li>
+  <li>Problem
+    <ul>
+      <li>MC control as given won’t always work</li>
+      <li>requires many episodes</li>
+      <li>what if we’re not doing an episodic task?</li>
+      <li>what if the current policy is to bump into a wall or walk around in a circle? the episode will never end</li>
+      <li>one solution: end the episode if we catch ourselves in a loop, give a large negative reward for that action</li>
+      <li><strong>Agent won’t do it again, since policy is chosen as argmax</strong></li>
+    </ul>
+  </li>
+  <li>Another Problem
+    <ul>
+      <li>MC can leave may states unexplored</li>
+      <li>we had never know if going to these states is better/worse than our current policy, because we have no data on them</li>
+      <li>one solution: the “exploring stats” method-start from a random state each episode</li>
+      <li>requires full control over environment, not always feasible</li>
+      <li>Another solution: epsilon-greedy</li>
+      <li>by moving randomly with small probability epsilon, we’ll eventually explore all states sufficiently</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="4-temporal-difference-learningtd">4. Temporal difference Learning(TD)</h2>
+<ul>
+  <li>Unique to RL</li>
+  <li>MC: sample returns based on an episode</li>
+  <li>TD: estimate return based on current value function estimate</li>
+  <li>We looked at TD(0)</li>
+  <li>instead of using G, we use r+ɣV(s’)</li>
+  <li>Calculating means
+    <ul>
+      <li>basic naive way:</li>
+      <li>collect all samples in an array, sum them, divide by N</li>
+      <li>Major disadvantage - it requires us to store all samples in memory - space inefficient
+<a href="https://postimg.cc/rzYYWjxF"><img src="https://i.postimg.cc/dtqMbS0d/41241231321312.png" width="600px" title="source: imgur.com" /></a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="next-steps">Next Steps</h1>
+<ul>
+  <li>Continuous state-spaces
+    <ul>
+      <li><a href="https://en.wikipedia.org/wiki/Light_intensity">light intensity</a> in 3-D space</li>
+      <li>3-D space is Continuous, light intensity is Continuous</li>
+    </ul>
+  </li>
+  <li>Continuous action-space
+    <ul>
+      <li><strong>Amount of force applied to a motor</strong></li>
+    </ul>
+  </li>
+  <li>parameterized V</li>
+  <li>parameterized π
+    <ul>
+      <li>it called <strong>“policy gradient”</strong> method</li>
+    </ul>
+  </li>
+  <li>learned from our current experience only</li>
+  <li>as we play, we accumulate(input, target) pairs
+    <ul>
+      <li>E.g accumulate training data</li>
+    </ul>
+  </li>
+  <li>save these in a file and do more training</li>
+  <li>in deep learning, we loop through the same training data multiple times (called ‘epochs’)</li>
+  <li>No reason we can’t learn from our previous experience as well</li>
+  <li>Replay a previous episode, update params based on old episodes</li>
+  <li>CNNs</li>
+  <li>RNNs</li>
+  <li>Regression, Classification</li>
+</ul>
+:ET

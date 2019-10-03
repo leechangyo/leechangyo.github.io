@@ -32,7 +32,7 @@ tag: Reinforcement Learning
 - Recall what V(s) is :
  <a href="https://postimg.cc/t1yqhpWb"><img src="https://i.postimg.cc/hGQXRGGX/4124131233.png" width="500px" title="source: imgur.com" /></a>
 - Any expected value can be approximated like
-<a href="https://postimg.cc/rzYYWjxF"><img src="https://i.postimg.cc/dtqMbS0d/41241231321312.png" width="500px" title="source: imgur.com" /></a>
+<a href="https://postimg.cc/rzYYWjxF"><img src="https://i.postimg.cc/dtqMbS0d/41241231321312.png" width="400px" title="source: imgur.com" /></a>
 - “i” is episode, "t" is steps
 
 ### How do we generate G?
@@ -116,7 +116,7 @@ states_and_returns.reverse
 
 > code
 
-```
+```python
 # https://deeplearningcourses.com/c/artificial-intelligence-reinforcement-learning-in-python
 # https://www.udemy.com/artificial-intelligence-reinforcement-learning-in-python
 from __future__ import print_function, division

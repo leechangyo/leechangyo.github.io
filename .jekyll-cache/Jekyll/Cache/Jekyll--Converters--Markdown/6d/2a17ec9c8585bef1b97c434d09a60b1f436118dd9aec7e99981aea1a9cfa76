@@ -1,0 +1,90 @@
+I"=
+<h1 id="review">Review</h1>
+<ul>
+  <li>Multi-armed bandit Review(Bayesian machine learning: A/B Testing)</li>
+  <li>Explore-exploit dilemma</li>
+  <li>4 Algorithms:
+    <ul>
+      <li>Epsilon-greedy</li>
+      <li>Optimistic initial Value</li>
+      <li>UCB1</li>
+      <li>Thompson Sampling</li>
+    </ul>
+  </li>
+  <li>Basic definitions in RL</li>
+  <li>Tic-Tac-Toe</li>
+  <li>MDPs</li>
+  <li>Policies state-value functions, action-value funtions</li>
+  <li>Return</li>
+  <li>3 methods:
+    <ul>
+      <li>Dynamic Programming(direct application of bellman’s Equation)
+        <ul>
+          <li>Policy iteration, Value iteration</li>
+        </ul>
+      </li>
+      <li>Monte Carlo
+        <ul>
+          <li>Learning from experience</li>
+          <li>Not fully online</li>
+        </ul>
+      </li>
+      <li>Temporal Difference Learning
+        <ul>
+          <li>Fully online with bootstrapping</li>
+          <li>Also learn from experience</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Approximation Methods</li>
+  <li>Tabular methods can be infeasible for large state spaces
+    <ul>
+      <li>action value funtion을 Q-table로 작성하여 푸는 방법</li>
+    </ul>
+  </li>
+  <li>differential models(feature engineering)
+    <h2 id="1-review-of-mdps">1. Review of MDPs</h2>
+  </li>
+  <li>Markov decision Processes</li>
+  <li>MDPs a collection of 5 things:
+    <ul>
+      <li>set of all states</li>
+      <li>set of all actions</li>
+      <li>set of all rewards
+        <h1 id="next-steps">Next Steps</h1>
+      </li>
+    </ul>
+  </li>
+  <li>Continuous state-spaces
+    <ul>
+      <li><a href="https://en.wikipedia.org/wiki/Light_intensity">light intensity</a> in 3-D space</li>
+      <li>3-D space is Continuous, light intensity is Continuous</li>
+    </ul>
+  </li>
+  <li>Continuous action-space
+    <ul>
+      <li><strong>Amount of force applied to a motor</strong></li>
+    </ul>
+  </li>
+  <li>parameterized V</li>
+  <li>parameterized π
+    <ul>
+      <li>it called <strong>“policy gradient”</strong> method</li>
+    </ul>
+  </li>
+  <li>learned from our current experience only</li>
+  <li>as we play, we accumulate(input, target) pairs
+    <ul>
+      <li>E.g accumulate training data</li>
+    </ul>
+  </li>
+  <li>save these in a file and do more training</li>
+  <li>in deep learning, we loop through the same training data multiple times (called ‘epochs’)</li>
+  <li>No reason we can’t learn from our previous experience as well</li>
+  <li>Replay a previous episode, update params based on old episodes</li>
+  <li>CNNs</li>
+  <li>RNNs</li>
+  <li>Regression, Classification</li>
+</ul>
+:ET

@@ -1,0 +1,15 @@
+I"?<h1 id="review">Review</h1>
+<ul>
+  <li>Multi-armed bandit Review(Bayesian machine learning: A/B Testing)</li>
+  <li>Explore-exploit dilemma</li>
+  <li>4 Algorithms:
+    <ul>
+      <li>Epsilon-greedy</li>
+      <li>Optimistic initial Value</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="1-q-learning">1. Q-Learning</h2>
+<p>-</p>
+:ET
