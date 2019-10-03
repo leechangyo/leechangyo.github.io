@@ -1,0 +1,39 @@
+I"<h1 id="mini-database-exercise">Mini Database Exercise</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+//putback
+using namespace std;
+int main ()
+{
+    char c = cin.peek();
+
+
+    if (c &gt; '0' &amp;&amp; c &lt; '9')
+    {
+        int number;
+
+        cin &gt;&gt; number;
+
+        cout &lt;&lt; "Number is: " &lt;&lt; number &lt;&lt; endl;
+    }
+    else
+    {
+        string txt;
+
+        cin &gt;&gt; txt;
+
+        cout &lt;&lt; "Text is: " &lt;&lt; txt &lt;&lt; endl;
+    }
+
+    return 0;
+}
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>return</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/WdfLc3xr"><img src="https://i.postimg.cc/YStpgL3X/321.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+:ET

@@ -1,0 +1,234 @@
+I"Ç<h1 id="mini-database-exercise">Mini Database Exercise</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;conio.h&gt;
+#include &lt;cstdlib&gt;
+#include &lt;fstream&gt;
+
+using namespace std;
+
+struct Person
+{
+    string name;
+    string surname;
+    short age;
+    string telephone;
+};
+short peopleInDataBase;
+Person people[20]; // it can be making 20 of them person.
+
+void requireEnter();
+
+void addPerson();
+void showPeople();
+void savePeopleToFile();
+void loadPeopleFromFile();
+void searchDatabase();
+void removePersonFromDatabase();
+
+int main()
+{
+    char test;
+    loadPeopleFromFile(); // load it when the programming start
+
+    do
+    {
+        cout &lt;&lt; "Number of People in Database: " &lt;&lt; peopleInDataBase &lt;&lt; endl;
+        cout &lt;&lt; "MENU: " &lt;&lt; endl;
+
+        cout &lt;&lt; "1. Add Person" &lt;&lt; endl;
+        cout &lt;&lt; "2. Show All People" &lt;&lt; endl;
+        cout &lt;&lt; "3. Save People to File" &lt;&lt; endl;
+        cout &lt;&lt; "4. Load People from File" &lt;&lt; endl;
+        cout &lt;&lt; "5. Search for a Person" &lt;&lt; endl;
+        cout &lt;&lt; "6. Remove Person from DataBase" &lt;&lt; endl;
+
+        cout &lt;&lt; endl;
+
+        test = getch();
+
+        switch(test)
+        {
+            case '1':
+                addPerson();
+                break;
+            case '2':
+                showPeople();
+                break;
+            case '3':
+                savePeopleToFile();
+                break;
+            case '4':
+                loadPeopleFromFile();
+                break;
+            case '5':
+                searchDatabase();
+                break;
+            case '6':
+                removePersonFromDatabase();
+                break;
+        }
+
+
+        requireEnter();
+        system("cls");
+    }while(test != 27); // 27 is the keyboard asci code, so if we put "space bar" it doens work
+
+
+    return 0;
+}
+void requireEnter()
+{
+    cout &lt;&lt; "Click Enter to continue... " &lt;&lt; endl;
+    while(getch() != 13); // this function never stop the function.
+}
+void addPerson()
+{
+    cout &lt;&lt; "Type name: ";
+    cin &gt;&gt; people[peopleInDataBase].name;
+
+    cout &lt;&lt; "Type surname: ";
+    cin &gt;&gt; people[peopleInDataBase].surname;
+
+    cout &lt;&lt; "Type age: ";
+    cin &gt;&gt; people[peopleInDataBase].age;
+
+    cout &lt;&lt; "Type telephone: ";
+    cin &gt;&gt; people[peopleInDataBase].telephone;
+
+    peopleInDataBase++;
+}
+void showPeople()
+{
+    if(peopleInDataBase &gt; 0)
+    {
+        for (int i = 0; i &lt; peopleInDataBase; i++)
+        {
+            cout &lt;&lt; "Person index: " &lt;&lt; (i+1) &lt;&lt; endl;
+            cout &lt;&lt; "Name: " &lt;&lt; people[i].name &lt;&lt; endl;
+            cout &lt;&lt; "Surname: " &lt;&lt; people[i].surname &lt;&lt; endl;
+            cout &lt;&lt; "Age: " &lt;&lt; people[i].age &lt;&lt; endl;
+            cout &lt;&lt; "Telephone: " &lt;&lt; people[i].telephone &lt;&lt; endl &lt;&lt; endl;
+        }
+    }
+    else
+        cout &lt;&lt; "There is nobody in database."  &lt;&lt; endl;
+}
+void savePeopleToFile()
+{
+    ofstream file("database.txt"); // only putting some data inside
+
+    if (file.is_open())
+    {
+        file &lt;&lt; peopleInDataBase &lt;&lt; endl;
+
+        for (int i = 0; i &lt; peopleInDataBase; i++)
+        {
+            file &lt;&lt; people[i].name &lt;&lt; endl;
+            file &lt;&lt; people[i].surname &lt;&lt; endl;
+            file &lt;&lt; people[i].age &lt;&lt; endl;
+            file &lt;&lt; people[i].telephone &lt;&lt; endl;
+        }
+
+        file.close();
+    }
+    else
+        cout &lt;&lt; "I couldnt save to database" &lt;&lt; endl;
+
+}
+void loadPeopleFromFile()
+{
+    ifstream file("database.txt"); //ifstream is only taking to read
+
+    if (file.is_open())
+    {
+        file &gt;&gt; peopleInDataBase;
+
+        if (peopleInDataBase &gt; 0)
+        {
+            /*for (int i = 0; i &lt; peopleInDataBase; i++)
+            {
+                file &gt;&gt; people[i].name;
+                file &gt;&gt; people[i].surname;
+                file &gt;&gt; people[i].age;
+                file &gt;&gt; people[i].telephone;
+            }*/
+            int i = 0;
+            do
+            {
+                file &gt;&gt; people[i].name; // where we want to put things from
+                file &gt;&gt; people[i].surname; // loading &gt;&gt; this way
+                file &gt;&gt; people[i].age;
+                file &gt;&gt; people[i].telephone;
+
+                i++;
+            }while(!file.eof());
+
+            cout &lt;&lt; "People has been loaded properly. " &lt;&lt; endl;
+        }
+        else
+            cout &lt;&lt; "Databse is Empty" &lt;&lt; endl;
+    }
+    else
+        cout &lt;&lt; "The file database.txt doesnt exist" &lt;&lt; endl;
+}
+void searchDatabase()
+{
+    if (peopleInDataBase &gt; 0)
+    {
+        string name;
+        cout &lt;&lt; "Type a name of person you want to look for: ";
+        cin &gt;&gt; name;
+
+        for (int i = 0; i &lt; peopleInDataBase; i++)
+        {
+            if (name == people[i].name)
+            {
+                cout &lt;&lt; "Person index: " &lt;&lt; (i+1) &lt;&lt; endl;
+                cout &lt;&lt; "Name: " &lt;&lt; people[i].name &lt;&lt; endl;
+                cout &lt;&lt; "Surname: " &lt;&lt; people[i].surname &lt;&lt; endl;
+                cout &lt;&lt; "Age: " &lt;&lt; people[i].age &lt;&lt; endl;
+                cout &lt;&lt; "Telephone: " &lt;&lt; people[i].telephone &lt;&lt; endl &lt;&lt; endl;
+            }
+        }
+    }
+    else
+        cout &lt;&lt; "There is nobody in database what do you want to look for??!" &lt;&lt; endl;
+
+
+}
+void removePersonFromDatabase()
+{
+    if (peopleInDataBase &gt; 0)
+    {
+        short index;
+        cout &lt;&lt; "Who do you want to remove? Type index: " &lt;&lt; endl;
+        cin &gt;&gt; index;
+
+        if (peopleInDataBase &gt;= index)
+        {
+            for (short k = index; k &lt; peopleInDataBase; k++) // because we want to remove from some point
+            {
+                people[k-1].name = people[k].name; // because it started from 0 matrix
+                people[k-1].surname = people[k].surname; // so when index reserve 1 in the txt file it means 0 person
+                people[k-1].age = people[k].age;
+                people[k-1].telephone = people[k].telephone;
+            }
+
+            peopleInDataBase--;
+            savePeopleToFile();
+        }
+        else
+            cout &lt;&lt; "There is nobody like that" &lt;&lt; endl;
+    }
+    else
+        cout &lt;&lt; "There is nothing to remove" &lt;&lt; endl;
+}
+</code></pre></div></div>
+
+<blockquote>
+  <p>return</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/WdfLc3xr"><img src="https://i.postimg.cc/YStpgL3X/321.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+:ET
