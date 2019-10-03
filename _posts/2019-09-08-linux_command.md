@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Linux 중요한 명령어
-category: programming
+category: Programming
 tag: Linux
 ---
 

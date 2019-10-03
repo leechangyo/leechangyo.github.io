@@ -1,0 +1,138 @@
+I"�<h1 id="peek"><a href="https://modoocode.com/194">Peek</a></h1>
+<ul>
+  <li>그 다음 문자를 살짝 훔쳐본다(즉, 스트림에서 빼오지는 않고 읽기만 한다)따라서 get처럼 스트림에서 문자를 빼내는 것이 아니라, 그 문자는 그냥 스트림에 남아있게 된다.</li>
+</ul>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+//putback
+using namespace std;
+int main ()
+{
+    char c = cin.peek();
+
+
+    if (c &gt; '0' &amp;&amp; c &lt; '9')
+    {
+        int number;
+
+        cin &gt;&gt; number;
+
+        cout &lt;&lt; "Number is: " &lt;&lt; number &lt;&lt; endl;
+    }
+    else
+    {
+        string txt;
+
+        cin &gt;&gt; txt;
+
+        cout &lt;&lt; "Text is: " &lt;&lt; txt &lt;&lt; endl;
+    }
+
+    return 0;
+}
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>return</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/WdfLc3xr"><img src="https://i.postimg.cc/YStpgL3X/321.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="put">Put</h1>
+<ul>
+  <li>항상 파일은 리셋된다.</li>
+  <li>’.’&lt;- 가 나올떄까지 계속 쓸 수 있다</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+
+using namespace std;
+
+int main()
+{
+    /*
+        put(character to put on stream)
+    */
+
+    string txt = "thistextisconnected";
+
+
+    for (int i = 0; i &lt; txt.length(); i++)
+    {
+        cout.put(txt[i]).put(' ');
+    }
+
+    fstream file;
+
+    file.open("test.txt", ios::out | ios::binary);
+    if (file.is_open())
+    {
+        char c;
+        do
+        {
+            c = cin.get();
+
+            file.put(c);
+        }while(c!='.');
+    }
+    else
+        cout &lt;&lt; "Nie udalo sie poprawnie otworzyc pliku" &lt;&lt; endl;
+
+
+    return 0;
+}
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>result</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/zbTGfK14"><img src="https://i.postimg.cc/C1QBmsrM/3213.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="put-back">Put back</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+//putback
+using namespace std;
+int main ()
+{
+    char c = cin.get();
+
+    cin.putback(c);
+    if (c &gt; '0' &amp;&amp; c &lt; '9')
+    {
+        int number;
+
+        cin &gt;&gt; number;
+
+        cout &lt;&lt; "Number is: " &lt;&lt; number &lt;&lt; endl;
+    }
+    else
+    {
+        string txt;
+
+        cin &gt;&gt; txt;
+
+        cout &lt;&lt; "Text is: " &lt;&lt; txt &lt;&lt; endl;
+    }
+
+    return 0;
+}
+
+
+</code></pre></div></div>
+<blockquote>
+  <p>result</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/w1Jq2D1M"><img src="https://i.postimg.cc/qvDNkL0s/332.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="write-writing-bytes-to-file">Write writing bytes to file</h1>
+:ET

@@ -1,0 +1,223 @@
+I"~<h1 id="peak">Peak</h1>
+<h2 id="read-함수"><a href="https://modoocode.com/276">read 함수</a></h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>basic_istream&amp; read(char_type* s, std::streamsize count);
+</code></pre></div></div>
+<ul>
+  <li>istream::read(istream에서 정의 됨)</li>
+  <li>스트림에서 문자들을 받아온다.</li>
+  <li>이 함수는 sentry (警卫)객체를 먼저 생성한 후, 이를 확인한 다음에 s 가 가리키는 공간에 문자들을 읽어와서 저장합니다. 이 떄 아래 조건을 만족할 때 까지 문자들을 계속 읽어들이게 됩니다.
+    <ul>
+      <li>count 개의 문자들을 읽었을 때</li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>EOF 가 발생하였을 때 (이 경우 setstate(failbit</td>
+              <td>eofbit) 이 호출되었을 것입니다.) 읽어들인 문자의 수는 gcount() 함수를 호출함으로써 알아낼 수 있습니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li>인자들
+    <ul>
+      <li>s - 읽어들인 문자들을 저장할 문자 배열</li>
+      <li>count - 문자 몇 개를 읽을 것인지.</li>
+    </ul>
+  </li>
+  <li>리턴값
+    <ul>
+      <li>(asterisk)this</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include "string.h"
+//ios::ate - At The End - sets pointer at the end of file - the place of pointer can be changed in that mode, it's possible to read and write in that mode
+using namespace std;
+
+bool areFilesEqual(fstream *, fstream *); // fstream doesn't have copy constructor, so we use pointer
+int sizeOfFile(fstream *);
+int main()
+{
+    /*
+        read(where to read, how many bytes to read);
+        memcmp it stands memory compare
+    */
+
+    fstream file1, file2;
+
+    file1.open("sample.txt", ios::in | ios::binary | ios::ate);
+    file2.open("sample2.txt", ios::in | ios::binary | ios::ate);
+
+    if (file1.is_open() &amp;&amp; file2.is_open())
+    {
+        if (areFilesEqual(&amp;file1, &amp;file2))
+        {
+            cout &lt;&lt; "Files are equal";
+        }
+        else
+            cout &lt;&lt; "Files are not the same" &lt;&lt; endl;
+
+    }
+    else
+        cout &lt;&lt; "The file couldn't be opened properly" &lt;&lt; endl;
+
+    return 0;
+}
+bool areFilesEqual(fstream *a, fstream *b)
+{
+    int fileSize1 = sizeOfFile(a);
+    int fileSize2 = sizeOfFile(b);
+
+    if (fileSize1 == fileSize2)
+    {
+        int BUFFER_SIZE;
+
+        if(fileSize1 &gt; 1024)
+            BUFFER_SIZE = 1024;
+        else
+            BUFFER_SIZE = fileSize1;
+
+        char *file1buffer = new char[BUFFER_SIZE]; //쓸데없는 휘발성 값이니
+        char *file2buffer = new char[BUFFER_SIZE];
+
+        do
+        {
+            a-&gt;read(file1buffer, BUFFER_SIZE);
+            b-&gt;read(file2buffer, BUFFER_SIZE);
+
+            if (memcmp(file1buffer, file2buffer, BUFFER_SIZE) != 0)
+            {
+                cout &lt;&lt; "Files are not equal, at least one of the byte was different" &lt;&lt; endl;
+
+                delete [] file1buffer;
+                delete [] file2buffer;
+                return false;
+            }
+        }while(a-&gt;good() &amp;&amp; b-&gt;good()); //a-&gt;good() means a is good() state, and b-&gt;good means iit is good() state
+
+        delete [] file1buffer;
+        delete [] file2buffer;
+        return true;
+    }
+    else
+    {
+        cout &lt;&lt; "Size of Files are not equal" &lt;&lt; endl;
+        return false;
+    }
+}
+int sizeOfFile(fstream * file)
+{
+    file-&gt;seekg(0, ios::end); //check the from begging to end
+    int sizeOfFile = file-&gt;tellg(); // check the pointor position
+    file-&gt;seekg(0, ios::beg); // and back the pointer of position as origin
+    return sizeOfFile;
+}
+
+</code></pre></div></div>
+
+<h1 id="extracting-characters-from-files">Extracting Characters from files</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+
+using namespace std;
+
+int main()
+{
+    /*
+        getline(where to store the extracted characters, how many characters should be taken unless, separator(delimiter)) - extracts seperators and delete it
+        get(where to store the extracted characters, how many characters should be taken unless, separator(delimiter)) - doesn't extract seperator
+        ignore(how_many_characters_to_extracte AND TO IGNORE THEM, separator) - extracts characters
+
+        get();
+    */
+
+    fstream file;
+
+    file.open("sample.txt", ios::in | ios::binary);
+
+    if (file.is_open())
+    {
+        char first, second;
+        char buffer[50];
+
+        cin &gt;&gt; buffer;
+        // cin &gt;&gt; getline(buffer, 50) it can get all the word how many word i write, but just cin &gt;&gt; buffer if there is 'space' it just stop
+
+        cout &lt;&lt; buffer &lt;&lt; endl;
+        do
+        {
+            file.getline(buffer, 50, ' '); // ' ' &lt;- this is just delimeter , so if we change it to 'a', this function will be reading by a. (예로 나는 사람이다에서 띄어쓰기 부분 ' ' &lt;- 에서 멈춘다)
+            // 50 means we get 50 character from first sentence of last word
+
+            second = file.get(); // 그리고 그 띄어씌기 이후의 문자 하나를 받는다.
+
+            file.ignore(40, '\n'); // '\n' means that in there is seperator
+
+            cout &lt;&lt; buffer &lt;&lt; " " &lt;&lt; second &lt;&lt; ". " &lt;&lt; endl;
+
+        } while(!file.eof());
+
+
+
+    }
+    else
+        cout &lt;&lt; "The file couldn't be opened properly" &lt;&lt; endl;
+
+    return 0;
+}
+</code></pre></div></div>
+
+<blockquote>
+  <p>result</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/YGKSkhYj"><img src="https://i.postimg.cc/rmzR14pG/3212.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="gcount-counting-characters-from-last-operation">Gcount Counting Characters from last operation</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+
+using namespace std;
+
+int main()
+{
+    /*
+        gcount - Getcharacter Count - get count of extracted characters from last extraction operation
+    */
+
+    fstream file;
+
+    file.open("sample.txt", ios::in | ios::binary);
+
+    if (file.is_open())
+    {
+        char buffer[250];
+        do
+        {
+            file.getline(buffer, 250);
+
+            cout &lt;&lt; buffer &lt;&lt; " " &lt;&lt; file.gcount() &lt;&lt; endl;
+        }while(!file.eof());
+    }
+    else
+        cout &lt;&lt; "The file couldn't be opened properly" &lt;&lt; endl;
+
+    return 0;
+}
+
+</code></pre></div></div>
+<blockquote>
+  <p>result</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/mcG3DNxG"><img src="https://i.postimg.cc/0NzVVccr/123.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+:ET

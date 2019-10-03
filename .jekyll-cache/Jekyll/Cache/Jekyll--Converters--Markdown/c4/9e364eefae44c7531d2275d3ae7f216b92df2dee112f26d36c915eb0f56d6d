@@ -1,0 +1,143 @@
+I" <h1 id="peek"><a href="https://modoocode.com/194">Peek</a></h1>
+<ul>
+  <li>그 다음 문자를 살짝 훔쳐본다(즉, 스트림에서 빼오지는 않고 읽기만 한다)따라서 get처럼 스트림에서 문자를 빼내는 것이 아니라, 그 문자는 그냥 스트림에 남아있게 된다.</li>
+</ul>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+
+//putback
+using namespace std;
+int main ()
+{
+    char c = cin.peek();
+
+
+    if (c &gt; '0' &amp;&amp; c &lt; '9')
+    {
+        int number;
+
+        cin &gt;&gt; number;
+
+        cout &lt;&lt; "Number is: " &lt;&lt; number &lt;&lt; endl;
+    }
+    else
+    {
+        string txt;
+
+        cin &gt;&gt; txt;
+
+        cout &lt;&lt; "Text is: " &lt;&lt; txt &lt;&lt; endl;
+    }
+
+    return 0;
+}
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>return</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/WdfLc3xr"><img src="https://i.postimg.cc/YStpgL3X/321.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="extracting-characters-from-files">Extracting Characters from files</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+
+using namespace std;
+
+int main()
+{
+    /*
+        getline(where to store the extracted characters, how many characters should be taken unless, separator(delimiter)) - extracts seperators and delete it
+        get(where to store the extracted characters, how many characters should be taken unless, separator(delimiter)) - doesn't extract seperator
+        ignore(how_many_characters_to_extracte AND TO IGNORE THEM, separator) - extracts characters
+
+        get();
+    */
+
+    fstream file;
+
+    file.open("sample.txt", ios::in | ios::binary);
+
+    if (file.is_open())
+    {
+        char first, second;
+        char buffer[50];
+
+        cin &gt;&gt; buffer;
+        // cin &gt;&gt; getline(buffer, 50) it can get all the word how many word i write, but just cin &gt;&gt; buffer if there is 'space' it just stop
+
+        cout &lt;&lt; buffer &lt;&lt; endl;
+        do
+        {
+            file.getline(buffer, 50, ' '); // ' ' &lt;- this is just delimeter , so if we change it to 'a', this function will be reading by a. (예로 나는 사람이다에서 띄어쓰기 부분 ' ' &lt;- 에서 멈춘다)
+            // 50 means we get 50 character from first sentence of last word
+
+            second = file.get(); // 그리고 그 띄어씌기 이후의 문자 하나를 받는다.
+
+            file.ignore(40, '\n'); // '\n' means that in there is seperator
+
+            cout &lt;&lt; buffer &lt;&lt; " " &lt;&lt; second &lt;&lt; ". " &lt;&lt; endl;
+
+        } while(!file.eof());
+
+
+
+    }
+    else
+        cout &lt;&lt; "The file couldn't be opened properly" &lt;&lt; endl;
+
+    return 0;
+}
+</code></pre></div></div>
+
+<blockquote>
+  <p>result</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/YGKSkhYj"><img src="https://i.postimg.cc/rmzR14pG/3212.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="gcount-counting-characters-from-last-operation">Gcount Counting Characters from last operation</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+
+using namespace std;
+
+int main()
+{
+    /*
+        gcount - Getcharacter Count - get count of extracted characters from last extraction operation
+    */
+
+    fstream file;
+
+    file.open("sample.txt", ios::in | ios::binary);
+
+    if (file.is_open())
+    {
+        char buffer[250];
+        do
+        {
+            file.getline(buffer, 250);
+
+            cout &lt;&lt; buffer &lt;&lt; " " &lt;&lt; file.gcount() &lt;&lt; endl;
+        }while(!file.eof());
+    }
+    else
+        cout &lt;&lt; "The file couldn't be opened properly" &lt;&lt; endl;
+
+    return 0;
+}
+
+</code></pre></div></div>
+<blockquote>
+  <p>result</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/mcG3DNxG"><img src="https://i.postimg.cc/0NzVVccr/123.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+:ET

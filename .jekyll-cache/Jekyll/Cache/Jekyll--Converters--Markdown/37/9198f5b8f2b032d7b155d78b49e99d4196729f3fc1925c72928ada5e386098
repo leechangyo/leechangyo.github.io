@@ -1,0 +1,130 @@
+I"�<h1 id="comparing-content-of-two-files">Comparing content of two files</h1>
+<h2 id="read-함수"><a href="https://modoocode.com/276">read 함수</a></h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>basic_istream&amp; read(char_type* s, std::streamsize count);
+</code></pre></div></div>
+<ul>
+  <li>istream::read(istream에서 정의 됨)</li>
+  <li>스트림에서 문자들을 받아온다.</li>
+  <li>이 함수는 sentry (警卫)객체를 먼저 생성한 후, 이를 확인한 다음에 s 가 가리키는 공간에 문자들을 읽어와서 저장합니다. 이 떄 아래 조건을 만족할 때 까지 문자들을 계속 읽어들이게 됩니다.
+    <ul>
+      <li>count 개의 문자들을 읽었을 때</li>
+      <li>
+        <table>
+          <tbody>
+            <tr>
+              <td>EOF 가 발생하였을 때 (이 경우 setstate(failbit</td>
+              <td>eofbit) 이 호출되었을 것입니다.) 읽어들인 문자의 수는 gcount() 함수를 호출함으로써 알아낼 수 있습니다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </li>
+  <li>인자들
+    <ul>
+      <li>s - 읽어들인 문자들을 저장할 문자 배열</li>
+      <li>count - 문자 몇 개를 읽을 것인지.</li>
+    </ul>
+  </li>
+  <li>리턴값
+    <ul>
+      <li>*this</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="example-1">Example 1</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+#include "string.h"
+//ios::ate - At The End - sets pointer at the end of file - the place of pointer can be changed in that mode, it's possible to read and write in that mode
+using namespace std;
+
+bool areFilesEqual(fstream *, fstream *); // fstream doesn't have copy constructor, so we use pointer
+int sizeOfFile(fstream *);
+int main()
+{
+    /*
+        read(where to read, how many bytes to read);
+        memcmp it stands memory compare
+    */
+
+    fstream file1, file2;
+
+    file1.open("sample.txt", ios::in | ios::binary | ios::ate);
+    file2.open("sample2.txt", ios::in | ios::binary | ios::ate);
+
+    if (file1.is_open() &amp;&amp; file2.is_open())
+    {
+        if (areFilesEqual(&amp;file1, &amp;file2))
+        {
+            cout &lt;&lt; "Files are equal";
+        }
+        else
+            cout &lt;&lt; "Files are not the same" &lt;&lt; endl;
+
+    }
+    else
+        cout &lt;&lt; "The file couldn't be opened properly" &lt;&lt; endl;
+
+    return 0;
+}
+bool areFilesEqual(fstream *a, fstream *b)
+{
+    int fileSize1 = sizeOfFile(a);
+    int fileSize2 = sizeOfFile(b);
+
+    if (fileSize1 == fileSize2)
+    {
+        int BUFFER_SIZE;
+
+        if(fileSize1 &gt; 1024)
+            BUFFER_SIZE = 1024;
+        else
+            BUFFER_SIZE = fileSize1;
+
+        char *file1buffer = new char[BUFFER_SIZE]; //쓸데없는 휘발성 메모리일뿐
+        char *file2buffer = new char[BUFFER_SIZE];
+
+        do
+        {
+            a-&gt;read(file1buffer, BUFFER_SIZE);
+            b-&gt;read(file2buffer, BUFFER_SIZE);
+
+            if (memcmp(file1buffer, file2buffer, BUFFER_SIZE) != 0)
+            {
+                cout &lt;&lt; "Files are not equal, at least one of the byte was different" &lt;&lt; endl;
+
+                delete [] file1buffer;
+                delete [] file2buffer;
+                return false;
+            }
+        }while(a-&gt;good() &amp;&amp; b-&gt;good()); //a-&gt;good() means a is good() state, and b-&gt;good means iit is good() state
+
+        delete [] file1buffer;
+        delete [] file2buffer;
+        return true;
+    }
+    else
+    {
+        cout &lt;&lt; "Size of Files are not equal" &lt;&lt; endl;
+        return false;
+    }
+}
+int sizeOfFile(fstream * file)
+{
+    file-&gt;seekg(0, ios::end); //check the from begging to end
+    int sizeOfFile = file-&gt;tellg(); // check the pointor position
+    file-&gt;seekg(0, ios::beg); // and back the pointer of position as origin
+    return sizeOfFile;
+}
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>result</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/vgCqBwXP"><img src="https://i.postimg.cc/NFjWdgXw/232.png" width="400px" title="source: imgur.com" /><a></a></a></p>
+:ET

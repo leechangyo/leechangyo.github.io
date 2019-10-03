@@ -1,0 +1,256 @@
+I"<p><a href="https://postimg.cc/LJgcBvgg"><img src="https://i.postimg.cc/Z5wJmMTH/412412313122.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<h1 id="file-opening-mode">File Opening mode</h1>
+<ul>
+  <li>Library Fstream</li>
+</ul>
+
+<h2 id="example-1">Example 1</h2>
+<blockquote>
+  <p>Openning_flags.cpp</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+
+using namespace std;
+
+int main()
+{
+    fstream file;
+
+    file.open("sample.txt", ios::out | ios::app);
+
+    /*
+        ios::in - INPUT - READING
+        ios::out - OUTPUT - WRITE TO FILE, if there is no file then create it, if there is a file then truncate it (remove content) unless it occurs with ios::in flag
+        ios::trunc - TRUNCATE - it is truncating the file (cutting everything inside)(截短)
+        ios::ate - At The End - sets pointer at the end of file - the place of pointer can be changed in that mode, it's possible to read and write in that mode
+        ios::app - Append - the content is added at the end of file (it's not possible to remove content nor adding something in other place than the end of file)
+        ios::binary - opens the file as a binary file. to open image or some thing it is useful
+
+    */
+
+    /*
+        DEFAULT MODE (FLAGS)
+        fstream - ios::out | ios::in
+        ifstream - ios::in
+        ofstream - ios::out
+    */
+
+
+    if (file.is_open())
+    {
+        file &lt;&lt; "sample text\n";
+        file &lt;&lt; "sample text\n"; //those are we can write and it save in the file
+
+    }
+    else
+        cout &lt;&lt; "The file hasn't been opened properly";
+
+
+    return 0;
+}
+</code></pre></div></div>
+<h2 id="example-2">Example 2</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+
+using namespace std;
+
+int main()
+{
+    fstream myFileHandler;
+
+    myFileHandler.open("test.txt");
+
+    if (myFileHandler.is_open())
+    {
+        cout &lt;&lt; "The file has been opened properly";
+
+        myFileHandler &lt;&lt; "this is a sample text //input contents into txt file
+
+        myFileHandler.close();
+    }
+
+    return 0;
+}
+
+</code></pre></div></div>
+
+<h2 id="example-3">Example 3</h2>
+<ul>
+  <li>ios::rdstate
+    <ul>
+      <li>현재 스트림의 오류 상태 플래그를 리턴한다.</li>
+      <li>오류 상태 플래그(error state flag)를 얻어온다.</li>
+      <li>오류 상태 플래그는 입출력 함수를 호출할 때 발생하는 오류에 따라 자동으로 설정되는 플래그이다.</li>
+    </ul>
+  </li>
+  <li>Bitwise XOR - ^ (caret) eXclusive OR.</li>
+  <li>Clear(): Flage들을 초기화 한다</li>
+</ul>
+
+<blockquote>
+  <p>예제</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/*
+
+test.txt 를 in 형식으로 open 하였으므로 읽기만 가능한다. 따라서 쓰기를 하면
+오류가 발생하므로 myfile.fail() 이 true 가 되고 입출력 작업은 중지되지만 오류
+상태 플래그를 초기화함으로써 나중에 getline 을 수행할 수 있게 된다.
+
+이 예제는
+http://www.cplusplus.com/reference/iostream/ios/clear/
+에서 가져왔습니다.
+
+*/
+#include &lt;fstream&gt;
+#include &lt;iostream&gt;
+using namespace std;
+
+int main() {
+  char buffer[80];
+  fstream myfile;
+
+  myfile.open("test.txt", fstream::in);
+
+  myfile &lt;&lt; "test";
+  if (myfile.fail()) {
+    cout &lt;&lt; "Error writing to test.txt\n";
+    myfile.clear();
+  }
+
+  myfile.getline(buffer, 80);
+  cout &lt;&lt; buffer &lt;&lt; " successfully read from file.\n";
+
+  return 0;
+}
+</code></pre></div></div>
+<blockquote>
+  <p>결과</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/0bRDyydg"><img src="https://i.postimg.cc/Yqj384vS/421312312.png" width="400px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="example-4">Example 4</h2>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+
+using namespace std;
+
+int main()
+{
+    /*
+        tellg - tell get - tell where is the reading pointer
+        seekg - seek get - set reading pointer at specified position
+
+
+        seekg(how_many_bytes_from_the_flag_place, flag);
+
+        possible flags:
+        ios::beg - (begin) set from the begin (default)
+        ios::end - set from the end
+        ios::cur - (current) set from current place
+    */
+
+    fstream file;
+
+    file.open("sample.txt", ios::in | ios::binary);
+
+    if (file.is_open())
+    {
+        string buffer;
+
+        file.seekg(0, ios::end); // this is where the word position from start
+
+        streampos sizeOfFile = file.tellg(); // stream pos, to read
+
+        file.seekg(0); // it is set the zero as begging of pointer so it can read it again from start point, and if
+        // we dont use it, it just top the next cout and not execute the reading inside do while function
+
+
+        cout &lt;&lt; "The size of the file is " &lt;&lt; sizeOfFile &lt;&lt; " bytes" &lt;&lt; endl;
+        do
+        {
+            file &gt;&gt; buffer;
+
+            cout &lt;&lt; buffer &lt;&lt; endl;
+        }while (!file.eof());
+
+        if ((file.rdstate() ^ ifstream::eofbit) == 0)
+        {
+            file.clear();
+            cout &lt;&lt; file.tellg() &lt;&lt; endl; // it results means that binary position that showing last word of pointer position in binary
+            file &gt;&gt; buffer;
+
+            cout &lt;&lt; buffer &lt;&lt; endl;
+            //set indicator of place in file to some other place
+            // some other operations on file
+        }
+
+    }
+    else
+        cout &lt;&lt; "The file couldn't be opened properly" &lt;&lt; endl;
+
+    return 0;
+}
+</code></pre></div></div>
+
+<blockquote>
+  <p>result</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/cv8JgRsX"><img src="https://i.postimg.cc/FHTk6pw5/32.png" width="400px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="example-5">Example 5</h2>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;fstream&gt;
+
+using namespace std;
+
+int main()
+{
+    /*
+        tellp - tell put - tells where is the putting pointer
+        seekp - seek put - sets writing (putting) pointer at specified position
+
+
+        seekp(how_many_bytes_from_the_flag_place, flag);
+
+        possible flags:
+        ios::beg - (begin) set from the begin (default)
+        ios::end - set from the end
+        ios::cur - (current) set from current place
+    */
+
+    fstream file;
+
+    file.open("sample.txt", ios::out | ios::binary);
+
+    if (file.is_open())
+    {
+        string tmp = "this is text about nothing";
+
+        file &lt;&lt; tmp;
+
+        cout &lt;&lt; file.tellp() &lt;&lt; endl;
+
+        file.seekp(0, ios::beg);
+
+        file &lt;&lt; "T";
+    }
+    else
+        cout &lt;&lt; "The file couldn't be opened properly" &lt;&lt; endl;
+
+    return 0;
+}
+</code></pre></div></div>
+<blockquote>
+  <p>result</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/vgCqBwXP"><img src="https://i.postimg.cc/NFjWdgXw/232.png" width="400px" title="source: imgur.com" /><a></a></a></p>
+:ET
