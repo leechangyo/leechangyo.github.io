@@ -1,0 +1,121 @@
+I"�<h1 id="maps"><a href="https://twpower.github.io/91-how-to-use-map-in-cpp">Maps</a></h1>
+<ul>
+  <li>기본형태
+    <ul>
+      <li>map&lt;key,value&gt; : key와 value를 pair 형태로 선언합니다.</li>
+    </ul>
+  </li>
+  <li>iterator(반복자)
+    <ul>
+      <li>begin() : beginning iterator를 반환
+        <ul>
+          <li>end() : end iterator를 반환</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>추가 및 삭제
+    <ul>
+      <li>insert( make_pair(key,value) ) : 맵에 원소를 pair 형태로 추가
+        <ul>
+          <li>erase(key) : 맵에서 key(키값)에 해당하는 원소 삭제</li>
+          <li>clear() : 맵의 원소들 모두 삭제</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>조회
+    <ul>
+      <li>find(key) : key(키값)에 해당하는 iterator를 반환
+        <ul>
+          <li>count(key) : key(키값)에 해당하는 원소들(value들)의 개수를 반환</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>기타
+    <ul>
+      <li>empty() : 맵이 비어있으면 true 아니면 false를 반환
+        <ul>
+          <li>size() : 맵 원소들의 수를 반환
+```
+#include <iostream>
+#include &lt;map&gt;
+#include <string></string></iostream></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>using namespace std;</p>
+
+<p>int main() {</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>map&lt;string, int&gt; ages;
+
+ages["Mike"] = 40;
+ages["Raj"] = 20;
+ages["Vicky"] = 30;
+
+ages["Mike"] = 70;
+//
+ages.insert(make_pair("Peter", 100));
+//pair&lt;string, int&gt; addToMap("peter",100);
+//ages.insert(addToMap);
+
+cout &lt;&lt; ages["Raj"] &lt;&lt; endl;
+// to find the techinical
+if(ages.find("Vicky") != ages.end()) {
+	cout &lt;&lt; "Found Vicky" &lt;&lt; endl;
+}
+else {
+	cout &lt;&lt; "Key not found." &lt;&lt; endl;
+}
+
+for(map&lt;string, int&gt;::iterator it = ages.begin(); it != ages.end(); it++) {
+	pair&lt;string, int&gt; age = *it;
+
+	cout &lt;&lt; age.first &lt;&lt; ": " &lt;&lt; age.second &lt;&lt; endl;
+	// first and second the function in the map library
+}
+
+for(map&lt;string, int&gt;::iterator it = ages.begin(); it != ages.end(); it++) {
+		cout &lt;&lt; it-&gt;first &lt;&lt; ": " &lt;&lt; it-&gt;second &lt;&lt; endl;
+		// first and second is valuable the value of the ages by key and value.
+
+	}
+
+
+return 0; }
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&gt; Result
+
+&lt;a href="https://postimg.cc/cthhZC1w"&gt;&lt;img src="https://i.postimg.cc/NLqz62WJ/323131232.png" width="700px" title="source: imgur.com" /&gt;&lt;a&gt;
+
+# Custom Objects as map Keys
+## [Flush](https://support.microsoft.com/ko-kr/help/94227/how-to-flush-the-cout-buffer-in-visual-c)
+- 개발 된 Microsoft C/c + + 응용 프로그램에서는 cout 스트림 버퍼링 됩니다.
+- **즉, 버퍼를 플러시할 때까지 cout 스트림에 보낼 정보가 화면에 나타나지 않습니다.**
+- 이 동작은 Visual C++ 4.2 및 이후 버전의 경우 이전 iostream 라이브러리를 사용할 때만 발생 합니다.
+- 네 가지 방법을 다음과 같이 cout 버퍼를 플러시할 수 있습니다.
+  - Endl 조작자를 사용 하 여 줄 바꿈 문자를 출력 스트림에 삽입 버퍼를 플러시합니다. Endl 조작자를 사용 하 여 삽입 연산자를 다음과 같이 사용.
+	  - cout &lt;&lt; ... &lt;&lt; endl;
+	- Ostream 클래스 또는 플러시 조작자에 플러시 멤버 함수를 사용 합니다.
+	- 플러시 조작자 버퍼를 플러시합니다 **전에 스트림에 줄 바꿈 문자가 삽입 되지는 않습니다.** 플러시 멤버 함수를 호출 하려면 다음과 유사한 코드를 사용.
+	  - cout.flush();
+	- 플러시 조작자를 사용 하 여 삽입 연산자를 다음과 같이 사용.
+	  - cout &lt;&lt; ... &lt;&lt; flush;
+
+## [First and Second 함수](http://soen.kr/lecture/ccpp/cpp4/41-1-1.htm)
+- 연관 컨테이너(Associative Container)는 키와 값처럼 관련이 있는 데이터를 하나의 쌍으로 저장하는 컨테이너이다
+- 맵은 키와 값의 쌍을 저장하며 셋은 키만 저장하고 값은 저장하지 않는다
+- 데이터를 저장할 때 아무 곳에나 저장하지 않고 검색을 고려하여 최대한 빠른 속도로 키를 찾을 수 있는 위치에 저장하므로 검색 속도가 굉장히 빠르다.
+- 연관 컨테이너를 구현하는 방법에는 균형 잡힌 이진 트리를 사용하여 정렬된 상태로 저장하는 방법이 있고 해쉬 테이블에 저장하는 방법이 있다.
+- 해쉬는 해쉬 함수에 의해 한 번에 자료를 찾을 수 있으므로 검색 속도가 거의 순식간이라는 장점이 있지만 성능을 높이기 위해서는 해쉬 테이블이 충분히 커야 하므로 메모리 낭비가 조금 심한 편이다. 또한 검색이 빠르기는 하지만 데이터의 분포 정도에 따라 검색 속도가 운에 좌우되는 경향이 있어 최악의 상황에는 속도가 떨어질 수도 있다
+
+</code></pre></div></div>
+
+<p>```</p>
+:ET

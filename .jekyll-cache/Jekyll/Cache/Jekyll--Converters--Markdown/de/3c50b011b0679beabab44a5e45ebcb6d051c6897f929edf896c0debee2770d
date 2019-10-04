@@ -1,0 +1,38 @@
+I"�<h1 id="list"><a href="https://modoocode.com/223#page-heading-6">List</a></h1>
+<ul>
+  <li>리스트(list) 의 경우 양방향 연결 구조를 가진 자료형이라 볼 수 있습니다.
+<a href="https://postimg.cc/hJhw6RbC"><img src="https://i.postimg.cc/VNF8SYSc/42131232.png" width="700px" title="source: imgur.com" /></a></li>
+  <li>따라서 vector 와는 달리 임의의 위치에 있는 원소에 접근을 바로 할 수 없습니다.</li>
+  <li>list 컨테이너 자체에서는 시작 원소와 마지막 원소의 위치만을 기억하기 때문에, 임의의 위치에 있는 원소에 접근하기 위해서는 하나씩 링크를 따라가야 합니다.</li>
+  <li>그래서 리스트에는 아예 [] 나 at 함수가 아예 정의되어 있지 않습니다.</li>
+  <li>vector 의 경우 맨 뒤를 제외하고는 임의의 위치에 원소를 추가하거나 제거하는 작업이 O(n)O(n) 이였지만 리스트의 경우 O(1)O(1) 으로 매우 빠르게 수행될 수 있습니다.</li>
+  <li>왜냐하면 원하는 위치 앞과 뒤에 있는 링크값만 바꿔주면 되기 때문입니다.</li>
+</ul>
+
+<blockquote>
+  <p>예제
+```
+#include <iostream>
+#include <list></list></iostream></p>
+</blockquote>
+
+<p>int main() {
+  std::list<int> lst;</int></p>
+
+<p>lst.push_back(10);
+  lst.push_back(20);
+  lst.push_back(30);
+  lst.push_back(40);</p>
+
+<p>for (std::list<int>::iterator itr = lst.begin(); itr != lst.end(); ++itr) {
+    std::cout &lt;&lt; *itr &lt;&lt; std::endl;
+  }
+}
+```</int></p>
+
+<blockquote>
+  <p>Result</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/bSy4HnMD"><img src="https://i.postimg.cc/90ZV2tYp/323123123123.png" width="700px" title="source: imgur.com" /></a></p>
+:ET

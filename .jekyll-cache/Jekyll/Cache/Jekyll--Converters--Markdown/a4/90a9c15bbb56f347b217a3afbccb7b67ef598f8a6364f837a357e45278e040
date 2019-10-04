@@ -1,0 +1,28 @@
+I"	<h1 id="복잡도complexity"><a href="https://modoocode.com/223">복잡도(complexity)</a></h1>
+<ul>
+  <li>컴퓨터 공학에서 계산속도가 빠르다라는 말은 주관적일 수 밖에 없습니다.</li>
+  <li>따라서 어떠한 작업의 수행 속도를 나타내기 위해선 수학적으로 나타내야 합니다.</li>
+  <li>컴퓨터 공학에선 어떠한 작업의 처리 속도를 <strong>복잡도(complexity)</strong> 라고 부르고, 그 복잡도를 <strong>Big O</strong> 표기법이라는 것으로 나타냅니다.</li>
+  <li>이 표기법은, NN 개의 데이터가 주어져 있을 때 그 작업을 수행하기 위해 몇 번의 작업을 필요로 하는지 NN 에 대한 식으로 표현하는 방식입니다.</li>
+  <li>복잡도가 클수록 작업 수행하는데 걸리는 시간이 늘어난다.</li>
+  <li>예제 버블 정렬의 코드와 함께 복잡도를 보겠습니다.</li>
+</ul>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>for (int i = 0; i &lt; N; i++) {
+  for (int j = i + 1; j &lt; N; j++) {
+    if (arr[i] &gt; arr[j]) {
+      swap(arr, i, j)
+    }
+  }
+}
+</code></pre></div></div>
+<ul>
+  <li>N 개의 원소가 있는 arr 이라는 배열을 정렬하기 위해서는 일단 적어도:
+<a href="https://postimg.cc/5QCLrQLp"><img src="https://i.postimg.cc/pr0CpDTN/12412312.png" width="200px" title="source: imgur.com" /></a></li>
+  <li>번의 반복이 필요 합니다. ((N-1+N-2+…+1)) 따라서 Big O 표현법으로 이 정렬이 얼마나 빠르게 수행될 수 있는지 나타낸다면 :
+<a href="https://postimg.cc/nCVQ7Ww0"><img src="https://i.postimg.cc/bNkHXc0c/412312312321.png" width="200px" title="source: imgur.com" /></a></li>
+  <li>보통 Big O 표현법으로 나타낼 때 <a href="https://www.mathway.com/ko/popular-problems/Precalculus/451704">최고 차항</a>만을 나타냅니다.(그리고 통상적으로 최고 차항의 계수도 생략합니다.). 왜냐하면 N 이 엄청 커지게 되면 최고 차항 말고는 그닥 의미가 없기 때문입니다.</li>
+  <li>따라서 버블 정렬 알고리즘의 복잡도는 : O($N^2$)</li>
+  <li>일반적으로 알고리즘이 O($N^2$) 꼴이면 좋은 편은 아닙니다. 왜냐하면 N 이 10000만 되더라도 $10^8$</li>
+</ul>
+:ET

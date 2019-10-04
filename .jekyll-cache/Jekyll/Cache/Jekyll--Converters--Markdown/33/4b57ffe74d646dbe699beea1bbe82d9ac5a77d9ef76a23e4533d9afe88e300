@@ -1,0 +1,83 @@
+I"<h1 id="maps">Maps</h1>
+<ul>
+  <li>parsing means 다이아몬드가 많이 나오는 위치로 이동을 일단 한 후에 돌을 많이 캔다음에 다이아몬드만 쏙쏙 뽑아서 보석으로 가공하는 과정
+```</li>
+</ul>
+
+<p>#include <iostream>
+#include &lt;map&gt;
+#include <string></string></iostream></p>
+
+<p>using namespace std;</p>
+
+<p>class Person {
+private:
+	string name;
+	int age;</p>
+
+<p>public:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Person() :
+		name(""), age(0) {
+
+}
+
+Person(string name, int age) :
+		name(name), age(age) {
+
+}
+// 상속
+//constructor need to initialize this
+//so thats why we use to initilaze the actual instance(기억장치 할당) variables in above
+//we dont have to provide any more implementation(실행)
+
+
+Person(const Person&amp; other) {
+	name = other.name;
+	age = other.age;
+}
+
+//copy constoctur.
+
+void print() const {
+	cout &lt;&lt; name &lt;&lt; ": " &lt;&lt; age &lt;&lt; flush;
+}
+
+//operator is just like +,-,&lt;,&gt;,！= 지정해주는
+// 리퍼런스 other에 대신 데이터를 받아 가동을 시켜준다.
+bool operator&lt;(const Person &amp;other) const {
+
+	if (name == other.name) {
+		return age &lt; other.age;
+	} else {
+		return name &lt; other.name;
+	}
+} };
+</code></pre></div></div>
+
+<p>int main() {
+	map&lt;Person, int&gt; people;
+	//map&lt;key,value&gt;</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>people[Person("Mike", 40)] = 40;
+people[Person("Mike", 444)] = 123;
+people[Person("Sue", 30)] = 30;
+people[Person("Raj", 40)] = 20;
+
+for (map&lt;Person, int&gt;::iterator it = people.begin(); it != people.end();
+		it++) {
+	cout &lt;&lt; it-&gt;second &lt;&lt; ": " &lt;&lt; flush;
+	it-&gt;first.print();
+	cout &lt;&lt; endl;
+}
+// it need to bool operation becuase
+return 0; }
+</code></pre></div></div>
+
+<p>```</p>
+<blockquote>
+  <p>Result</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/0rDjM9Z7"><img src="https://i.postimg.cc/pV1FSTFc/332123.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+:ET

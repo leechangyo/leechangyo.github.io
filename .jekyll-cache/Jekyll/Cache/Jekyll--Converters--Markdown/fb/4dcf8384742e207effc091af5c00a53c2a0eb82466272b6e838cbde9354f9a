@@ -1,0 +1,55 @@
+I"y<h1 id="maps">Maps</h1>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;string&gt;
+
+using namespace std;
+
+int main() {
+
+	map&lt;string, int&gt; ages;
+
+	ages["Mike"] = 40;
+	ages["Raj"] = 20;
+	ages["Vicky"] = 30;
+
+	ages["Mike"] = 70;
+	//
+	ages.insert(make_pair("Peter", 100));
+	//pair&lt;string, int&gt; addToMap("peter",100);
+	//ages.insert(addToMap);
+
+	cout &lt;&lt; ages["Raj"] &lt;&lt; endl;
+	// to find the techinical
+	if(ages.find("Vicky") != ages.end()) {
+		cout &lt;&lt; "Found Vicky" &lt;&lt; endl;
+	}
+	else {
+		cout &lt;&lt; "Key not found." &lt;&lt; endl;
+	}
+
+	for(map&lt;string, int&gt;::iterator it = ages.begin(); it != ages.end(); it++) {
+		pair&lt;string, int&gt; age = *it;
+
+		cout &lt;&lt; age.first &lt;&lt; ": " &lt;&lt; age.second &lt;&lt; endl;
+		// first and second the function in the map library
+	}
+
+	for(map&lt;string, int&gt;::iterator it = ages.begin(); it != ages.end(); it++) {
+			cout &lt;&lt; it-&gt;first &lt;&lt; ": " &lt;&lt; it-&gt;second &lt;&lt; endl;
+			// first and second is valuable the value of the ages by key and value.
+
+		}
+
+
+	return 0;
+}
+
+</code></pre></div></div>
+<blockquote>
+  <p>Result</p>
+</blockquote>
+
+<p><a href="https://postimg.cc/0rDjM9Z7"><img src="https://i.postimg.cc/pV1FSTFc/332123.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+:ET
