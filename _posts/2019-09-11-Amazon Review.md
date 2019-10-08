@@ -11,7 +11,7 @@ tag: Python
 - Dataset: www.kaggle.com/sid321axn/amazon-alexa-reviews
 - PLEASE MAKE SURE TO INSTALL WORDCLOUD: pip install wordcloud
 
-```Python
+```python
 # import libraries
 import pandas as pd # Import Pandas for data manipulation(조정) using dataframes
 import numpy as np # Import Numpy for data statistical analysis
@@ -40,7 +40,7 @@ df_alexa.tail()
 <a href="https://postimg.cc/7bdHX5Bc"><img src="https://i.postimg.cc/X77rjF9V/4123212.png" width="400px" title="source: imgur.com" /><a>
 
 
-```Python
+```python
 df_alexa['verified_reviews']
 ```
 
@@ -108,7 +108,7 @@ df_alexa['verified_reviews']
 3149                                                 Good
 Name: verified_reviews, Length: 3150, dtype: object
 ```
-```Python
+```python
 df_alexa.info() #  non-null means there is no missing information.
 ```
 
@@ -126,7 +126,7 @@ memory usage: 123.1+ KB
 
 ```
 
-```Python
+```python
 df_alexa.describe() # count is how many people rating.
 # 4.46 is good thing like the rate peoplse rated by means like it is high
 # feed bace is 0~1
@@ -146,7 +146,7 @@ max 	5.000000 	1.000000
 ```
 # VISUALIZING THE DATA
 
-```Python
+```python
 positive = df_alexa[df_alexa['feedback']==1] # 1 is possitive feedback
 # only take a raw which is value is one in feedback colum
 negative = df_alexa[df_alexa['feedback']==0] # 0 is negative feedback
@@ -218,27 +218,27 @@ rating 	date 	variation 	verified_reviews 	 feedback
 3091 	1 	30-Jul-18 	Black Dot 	I didn’t order it 	0
 3096 	1 	30-Jul-18 	White Dot 	The product sounded the same as the emoji spea... 	0
 ```
-```Python
+```python
 sns.countplot(df_alexa['feedback'], label = "Count")
 # how many possitive and negative
 # label is the what we pointg on.
 ```
 <a href="https://postimg.cc/LhD9Ky6c"><img src="https://i.postimg.cc/HsDVMRGk/42132123.png" width="400px" title="source: imgur.com" /><a>
 
-```Python
+```python
 sns.countplot(x = 'rating', data = df_alexa)
 #countplot is that just count for
 ```
 <a href="https://postimg.cc/8j3VNx80"><img src="https://i.postimg.cc/2SjjFf0r/4232132.png" width="400px" title="source: imgur.com" /><a>
 
 
-```Python
+```python
 df_alexa['rating'].hist(bins = 5)
 #bin is how many bar we will display on the plot
 ```
 <a href="https://postimg.cc/Xp9gYyt6"><img src="https://i.postimg.cc/hP5ZMLrv/4213222.png" width="400px" title="source: imgur.com" /><a>
 
-```Python
+```python
 plt.figure(figsize = (40,15))
 sns.barplot(x = 'variation', y='rating', data=df_alexa, palette = 'deep')
 # this is showing all of the data they got
@@ -249,7 +249,7 @@ sns.barplot(x = 'variation', y='rating', data=df_alexa, palette = 'deep')
 
 # WORD CLOUD
 - we can know how many the word repeated and we can know what is the word used by
-```Python
+```python
 words = df_alexa['verified_reviews'].tolist()# this is the column just we interested in
 # like 생략 인덱스 와 라벨
 #we elminate the blank
@@ -267,7 +267,7 @@ print(words)
 ```
 
 # WaterMark to PDF
-```Python
+```python
 words_as_one_string =" ".join(words) # this " " <- it is technical function to put all the word into together
 # join the `word` into ` ` inside. like just fill word out in ` ` blank space
 # we need to make one single string out of it.
@@ -279,7 +279,7 @@ words_as_one_string
 'Love my Echo! Loved it! Sometimes while playing a game, you can answer a question correctly but Alexa says you got it wrong and answers the same as you.  I like being able to turn lights on and off while away from home. I have had a lot of fun with this thing. My 4 yr old learns about dinosaurs, i control the lights and play games like categories. Has nice sound when playing music as well. Music I received the echo as a gift. I needed another Bluetooth or something to play music easily accessible, and found this smart speaker. Can’t wait to see what else it can do. Without having a cellphone, I cannot use many of her features. I have an iPad but do not see that of any use.  It IS a great alarm.  If u r almost deaf, you can hear her alarm in the bedroom from out in the living room, so that is reason enough to keep her.It is fun to ask random questions to hear her response.  She does not seem to be very smartbon politics yet. I think this is the 5th one I\'ve purchased. I\'m working on getting one in every room of my house. I really like what features they offer specifily playing music on all Echos and controlling the lights throughout my house. looks great Love it! I’ve listened to songs I haven’t heard since childhood! I get the news, weather, information! It’s great! I sent it to my 85 year old Dad, and he talks to it constantly. I love it! Learning knew things with it eveyday! Still figuring out how everything works but so far it\'s been easy to use and understand. She does make me laugh at times I purchased this for my mother who is having knee problems now, to give her something to do while trying to over come not getting around so fast like she did.She enjoys all the little and big things it can do...Alexa play this song, What time is it and where, and how to cook this and that! Love, Love, Love!! Just what I expected.... I love it, wife hates it. Really happy with this purchase.  Great speaker and easy to set up. We have only been using Alexa for a couple of days and are having a lot of fun with our new toy. It like having a new household member! We are trying to learn all the different featues and benefits that come with it. We love the size of the 2nd generation echo. Still needs a little improvement on sound I liked the original Echo. This is the same but shorter and with greater fabric/color choices. I miss the volume ring on top, now it\'s just the plus/minus buttons. Not a big deal but the ring w as comforting. :) Other than that, well I do like the use of a standard USB charger /port instead of the previous round pin. Other than that, I guess it sounds the same, seems to work the same, still answers to Alexa/Echo/Computer. So what\'s not to like? :) Love the Echo and how good the music sounds playing off it. Alexa understands most commands but it is difficult at times for her to find specific playlists or songs on Spotify. She is good with Amazon Music but is lacking in other major programs. We love Alexa! We use her to play music, play radio through iTunes, play podcasts through Anypod, and set reminders. We listen to our flash briefing of news and weather every morning. We rely on our custom lists. We like being able to voice control the volume. We\'re sure we\'ll continue to find new uses.Sometimes it\'s a bit frustrating when Alexa doesn\'t understand what we\'re saying. Have only had it set up for a few days. Still adding smart home devices to it. The speaker is great for playing music. I like the size, we have it stationed on the kitchen counter and it’s not intrusive to look at. I love it. It plays my sleep sounds immediately when I ask I got a second unit for the bedroom, I was expecting the sounds to be improved but I didnt really see a difference at all.  Overall, not a big improvement over the 1st generation. Amazing product I love my Echo. It\'s easy to operate, loads of fun.It is everything as advertised. I use it mainly to play my favorite tunes and test Alexa\'s knowledge. Sounds great!! Love them! Fun item to play with and get used to using.  Sometimes has hard time answering the questions you ask, but I think it will be better. Just like the other one Still learning all the capabilities...but so far pretty pretty pretty good I like it She works well. Needs a learning command  for unique, owners and users like. Alexa “learn” Tasha’s birthday.  Or Alexa “learn” my definition of Fine. Etc. other than that she is great The speakers sound pretty good for being so small and setup is pretty easy.  I bought two and the reason I only rate it a 3 is I have followed the instructions
 ```
 
-```Python
+```python
 len(words_as_one_string)
 # 419105
 from wordcloud import WordCloud
@@ -317,7 +317,7 @@ print(alexa_countvectorizer.toarray()) # convert it to array
 
 ```
 
-```Python
+```python
 type(alexa_countvectorizer)
 #scipy.sparse.csr.csr_matrix
 print(vectorizer.get_feature_names())
@@ -336,7 +336,7 @@ word_count_array[0,:] # we grab first raw all the column
 # array([0, 0, 0, ..., 0, 0, 0], dtype=int64)
 ```
 
-```Python
+```python
 index = 13
 plt.plot(word_count_array[0, :])# the showing that how many word mostly repeated the specified row
 df_alexa['verified_reviews'][0]

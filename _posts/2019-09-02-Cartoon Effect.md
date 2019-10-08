@@ -16,7 +16,7 @@ tag: Python
   - sigma_s controls how much the image is smoothed - the larger its value, the more smoothed the image gets, but it's also slower to compute.
   - sigma_r is important if you want to preserve edges while smoothing the image. Small sigma_r results in only very similar colors to be averaged (i.e. smoothed), while colors that differ much will stay intact.
 
-```Python
+```python
 import cv2 #opencv library
 import matplotlib.pyplot as plt #create a matplotlib
 
@@ -27,7 +27,7 @@ cartoon_image = cv2.stylization(color_image, sigma_s=100, sigma_r=0.1)
 
 ```
 
-```Python
+```python
 cv2.imshow('cartoon', cartoon_image)
 cv2.waitKey() #wating any key
 cv2.destroyAllWindows()
@@ -42,29 +42,29 @@ import numpy as np # numerical analysis
 import cv2
 ```
 
-```Python
+```python
 image_color = mpimg.imread("trudeau.jpg")
 
 
 ```
 
-```Python
+```python
 plt.imshow(image_color)
 ```
 
-```Python
+```python
 image_gray = cv2.cvtColor(image_color, cv2.COLOR_BGR2GRAY)
 # our picture and color funtion.
 plt.imshow(image_gray, cmap = 'gray') # 'gray' we have to give them color
 ```
 
 
-```Python
+```python
 image_gray.shape
 # (569,800)
 ```
 
-```Python
+```python
 image_gray #each of pixel presenting in the color
 # (569,800,3)
 ```
@@ -78,20 +78,20 @@ array([[ 19,  21,  22, ..., 159, 160, 161],
        [136, 140, 144, ..., 126, 126, 126]], dtype=uint8)
 ```
 
-```Python
+```python
 # Save the image in greyscale
 cv2.imwrite("image_grayscale.jpg", image_gray)
 # save the image. # specifiy the name of image when we save
 # true means that actually save it
 ```
-```Python
+```python
 color_image = cv2.imread("trudeau.jpg")
 
 # cartoon_image = cv2.stylization(color_image, sigma_s=200, sigma_r=0.3)
 cartoon_image, cartoon_image2  = cv2.pencilSketch(color_image, sigma_s=60, sigma_r=0.1)
 # pencilsketch has two return value. cartoon_image is not color, cartoon_image2 is the colorful by pencil
 ```
-```Python
+```python
 cv2.imshow('cartoon', cartoon_image2)
 cv2.waitKey()
 cv2.destroyAllWindows()

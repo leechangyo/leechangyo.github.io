@@ -10,7 +10,7 @@ B. ONCE ACCESS IS GRANTED, THE SYSTEM REQUESTS TO GET THE TIME OF THE DAY FROM A
 C. THE SYSTEM THEN PROVIDES THE USER WITH DETAILS ON THE LECTURE TITLE AND LOCATION
 D. THE PROGRAM THEN PROVIDES THE STUDENT WITH PREVIOUS LECTURE NOTES, THE NOTES ARE CONTAINED IN THE PROVIDED FILE NAMED "LECTURE NOTES.TXT"
 
-```Python
+```python
 import getpass # this is the function hide the password
 username = "Ryan"
 password = "ysk%123"
@@ -30,7 +30,7 @@ def day_planner(time_h_now):
             break
 ```
 
-```Python
+```python
 input_username = input("Enter Username: ").lower()
 # that convert whatever word is lower key
 input_password = getpass.getpass('Password:') # this is the fuction hide the password(getpass.getpass)

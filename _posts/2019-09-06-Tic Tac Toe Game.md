@@ -7,7 +7,7 @@ tag: Python
 
 
 
-```Python
+```python
 board = [0, 1, 2,
          3, 4, 5,
          6, 7, 8]
@@ -20,7 +20,7 @@ board
 #[0, 1, 2, 3, 4, 5, 6, 7, 8]
 ```
 
-```Python
+```python
 def TicTacToe_draw():
     print(board[0], board[1], board[2])
     print(board[3], board[4], board[5])
@@ -36,7 +36,7 @@ TicTacToe_draw()
 good luck
 ```
 
-```Python
+```python
 def Player_1():
     while True:
         print("Player#1, Enter your desired board location: ")
@@ -48,7 +48,7 @@ def Player_1():
             print('This spot is taken, please choose somewhere else')
 ```
 
-```Python
+```python
 
 Player_1()
 TicTacToe_draw()
@@ -64,7 +64,7 @@ Player#1, Enter your desired board location:
 good luck
 ```
 
-```Python
+```python
 
 def Player_2():
     while True:
@@ -78,7 +78,7 @@ def Player_2():
 
 ```
 
-```Python
+```python
 
 Player_2()
 TicTacToe_draw()
@@ -103,7 +103,7 @@ good luck
 
 ```
 
-```Python
+```python
 def Check_Winner(X_or_O):
     if board[0] == X_or_O and board[1] == X_or_O and board[2] == X_or_O:
         return True
@@ -125,7 +125,7 @@ def Check_Winner(X_or_O):
         return True
 ```
 
-```Python
+```python
 while True:
     Player_1()
     TicTacToe_draw()

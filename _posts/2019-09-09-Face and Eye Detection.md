@@ -7,7 +7,7 @@ tag: Python
 
 # Detect Single Faces
 
-```Python
+```python
 import numpy as np
 import cv2
 ```
@@ -17,14 +17,14 @@ image_g = cv2.cvtColor(image_c, cv2.COLOR_BGR2GRAY) # gray scale function.
 #cvtColor <- means that change the color of image_c
 ```
 
-```Python
+```python
 cv2.imshow('Trudeau in Color', image_c)
 cv2.imshow('Trudeau in Grayscale', image_g)
 cv2.waitKey()
 cv2.destroyAllWindows()
 ```
 
-```Python
+```python
 # get CascadeClassifier (trained model)
 face_detection = cv2.CascadeClassifier('Haarcascades/haarcascade_frontalface_default.xml')
 #path of our classifier
@@ -42,7 +42,7 @@ face_detection = cv2.CascadeClassifier('Haarcascades/haarcascade_frontalface_def
     - This parameter will affect the quality of the detected faces.
     - Higher value results in less detections but with higher quality.
 
-```Python
+```python
 # The face classifier returns the region of interest in a tuple
 # Two points: upper left and bottom right coordinates
 faces = face_detection.detectMultiScale(image_c, 1.1, 5)
@@ -53,18 +53,18 @@ faces.shape
 # (1, 4)
 ```
 
-```Python
+```python
 faces # coordinate of face, pixel of face loacated
 # 332 x , 121 y , (208, 208) <- retangle. size of the face
 ```
 
-```Python
+```python
 faces[:,1]
 #[:,1] <- list in the 1
 #[:,2] <- value list in the 2
 ```
 
-```Python
+```python
 x = faces[:, 0]
 y = faces[:, 1]
 w = faces[:, 2]
@@ -85,12 +85,12 @@ cv2.destroyAllWindows()
 
 
 # Detect Multiple Faces
-```Python
+```python
 image_c = cv2.imread('Scientists.jpg')
 image_g = cv2.cvtColor(image_c, cv2.COLOR_BGR2GRAY)
 ```
 
-```Python
+```python
 cv2.imshow('Scientists in Color', image_c)
 cv2.waitKey()
 cv2.destroyAllWindows()
@@ -100,7 +100,7 @@ cv2.waitKey()
 cv2.destroyAllWindows()
 ```
 
-```Python
+```python
 # get CascadeClassifier (trained model)
 face_detection = cv2.CascadeClassifier('Haarcascades/haarcascade_frontalface_default.xml')
 faces = face_detection.detectMultiScale(image_c, 1.1, 5)
@@ -132,7 +132,7 @@ array([[ 15, 131,  46,  46],
        [199,  62,  46,  46]], dtype=int32)
 ```
 
-```Python
+```python
 for (x,y,w,h) in faces:
     cv2.rectangle(image_c, (x,y), (x+w,y+h), (0,255,255), 3)
     cv2.imshow('Single Face Detection', image_c)
@@ -144,16 +144,16 @@ cv2.destroyAllWindows()
 
 # Detect Eyes and Faces
 
-```Python
+```python
 image_c = cv2.imread('Trudeau.jpg')
 ```
 
-```Python
+```python
 face_classifier = cv2.CascadeClassifier('Haarcascades/haarcascade_frontalface_default.xml')
 eye_classifier = cv2.CascadeClassifier('Haarcascades/haarcascade_eye.xml')
 ```
 
-```Python
+```python
 faces = face_classifier.detectMultiScale(image_c, 1.2, 5)
 
 for (x,y,w,h) in faces:

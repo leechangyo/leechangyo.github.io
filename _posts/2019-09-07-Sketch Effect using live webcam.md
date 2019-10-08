@@ -7,7 +7,7 @@ tag: Python
 
 
 
-```Python
+```python
 import matplotlib.image as mpimg # to protect unlimit loading when we use cv2.
 import matplotlib.pyplot as plt #ploting tool
 import numpy as np
@@ -23,7 +23,7 @@ def Cartoon(image_color):
     return output_image
 ```
 
-```Python
+```python
 def LiveCamEdgeDetection_canny(image_color):
 
     threshold_1 = 30
@@ -34,7 +34,7 @@ def LiveCamEdgeDetection_canny(image_color):
 ```
 
 
-```Python
+```python
 cap = cv2.VideoCapture(0) #  capture of our webcam
 
 while True:

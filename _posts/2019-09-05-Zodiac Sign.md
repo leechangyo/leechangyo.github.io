@@ -7,7 +7,7 @@ tag: Python
 
 # Zodiac Sign
 <a href="https://postimg.cc/34zVFBfL"><img src="https://i.postimg.cc/vTmyM2rd/324124.png" width="700px" title="source: imgur.com" /><a>
-```Python
+```python
 from datetime import date
 
 Year = input("What's your year of birth? [ex: 1992]" )
@@ -18,18 +18,18 @@ Day = input("What's your day of birth? [ex: 25]" )
 print('Your Date of Birth is ', (Day + "/" + Month + "/" + Year))
 ```
 
-```Python
+```python
 today_day = date.today()
 today_day
 ```
 
-```Python
+```python
 age = today_day.year - int(Year)
 print('You are', age, 'years old')
 
 ```
 
-```Python
+```python
 
 if ((int(Month)==12 and int(Day) >= 22) or (int(Month)==1 and int(Day)<= 19)):
     sign = ("\n Capricorn")

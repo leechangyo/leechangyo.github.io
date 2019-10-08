@@ -5,7 +5,7 @@ category: Python
 tag: Python
 ---
 
-```Python
+```python
 import random
 
 answer = 'y'
@@ -18,7 +18,7 @@ Welcome to the Fortune Teller!
 You will select a color and a number and I will tell you what the future holds for you!
 ```
 
-```Python
+```python
 while answer == 'y':
 
     color = input("Select a colour [yellow, green, blue, red] ")

@@ -7,7 +7,7 @@ tag: Python
 
 # CODE TO SELECT WHITE PIXELS OUT OF THE IMAGE
 
-```Python
+```python
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import numpy as np
@@ -19,35 +19,35 @@ image_color.shape
 # (540, 960, 3)
 ```
 
-```Python
+```python
 plt.imshow(image_color)
 ```
 <a href="https://postimg.cc/Tprt5GV5"><img src="https://i.postimg.cc/c4z2jL6h/1.png" width="700px" title="source: imgur.com" /><a>
 
-```Python
+```python
 image_copy = np.copy(image_color)
 image_copy.shape
 #(540, 960, 3)
 ```
 
-```Python
+```python
 image_copy[ (image_copy[:,:,0] < 200) | (image_copy[:,:,1] < 200) | (image_copy[:,:,2] < 200) ] = 0  # any value that is not white colour
 ```
 
-```Python
+```python
 # Display the image                 
 plt.imshow(image_copy, cmap = 'gray')
 plt.show()
 ```
 <a href="https://postimg.cc/w7TkMJjZ"><img src="https://i.postimg.cc/vH52PtFY/4213213.png" width="700px" title="source: imgur.com" /><a>
 
-```Python
+```python
 plt.imshow(image_color)
 ```
 
 # CODE TO PERFORM COLOR SELECTION
 
-```Python
+```python
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 import numpy as np
@@ -59,12 +59,12 @@ image_color.shape
 # (540, 960, 3)
 ```
 
-```Python
+```python
 plt.imshow(image_color)
 ```
 <a href="https://postimg.cc/Tprt5GV5"><img src="https://i.postimg.cc/c4z2jL6h/1.png" width="700px" title="source: imgur.com" /><a>
 
-```Python
+```python
 image_gray = cv2.cvtColor(image_color, cv2.COLOR_BGR2GRAY)
 plt.imshow(image_gray, cmap = 'gray')
 image_gray.shape
@@ -73,13 +73,13 @@ image_gray.shape
 
 <a href="https://postimg.cc/f3ZyW7w0"><img src="https://i.postimg.cc/tgnx5DwD/41232.png" width="700px" title="source: imgur.com" /><a>
 
-```Python
+```python
 image_copy = np.copy(image_gray) #copy image_gray
 image_copy.shape
 # (540, 960)
 ```
 
-```Python
+```python
 image_copy
 ```
 
@@ -93,13 +93,13 @@ array([[191, 191, 192, ..., 191, 191, 191],
        [164, 156, 145, ..., 172, 173, 173]], dtype=uint8)
 ```
 
-```Python
+```python
 image_copy[ (image_copy[:,:] < 250) ] = 0  # any value that is not white colour
 # any of the pixel value less than 250, 0
 # it store new array from [(image_copy[:,:])]
 ```
 
-```Python
+```python
 # Display the image                 
 plt.imshow(image_copy, cmap = 'gray')
 plt.show()
@@ -108,7 +108,7 @@ plt.show()
 
 # CODE TO PERFORM REGION OF INTEREST (ROI) SELECTION
 
-```Python
+```python
 import cv2
 import numpy as np
 import matplotlib.image as mpimg
@@ -127,7 +127,7 @@ image_color.shape
 # (540, 960, 3)
 ```
 
-```Python
+```python
 height, width = image_color.shape[:2] # give to valeu height, width by list
 # height 540
 # width 960
@@ -136,7 +136,7 @@ plt.imshow(image_color) # plt. fucntion open with BGR color by matplotlib
 ```
 <a href="https://postimg.cc/yDRnCKd8"><img src="https://i.postimg.cc/vZqK9Hwf/3.png" width="700px" title="source: imgur.com" /><a>
 
-```Python
+```python
 image_color.shape
 # (540, 960, 3)
 image_gray = cv2.cvtColor(image_color, cv2.COLOR_BGR2GRAY)
@@ -144,13 +144,13 @@ plt.imshow(image_gray, cmap = 'gray')
 ```
 <a href="https://postimg.cc/RW1fTZhK"><img src="https://i.postimg.cc/L8wT2qMC/32.png" width="700px" title="source: imgur.com" /><a>
 
-```Python
+```python
 image_gray.shape # when it change to gray, the number of color is eare
 # (540, 960)
 ```
 
 
-```Python
+```python
 # Select points of the region of interest (ROI)
 ROI = np.array([[(0, height),(400, 330), (550, 330), (width, height)]], dtype=np.int32)    
 # first point, second point, third point.

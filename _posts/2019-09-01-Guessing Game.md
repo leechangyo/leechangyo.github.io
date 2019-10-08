@@ -5,28 +5,28 @@ category: Python
 tag: Python
 ---
 
-```Python
+```python
 import random
 ```
 
-```Python
+```python
 true_number = random.randint(1, 49) # 1~49까지 랜덤 넘버
 ```
 
-```Python
+```python
 true_number
 ```
 
-```Python
+```python
 guess_number = int(input("Enter your guess between 1 and 49: "))
 
 ```
 
-```Python
+```python
 guess_number
 ```
 
-```Python
+```python
 while True:
     if guess_number == true_number:
         print('YOU ARE RIGHT! GOOD JOB!')
