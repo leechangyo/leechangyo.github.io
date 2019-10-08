@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 27. Computational Complexity(작업 처리 속도)
-category: Programming language
+category: C++
 tag: C++
 ---
 
