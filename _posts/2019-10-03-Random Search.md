@@ -144,6 +144,7 @@ array([ 6.34918891e+151,  5.40618860e+257,  1.16543025e+166,
 - Does it play better?
 - Does it use unconventional move?
 - Main Changes
+
 ``` python
 import gym
 from gym import wrappers
@@ -159,6 +160,7 @@ while not done:
 ```
 
 > Random search and Save video
+
 
 ```python
 # https://deeplearningcourses.com/c/deep-reinforcement-learning-in-python
@@ -231,6 +233,8 @@ if __name__ == '__main__':
   print("***Final run with final weights***:", play_one_episode(env, params))
 
 ```
+
+
 Reference:
 
 [Artificial Intelligence Reinforcement Learning](https://www.udemy.com/course/artificial-intelligence-reinforcement-learning-in-python/)

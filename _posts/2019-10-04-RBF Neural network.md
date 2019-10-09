@@ -6,7 +6,7 @@ tag: Reinforcement Learning
 ---
 
 # RBF Networks
-<a href="https://imgur.com/VWhFjl0"><img src="https://i.imgur.com/VWhFjl0.jpg" width="700px" title="source:imgur.com" /><a>
+<a href="https://imgur.com/VWhFjl0"><img src="https://i.imgur.com/VWhFjl0.jpg" width="400px" title="source:imgur.com" /><a>
 - RBF = Radial Basis Function
 - Useful in RL
 - 2 perspectives
