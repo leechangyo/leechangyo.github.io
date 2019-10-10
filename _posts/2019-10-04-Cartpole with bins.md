@@ -6,7 +6,7 @@ tag: Reinforcement Learning
 ---
 
 # Cartpole with bins
-<a href="https://imgur.com/7l1pWjn"><img src="https://i.imgur.com/7l1pWjn.png" width="500px" title="source:imgur.com" /><a>
+<a href="https://imgur.com/7l1pWjn"><img src="https://i.imgur.com/7l1pWjn.png" width="400px" title="source:imgur.com" /><a>
 - Add some complexity: Q-Learning using the tabular method
 - why?
   - it's not necessary to do the most complicated thing possible
