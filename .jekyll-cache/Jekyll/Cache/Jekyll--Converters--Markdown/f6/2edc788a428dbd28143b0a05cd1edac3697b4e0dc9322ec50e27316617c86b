@@ -1,0 +1,40 @@
+I"t<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="k">as</span> <span class="n">mpimg</span> <span class="c1"># to protect unlimit loading when we use cv2.
+</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span> <span class="c1">#ploting tool
+</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">Cartoon</span><span class="p">(</span><span class="n">image_color</span><span class="p">):</span>
+
+    <span class="n">output_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">stylization</span><span class="p">(</span><span class="n">image_color</span><span class="p">,</span> <span class="n">sigma_s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">sigma_r</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+    <span class="c1">#Sigma_s 사진 부드러운 정도
+</span>    <span class="c1">#sigma_r 모서리 부분 날카라운 부분
+</span>
+    <span class="k">return</span> <span class="n">output_image</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">LiveCamEdgeDetection_canny</span><span class="p">(</span><span class="n">image_color</span><span class="p">):</span>
+
+    <span class="n">threshold_1</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="n">threshold_2</span> <span class="o">=</span> <span class="mi">80</span>
+    <span class="n">image_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image_color</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+    <span class="n">canny</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Canny</span><span class="p">(</span><span class="n">image_gray</span><span class="p">,</span> <span class="n">threshold_1</span><span class="p">,</span> <span class="n">threshold_2</span><span class="p">)</span> <span class="c1">#canny one of method to draawing gray and white.
+</span>    <span class="k">return</span> <span class="n">canny</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cap</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">VideoCapture</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="c1">#  capture of our webcam
+</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">ret</span><span class="p">,</span> <span class="n">frame</span> <span class="o">=</span> <span class="n">cap</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> <span class="c1"># Cap.read() returns a ret bool to indicate success.
+</span>    <span class="c1"># cv2.imshow('Live Edge Detection', Cartoon(frame))
+</span>    <span class="c1"># ret(return) get TRUE OR FALSE
+</span>    <span class="c1"># if true , frame is working(actual image) from videocapture.
+</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'Live Edge Detection'</span><span class="p">,</span> <span class="n">LiveCamEdgeDetection_canny</span><span class="p">(</span><span class="n">frame</span><span class="p">))</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'Webcam Video'</span><span class="p">,</span> <span class="n">frame</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">13</span><span class="p">:</span> <span class="c1">#13 Enter Key
+</span>        <span class="k">break</span>
+
+<span class="n">cap</span><span class="o">.</span><span class="n">release</span><span class="p">()</span> <span class="c1"># camera release
+</span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>      
+</code></pre></div></div>
+:ET

@@ -1,0 +1,241 @@
+I"dV<h1 id="random-search">Random Search</h1>
+<ul>
+  <li>just add a little code to do random search for a linear model
+    <ul>
+      <li>state.dot(params) &gt; 0 -&gt; do action 1</li>
+      <li>state.dot(params) &lt; 0 -&gt; do action 0</li>
+    </ul>
+  </li>
+</ul>
+
+<pre><code class="language-pseudocode">For # of times i want to adjust the weights
+  new_weights = random
+  For # of episodes i want to play to decide whether to update the weights
+    Play episode
+  if avg episode length &gt; best so far:
+    weithgs = new_weights
+Play a final set of episode to see how good my best weights do again
+</code></pre>
+
+<blockquote>
+  <p>Random search</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># https://deeplearningcourses.com/c/deep-reinforcement-learning-in-python
+# https://www.udemy.com/deep-reinforcement-learning-in-python
+</span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">range</span>
+<span class="c1"># Note: you may need to update your version of future
+# sudo pip install -U future
+</span>
+<span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+
+<span class="k">def</span> <span class="nf">get_action</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+  <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+<span class="c1"># value function
+</span>
+
+<span class="k">def</span> <span class="nf">play_one_episode</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+  <span class="n">observation</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+  <span class="n">done</span> <span class="o">=</span> <span class="bp">False</span>
+  <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
+
+  <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span> <span class="ow">and</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="p">:</span>
+    <span class="n">env</span><span class="o">.</span><span class="n">render</span><span class="p">()</span> <span class="c1">#&lt;- window will pop up and we be able to see a video of the episode as it being played
+</span>    <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">get_action</span><span class="p">(</span><span class="n">observation</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+      <span class="k">break</span>
+
+  <span class="k">return</span> <span class="n">t</span>
+
+
+<span class="k">def</span> <span class="nf">play_multiple_episodes</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+  <span class="n">episode_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+    <span class="n">episode_lengths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">play_one_episode</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+  <span class="n">avg_length</span> <span class="o">=</span> <span class="n">episode_lengths</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"avg length:"</span><span class="p">,</span> <span class="n">avg_length</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">avg_length</span>
+
+
+<span class="k">def</span> <span class="nf">random_search</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+  <span class="n">episode_lengths</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">best</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">params</span> <span class="o">=</span> <span class="bp">None</span>
+  <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">new_params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">avg_length</span> <span class="o">=</span> <span class="n">play_multiple_episodes</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">new_params</span><span class="p">)</span>
+    <span class="n">episode_lengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_length</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">avg_length</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">:</span>
+      <span class="n">params</span> <span class="o">=</span> <span class="n">new_params</span>
+      <span class="n">best</span> <span class="o">=</span> <span class="n">avg_length</span>
+  <span class="k">return</span> <span class="n">episode_lengths</span><span class="p">,</span> <span class="n">params</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+  <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s">'CartPole-v0'</span><span class="p">)</span>
+  <span class="n">episode_lengths</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">random_search</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episode_lengths</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+  <span class="c1"># play a final set of episodes
+</span>  <span class="k">print</span><span class="p">(</span><span class="s">"***Final run with final weights***"</span><span class="p">)</span>
+  <span class="n">play_multiple_episodes</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([ 6.34918891e+151,  5.40618860e+257,  1.16543025e+166,
+        2.27438781e+161,  4.11368246e+223,  1.17122224e+166,
+        4.82407136e+228,  2.35953965e+232,  1.66880539e-307,
+        3.51863529e-315,  4.26638573e-270,  3.71557101e-164,
+        4.26638934e-270,  7.89737178e-251,  2.53069372e-212,
+        7.72812543e-319,  6.95335581e-309, -2.47148131e-258,
+        5.09636100e+173,  2.12611159e+289,  5.40552416e+173,
+        4.52018132e+202, -1.71405763e-284,  4.03775671e+202,
+        1.74294797e+252,  4.03775703e+202,  4.51999087e+202,
+        3.32524435e-188,  3.03195438e-212,  4.03173663e+019,
+        4.51999834e+202, -1.79811855e-284,  1.32031518e-019,
+        2.85697648e+289,  2.00807226e+289,  2.43400036e+159,
+        6.01334412e-154,  5.04344070e+180,  7.29489665e+175,
+        1.42244599e+214,  2.45945760e+198,  1.96086579e+243,
+        1.69505627e+190,  2.49970340e+262,  6.24527202e-085,
+        3.67285416e+194,  1.27919412e-152,  7.20358919e+159,
+        2.31634007e-152,  5.82147482e+180,  2.35625381e+251,
+        3.81187276e+180,  1.27966001e-152,  4.77092211e+180,
+        6.01346953e-154,  9.30350598e+199,  2.05947607e-027,
+        1.30389145e-076,  5.66774924e+160,  1.28625507e+248,
+        4.47590761e-091,  1.18600496e-259,  1.94861571e-153,
+        6.78690190e+199,  6.01347002e-154,  9.82391515e+252,
+        1.23875453e-259,  8.90429111e+247,  1.27874063e-152,
+        1.94903487e+227,  1.27827553e-152,  1.45729796e-094,
+        2.13945866e+161,  6.01347002e-154,  2.31649991e-152,
+        2.31463556e-152,  1.68821824e+195,  8.72944715e+183,
+        1.14490518e+243,  2.60985693e+180,  2.44015014e-154,
+        6.01347002e-154,  9.05293030e+223,  1.69593624e-152,
+        5.81816253e+180,  2.64520780e+185,  6.32266889e+180,
+        3.17095857e+180,  7.22941924e+159,  5.98150411e-154,
+        1.79805224e+044,  2.45943259e+198,  9.75015749e+199,
+        3.62483719e+228,  6.97379781e+228,  1.97717050e+161,
+        1.46923002e+195,  2.44048419e-152,  2.42766858e-154,
+        6.01347002e-154])
+</code></pre></div></div>
+
+<h2 id="how-to-save-a-video">How to save a video</h2>
+<ul>
+  <li>importantm because it allows us to wath the agent play and see what it has learned through human eyes</li>
+  <li>states, actions, rewards are abstract -&gt; this is not a bad thing because it gives us a very powerful framework that makes this all possible</li>
+  <li>but it leaves some unanswered questions</li>
+  <li>has the agent learned to play as a human would?</li>
+  <li>Does it play better?</li>
+  <li>Does it use unconventional move?</li>
+  <li>Main Changes</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">from</span> <span class="nn">gym</span> <span class="kn">import</span> <span class="n">wrappers</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s">'CartPole-v0'</span><span class="p">)</span>
+<span class="n">env</span> <span class="o">=</span> <span class="n">wrappers</span><span class="o">.</span><span class="n">Monitor</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s">'my_unique_folder'</span><span class="p">)</span>
+<span class="n">observation</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+<span class="k">while</span> <span class="ow">not</span> <span class="n">done</span><span class="p">:</span>
+  <span class="n">action</span> <span class="o">=</span> <span class="n">choose_action</span><span class="p">()</span>
+  <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+    <span class="k">break</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>Random search and Save video</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># https://deeplearningcourses.com/c/deep-reinforcement-learning-in-python
+# https://www.udemy.com/deep-reinforcement-learning-in-python
+</span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">range</span>
+<span class="c1"># Note: you may need to update your version of future
+# sudo pip install -U future
+</span>
+<span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">from</span> <span class="nn">gym</span> <span class="kn">import</span> <span class="n">wrappers</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+
+
+<span class="k">def</span> <span class="nf">get_action</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+  <span class="k">return</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">0</span>
+
+
+<span class="k">def</span> <span class="nf">play_one_episode</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+  <span class="n">observation</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+  <span class="n">done</span> <span class="o">=</span> <span class="bp">False</span>
+  <span class="n">t</span> <span class="o">=</span> <span class="mi">0</span>
+
+  <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span> <span class="ow">and</span> <span class="n">t</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="p">:</span>
+    <span class="n">t</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">get_action</span><span class="p">(</span><span class="n">observation</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
+      <span class="k">break</span>
+
+  <span class="k">return</span> <span class="n">t</span>
+
+
+<span class="k">def</span> <span class="nf">play_multiple_episodes</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">params</span><span class="p">):</span>
+  <span class="n">episode_lengths</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+
+  <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+    <span class="n">episode_lengths</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">play_one_episode</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="c1">#각 에피소드 1,2,3... 에 에피소드 1에 몇번에 도전끝에 성공이 되었는지 적혀저서 나온다.
+</span>
+  <span class="n">avg_length</span> <span class="o">=</span> <span class="n">episode_lengths</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"avg length:"</span><span class="p">,</span> <span class="n">avg_length</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">avg_length</span>
+
+
+<span class="k">def</span> <span class="nf">random_search</span><span class="p">(</span><span class="n">env</span><span class="p">):</span>
+  <span class="n">episode_lengths</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="n">best</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">params</span> <span class="o">=</span> <span class="bp">None</span>
+  <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">new_params</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span> <span class="c1"># 4 weight
+</span>    <span class="n">avg_length</span> <span class="o">=</span> <span class="n">play_multiple_episodes</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="n">new_params</span><span class="p">)</span>
+    <span class="n">episode_lengths</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">avg_length</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">avg_length</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">:</span>
+      <span class="n">params</span> <span class="o">=</span> <span class="n">new_params</span>
+      <span class="n">best</span> <span class="o">=</span> <span class="n">avg_length</span>
+  <span class="k">return</span> <span class="n">episode_lengths</span><span class="p">,</span> <span class="n">params</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+  <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s">'CartPole-v0'</span><span class="p">)</span>
+  <span class="n">episode_lengths</span><span class="p">,</span> <span class="n">params</span> <span class="o">=</span> <span class="n">random_search</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">episode_lengths</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+  <span class="c1"># play a final set of episodes
+</span>  <span class="n">env</span> <span class="o">=</span> <span class="n">wrappers</span><span class="o">.</span><span class="n">Monitor</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="s">'my_awesome_dir'</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"***Final run with final weights***:"</span><span class="p">,</span> <span class="n">play_one_episode</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">params</span><span class="p">))</span>
+
+</code></pre></div></div>
+
+<p>Reference:</p>
+
+<p><a href="https://www.udemy.com/course/artificial-intelligence-reinforcement-learning-in-python/">Artificial Intelligence Reinforcement Learning</a></p>
+
+<p><a href="https://www.udemy.com/deep-reinforcement-learning-in-python/">Advance AI : Deep-Reinforcement Learning</a></p>
+
+<p><a href="https://www.udemy.com/cutting-edge-artificial-intelligence/learn/lecture/14650508#overview">Cutting-Edge Deep-Reinforcement Learning</a></p>
+:ET

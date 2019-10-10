@@ -1,0 +1,77 @@
+I"�<h1 id="corrdinate-systems">Corrdinate Systems</h1>
+<p><a href="https://postimg.cc/hft4r6Wy"><img src="https://i.postimg.cc/CLjZFpvg/4213.jpg" width="700px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>he coordinate systems relate to each other hierarchically, where the origin of each coordinate system is defined as a position in one of its ancestries(祖宗). Below are descriptions of commonly used coordinate systems, starting at the top of the hierarchy.</li>
+  <li>World coordinate system
+    <ul>
+      <li>The world coordinate system represents the entire station or robot cell. This is the top of the hierarchy to which all other coordinate systems are related.</li>
+    </ul>
+  </li>
+  <li>Task frame coordinate system
+    <ul>
+      <li>The task frame coordinate system is useful to define within a station or robot cell, in particular with multiple robots or mechanisms. One task frame can coordinate the placement of several mechanisms, whereas several task frames are suitable when working with <strong>MultiMove Independent.</strong></li>
+    </ul>
+  </li>
+  <li>Base frame coordinate system
+    <ul>
+      <li>Each robot in the station has a base coordinate system, which is always located at the base of the robot.</li>
+    </ul>
+  </li>
+  <li>Tool-centre point (TCP) coordinate system
+    <ul>
+      <li>The tool center point coordinate system, also called TCP, is the center point of the tool. Several different TCPs may be defined for one robot. All robots have one predefined TCP at the robot’s tool mounting point, called tool0. When a program runs, the robot moves the TCP to the programmed position.</li>
+    </ul>
+  </li>
+  <li>WorkObject coordinate system
+    <ul>
+      <li>The workobject normally represents the physical work piece. It is composed of two coordinate systems: the User frame and the Object frame, where the latter is a child to the former.
+<a href="http://developercenter.robotstudio.com/blobproxy/devcenter/RobotStudio/html/4eac08e9-c42c-446f-bbd4-228e523dd2d5.htm">RobotStudio Developer Center</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="robot-특성">Robot 특성</h1>
+<p><a href="https://postimg.cc/JHD8wVrM"><img src="https://i.postimg.cc/qqQv34Wh/3214.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>joint axes and TCP related to each other</li>
+  <li>the process of finidng position and orientation of the TCP given the actual joint values is called <strong>Forward Kinemetic</strong></li>
+  <li>Finding out the joint values that correspond to a given TCP position and orientation is solved by <strong>Inverse Kinematic</strong></li>
+  <li>Robot movements
+    <ul>
+      <li>point to point (PTP)</li>
+      <li>Line</li>
+      <li>Circle</li>
+    </ul>
+  </li>
+  <li>Speed Definition
+    <ul>
+      <li>Linear Speed in mm/s</li>
+      <li>Angular speed in deg/s</li>
+      <li>or combination of two
+<a href="https://postimg.cc/3kpg8dSD"><img src="https://i.postimg.cc/bwVLRn1L/222.jpg" width="700px" title="source: imgur.com" /><a></a></a></li>
+    </ul>
+  </li>
+  <li>Work Space
+    <ul>
+      <li>Safe zone</li>
+      <li>Forbidden zones (if the TCP or joint is out of safe zone)</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="frame">Frame</h1>
+<p><a href="https://postimg.cc/LYyytJM8"><img src="https://i.postimg.cc/7h4pyzs0/324.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>A frame is essentially a coordinate system with a specific position and orientation</li>
+  <li>Frame are the geometrical foundation of the robot arm and understand how to handle them is a critical systems
+<a href="https://postimg.cc/nCfdvby7"><img src="https://i.postimg.cc/QxHRZjS6/20191009172018.jpg" width="700px" title="source: imgur.com" /><a></a></a></li>
+  <li>Global coordinate system(GCS)</li>
+  <li>Machine coordinate system(MCS)</li>
+  <li>Tool coordinate system(TCS)</li>
+  <li>Workspace coordinate system(WCS)
+    <ul>
+      <li>all the programmed points and movements refer to this system (Product coordinate system)</li>
+    </ul>
+  </li>
+</ul>
+:ET

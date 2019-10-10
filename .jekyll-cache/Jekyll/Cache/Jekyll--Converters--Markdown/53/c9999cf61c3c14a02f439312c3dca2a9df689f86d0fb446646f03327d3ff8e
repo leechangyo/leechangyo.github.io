@@ -1,0 +1,611 @@
+I"��<h1 id="deep-learning">Deep learning</h1>
+<ul>
+  <li>This will cover key theory aspects
+    <ul>
+      <li>Neurons and Activation Functions</li>
+      <li>Cost Functions</li>
+      <li>Gradient Descent</li>
+      <li>Backpropagation</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="1-introduction-to-the-perceptron">1. Introduction to the Perceptron</h2>
+<ul>
+  <li>Before we launch straight into neural networks, we need to understand the individual components first, such as a single “neuron”.</li>
+  <li>Artificial Neural Networks (ANN) actually have a basis in biology!</li>
+  <li>Let’s see how we can attempt to mimic biological neurons with an artificial neuron, known as a perceptron!</li>
+  <li>The biological neuron:
+<a href="https://postimg.cc/Ty5GdJpL"><img src="https://i.postimg.cc/tg2gzrb5/4235.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+  <li>Dendrites树状突（가지돌기)
+<a href="https://imgur.com/bn25BoB"><img src="https://i.imgur.com/bn25BoB.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+  <li>The artificial neuron also has inputs and outputs!
+    <ul>
+      <li>This simple model is known as a perceptron.</li>
+      <li>We have two inputs and an output</li>
+      <li>Inputs will be values of features</li>
+      <li>Inputs are multiplied by a weight</li>
+      <li>Weights initially start off as random</li>
+      <li>Inputs are now multiplied by weights</li>
+      <li>Then these results are passed to an activation function
+        <ul>
+          <li>Many activation functions to choose from, we’ll cover this in more detail later!</li>
+        </ul>
+      </li>
+      <li>If sum of inputs is positive return 1, if sum is negative output 0.</li>
+      <li>In this case 6-4=2 so the activation function returns 1.</li>
+      <li>There is a possible issue. What if the original inputs started off as zero?
+        <ul>
+          <li>Then any weight multiplied by the input would still result in zero!</li>
+        </ul>
+      </li>
+      <li>We fix this by adding in a bias term, in this case we choose 1.</li>
+    </ul>
+  </li>
+  <li>So what does this look like mathematically?</li>
+  <li>Let’s quickly think about how we can represent this perceptron model mathematically:
+<a href="https://imgur.com/m2NtqQN"><img src="https://i.imgur.com/m2NtqQN.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+  <li>Once we have many perceptrons in a network we’ll see how we can easily extend this to a matrix form</li>
+  <li>Review
+    <ul>
+      <li>Biological Neuron</li>
+      <li>Perceptron Model</li>
+      <li>Mathematical Representation</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="2-introduction-to-neural-networks">2. Introduction to Neural Networks</h2>
+<ul>
+  <li>We’ve seen how a single perceptron behaves, now let’s expand this conceptto the idea of a neural network</li>
+  <li>Let’s see how to connect many perceptrons together and then how to represent this mathematically!
+<a href="https://imgur.com/3YbwQSd"><img src="https://i.imgur.com/3YbwQSd.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+  <li>Multiple Perceptrons Network</li>
+  <li>Input Layer. 2 hidden layers. Output Layer</li>
+  <li>Input Layer
+    <ul>
+      <li>Real values from the data</li>
+    </ul>
+  </li>
+  <li>Hidden Layers
+    <ul>
+      <li>Layers in between input and output</li>
+      <li>3 or more layers is “deep network”</li>
+    </ul>
+  </li>
+  <li>Output Layer
+    <ul>
+      <li>Final estimate of the output</li>
+    </ul>
+  </li>
+  <li>As you go forwards through more layers, the level of abstraction increases</li>
+  <li>Let’s now discuss the activation function in a little more detail!
+<a href="https://imgur.com/xnHdG7h"><img src="https://i.imgur.com/xnHdG7h.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+  <li>Previously our activation function was just a simple function that output 0 or 1.</li>
+  <li>This is a pretty dramatic function, since small changes aren’t reflected</li>
+  <li>It would be nice if we could have a more dynamic function, for example the red line!
+<a href="https://imgur.com/Ct78LIn"><img src="https://i.imgur.com/Ct78LIn.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+  <li>Lucky for us, this is the sigmoid function</li>
+  <li>Changing the activation function used can be beneficial depending on the task!</li>
+  <li>Let’s discuss a few more activation functions that we’ll encounter!
+<a href="https://imgur.com/r1n1ikc"><img src="https://i.imgur.com/r1n1ikc.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+  <li>Hyperbolic Tangent: tanh(z)
+<a href="https://imgur.com/s13iA3w"><img src="https://i.imgur.com/s13iA3w.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+  <li>Rectified Linear Unit (ReLU): This is actually a relatively simple function: max(0,z)</li>
+  <li>ReLu and tanh tend to have the best performance, so we will focus on these two.</li>
+  <li>Deep Learning libraries have these built in for us, so we don’t need to worry about having to implement them manually!</li>
+  <li>As we continue on, we’ll also talk about some more state of the art activation functions.</li>
+  <li>Up next, we’ll discuss cost functions, which will allow us to measure how well these neurons are performing!</li>
+</ul>
+
+<h2 id="3-cost-functions">3. Cost Functions</h2>
+<ul>
+  <li>Let’s now explore how we can evaluate performance of a neuron!</li>
+  <li>We can use a cost function to measure how far off we are from the expected value.</li>
+  <li>We’ll use the following variables:
+    <ul>
+      <li>y to represent the true value</li>
+      <li>a to represent neuron’s prediction</li>
+    </ul>
+  </li>
+  <li>In terms of weights and bias:
+    <ul>
+      <li>w*x + b = z</li>
+      <li>Pass z into activation function σ(z) = a</li>
+    </ul>
+  </li>
+  <li>Quadratic Cost
+    <ul>
+      <li>C = Σ(y-a)2 / n</li>
+    </ul>
+  </li>
+  <li>We can see that larger errors are more prominent(重要的) due to the squaring（原型）.</li>
+  <li>Unfortunately this calculation can cause a slowdown in our learning speed.</li>
+  <li>Cross Entropy（比Quadratic Cost速度更快)
+    <ul>
+      <li>C = (-1/n) Σ (y⋅ln(a) + (1-y)⋅ln(1-a)</li>
+      <li>This cost function allows for faster learning.</li>
+    </ul>
+  </li>
+  <li>The larger the difference, the faster the neuron can learn.</li>
+  <li>We now have 2 key aspects of learning with neural networks
+    <ul>
+      <li>the neurons with their activation function and the cost function.</li>
+    </ul>
+  </li>
+  <li>We’re still missing a key step, actually “learning”!</li>
+  <li>We need to figure out how we can use our neurons and the measurement of error (our cost function) and then attempt to correct our prediction, in other words, <strong>“learn”!</strong></li>
+</ul>
+
+<h2 id="4-gradient-descent-and-backpropagation">4. Gradient Descent and Backpropagation</h2>
+<ul>
+  <li>Gradient descent is an optimization algorithm for finding the minimum of a function.</li>
+  <li>To find a local minimum, we take steps proportional to the negative of the gradient.</li>
+  <li>Gradient Descent (in 1 dimension)
+<a href="https://imgur.com/2iwhJBu"><img src="https://i.imgur.com/2iwhJBu.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://imgur.com/prL0yrU"><img src="https://i.imgur.com/prL0yrU.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://imgur.com/I9GChcv"><img src="https://i.imgur.com/I9GChcv.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></li>
+  <li>Visually we can see what parameter value to choose to minimize our Cost</li>
+  <li>Finding this minimum is simple for 1 dimension, but our cases will have many more parameters, meaning we’ll need to use the built-in linear algebra that our Deep Learning library will provide!</li>
+  <li>Using gradient descent we can figure out the best parameters for minimizing our cost
+    <ul>
+      <li>for example, finding the best values for the weights of the neuron inputs.</li>
+    </ul>
+  </li>
+  <li>We now just have one issue to solve, <strong>how can we quickly adjust the optimal parameters or weights across our entire network?</strong></li>
+  <li>This is where backpropagation comes in!</li>
+  <li>Backpropagation is used to calculate the error contribution of each neuron after a batch of data is processed.</li>
+  <li>It relies heavily on the chain rule to go back through the network and calculate these errors.</li>
+  <li>Backpropagation works by calculating the error at the output and then distributes back through the network layers.</li>
+  <li>It requires a known desired output for each input value (supervised learning)</li>
+  <li>The implementation of backpropagation will be further clarified when we dive into the math example!</li>
+</ul>
+
+<h2 id="5-manual-neural-network-operation">5. Manual Neural Network Operation</h2>
+<ul>
+  <li>Operation Class
+    <ul>
+      <li>Input Nodes</li>
+      <li>Output Nodes</li>
+      <li>Global Default Graph Variable</li>
+      <li>Compute
+        <ul>
+          <li>Overwritten by extended classes</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Graph - A global variable
+<a href="https://imgur.com/5jKyhak"><img src="https://i.imgur.com/5jKyhak.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://imgur.com/sG3DSK5"><img src="https://i.imgur.com/sG3DSK5.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://imgur.com/F0LmSUe"><img src="https://i.imgur.com/F0LmSUe.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></li>
+</ul>
+
+<h2 id="6-manual-neural-network-variables-placeholders-and-graphs">6. Manual Neural Network Variables, Placeholders, and Graphs</h2>
+<ul>
+  <li>Placeholder - An “empty” node that needs a value to be provided to compute output(빈껍데기 이며 아웃풋 계산을 위해 값이 들어가야된다.)</li>
+  <li>Variables - Changeable parameter of Graph</li>
+  <li>Graph - Global Variable connecting variables and placeholders to operations (오퍼레이션 만나게 해주는 브로커 역할)</li>
+</ul>
+
+<h2 id="7-manual-neural-network-session">7. Manual Neural Network Session</h2>
+<ul>
+  <li>Now that the Graph has all the nodes, we need to execute all the operations within a Session.</li>
+  <li>We’ll use a PostOrder Tree Traversal to make sure we execute the nodes in the correct order.
+    <ul>
+      <li>y = mx + b</li>
+      <li>y = -1x + 5</li>
+      <li>Remember that both y and x are features!</li>
+      <li>Feat2 = -1*Feat1 + 5</li>
+      <li>Feat2 + Feat1 - 5 = 0</li>
+      <li>FeatMatrix[ 1, 1] - 5 = 0</li>
+    </ul>
+  </li>
+  <li>manually build out a neural network that mimics the TensorFlow API. This will greatly help your understanding when working with the real TensorFlow!</li>
+</ul>
+
+<h3 id="quick-note-on-super-and-oop">Quick note on Super() and OOP</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">SimpleClass</span><span class="p">():</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">str_input</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"SIMPLE"</span><span class="o">+</span><span class="n">str_input</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ExtendedClass</span><span class="p">(</span><span class="n">SimpleClass</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">'EXTENDED'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s</span> <span class="o">=</span> <span class="n">ExtendedClass</span><span class="p">()</span> <span class="c1"># EXTENDED
+# self = s
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">ExtendedClass</span><span class="p">(</span><span class="n">SimpleClass</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="s">" My String"</span><span class="p">)</span>
+        <span class="c1">#super : grab whatever class im inheriting from  (simpleclass
+</span>        <span class="c1">#종속 클래스에 넘어간다.
+</span>        <span class="k">print</span><span class="p">(</span><span class="s">'EXTENDED'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">s</span> <span class="o">=</span> <span class="n">ExtendedClass</span><span class="p">()</span>
+<span class="c1">#SIMPLE My String
+#EXTENDED
+</span>
+<span class="c1"># self = s
+</span></code></pre></div></div>
+
+<h3 id="operation">Operation</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Operation</span><span class="p">():</span>
+    <span class="s">"""
+    An Operation is a node in a "Graph". TensorFlow will also use this concept of a Graph(Global Variable.
+
+    This Operation class will be inherited by other classes that actually compute the specific
+    operation, such as adding or matrix multiplication.
+    """</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_nodes</span> <span class="o">=</span> <span class="p">[]):</span>
+        <span class="s">"""
+        Intialize an Operation
+        """</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">input_nodes</span> <span class="o">=</span> <span class="n">input_nodes</span> <span class="c1"># The list of input nodes
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">output_nodes</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># List of nodes consuming this node's output
+</span>        <span class="c1">#placeholde
+</span>        <span class="c1"># For every node in the input, we append this operation (self) to the list of
+</span>        <span class="c1"># the consumers of the input nodes
+</span>        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">input_nodes</span><span class="p">:</span>
+            <span class="n">node</span><span class="o">.</span><span class="n">output_nodes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># self which is essentially just a reference to this current operation
+</span>        <span class="c1"># graph
+</span>        <span class="c1"># There will be a global default graph (TensorFlow works this way)
+</span>        <span class="c1"># We will then append this particular operation
+</span>        <span class="c1"># Append this operation to the list of operations in the currently active default graph
+</span>        <span class="n">_default_graph</span><span class="o">.</span><span class="n">operations</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""
+        This is a placeholder function. It will be overwritten by the actual specific operation
+        that inherits from this class.
+
+        """</span>
+
+        <span class="k">pass</span>
+</code></pre></div></div>
+
+<h3 id="example-operationsaddition">Example Operations(addition)</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">add</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="c1">#x,y is the our input node to operation
+</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>
+        <span class="c1">#super chain 같은것이다
+</span>
+    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_var</span><span class="p">,</span> <span class="n">y_var</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_var</span><span class="p">,</span> <span class="n">y_var</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">x_var</span> <span class="o">+</span> <span class="n">y_var</span>
+</code></pre></div></div>
+
+<h3 id="example-operationsmultiplication">Example Operations(Multiplication)</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">add</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+        <span class="c1">#x,y is the our input node to operation
+</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">])</span>
+        <span class="c1">#super chain 같은것이다
+</span>
+    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_var</span><span class="p">,</span> <span class="n">y_var</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">x_var</span><span class="p">,</span> <span class="n">y_var</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">x_var</span> <span class="o">*</span> <span class="n">y_var</span>
+</code></pre></div></div>
+
+<h3 id="example-operationsmatrix-multiplication">Example Operations(Matrix Multiplication)</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">matmul</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a_mat</span><span class="p">,</span> <span class="n">b_mat</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">a_mat</span><span class="p">,</span> <span class="n">b_mat</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">a_mat</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">b_mat</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="placeholder-변수를-받는-곳">PlaceHolder (변수를 받는 곳)</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Placeholder</span><span class="p">():</span>
+    <span class="s">"""
+    A placeholder is a node that needs to be provided a value for computing the output in the Graph.
+    """</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="n">_default_graph</span><span class="o">.</span><span class="n">placeholders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1">#going to grab that global variable from the default graph
+</span></code></pre></div></div>
+
+<h3 id="variables">Variables</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Variable</span><span class="p">():</span>
+    <span class="s">"""
+    This variable is a changeable parameter of the Graph.
+    """</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_value</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">value</span> <span class="o">=</span> <span class="n">initial_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">output_nodes</span> <span class="o">=</span> <span class="p">[]</span>
+
+
+        <span class="n">_default_graph</span><span class="o">.</span><span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="graph">Graph</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Graph</span><span class="p">():</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">operations</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">placeholders</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">variables</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">def</span> <span class="nf">set_as_default</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""
+        Sets this Graph instance as the Global Default Graph
+        """</span>
+        <span class="k">global</span> <span class="n">_default_graph</span>
+        <span class="n">_default_graph</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="c1"># that's going to allow us to access it inside this place holder insde this calss
+</span></code></pre></div></div>
+
+<h3 id="basic-graph">Basic Graph</h3>
+<ul>
+  <li>z = Ax + b</li>
+  <li>with A=10 and b=1</li>
+  <li>z = 10x + 1</li>
+  <li>Just need a placeholder for x and then once x is filled in we can solved it!</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set_as_default</span><span class="p">()</span>
+<span class="c1">#none .
+#_default_grapht is the grobal graph
+</span><span class="n">A</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="c1"># Will be filled out later
+</span><span class="n">x</span> <span class="o">=</span> <span class="n">Placeholder</span><span class="p">()</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">multiply</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="sessionhelp-to-execute-all-the-operations">Session(help to execute all the operations)</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="k">def</span> <span class="nf">traverse_postorder</span><span class="p">(</span><span class="n">operation</span><span class="p">):</span>
+    <span class="s">"""
+    PostOrder Traversal of Nodes. Basically makes sure computations are done in
+    the correct order (Ax first , then Ax + b). Feel free to copy and paste this code.
+    It is not super important for understanding the basic fundamentals of deep learning.
+    """</span>
+
+    <span class="n">nodes_postorder</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">def</span> <span class="nf">recurse</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+        <span class="c1">#递归
+</span>        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">Operation</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">input_node</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input_nodes</span><span class="p">:</span>
+                <span class="n">recurse</span><span class="p">(</span><span class="n">input_node</span><span class="p">)</span>
+        <span class="n">nodes_postorder</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="n">recurse</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">nodes_postorder</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Session</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation</span><span class="p">,</span> <span class="n">feed_dict</span> <span class="o">=</span> <span class="p">{}):</span>
+        <span class="s">"""
+          operation: The operation to compute
+          feed_dict: Dictionary mapping placeholders to input values (the data)# mapping data in placeholder  
+        """</span>
+
+        <span class="c1"># Puts nodes in correct order
+</span>        <span class="n">nodes_postorder</span> <span class="o">=</span> <span class="n">traverse_postorder</span><span class="p">(</span><span class="n">operation</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">nodes_postorder</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="o">==</span> <span class="n">Placeholder</span><span class="p">:</span>
+
+                <span class="n">node</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">feed_dict</span><span class="p">[</span><span class="n">node</span><span class="p">]</span>
+
+            <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="p">)</span> <span class="o">==</span> <span class="n">Variable</span><span class="p">:</span>
+
+                <span class="n">node</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">value</span>
+
+            <span class="k">else</span><span class="p">:</span> <span class="c1"># Operation
+</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">inputs</span> <span class="o">=</span> <span class="p">[</span><span class="n">input_node</span><span class="o">.</span><span class="n">output</span> <span class="k">for</span> <span class="n">input_node</span> <span class="ow">in</span> <span class="n">node</span><span class="o">.</span><span class="n">input_nodes</span><span class="p">]</span>
+
+
+                <span class="n">node</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">node</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="o">*</span><span class="n">node</span><span class="o">.</span><span class="n">inputs</span><span class="p">)</span>
+                <span class="c1">#* : just wait for us to provide these inputs without knowing how many inputs we may have throughout the operation
+</span>                <span class="c1">#so technically we don't really know the size of this list so we pass it into computer
+</span>
+            <span class="c1"># Convert lists to numpy arrays
+</span>            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span> <span class="o">==</span> <span class="nb">list</span><span class="p">:</span>
+                <span class="n">node</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">node</span><span class="o">.</span><span class="n">output</span><span class="p">)</span>
+
+        <span class="c1"># Return the requested node value
+</span>        <span class="k">return</span> <span class="n">operation</span><span class="o">.</span><span class="n">output</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">operation</span><span class="o">=</span><span class="n">z</span><span class="p">,</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="mi">10</span><span class="p">})</span>
+<span class="n">result</span> <span class="c1"># 101
+# 10*10+1
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+
+<span class="n">g</span><span class="o">.</span><span class="n">set_as_default</span><span class="p">()</span>
+
+<span class="n">A</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span><span class="mi">20</span><span class="p">],[</span><span class="mi">30</span><span class="p">,</span><span class="mi">40</span><span class="p">]])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">Placeholder</span><span class="p">()</span>
+
+<span class="n">y</span> <span class="o">=</span> <span class="n">matmul</span><span class="p">(</span><span class="n">A</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+
+<span class="n">z</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="n">y</span><span class="p">,</span><span class="n">b</span><span class="p">)</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">operation</span><span class="o">=</span><span class="n">z</span><span class="p">,</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:</span><span class="mi">10</span><span class="p">})</span>
+<span class="n">result</span>
+<span class="c1"># array([[101, 201],
+</span>       <span class="c1"># [301, 401]])
+</span></code></pre></div></div>
+
+<h3 id="activation-function">Activation Function</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+
+<span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sample_z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">sample_a</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">sample_z</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sample_z</span><span class="p">,</span><span class="n">sample_a</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<p><a href="https://imgur.com/EG54mSZ"><img src="https://i.imgur.com/EG54mSZ.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h3 id="sigmoid-as-an-operation">Sigmoid as an Operation</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">class</span> <span class="nc">Sigmoid</span><span class="p">(</span><span class="n">Operation</span><span class="p">):</span>
+
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+
+        <span class="c1"># a is the input node
+</span>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">__init__</span><span class="p">([</span><span class="n">z</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="nf">compute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">z_val</span><span class="p">):</span>
+
+        <span class="k">return</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z_val</span><span class="p">))</span>
+</code></pre></div></div>
+
+<h3 id="classification-example">Classification Example</h3>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_blobs</span>
+<span class="c1">#make_blob(binary Large object): 이미지 사운드 비디오 같은 멀티미디어 데이터를 다룰떄 사용 된다.
+</span><span class="n">data</span> <span class="o">=</span> <span class="n">make_blobs</span><span class="p">(</span><span class="n">n_samples</span> <span class="o">=</span> <span class="mi">50</span><span class="p">,</span><span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">centers</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">random_state</span><span class="o">=</span><span class="mi">75</span><span class="p">)</span>
+<span class="c1">#center is how many blob we going to make
+# value in array is the n_feature
+</span></code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>data
+
+(array([[  7.3402781 ,   9.36149154],
+        [  9.13332743,   8.74906102],
+        [  1.99243535,  -8.85885722],
+        [  7.38443759,   7.72520389],
+        [  7.97613887,   8.80878209],
+        [  7.76974352,   9.50899462],
+        [  8.3186688 ,  10.1026025 ],
+        ....
+array([1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1,
+        0, 0, 1, 1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0,
+        0, 0, 0, 1]))
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">features</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">features</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">features</span><span class="p">[:,</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div></div>
+
+<p><a href="https://imgur.com/GgcXnA1"><img src="https://i.imgur.com/GgcXnA1.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">labels</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">features</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">features</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s">'coolwarm'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://imgur.com/btgIews"><img src="https://i.imgur.com/btgIews.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># DRAW A LINE THAT SEPERATES CLASSES
+</span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">11</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="n">x</span> <span class="o">+</span> <span class="mi">5</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">features</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span><span class="n">features</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span><span class="n">c</span><span class="o">=</span><span class="n">labels</span><span class="p">,</span><span class="n">cmap</span><span class="o">=</span><span class="s">'coolwarm'</span><span class="p">)</span>
+<span class="c1"># to make color , c=labels, cmp='coolwarm'
+</span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://imgur.com/9zyegQI"><img src="https://i.imgur.com/9zyegQI.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h3 id="defining-the-perception">Defining the Perception</h3>
+<ul>
+  <li>𝑦=𝑚𝑥+𝑏</li>
+  <li>𝑦=−𝑥+5</li>
+  <li>𝑓1=𝑚𝑓2+𝑏,𝑚=1</li>
+  <li>𝑓1=−𝑓2+5</li>
+  <li>𝑓1+𝑓2−5=0</li>
+</ul>
+
+<h3 id="convert-to-a-matrix-representation-of-features">Convert to a Matrix Representation of Features</h3>
+<ul>
+  <li>$𝑤^𝑇$𝑥+𝑏=0</li>
+  <li>(1,1)𝑓−5=0</li>
+</ul>
+
+<h3 id="example-point">Example Point</h3>
+<ul>
+  <li>Let’s say we have the point f1=2 , f2=2 otherwise stated as (8,10). Then we have:
+    <ul>
+      <li>(1,1)$(8 10)^T$+5=</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">8</span><span class="p">],[</span><span class="mi">10</span><span class="p">]]))</span> <span class="o">-</span> <span class="mi">5</span> <span class="c1">#array([13])
+</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">4</span><span class="p">],[</span><span class="o">-</span><span class="mi">10</span><span class="p">]]))</span> <span class="o">-</span> <span class="mi">5</span> <span class="c1">#array([-11])
+</span></code></pre></div></div>
+
+<h3 id="using-an-example-session-graph">Using an Example Session Graph</h3>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">g</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">()</span>
+<span class="n">g</span><span class="o">.</span><span class="n">set_as_default</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">Placeholder</span><span class="p">()</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">add</span><span class="p">(</span><span class="n">matmul</span><span class="p">(</span><span class="n">w</span><span class="p">,</span><span class="n">x</span><span class="p">),</span><span class="n">b</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">Sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+<span class="n">sess</span> <span class="o">=</span> <span class="n">Session</span><span class="p">()</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">operation</span><span class="o">=</span><span class="n">a</span><span class="p">,</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:[</span><span class="mi">8</span><span class="p">,</span><span class="mi">10</span><span class="p">]})</span>
+<span class="c1"># graph output
+# 0.99999773967570205
+</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">operation</span><span class="o">=</span><span class="n">a</span><span class="p">,</span><span class="n">feed_dict</span><span class="o">=</span><span class="p">{</span><span class="n">x</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">10</span><span class="p">]})</span>
+<span class="c1"># 3.0590222692562472e-07
+</span></code></pre></div></div>
+
+<h1 id="reference">Reference</h1>
+
+<p><a href="https://www.pieriandata.com/">Pieriandata</a></p>
+:ET

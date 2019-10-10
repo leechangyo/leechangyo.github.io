@@ -1,0 +1,65 @@
+I"4<h1 id="n-step-methods">N-step Methods</h1>
+<ul>
+  <li>N-step Methods : Further our understanding of TD methods</li>
+  <li>we know so far： TD(0)</li>
+  <li>we will learn :
+    <ul>
+      <li>λ = 0 gives us TD(0), λ = 1 gives us monte Carlo</li>
+    </ul>
+  </li>
+  <li>any other λ is a trade-off(协调) between the two</li>
+</ul>
+
+<p><a href="https://postimg.cc/n9hf3sZq"><img src="https://i.postimg.cc/gjvckRTt/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>1-Step TD의 step을 증가시켜 나가면서 n까지 보게 된다면 n-step TD로 일반화 할 수 있다.</li>
+  <li>만약 step이 무한대에 가깝게 되면 MC와 동일하게 될 것이다.</li>
+  <li>2-Step TD에서 업데이트 방식은 척번째 보상과 두번째 보상 그리고 부전째 상태에서의 Value function의 합으로 업데이트가 된다.</li>
+</ul>
+
+<p><a href="https://postimg.cc/62Yp6xpL"><img src="https://i.postimg.cc/J0WDq1wg/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>n step TD에서의 Value 함수는 N-step 에서 얻은 총 보상에서 기존 Value 함수값과 차이를 알파만큼 가중치하여 더함으로서 업데이트가 되게 됩니다.</li>
+</ul>
+
+<p><a href="https://postimg.cc/RJtC76TG"><img src="https://i.postimg.cc/prG9tK5N/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>n 이 몇일때가 가장 최고의 결과값늘 나타낼까? 위에 그래프가 실험에 대한 결과 값입니다.</li>
+  <li>실시간 업데이트하는 온라인 방식, 에피소드 완료후 업데이트하는 오프라인 방식에 대한 결과는 비슷하게 나온다.</li>
+  <li>n이 커질수록 에러가 커지는 것을 볼 수 있다.</li>
+  <li>3~5 step 이 좋은거 같다.</li>
+</ul>
+
+<p><a href="https://postimg.cc/8J2fgVKK"><img src="https://i.postimg.cc/MHT7R6yS/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>n-step 에서 보상값을 다른 값으로 평균을 낼 수 있다.</li>
+  <li>하지만 2~4 step에서의 평균을 내어보면 위와 같은 식이 될 것이다.</li>
+  <li>이 두가지를 결합하여 효율적으로 만들수 있을까?</li>
+</ul>
+
+<p><a href="https://postimg.cc/WFwhDfsS"><img src="https://i.postimg.cc/FR2cB28t/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>답은 가능하다</li>
+  <li>여기서 람다 보상은 모든 n-step 까지의 가중평균된 보상이다.</li>
+  <li>기존에 n-step에서 사용한 보상은 총합이였다.</li>
+  <li>이렇게 평균을 이용하는 방식은 오류를 더 낮출 수 있다.</li>
+  <li>람다의 총합이 1 되도록 하기 위해 (1-lamda)계수로 노멀라이즈를 하여 0부터 1까지의 값을 갖도록 합니다.</li>
+  <li><strong>람다는 n-step이 커질 수록 보상에 대한 값을 감소시키게 합니다.</strong></li>
+  <li>마지막에 공식이 TD-Lamda 의 Value 함수입니다.</li>
+</ul>
+
+<p><a href="https://postimg.cc/675Q57wS"><img src="https://i.postimg.cc/LsjgDfWH/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p>```
+Reference:</p>
+
+<p><a href="https://www.udemy.com/course/artificial-intelligence-reinforcement-learning-in-python/">Artificial Intelligence Reinforcement Learning</a></p>
+
+<p><a href="https://www.udemy.com/deep-reinforcement-learning-in-python/">Advance AI : Deep-Reinforcement Learning</a></p>
+
+<p><a href="https://www.udemy.com/cutting-edge-artificial-intelligence/learn/lecture/14650508#overview">Cutting-Edge Deep-Reinforcement Learning</a></p>
+:ET

@@ -1,0 +1,67 @@
+I"�<h1 id="inverse-kinematics">Inverse Kinematics</h1>
+
+<p><a href="https://postimg.cc/CnFj1CJC"><img src="https://i.postimg.cc/GtDzXqyf/20191010143752.jpg" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="1-general-derivation起源">1. General Derivation(起源)</h2>
+<ul>
+  <li>Not possible for serial Kinematics</li>
+  <li>Must be derived(获得) with geometrical intuition</li>
+  <li>Not always possible to find in closed-form</li>
+  <li>Numerical solutions sometimes required</li>
+</ul>
+
+<h2 id="2-non-linear-porblem">2. Non-Linear Porblem</h2>
+<ul>
+  <li>Example: TCP moves linearly along axis z</li>
+  <li>Joints movements are highly non-linear</li>
+</ul>
+
+<p><a href="https://postimg.cc/62HQrdtf"><img src="https://i.postimg.cc/T1xWX9sF/20191010144047.jpg" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="21-non-unique-solution">2.1 Non-unique solution</h2>
+<ul>
+  <li>Same TCP pose can be reached with different joints configurations
+    <ul>
+      <li>to solve this, we give singularities</li>
+    </ul>
+  </li>
+  <li>infinite joints solution exist for one single TCP pose to reduce</li>
+  <li>Dependent linear value</li>
+</ul>
+
+<h2 id="3-inverse-kinematics-steps">3. Inverse Kinematics Steps</h2>
+<ol>
+  <li>Decouple wrist from arm
+<a href="https://postimg.cc/GH6xPDpR"><img src="https://i.postimg.cc/Mpp3Sb2n/Capture.png" width="700px" title="source: imgur.com" /><a>
+</a></a>    <ul>
+      <li>find out that the position of the wrist point only depends on the first three joint axes of the robot</li>
+      <li>moving the fourth, fifth, sixth joint will not modify the position of the wrist point</li>
+      <li>so we can split into two part (wrist, arm) it called <strong>Decoupling</strong></li>
+    </ul>
+  </li>
+</ol>
+
+<p><a href="https://postimg.cc/dhvLKQHd"><img src="https://i.postimg.cc/pL58zpK0/20191010144710.jpg" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/HrhKGn3s"><img src="https://i.postimg.cc/VNfcCbCM/20191010145903.jpg" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/4YxdLLFR"><img src="https://i.postimg.cc/7Zg2Lj3h/20191010150135.jpg" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/Xrkh2WDQ"><img src="https://i.postimg.cc/Cx3gxLCT/20191010150337.jpg" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/qNcRjtTS"><img src="https://i.postimg.cc/CxXqMD6h/20191010150805.jpg" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></a></a></a></a></p>
+
+<h2 id="3-base-frame-and-tool">3. Base Frame and Tool</h2>
+<p><a href="https://postimg.cc/V5HDk62x"><img src="https://i.postimg.cc/pXP7k5CL/20191010151247.jpg" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="4-adding-a-tool">4. Adding a tool</h2>
+<p><a href="https://postimg.cc/m1bfZrqz"><img src="https://i.postimg.cc/nrmHkjGk/1.jpg" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="5-couple">5. Couple</h2>
+<ul>
+  <li>output of inverse kinematics is position of real joints</li>
+</ul>
+
+<p><a href="https://postimg.cc/s114qz1w"><img src="https://i.postimg.cc/DfPpWyhk/20191010151405.jpg" width="700px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>They must be adjusted to calculate correct motor on target positions</li>
+</ul>
+
+<p><a href="https://postimg.cc/qzyyHvrX"><img src="https://i.postimg.cc/CL6NDR6t/20191010151543.jpg" width="700px" title="source: imgur.com" /><a></a></a></p>
+:ET

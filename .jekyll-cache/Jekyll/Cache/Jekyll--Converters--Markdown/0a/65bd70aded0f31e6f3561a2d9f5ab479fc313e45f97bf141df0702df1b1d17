@@ -1,0 +1,221 @@
+I"�K<h1 id="problem-statement">PROBLEM STATEMENT</h1>
+<ul>
+  <li>Data represents weekly 2018 retail scan data for National retail volume (units) and price.</li>
+  <li>Retail scan data comes directly from retailers’ cash registers based on actual retail sales of Hass avocados.</li>
+  <li>Starting in 2013, the table below reflects an expanded, multi-outlet retail data set. Multi-outlet reporting includes an aggregation of the following channels: grocery, mass, club, drug, dollar and military.</li>
+  <li>The Average Price (of avocados) in the table reflects a per unit (per avocado) cost, even when multiple units (avocados) are sold in bags.</li>
+  <li>The Product Lookup codes (PLU’s) in the table are only for Hass avocados. Other varieties of avocados (e.g. greenskins) are not included in this table.</li>
+  <li>Some relevant columns in the dataset:
+    <ul>
+      <li>Date - The date of the observation</li>
+      <li>AveragePrice - the average price of a single avocado</li>
+      <li>type - conventional or organic</li>
+      <li>year - the year</li>
+      <li>Region - the city or region of the observation</li>
+      <li>Total Volume - Total number of avocados sold</li>
+      <li>4046 - Total number of avocados with PLU 4046 sold</li>
+      <li>4225 - Total number of avocados with PLU 4225 sold</li>
+      <li>4770 - Total number of avocados with PLU 4770 sold</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="importing-data">Importing Data</h1>
+<ul>
+  <li>You must install fbprophet package as follows: pip install fbprophet</li>
+  <li>If you encounter an error, try: conda install -c conda-forge fbprophet</li>
+  <li><strong>Prophet is open source software released by Facebook’s Core Data Science team.</strong></li>
+  <li>Prophet is a procedure for forecasting time series data based on an additive model where non-linear trends are fit with yearly, weekly, and daily seasonality, plus holiday effects.</li>
+  <li>Prophet works best with time series that have strong seasonal effects and several seasons of historical data.</li>
+  <li>For more information, please check this out: https://research.fb.com/prophet-forecasting-at-scale/ https://facebook.github.io/prophet/docs/quick_start.html#python-api</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># import libraries
+</span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span> <span class="c1"># Import Pandas for data manipulation using dataframes
+</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> <span class="c1"># Import Numpy for data statistical analysis
+</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span> <span class="c1"># Import matplotlib for data visualisation
+</span><span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+<span class="kn">from</span> <span class="nn">fbprophet</span> <span class="kn">import</span> <span class="n">Prophet</span>
+<span class="c1"># the class for prophet of big data
+# made from facebook's team
+# dataframes creation for both training and testing datasets
+</span><span class="n">avocado_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'avocado.csv'</span><span class="p">)</span>
+<span class="c1"># Let's view the head of the training dataset
+</span><span class="n">avocado_df</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/qNzBbzJQ"><img src="https://i.postimg.cc/9QB4f7v3/442321.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Let's view the last elements in the training dataset
+</span><span class="n">avocado_df</span><span class="o">.</span><span class="n">tail</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/fJgD9Dcd"><img src="https://i.postimg.cc/BnJ6Rvtm/3212.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avocado_df</span> <span class="o">=</span> <span class="n">avocado_df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">"Date"</span><span class="p">)</span>
+<span class="c1"># we sort data thuugh date (sort_values)
+</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">avocado_df</span><span class="p">[</span><span class="s">'Date'</span><span class="p">],</span> <span class="n">avocado_df</span><span class="p">[</span><span class="s">'AveragePrice'</span><span class="p">])</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/YGtJPsNk"><img src="https://i.postimg.cc/Y9FMvch4/12312.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Bar Chart to indicate the number of regions
+</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">25</span><span class="p">,</span><span class="mi">12</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s">'region'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">avocado_df</span><span class="p">)</span>
+<span class="c1"># useualy sns class (x, data)
+</span><span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span> <span class="o">=</span> <span class="mi">45</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>(array([ 0,  1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12, 13, 14, 15, 16,
+        17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
+        34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50,
+        51, 52, 53]), &lt;a list of 54 Text xticklabel objects&gt;)
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/68sbSPwS"><img src="https://i.postimg.cc/rwz6d6H8/22.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Bar Chart to indicate the year
+</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">25</span><span class="p">,</span><span class="mi">12</span><span class="p">])</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s">'year'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">avocado_df</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span> <span class="o">=</span> <span class="mi">45</span><span class="p">)</span>
+<span class="c1">#plit.xticks is that set locations and label
+# (array([0, 1, 2, 3]), &lt;a list of 4 Text xticklabel objects&gt;)
+</span></code></pre></div></div>
+<p><a href="https://postimg.cc/06kTW40v"><img src="https://i.postimg.cc/KYBmzSK1/3214.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avocado_prophet_df</span> <span class="o">=</span> <span class="n">avocado_df</span><span class="p">[[</span><span class="s">'Date'</span><span class="p">,</span> <span class="s">'AveragePrice'</span><span class="p">]]</span>
+<span class="c1"># what we want to prophet though data and averageprice in future.
+# so all we need is ‘DATE' and 'AveragePrice'
+</span><span class="n">avocado_prophet_df</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>          Date 	AveragePrice
+11569 	2015-01-04 	1.75
+9593 	2015-01-04 	1.49
+10009 	2015-01-04 	1.68
+1819 	2015-01-04 	1.52
+9333 	2015-01-04 	1.64
+2807 	2015-01-04 	0.75
+1195 	2015-01-04 	0.85
+10269 	2015-01-04 	1.50
+103 	2015-01-04 	1.00
+1143 	2015-01-04 	0.80
+623 	2015-01-04 	0.74
+10425 	2015-01-04 	1.82
+1871 	2015-01-04 	1.01
+11673 	2015-01-04 	1.80
+10945 	2015-01-04 	1.81
+2547 	2015-01-04 	1.15
+11725 	2015-01-04 	1.72
+10477 	2015-01-04 	1.56
+2131 	2015-01-04 	1.05
+</code></pre></div></div>
+
+<h1 id="make-predictions">Make Predictions</h1>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avocado_prophet_df</span> <span class="o">=</span> <span class="n">avocado_prophet_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s">'Date'</span><span class="p">:</span><span class="s">'ds'</span><span class="p">,</span> <span class="s">'AveragePrice'</span><span class="p">:</span><span class="s">'y'</span><span class="p">})</span>
+<span class="c1"># rename the 'key' names
+#in order fro prophet to do quickly.
+</span><span class="n">avocado_prophet_df</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>            ds 	    y
+11569 	2015-01-04 	1.75
+9593 	2015-01-04 	1.49
+10009 	2015-01-04 	1.68
+1819 	2015-01-04 	1.52
+9333 	2015-01-04 	1.64
+2807 	2015-01-04 	0.75
+1195 	2015-01-04 	0.85
+10269 	2015-01-04 	1.50
+103 	2015-01-04 	1.00
+1143 	2015-01-04 	0.80
+623 	2015-01-04 	0.74
+10425 	2015-01-04 	1.82
+1871 	2015-01-04 	1.01
+11673 	2015-01-04 	1.80
+10945 	2015-01-04 	1.81
+2547 	2015-01-04 	1.15
+11725 	2015-01-04 	1.72
+10477 	2015-01-04 	1.56
+2131 	2015-01-04 	1.05
+259 	2015-01-04 	1.02
+415 	2015-01-04 	1.19
+2495 	2015-01-04 	1.00
+9177 	2015-01-04 	1.79
+10113 	2015-01-04 	1.22
+2339 	2015-01-04 	1.01
+2235 	2015-01-04 	0.99
+2703 	2015-01-04 	0.95
+1975 	2015-01-04 	1.20
+9437 	2015-01-04 	1.73
+1611 	2015-01-04 	1.05
+... 	... 	...
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">m</span> <span class="o">=</span> <span class="n">Prophet</span><span class="p">()</span>
+<span class="n">m</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">avocado_prophet_df</span><span class="p">)</span>
+<span class="c1"># pass along our data frame
+#how can we train the model.
+# we're just trying to train the kind of a model to try to predict the future in a way
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Forcasting into the future
+</span><span class="n">future</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">make_future_dataframe</span><span class="p">(</span><span class="n">periods</span><span class="o">=</span><span class="mi">365</span><span class="p">)</span>
+<span class="c1"># make prediction future.
+#"365" predict one year
+</span><span class="n">forecast</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">future</span><span class="p">)</span>
+<span class="n">forecast</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/QVm0SMnF"><img src="https://i.postimg.cc/VLQpfrqW/67.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">figure</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">forecast</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s">'Date'</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s">'Price'</span><span class="p">)</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/rzZ5KRPN"><img src="https://i.postimg.cc/sDsmHpPq/2145.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">figure3</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">plot_components</span><span class="p">(</span><span class="n">forecast</span><span class="p">)</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/zVW38LZB"><img src="https://i.postimg.cc/8PXvdWZh/442312.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="part-2">PART 2</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># dataframes creation for both training and testing datasets
+</span><span class="n">avocado_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">'avocado.csv'</span><span class="p">)</span>
+<span class="c1"># select specific region
+</span><span class="n">avocado_df</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/jLzqBGPn"><img src="https://i.postimg.cc/DyNW4hz6/42312.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avocado_df_sample</span> <span class="o">=</span> <span class="n">avocado_df</span><span class="p">[</span><span class="n">avocado_df</span><span class="p">[</span><span class="s">'region'</span><span class="p">]</span><span class="o">==</span><span class="s">'West'</span><span class="p">]</span>
+<span class="c1"># take a specific region
+</span><span class="n">avocado_df_sample</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/TLDvgDc5"><img src="https://i.postimg.cc/Twk28jL0/1245.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avocado_df_sample</span> <span class="o">=</span> <span class="n">avocado_df_sample</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s">"Date"</span><span class="p">)</span>
+<span class="n">avocado_df_sample</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/GB4WnyVg"><img src="https://i.postimg.cc/KYfxL7Nb/42356.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">avocado_df_sample</span><span class="p">[</span><span class="s">'Date'</span><span class="p">],</span> <span class="n">avocado_df_sample</span><span class="p">[</span><span class="s">'AveragePrice'</span><span class="p">])</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/sGsHxQHr"><img src="https://i.postimg.cc/GtsWMvkH/51234.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">avocado_df_sample</span> <span class="o">=</span> <span class="n">avocado_df_sample</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s">'Date'</span><span class="p">:</span><span class="s">'ds'</span><span class="p">,</span> <span class="s">'AveragePrice'</span><span class="p">:</span><span class="s">'y'</span><span class="p">})</span>
+<span class="n">m</span> <span class="o">=</span> <span class="n">Prophet</span><span class="p">()</span>
+<span class="n">m</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">avocado_df_sample</span><span class="p">)</span>
+<span class="c1"># Forcasting into the future
+</span><span class="n">future</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">make_future_dataframe</span><span class="p">(</span><span class="n">periods</span><span class="o">=</span><span class="mi">365</span><span class="p">)</span>
+<span class="n">forecast</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">future</span><span class="p">)</span>
+<span class="n">figure</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">forecast</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="s">'Date'</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="s">'Price'</span><span class="p">)</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/njZNjPMg"><img src="https://i.postimg.cc/qRCrYfrJ/42345.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">figure3</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">plot_components</span><span class="p">(</span><span class="n">forecast</span><span class="p">)</span>
+
+</code></pre></div></div>
+<p><a href="https://postimg.cc/5j4ZfThF"><img src="https://i.postimg.cc/BZHsBGNN/5568.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+:ET

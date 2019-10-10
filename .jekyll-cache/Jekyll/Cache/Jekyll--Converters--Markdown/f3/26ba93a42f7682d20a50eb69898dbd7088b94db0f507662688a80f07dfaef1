@@ -1,0 +1,261 @@
+I"Be<h1 id="problem-statement">PROBLEM STATEMENT</h1>
+<ul>
+  <li>The dataset contains a series of images that can be used to solve the Happy House problem!</li>
+  <li>We need to build an artificial neural network that can detect smiling faces</li>
+  <li>Only smiling people will be allowed to enter the house!</li>
+  <li>The train set has 600 examples. The test set has 150 examples.</li>
+  <li>Data Source: https://www.kaggle.com/iarunava/happy-house-dataset</li>
+</ul>
+
+<h2 id="step-1-importing-data">Step 1 Importing data</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># import libraries
+</span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span> <span class="c1"># Import Pandas for data manipulation using dataframes
+</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> <span class="c1"># Import Numpy for data statistical analysis
+</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span> <span class="c1"># Import matplotlib for data visualisation
+</span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+<span class="kn">import</span> <span class="nn">h5py</span>
+<span class="c1"># read our specific image.
+# the h5py is a pythonic interface to the HDF5 Binary data format
+#HDF5(Hierarchical Data Format Version 5) :대용량 데이터를 저장하기 위한 파일 포맷
+</span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">filename</span> <span class="o">=</span> <span class="s">'train_happy.h5'</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s">'r'</span><span class="p">)</span>
+<span class="c1">#.File &lt;- it have to be capitalized 'F'
+</span><span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+
+<span class="c1">#Names of the groups in HDF5 file.
+# let's get key from file
+# it contain simply.
+</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>list_classes
+train_set_x
+train_set_y
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">happy_training</span> <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s">'train_happy.h5'</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span>
+<span class="n">happy_testing</span>  <span class="o">=</span> <span class="n">h5py</span><span class="o">.</span><span class="n">File</span><span class="p">(</span><span class="s">'test_happy.h5'</span><span class="p">,</span> <span class="s">"r"</span><span class="p">)</span>
+
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">happy_training</span><span class="p">[</span><span class="s">"train_set_x"</span><span class="p">])</span>
+<span class="c1"># we want to get all the data of train_set_x
+</span><span class="n">y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">happy_training</span><span class="p">[</span><span class="s">"train_set_y"</span><span class="p">])</span>
+
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">happy_testing</span><span class="p">[</span><span class="s">"test_set_x"</span><span class="p">])</span>
+<span class="n">y_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">happy_testing</span><span class="p">[</span><span class="s">"test_set_y"</span><span class="p">])</span>
+
+<span class="n">X_train</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># 64, 64 is the martrix
+# 600 images
+</span>
+<span class="n">y_train</span>
+<span class="c1"># 0 is no smile,
+# 1 is smiling
+</span>
+<span class="n">y_train</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># (600,)
+</span></code></pre></div></div>
+
+<h2 id="step-2-visualize-data">Step 2 Visualize data</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">i</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">600</span><span class="p">)</span> <span class="c1"># select any random index from 1 to 600
+</span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span> <span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">y_train</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="c1"># 0
+</span></code></pre></div></div>
+
+<p><a href="https://postimg.cc/jWnBT1x7"><img src="https://i.postimg.cc/yNLKmq2v/index.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Let's view more images in a grid format
+# Define the dimensions of the plot grid
+</span><span class="n">W_grid</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">L_grid</span> <span class="o">=</span> <span class="mi">5</span>
+
+<span class="c1"># fig, axes = plt.subplots(L_grid, W_grid)
+# subplot return the figure object and axes object
+# we can use the axes object to plot specific figures at various locations
+</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">L_grid</span><span class="p">,</span> <span class="n">W_grid</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">25</span><span class="p">,</span><span class="mi">25</span><span class="p">))</span>
+
+<span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="c1"># flaten the 15 x 15 matrix into 225 array
+# return contiguous(인접한) flattened array(1D array with all the input-array elements and with the same type)
+</span>
+<span class="n">n_training</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">X_train</span><span class="p">)</span> <span class="c1"># get the length of the training dataset
+</span>
+<span class="c1"># Select a random number from 0 to n_training
+</span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">W_grid</span> <span class="o">*</span> <span class="n">L_grid</span><span class="p">):</span> <span class="c1"># create evenly spaces variables
+</span>
+    <span class="c1"># Select a random number
+</span>    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_training</span><span class="p">)</span>
+    <span class="c1"># read and display an image with the selected index    
+</span>    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span> <span class="n">X_train</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">y_train</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">fontsize</span> <span class="o">=</span> <span class="mi">25</span><span class="p">)</span>
+    <span class="c1">#this is showing that 0,1 for reconition of smile or not
+</span>    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+    <span class="c1">#axis('off') means that remove the coordinate point
+</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.4</span><span class="p">)</span>
+<span class="c1">#subplots_adjust(hspace =0.4) is that adjust distance between pictures
+</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/LnXp7N1z"><img src="https://i.postimg.cc/CLCxR2M6/index.png" width="700px" title="source: imgur.com" /></a></p>
+
+<h2 id="step-3-model-training">Step 3 MODEL TRAINING</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Let's normalize dataset
+</span><span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">/</span><span class="mi">255</span>
+<span class="c1"># the picture is indicating from white color
+</span><span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">/</span><span class="mi">255</span>
+<span class="n">X_train</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1">#(600, 64, 64, 3)
+</span><span class="n">y_train</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># (600,)
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1"># Import train_test_split from scikit library
+# tope of tensorflow algorithm
+</span><span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="c1"># we build neuro network by sequential fashion
+</span><span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Dropout</span>
+<span class="c1"># dense for full connected artificial network whichh is right hand side
+</span><span class="kn">from</span> <span class="nn">keras.optimizers</span> <span class="kn">import</span> <span class="n">Adam</span>
+<span class="c1">#adam optimzation
+</span><span class="kn">from</span> <span class="nn">keras.callbacks</span> <span class="kn">import</span> <span class="n">TensorBoard</span>
+<span class="c1">#tensorboard. actual train the model.
+</span>
+<span class="n">cnn_model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+
+<span class="n">cnn_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="n">input_shape</span> <span class="o">=</span> <span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">))</span>
+<span class="c1"># this is convolution layer
+# 64 kernal, the dimensition at each is 6 x 6
+# input shape that basicaally the shape of the actual image that was feeding to our network
+# relu output will be sigmoid funciton but if value is '-'(minus) it gonna be 0
+</span><span class="n">cnn_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<span class="c1"># add max pooling layer
+</span><span class="n">cnn_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.2</span><span class="p">))</span>
+<span class="c1"># 20percent randomly dropout
+</span>
+<span class="n">cnn_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv2D</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s">'relu'</span><span class="p">))</span>
+<span class="c1">#this is another convolution layer
+#we dont want to add input_shape, because it doesnt make sense
+# here we dont have a input
+# because the output coming out from the upper layer is we're going to
+# be fed as an input to this layer
+</span>
+<span class="n">cnn_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling2D</span><span class="p">(</span><span class="n">pool_size</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+
+<span class="n">cnn_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Flatten</span><span class="p">())</span>
+<span class="n">cnn_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">output_dim</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span> <span class="n">activation</span> <span class="o">=</span> <span class="s">'relu'</span><span class="p">))</span> <span class="c1">#output network
+#this is the hidden layer, one of the layers within our fully connected layer
+</span><span class="n">cnn_model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">output_dim</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">activation</span> <span class="o">=</span> <span class="s">'sigmoid'</span><span class="p">))</span>
+<span class="c1">#last out in the network, our output dimension 1
+#dimension 1 is because we only have one output, kind of binary output.
+#the output have to be sigmoid. because after copile,
+#the tensorflower have to be calculated in binary
+</span>
+<span class="n">cnn_model</span><span class="o">.</span><span class="nb">compile</span><span class="p">(</span><span class="n">loss</span> <span class="o">=</span><span class="s">'binary_crossentropy'</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="n">Adam</span><span class="p">(</span><span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">),</span><span class="n">metrics</span> <span class="o">=</span><span class="p">[</span><span class="s">'accuracy'</span><span class="p">])</span>
+<span class="c1">#'binary_crossentropy' because our output value is the binary
+#if our classifying 10 categories, we used binary_categories
+#lr &lt;= learning rate.
+#we want to train metrices as accurarcy
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">epochs</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="c1">#复数,时期 : how may times we're going to be update
+#update 5 times.
+</span><span class="n">history</span> <span class="o">=</span> <span class="n">cnn_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span>
+                        <span class="n">y_train</span><span class="p">,</span>
+                        <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">30</span><span class="p">,</span>
+                        <span class="n">nb_epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="p">,</span>
+                        <span class="n">verbose</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+<span class="c1"># batch_size means that how many imagees would get to be fed
+# batch : 자료를 모아 두었다가 일괄해서 처리하는 자료처리의 형태
+#verbose is that how many detailes we're going to be sure we actually performaing the trainig
+</span>
+<span class="n">history</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Epoch 1/5
+600/600 [==============================] - 9s 15ms/step - loss: 0.2444 - acc: 0.9050
+Epoch 2/5
+600/600 [==============================] - 9s 14ms/step - loss: 0.2150 - acc: 0.9183
+Epoch 3/5
+600/600 [==============================] - 9s 15ms/step - loss: 0.1829 - acc: 0.9267
+Epoch 4/5
+600/600 [==============================] - 9s 15ms/step - loss: 0.1931 - acc: 0.9183
+Epoch 5/5
+600/600 [==============================] - 9s 15ms/step - loss: 0.1662 - acc: 0.9300
+</code></pre></div></div>
+
+<h2 id="step-4-evaluating-the-model">Step 4 EVALUATING THE MODEL</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">evaluation</span> <span class="o">=</span> <span class="n">cnn_model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)</span>
+<span class="c1"># evaaluating from the data set
+</span><span class="n">evaluation</span>
+<span class="c1"># [0.3277119962374369, 0.8799999968210857]
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="s">'Test Accuracy : {:.3f}'</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">evaluation</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+<span class="c1"># loacation in number one. so we have simply event contain two value zero
+# numpy array
+# Test Accuracy : 0.880
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># get the predictions for the test data
+</span><span class="n">predicted_classes</span> <span class="o">=</span> <span class="n">cnn_model</span><span class="o">.</span><span class="n">predict_classes</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">predicted_classes</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1">#bunch of 1 or 0
+# guess coming out from the guess train data
+# (150, 1)
+</span><span class="n">y_test</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># (150,)
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">L</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">W</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="n">W</span><span class="p">,</span> <span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span><span class="mi">12</span><span class="p">))</span>
+<span class="n">axes</span> <span class="o">=</span> <span class="n">axes</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="c1">#
+</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">L</span> <span class="o">*</span> <span class="n">W</span><span class="p">):</span>  
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Prediction Class = {}</span><span class="se">\n</span><span class="s"> True Class = {}"</span><span class="o">.</span><span class="nb">format</span><span class="p">(</span><span class="n">predicted_classes</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">y_test</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s">'off'</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">wspace</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># axes[i].set_title("Guess{}\n True{}".format(predicted_class[i], y_test[i]))
+</span></code></pre></div></div>
+
+<p><a href="https://postimg.cc/HJ58fbNt"><img src="https://i.postimg.cc/5tK5Q3qD/index.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">confusion_matrix</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">predicted_classes</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span> <span class="o">=</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># Sum the diagonal element to get the total true correct values
+</span></code></pre></div></div>
+
+<p><a href="https://postimg.cc/NLGL4hQD"><img src="https://i.postimg.cc/fWmXMZFG/index.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">predicted_classes</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+              precision    recall  f1-score   support
+
+           0       0.94      0.77      0.85        66
+           1       0.84      0.96      0.90        84
+
+   micro avg       0.88      0.88      0.88       150
+   macro avg       0.89      0.87      0.88       150
+weighted avg       0.89      0.88      0.88       150
+
+
+</code></pre></div></div>
+:ET

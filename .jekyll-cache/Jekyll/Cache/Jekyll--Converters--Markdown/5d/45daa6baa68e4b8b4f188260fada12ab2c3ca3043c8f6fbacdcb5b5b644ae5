@@ -1,0 +1,170 @@
+I"�A<h1 id="problem-statement">PROBLEM STATEMENT</h1>
+<ul>
+  <li>You own an ice cream business and you would like to create a model that could predict the daily revenue in dollars based on the outside air temperature (degC). You decide that a Linear Regression model might be a good candidate to solve this problem.</li>
+  <li>Data set:
+    <ul>
+      <li>Independent variable X: Outside Air Temperature</li>
+      <li>Dependant variable Y: Overall daily revenue generated in dollars</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="step-1-libraries-import">Step 1 Libraries Import</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span>
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="c1">#matplotlib inline, if we execute plot code in notebboot, we can see picture immediatly
+</span></code></pre></div></div>
+
+<h2 id="step-2-import-dataset">Step 2 IMPORT DATASET</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">IceCream</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s">"IceCreamData.csv"</span><span class="p">)</span>
+<span class="n">IceCream</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Temperature 	Revenue
+0 	24.566884 	534.799028
+1 	26.005191 	625.190122
+2 	27.790554 	660.632289
+3 	20.595335 	487.706960
+4 	11.503498 	316.240194
+5 	14.352514 	367.940744
+6 	13.707780 	308.894518
+7 	30.833985 	696.716640
+8 	0.976870 	55.390338
+9 	31.669465 	737.800824
+10 	11.455253 	325.968408
+11 	3.664670 	71.160153
+12 	18.811824 	467.446707
+13 	13.624509 	289.540934
+14 	39.539909 	905.477604
+15 	18.483141 	469.909033
+16 	25.935375 	648.209998
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">IceCream</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Temperature 	Revenue
+495 	22.274899 	524.746364
+496 	32.893092 	755.818399
+497 	12.588157 	306.090719
+498 	22.362402 	566.217304
+499 	28.957736 	655.660388
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">IceCream</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Temperature 	Revenue
+count 	500.000000 	500.000000
+mean 	22.232225 	521.570777
+std 	8.096388 	175.404751
+min 	0.000000 	10.000000
+25% 	17.122258 	405.558681
+50% 	22.392791 	529.368565
+75% 	27.740674 	642.257922
+max 	45.000000 	1000.000000
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">IceCream</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>IceCream.info()
+
+&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 500 entries, 0 to 499
+Data columns (total 2 columns):
+Temperature    500 non-null float64
+Revenue        500 non-null float64
+dtypes: float64(2)
+memory usage: 7.9 KB
+
+</code></pre></div></div>
+
+<h2 id="step-3-visualize-dataset">Step 3 Visualize Dataset</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="o">.</span><span class="n">jointplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">'Temperature'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">'Revenue'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">IceCream</span><span class="p">)</span>
+<span class="c1"># name have to be exactly same as in data dataframe
+</span></code></pre></div></div>
+
+<p><a href="https://postimg.cc/BtbZWYTq"><img src="https://i.postimg.cc/v8L4VCD6/22.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">IceCream</span><span class="p">)</span>
+<span class="c1">#dafaflow nor need here to put X and Y
+</span></code></pre></div></div>
+
+<p><a href="https://postimg.cc/BPPGjzpH"><img src="https://i.postimg.cc/qqjB5VCb/521.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="o">.</span><span class="n">lmplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s">'Temperature'</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s">'Revenue'</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">IceCream</span><span class="p">)</span>
+<span class="c1"># plotting linear line wiht line
+</span></code></pre></div></div>
+
+<p><a href="https://postimg.cc/64vDWv6h"><img src="https://i.postimg.cc/kG19yQkL/index.png" width="700px" title="source: imgur.com" /></a></p>
+
+<h2 id="step-4-create-testing-and-training-dataset">Step 4 Create Testing And Training Dataset</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">y</span> <span class="o">=</span> <span class="n">IceCream</span><span class="p">[</span><span class="s">'Revenue'</span><span class="p">]</span>
+<span class="n">X</span> <span class="o">=</span> <span class="n">IceCream</span><span class="p">[</span><span class="s">'Temperature'</span><span class="p">]</span>
+<span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+<span class="c1">#define our ratio
+#75percent is the train set
+</span></code></pre></div></div>
+
+<h2 id="step-5-train-the-model">Step 5 TRAIN THE MODEL</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span> <span class="c1">#(375,)
+</span><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LinearRegression</span>
+<span class="n">regressor</span> <span class="o">=</span> <span class="n">LinearRegression</span><span class="p">(</span><span class="n">fit_intercept</span> <span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># we imported the class, 'intercept' meansthat we instantiate with an object
+# 'fit_intercept'means we are asking the model to simply update for us not just the slope m but obtain our intercept
+# if false, only line only return m value , default will be zero
+# intercept 일차함수의 그래프가 축과 만나는 교점의 좌표
+</span><span class="n">regressor</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span><span class="n">y_train</span><span class="p">)</span>
+<span class="c1">#fit the valuable into regression class
+</span><span class="k">print</span><span class="p">(</span><span class="s">'Linear Model Coefficient (m): '</span><span class="p">,</span> <span class="n">regressor</span><span class="o">.</span><span class="n">coef_</span><span class="p">)</span> <span class="c1">#Linear Model Coefficient (m):  [21.4418582]
+</span><span class="k">print</span><span class="p">(</span><span class="s">'Linear Model Coefficient (b): '</span><span class="p">,</span> <span class="n">regressor</span><span class="o">.</span><span class="n">intercept_</span><span class="p">)</span> <span class="c1"># Linear Model Coefficient (b):  46.867275700132154
+# our y intercept is intercepting the at 47
+</span></code></pre></div></div>
+
+<h2 id="step-6-test-the-model">Step 6 Test The model</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">y_predict</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">'red'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span> <span class="n">color</span> <span class="o">=</span> <span class="s">'blue'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Revenue [dollars]'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Temperature [degC]'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Revenue Generated vs. Temperature @Ice Cream Stand(Training dataset)'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/94qTBdb2"><img src="https://i.postimg.cc/bvmTpL2Z/index.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># VISUALIZE TEST SET RESULTS
+</span><span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">color</span> <span class="o">=</span> <span class="s">'red'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">values</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)),</span> <span class="n">color</span> <span class="o">=</span> <span class="s">'blue'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Revenue [dollars]'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">'Hours'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">'Revenue Generated vs. Hours @Ice Cream Stand(Test dataset)'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/BPPGjzpH"><img src="https://i.postimg.cc/qqjB5VCb/521.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">new_x</span> <span class="o">=</span> <span class="mi">30</span>
+<span class="n">new_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">new_x</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y_predict</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">new_x</span><span class="p">)</span>
+<span class="c1"># 왜냐하면 이미 템프레쳐 트레이닝 데이터가 75퍼로 공부를 시켰기 떄문에
+# 30일때 값이 얼마인지 알 수 있다.
+</span><span class="n">y_predict</span> <span class="c1"># array([690.1230218])
+</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Sample_T</span> <span class="o">=</span> <span class="mi">35</span> <span class="c1"># this is guessing if temperature 35 in predicting.
+</span><span class="n">Sample_T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Sample_T</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">y_predict</span> <span class="o">=</span> <span class="n">regressor</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">Sample_T</span><span class="p">)</span>
+<span class="n">y_predict</span>
+</code></pre></div></div>
+:ET

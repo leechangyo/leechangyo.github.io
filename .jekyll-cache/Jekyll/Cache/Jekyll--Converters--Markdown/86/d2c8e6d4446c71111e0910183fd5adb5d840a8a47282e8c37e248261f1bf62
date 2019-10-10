@@ -1,0 +1,27 @@
+I"H<h1 id="transformation-frame">Transformation Frame</h1>
+
+<h2 id="1-column-vector">1. Column Vector</h2>
+<p><a href="https://postimg.cc/4YY1jb33"><img src="https://i.postimg.cc/523kYsd8/20191010140047.jpg" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="2-angle-notations">2. Angle Notations</h2>
+<ul>
+  <li>euler angles have limitations
+    <ul>
+      <li>24 different variation of conventions(惯例)</li>
+      <li>singular(惯例) alignment</li>
+      <li>Non-uniqueness (confusing)</li>
+      <li>cannot be interpolated(插入) linearly</li>
+    </ul>
+  </li>
+  <li>Rotation matrices are large and complicated</li>
+  <li>Euler angles are simpler to understand</li>
+  <li><strong>Quaternion</strong> provide better way to handle notations</li>
+</ul>
+
+<h2 id="3-homogeneous同种类的-transformation">3. Homogeneous(同种类的) Transformation</h2>
+<p><a href="https://postimg.cc/wRj8qLdn"><img src="https://i.postimg.cc/yxFVTyp6/42.jpg" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/Z07XP9mK"><img src="https://i.postimg.cc/vHbMs9S9/3345.jpg" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/dLGmsX5P"><img src="https://i.postimg.cc/xT4sRVHC/44556.jpg" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/nXcsyw51"><img src="https://i.postimg.cc/Bn2x1rBR/20191010141244.jpg" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/KkX8899w"><img src="https://i.postimg.cc/B6bLNk2S/20191010141408.jpg" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></a></a></a></a></p>
+:ET

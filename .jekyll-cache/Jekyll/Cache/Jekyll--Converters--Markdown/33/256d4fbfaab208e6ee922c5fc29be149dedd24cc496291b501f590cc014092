@@ -1,0 +1,87 @@
+I"r<h1 id="create-a-cartoon-image">Create a Cartoon Image</h1>
+<ul>
+  <li>Stylization aims to produce digital imagery with a wide variety of effects not focused on photorealism. Stylization can abstract regions of low contrast while preserving, or enhancing, high-contrast features.</li>
+  <li>Parameters
+    <ul>
+      <li>src Input 8-bit 3-channel image.</li>
+      <li>dst Output image with the same size and type as src.</li>
+      <li>sigma_s Range between 0 to 200.</li>
+      <li>sigma_r Range between 0 to 1.</li>
+    </ul>
+  </li>
+  <li>Note
+    <ul>
+      <li>sigma_s controls how much the image is smoothed - the larger its value, the more smoothed the image gets, but it’s also slower to compute.</li>
+      <li>sigma_r is important if you want to preserve edges while smoothing the image. Small sigma_r results in only very similar colors to be averaged (i.e. smoothed), while colors that differ much will stay intact.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cv2</span> <span class="c1">#opencv library
+</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span> <span class="c1">#create a matplotlib
+</span>
+<span class="n">color_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s">"trudeau.jpg"</span><span class="p">)</span> <span class="c1"># reading image file by using cv2.imread("trudeau.jpg")
+</span>
+<span class="n">cartoon_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">stylization</span><span class="p">(</span><span class="n">color_image</span><span class="p">,</span> <span class="n">sigma_s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">sigma_r</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="c1">#cartoon_image, cartoon_image2  = cv2.pencilSketch(color_image, sigma_s=60, sigma_r=0.1)
+</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'cartoon'</span><span class="p">,</span> <span class="n">cartoon_image</span><span class="p">)</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">()</span> <span class="c1">#wating any key
+</span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/3kvfHX6Q"><img src="https://i.postimg.cc/HkSqX39n/4123123123.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="example">Example</h1>
+<pre><code class="language-Python">import matplotlib.image as mpimg #had to perform many someting handy for us. image read function.
+import matplotlib.pyplot as plt
+import numpy as np # numerical analysis
+import cv2
+</code></pre>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_color</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s">"trudeau.jpg"</span><span class="p">)</span>
+
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_color</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image_color</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+<span class="c1"># our picture and color funtion.
+</span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_gray</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s">'gray'</span><span class="p">)</span> <span class="c1"># 'gray' we have to give them color
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_gray</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># (569,800)
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_gray</span> <span class="c1">#each of pixel presenting in the color
+# (569,800,3)
+</span></code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([[ 19,  21,  22, ..., 159, 160, 161],
+       [ 18,  19,  21, ..., 159, 161, 162],
+       [ 17,  19,  20, ..., 160, 161, 162],
+       ...,
+       [139, 140, 143, ..., 132, 132, 131],
+       [139, 140, 143, ..., 131, 130, 129],
+       [136, 140, 144, ..., 126, 126, 126]], dtype=uint8)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Save the image in greyscale
+</span><span class="n">cv2</span><span class="o">.</span><span class="n">imwrite</span><span class="p">(</span><span class="s">"image_grayscale.jpg"</span><span class="p">,</span> <span class="n">image_gray</span><span class="p">)</span>
+<span class="c1"># save the image. # specifiy the name of image when we save
+# true means that actually save it
+</span></code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">color_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s">"trudeau.jpg"</span><span class="p">)</span>
+
+<span class="c1"># cartoon_image = cv2.stylization(color_image, sigma_s=200, sigma_r=0.3)
+</span><span class="n">cartoon_image</span><span class="p">,</span> <span class="n">cartoon_image2</span>  <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">pencilSketch</span><span class="p">(</span><span class="n">color_image</span><span class="p">,</span> <span class="n">sigma_s</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span> <span class="n">sigma_r</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+<span class="c1"># pencilsketch has two return value. cartoon_image is not color, cartoon_image2 is the colorful by pencil
+</span></code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'cartoon'</span><span class="p">,</span> <span class="n">cartoon_image2</span><span class="p">)</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">()</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</code></pre></div></div>
+:ET

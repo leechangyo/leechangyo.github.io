@@ -1,0 +1,430 @@
+I"�<h1 id="rbf-networks">RBF Networks</h1>
+<p><a href="https://imgur.com/VWhFjl0"><img src="https://i.imgur.com/VWhFjl0.jpg" width="400px" title="source:imgur.com" /><a></a></a></p>
+<ul>
+  <li>RBF = Radial Basis Function</li>
+  <li>Useful in RL</li>
+  <li>2 perspectives
+    <ul>
+      <li>Linear model with feature extraction, where the feature extraction is RBF kernel</li>
+      <li>1-hidden layer neural network, with RBF kernel as activation function</li>
+    </ul>
+  </li>
+  <li>when we first learned about neural networks, we learned these in reverse order</li>
+  <li>we first learned that a neural network is a nonlinear function approximator</li>
+  <li>later, we saw that hidden units happen to learn features</li>
+</ul>
+
+<h2 id="rbf-basis-function">RBF Basis Function</h2>
+<ul>
+  <li>is a non-normalized Gaussian
+<a href="https://imgur.com/KIW70Nr"><img src="https://i.imgur.com/KIW70Nr.png" width="400px" title="source:imgur.com" /><a></a></a></li>
+  <li>x = input vector</li>
+  <li>c = center / exemplar(模范) vector</li>
+  <li>Only Repends on distance between x and c, not direction, hence the term <strong>radial</strong></li>
+  <li>Max is 1, when x == c, approaches 0 as x goes further away from c</li>
+</ul>
+
+<h2 id="how-do-we-choose-c">How do we choose c?</h2>
+<ul>
+  <li>how many c’s should we choose?</li>
+  <li><strong>number of center / exemplar == number of hidden units in the RBF Network</strong></li>
+  <li>Each unit will have a different center</li>
+  <li>A few different ways to choose them</li>
+</ul>
+
+<h2 id="support-vecotr-machines">Support Vecotr Machines</h2>
+<ul>
+  <li>SVMs also use RBF Kernels</li>
+  <li><strong># of exemplars == # of training points</strong></li>
+  <li>in fact, with SVMs the exemplars are the training points</li>
+  <li>this is why SVMs have fallen out of favour</li>
+  <li>Training becomes O(N^2), prediction is O(N), N = # Training samples</li>
+  <li>important piece of deep learning history
+    <ul>
+      <li>SVMs were once though to be superior
+        <h2 id="another-methods">Another Methods</h2>
+      </li>
+    </ul>
+  </li>
+  <li>Just sample a few points from the state space</li>
+  <li>can then choose the # of exemplars</li>
+  <li>env.observation_sapce.sample()</li>
+  <li>how many exemplars we choose is like how many hidden units in a neural network - it’s hyperparameter that must be tuned</li>
+</ul>
+
+<h2 id="implementation">Implementation</h2>
+<ul>
+  <li>we’ll make use of sci-kit learn</li>
+  <li>our own difect from-definition implementation would be unnecessarily slow</li>
+  <li>RBFsampler uses a Monte Carlo algorithms(MC)</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.kernel_approximation</span> <span class="kn">import</span> <span class="n">RBFsampler</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Standard Interface</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sampler</span> <span class="o">=</span> <span class="n">RBFSampler</span><span class="p">()</span>
+<span class="n">sampler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">radw_data</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="n">sampler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">raw_data</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h2 id="the-rest-we-have-done-before">The rest we have done before</h2>
+<ul>
+  <li>now that we know how to transform the raw state, the rest we should be familiar with: Q-learning, linear function approximation with gradient descent</li>
+  <li>Unlike a feedforward neural network, the features won’t change as we learn</li>
+  <li>exemplar we choose at the beginning will remain forever</li>
+  <li>May seem restrictive, but works better than feedforward NN</li>
+</ul>
+
+<h2 id="old-perspective-vs-new-perspective">Old Perspective vs New Perspective</h2>
+<ul>
+  <li>we used linear functions with polynomial features before</li>
+  <li>now we use RBF Kernel for features</li>
+  <li>the other Perspective： 1-hidden layer neural network</li>
+  <li>remember that in general, this is a nonlinear transformation -&gt; linear model at the final layer</li>
+  <li>Recall: dot product is a cosine distance: $a^T$b = IaI IbI cos(angle(a,b))
+<a href="https://imgur.com/xdDOaAu"><img src="https://i.imgur.com/xdDOaAu.png" width="700px" title="source:imgur.com" /><a>
+<a href="https://imgur.com/rwrtflS"><img src="https://i.imgur.com/rwrtflS.png" width="700px" title="source:imgur.com" /><a></a></a></a></a></li>
+</ul>
+
+<h2 id="implementation-details">Implementation Details</h2>
+<ul>
+  <li>Scale parameter(aka. Variance)</li>
+  <li>We don’t know what’s good</li>
+  <li>Perhaps multiple are good</li>
+  <li>sci-kit learn has facilities that allow us to use multiple RBF samplers simultaneously</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">FeatureUnion</span>
+</code></pre></div></div>
+
+<ul>
+  <li>Can concatenate(连在一起的) any features, not just those from RBFSampler</li>
+  <li>Standardize our data too:</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDRegressor</span>
+<span class="c1"># Functions:
+</span><span class="n">partial_fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">y</span><span class="p">)</span> <span class="c1"># one step of gradient descent
+</span><span class="n">Predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>SGDRegressor behaves a little strangely</li>
+  <li>partial_fit() must be called at least once before we do any prediction</li>
+  <li>Prediction must come before any real fitting, b/c we are using Q-Learning(where we need the max over Q(s,a))</li>
+  <li>so we’ll start by calling partial_fit with dummy values</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">input</span> <span class="o">=</span> <span class="n">transform</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">(),</span> <span class="n">target</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">(</span><span class="nb">input</span><span class="p">,</span><span class="n">target</span><span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>after calling partial_fit(SGD) with target 0, it will make all predictions for awhile</li>
+  <li>This is weird - a linear model shouldn’t behave this way(it may not be purely linear model)</li>
+  <li>this quirk(怪异的性格(或行为)) is useful</li>
+  <li>for our next task, mountain car, all rewards are -1</li>
+  <li>therefore, Q prediction of 0 is higher than anything we can actually get</li>
+  <li>this is the <strong>optimistic initial value</strong> method</li>
+  <li>Technically don’t need epsilon-greedy</li>
+</ul>
+
+<h2 id="prove-it-to-ourselves">Prove it to ourselves</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDRegressor</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">SGDRegressor</span><span class="p">()</span>
+<span class="n">model</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
+<span class="c1"># array([0.]) - make sense
+</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="c1"># array([0.]) - huh?
+</span><span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+<span class="c1"># array([0.]) - huh?
+</span><span class="o">...</span>
+<span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="c1"># array([0.]) - huh?
+</span>
+<span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">([</span><span class="mi">99</span><span class="p">,</span><span class="mi">99</span><span class="p">])</span>
+<span class="c1"># array([0.]) - huh?
+</span></code></pre></div></div>
+
+<h2 id="one-model-per-action">One model per action</h2>
+<ul>
+  <li>Another implementation detail used by Deep Q Learning too</li>
+  <li>instead of x &lt;- transform(s,a)</li>
+  <li>we’ll used x &lt;- transform(s)</li>
+  <li>since actions are discrete, we can have a different Q(s) for every a(action)</li>
+  <li>For mountain Car, 3 actions: left, right, nothing</li>
+  <li>Neural Network with 3 output nodes</li>
+</ul>
+
+<h2 id="mountain-car">mountain Car</h2>
+<ul>
+  <li>https://github.com/openai/gym/wiki/mountaincar-v0</li>
+  <li>https://github.com/openai/envs/mountaincar-v0</li>
+</ul>
+
+<p><a href="https://postimg.cc/1VHy63j6"><img src="https://i.postimg.cc/s1FxkBPn/Capture.png" width="500px" title="source:imgur.com" /><a></a></a></p>
+
+<h2 id="cost-to-go-function">Cost-to-go Function</h2>
+<p><a href="https://postimg.cc/QB1CChhg"><img src="https://i.postimg.cc/N0PHNjnn/index.png" width="500px" title="source:imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Is the negative of optimal value funtion V*(s)</li>
+  <li>what they call it in sutton &amp; barto</li>
+  <li>2 state variables -&gt; 3-D plot</li>
+</ul>
+
+<blockquote>
+  <p>Import Library</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># https://deeplearningcourses.com/c/deep-reinforcement-learning-in-python
+# https://www.udemy.com/deep-reinforcement-learning-in-python
+</span><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">division</span>
+<span class="kn">from</span> <span class="nn">builtins</span> <span class="kn">import</span> <span class="nb">range</span>
+<span class="c1"># Note: you may need to update your version of future
+# sudo pip install -U future
+#
+# This takes 4min 30s to run in Python 2.7
+# But only 1min 30s to run in Python 3.5!
+#
+# Note: gym changed from version 0.7.3 to 0.8.0
+# MountainCar episode length is capped at 200 in later versions.
+# This means your agent can't learn as much in the earlier episodes
+# since they are no longer as long.
+</span>
+<span class="kn">import</span> <span class="nn">gym</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.mplot3d</span> <span class="kn">import</span> <span class="n">Axes3D</span>
+<span class="kn">from</span> <span class="nn">gym</span> <span class="kn">import</span> <span class="n">wrappers</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">FeatureUnion</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">StandardScaler</span>
+<span class="kn">from</span> <span class="nn">sklearn.kernel_approximation</span> <span class="kn">import</span> <span class="n">RBFSampler</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">SGDRegressor</span>
+
+<span class="c1"># SGDRegressor defaults:
+# loss='squared_loss', penalty='l2', alpha=0.0001,
+# l1_ratio=0.15, fit_intercept=True, n_iter=5, shuffle=True,
+# verbose=0, epsilon=0.1, random_state=None, learning_rate='invscaling',
+# eta0=0.01, power_t=0.25, warm_start=False, average=False
+</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Feature Transformer</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Inspired by https://github.com/dennybritz/reinforcement-learning
+</span><span class="k">class</span> <span class="nc">FeatureTransformer</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+    <span class="n">observation_examples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10000</span><span class="p">)])</span>
+    <span class="c1"># 4개의 밸류값의 리스트가 만개가 생긴다 in observation_examples에
+</span>    <span class="n">scaler</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span>
+    <span class="n">scaler</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">observation_examples</span><span class="p">)</span>
+
+    <span class="c1"># Used to converte a state to a featurizes represenation.
+</span>    <span class="c1"># We use RBF kernels with different variances to cover different parts of the space
+</span>    <span class="n">featurizer</span> <span class="o">=</span> <span class="n">FeatureUnion</span><span class="p">([</span>
+            <span class="p">(</span><span class="s">"rbf1"</span><span class="p">,</span> <span class="n">RBFSampler</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s">"rbf2"</span><span class="p">,</span> <span class="n">RBFSampler</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s">"rbf3"</span><span class="p">,</span> <span class="n">RBFSampler</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">)),</span>
+            <span class="p">(</span><span class="s">"rbf4"</span><span class="p">,</span> <span class="n">RBFSampler</span><span class="p">(</span><span class="n">gamma</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">))</span>
+            <span class="p">])</span>
+    <span class="n">example_features</span> <span class="o">=</span> <span class="n">featurizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">observation_examples</span><span class="p">))</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">dimensions</span> <span class="o">=</span> <span class="n">example_features</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span> <span class="o">=</span> <span class="n">scaler</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">featurizer</span> <span class="o">=</span> <span class="n">featurizer</span>
+
+    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">observations</span><span class="p">):</span>
+      <span class="c1"># print "observations:", observations
+</span>      <span class="n">scaled</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">scaler</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">observations</span><span class="p">)</span>
+      <span class="c1"># assert(len(scaled.shape) == 2)
+</span>      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">featurizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">scaled</span><span class="p">)</span>    
+</code></pre></div></div>
+
+<blockquote>
+  <p>Model</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Holds one SGDRegressor for each action
+</span><span class="k">class</span> <span class="nc">Model</span><span class="p">:</span>
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">feature_transformer</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">models</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">feature_transformer</span> <span class="o">=</span> <span class="n">feature_transformer</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">n</span><span class="p">):</span>
+      <span class="n">model</span> <span class="o">=</span> <span class="n">SGDRegressor</span><span class="p">(</span><span class="n">learning_rate</span><span class="o">=</span><span class="n">learning_rate</span><span class="p">)</span>
+      <span class="n">model</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">(</span><span class="n">feature_transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span> <span class="p">[</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()]</span> <span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+  <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">([</span><span class="n">s</span><span class="p">])</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">m</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+  <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">G</span><span class="p">):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">feature_transformer</span><span class="o">.</span><span class="n">transform</span><span class="p">([</span><span class="n">s</span><span class="p">])</span>
+    <span class="k">assert</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">models</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">partial_fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="p">[</span><span class="n">G</span><span class="p">])</span>
+
+  <span class="k">def</span> <span class="nf">sample_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="n">eps</span><span class="p">):</span>
+    <span class="c1"># eps = 0
+</span>    <span class="c1"># Technically, we don't need to do epsilon-greedy
+</span>    <span class="c1"># because SGDRegressor predicts 0 for all states
+</span>    <span class="c1"># until they are updated. This works as the
+</span>    <span class="c1"># "Optimistic Initial Values" method, since all
+</span>    <span class="c1"># the rewards for Mountain Car are -1.
+</span>    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+      <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">action_space</span><span class="o">.</span><span class="n">sample</span><span class="p">()</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>play</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">play_one</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">gamma</span><span class="p">):</span>
+  <span class="n">observation</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+  <span class="n">done</span> <span class="o">=</span> <span class="bp">False</span>
+  <span class="n">totalreward</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">iters</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">while</span> <span class="ow">not</span> <span class="n">done</span> <span class="ow">and</span> <span class="n">iters</span> <span class="o">&lt;</span> <span class="mi">10000</span><span class="p">:</span>
+    <span class="n">action</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">sample_action</span><span class="p">(</span><span class="n">observation</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="n">prev_observation</span> <span class="o">=</span> <span class="n">observation</span>
+    <span class="n">observation</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span><span class="p">,</span> <span class="n">info</span> <span class="o">=</span> <span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+    <span class="c1"># update the model
+</span>    <span class="nb">next</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">observation</span><span class="p">)</span>
+    <span class="c1"># assert(next.shape == (1, env.action_space.n))
+</span>    <span class="n">G</span> <span class="o">=</span> <span class="n">reward</span> <span class="o">+</span> <span class="n">gamma</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="nb">next</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">model</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">prev_observation</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">G</span><span class="p">)</span>
+
+    <span class="n">totalreward</span> <span class="o">+=</span> <span class="n">reward</span>
+    <span class="n">iters</span> <span class="o">+=</span> <span class="mi">1</span>
+
+  <span class="k">return</span> <span class="n">totalreward</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>Plot_cost_to_go</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">plot_cost_to_go</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">estimator</span><span class="p">,</span> <span class="n">num_tiles</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+  <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">low</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">high</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">num</span><span class="o">=</span><span class="n">num_tiles</span><span class="p">)</span>
+  <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">low</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">env</span><span class="o">.</span><span class="n">observation_space</span><span class="o">.</span><span class="n">high</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">num</span><span class="o">=</span><span class="n">num_tiles</span><span class="p">)</span>
+  <span class="n">X</span><span class="p">,</span> <span class="n">Y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+  <span class="c1"># both X and Y will be of shape (num_tiles, num_tiles)
+</span>  <span class="n">Z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span><span class="p">(</span><span class="k">lambda</span> <span class="n">_</span><span class="p">:</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="nb">max</span><span class="p">(</span><span class="n">estimator</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">_</span><span class="p">)),</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">]))</span>
+  <span class="c1"># Z will also be of shape (num_tiles, num_tiles)
+</span>
+  <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+  <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s">'3d'</span><span class="p">)</span>
+  <span class="n">surf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot_surface</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span>
+    <span class="n">rstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cstride</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s">'Position'</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s">'Velocity'</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_zlabel</span><span class="p">(</span><span class="s">'Cost-To-Go == -V(s)'</span><span class="p">)</span>
+  <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s">"Cost-To-Go Function"</span><span class="p">)</span>
+  <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">surf</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Plot_running_avg</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">plot_running_avg</span><span class="p">(</span><span class="n">totalrewards</span><span class="p">):</span>
+  <span class="n">N</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">totalrewards</span><span class="p">)</span>
+  <span class="n">running_avg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="n">running_avg</span><span class="p">[</span><span class="n">t</span><span class="p">]</span> <span class="o">=</span> <span class="n">totalrewards</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">t</span><span class="o">-</span><span class="mi">100</span><span class="p">):(</span><span class="n">t</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">running_avg</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Running Average"</span><span class="p">)</span>
+  <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>Main</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">show_plots</span><span class="o">=</span><span class="bp">True</span><span class="p">):</span>
+  <span class="n">env</span> <span class="o">=</span> <span class="n">gym</span><span class="o">.</span><span class="n">make</span><span class="p">(</span><span class="s">'MountainCar-v0'</span><span class="p">)</span>
+  <span class="n">ft</span> <span class="o">=</span> <span class="n">FeatureTransformer</span><span class="p">(</span><span class="n">env</span><span class="p">)</span>
+  <span class="n">model</span> <span class="o">=</span> <span class="n">Model</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="s">"constant"</span><span class="p">)</span>
+  <span class="n">gamma</span> <span class="o">=</span> <span class="mf">0.99</span>
+
+  <span class="k">if</span> <span class="s">'monitor'</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">:</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s">'.'</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">monitor_dir</span> <span class="o">=</span> <span class="s">'./'</span> <span class="o">+</span> <span class="n">filename</span> <span class="o">+</span> <span class="s">'_'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+    <span class="n">env</span> <span class="o">=</span> <span class="n">wrappers</span><span class="o">.</span><span class="n">Monitor</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">monitor_dir</span><span class="p">)</span>
+
+
+  <span class="n">N</span> <span class="o">=</span> <span class="mi">300</span>
+  <span class="n">totalrewards</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="c1"># eps = 1.0/(0.1*n+1)
+</span>    <span class="n">eps</span> <span class="o">=</span> <span class="mf">0.1</span><span class="o">*</span><span class="p">(</span><span class="mf">0.97</span><span class="o">**</span><span class="n">n</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n</span> <span class="o">==</span> <span class="mi">199</span><span class="p">:</span>
+      <span class="k">print</span><span class="p">(</span><span class="s">"eps:"</span><span class="p">,</span> <span class="n">eps</span><span class="p">)</span>
+    <span class="c1"># eps = 1.0/np.sqrt(n+1)
+</span>    <span class="n">totalreward</span> <span class="o">=</span> <span class="n">play_one</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">eps</span><span class="p">,</span> <span class="n">gamma</span><span class="p">)</span>
+    <span class="n">totalrewards</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">totalreward</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="k">print</span><span class="p">(</span><span class="s">"episode:"</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="s">"total reward:"</span><span class="p">,</span> <span class="n">totalreward</span><span class="p">)</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"avg reward for last 100 episodes:"</span><span class="p">,</span> <span class="n">totalrewards</span><span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">:]</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+  <span class="k">print</span><span class="p">(</span><span class="s">"total steps:"</span><span class="p">,</span> <span class="o">-</span><span class="n">totalrewards</span><span class="o">.</span><span class="nb">sum</span><span class="p">())</span>
+
+  <span class="k">if</span> <span class="n">show_plots</span><span class="p">:</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">totalrewards</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">"Rewards"</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+    <span class="n">plot_running_avg</span><span class="p">(</span><span class="n">totalrewards</span><span class="p">)</span>
+
+    <span class="c1"># plot the optimal state-value function
+</span>    <span class="n">plot_cost_to_go</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+  <span class="c1"># for i in range(10):
+</span>  <span class="c1">#   main(show_plots=False)
+</span>  <span class="n">main</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>episode: 99 total reward: -113.0
+eps: 0.00023311762989647067
+episode: 199 total reward: -183.0
+episode: 299 total reward: -96.0
+avg reward for last 100 episodes: -110.08
+total steps: 40586.0
+
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/p5hzs3Ks"><img src="https://i.postimg.cc/PJKy5jJn/Capture.png" width="500px" title="source:imgur.com" /><a></a></a></p>
+
+<p>Reference:</p>
+
+<p><a href="https://www.udemy.com/course/artificial-intelligence-reinforcement-learning-in-python/">Artificial Intelligence Reinforcement Learning</a></p>
+
+<p><a href="https://www.udemy.com/deep-reinforcement-learning-in-python/">Advance AI : Deep-Reinforcement Learning</a></p>
+
+<p><a href="https://www.udemy.com/cutting-edge-artificial-intelligence/learn/lecture/14650508#overview">Cutting-Edge Deep-Reinforcement Learning</a></p>
+:ET

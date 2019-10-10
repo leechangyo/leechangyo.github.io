@@ -1,0 +1,366 @@
+I">P<h1 id="grpc">gRPC</h1>
+<ul>
+  <li>Robot을 연구하다 보면 리눅스 체제의 컴퓨터와 하드웨어 연결하는데 있어 gRPC라는 이용하는 곳을 본적이 있을 것입니다.</li>
+  <li>gRPC는 어떤 환경에서도 동작하는 모던한 오픈소스 원격 프로시저 요청 (Remote Procedure Call, RPC) 프레임워크입니다.</li>
+  <li>gRPC는 구글이 최초로 개발한 오픈 소스 원격 프로시저 호출 (RPC) 시스템이다.</li>
+  <li><strong>HTTP 기반 원격 함수 호출을 해주는 즉, RPC(Remote Procedure Call) 프레임워크라고 할 수 있습니다.</strong></li>
+  <li>gRPC는 구글에서 10년 이상동안 수 많은 MSA와 데이터센터 사이를 연결하기 위해 사용하던 Stubby라고 부르던 범용 RPC 인프라를 크로스플랫폼, 오픈소스화해서 만들어졌습니다.
+    <ul>
+      <li>Stubby를 공개하기엔 구글 사내 서비스와 너무 타이트하게 연결이 있어서 spdy, http/2, QUIC 등을 지원하는 기능을 추가하고 Stubby기능을 좀 더 표준화하도록 수정해서 오픈되었습니다.</li>
+    </ul>
+  </li>
+  <li>RPC는 네트워크 상 원격에 있는 서버의 서비스를 호출하는데 사용되는 프로토콜로 IDL(Interface Definition Language)로 인터페이스를 정의한 후 이에 해당하는 Skeleton 과 Stub 코드를 통해 프로그래밍 언어에서 호출해서 사용하는 방식이라고 보면 됩니다.</li>
+  <li>gRPC stub
+    <ul>
+      <li>client side에서 요청을 grpc 형태로 만들어주는 역할을 하는 컴포넌트의 이름입니다.</li>
+    </ul>
+  </li>
+  <li>최근에는 HTTP를 활용한 SOAP, RESTful 등이 많이 활용되어서 RPC는 거의 사용이 되지 않으나 요청/응답을 위한 규약이 명시적이지 않다는 단점으로 인해 다시 RPC의 방식을 채용한 프렘임워크들이 나오기 시작했습니다</li>
+  <li>gRPC는 자바,C/C++ 뿐만 아니라 Node.js, Python, Ruby, PHP, Go, Android 기반, Objective-C 등 다양한 언어들을 지원함으로 서버간 뿐만이 아니라 클라이언트 어플리케이션이나 모바일 앱에서도 사용가능한 RPC 프레임워크입니다.</li>
+</ul>
+
+<h2 id="0-grpc가-반드시-제공해야할-기능">0. gRPC가 반드시 제공해야할 기능</h2>
+<ul>
+  <li>Services not Objects, Messages not References
+    <ul>
+      <li>요청을 큰 덩어리로 만들고 object를 여러 service에 분산되도록 만들지 않는 것(Don’t distribute your objects, Martin Fowler), 그리고 너무 높은 네트워크비용을 방지하는것(Fallacies of distributed computing, wikipedia).</li>
+    </ul>
+  </li>
+  <li>Streaming</li>
+  <li>Blocking &amp; Non-Blocking</li>
+  <li><a href="https://grpc.io/blog/principles">gRPC Principles 참조</a></li>
+</ul>
+
+<h2 id="1-사전-준비-사항">1. 사전 준비 사항</h2>
+<ul>
+  <li>golang 기반으로 gRPC를 테스트하려면 당연히 golang이 설치되어야 합니다. 그리고 gRPC는 함수 호출간 직렬화된 데이터를 주고 받는데 구조화된 객체를 직렬화하기 위해서 Protocol Buffers 를 사용하고 있으므로 함께 설치하여 줍니다.</li>
+</ul>
+
+<h3 id="11-golang-설치">1.1 Golang 설치</h3>
+<ul>
+  <li>다음의 사이트를 참조하여 golang 바이너리를 설치합니다. (이 문서에서는 Linux/MacOS 기반으로 설명합니다.)
+    <ul>
+      <li><a href="https://golang.org/doc/install?cm_mc_uid=02652595810614900694309&amp;cm_mc_sid_50200000=1490500863">Golang 바이너리 다운로드</a></li>
+    </ul>
+  </li>
+  <li>다운로드 받은 압축파일을 다음의 명령어를 통해 설치합니다.
+    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tar -C /usr/local -xzf &lt;다운로드 받은 압축파일&gt;
+</code></pre></div>    </div>
+  </li>
+  <li>압축을 푼 후 적절한 위치에 go 소스가 위치할 디렉토리를 생성한 후 $HOME/.profile에 다음의 환경변수를 설정합니다.
+```
+$HOME 아래에 work라는 디렉토리 생성</li>
+</ul>
+
+<p>mkdir $HOME/work
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/work
+export PATH=$PATH:$GOROOT/bin:$GOPATH/bin</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- 여기까지 설치를 완료하였으면 다음의 코드를 통해 정상동작 테스트합니다. 먼저 다음의 디렉토리를 생성합니다.
+</code></pre></div></div>
+<p>mkdir -p $GOPATH/src/hello</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- 그리곤 hello.go 파일명으로 다음의 코드를 생성합니다.
+</code></pre></div></div>
+<p>package main</p>
+
+<p>import “fmt”</p>
+
+<p>func main() {
+    fmt.Printf(“hello, world\n”)
+}</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- 소스코드를 생성하였으면 빌드합니다.
+</code></pre></div></div>
+<p>cd $GOPATH/src/hello
+go build</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- 컴파일이 정상적으로 완료된 후 다음의 명령을 통해서 실행하여 결과를 확인합니다.
+</code></pre></div></div>
+<p>./hello
+hello, world</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### 1.2 gRPC 설치
+- 다음의 명령을 통해서 gRPC를 설치합니다.
+</code></pre></div></div>
+<p>go get google.golang.org/grpc</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>### 1.3  Protocol Buffers 설치
+- 다음의 경로에서 Protocol Buffers 압축파일을 받습니다. https://github.com/google/protobuf/releases – 다운받아야 할 압축파일명은 protoc-&lt;버전&gt;–&lt;플랫폼&gt;.zip 파일입니다.
+- 다운받은 압축파일은 적당한 위치에 풀어서 해당하는 위치를 PATH에 추가합니다. 다음은 저의 설정 예입니다
+&lt;a href="https://postimg.cc/ZCFvHcF7"&gt;&lt;img src="https://i.postimg.cc/YqTNpD4H/213223.png" width="700px" title="source: imgur.com" /&gt;&lt;/a&gt;
+- 다음으로 Golang 기반의 protoc 플러그인을 설치합니다.
+</code></pre></div></div>
+<p>go get -u github.com/golang/protobuf/{proto,protoc-gen-go}</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+## 2. 샘플을 통해 이해하기
+- 1.2 항목에서 gRPC 를 설치하였으면 그 하위 디렉토리에 examples 들이 존재합니다. 그 중 helloworld를 통해서 알아보겠습니다.
+그 위치는 아래와 같습니다.
+</code></pre></div></div>
+<p>cd $GOPATH/src/google.golang.org/grpc/helloworld</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- 위의 디렉토리 하위에는 greeter_client, greeter_server, helloworld 의 세 디렉토리가 보입니다.
+- 그 중 helloworld 하위엔 .proto 파일이 존재하며 이 파일이 gRPC 서비스가 명시되는 곳입니다.
+- 여기에 존재하는 파일을 기준으로 protoc 명령을 통해 .pb.go 파일이 생성되며 이 파일은 클라이언트와 서버 코드와 함수 호출시 주고받을 메세지 타입이 생성됩니다.
+- 서버 코드를 빌드하고 실행합니다. 위치는 “$GOPATH/src/google.golang.org/grpc/helloworld” 에서 실행합니다
+</code></pre></div></div>
+<p>go run greeter_server/main.go</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- 그리고 터미널을 하나 더 열어서 다음의 명령으로 클라이언트를 실행합니다.
+</code></pre></div></div>
+<p>go run greeter_client/main.go</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>- 실행결과 “Greeting: Hello world” 메시지가 나오면 정상 실행된 것입니다.
+
+## 3. gRPC 서비스 업데이트
+- 앞서 실행한 명령은 SayHello라는 함수를 클라이언트가 호출하면 서버에서 메세지를 받아서 클라이언트가 출력하는 내용이었습니다.
+- 여기에 SayHelloAgain이라는 함수를 추가하도록 하겠습니다.
+- 다음과 같이 .proto 파일을 업데이트합니다
+
+</code></pre></div></div>
+<p>helloworld.proto 파일의 위치</p>
+
+<p>$GOPATH/src/google.golang.org/grpc/examples/helloworld/helloworld/helloworld.proto</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+</code></pre></div></div>
+<p>// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc SayHello (HelloRequest) returns (HelloReply) {}
+  // Sends another greeting
+  rpc SayHelloAgain (HelloRequest) returns (HelloReply) {}
+}</p>
+
+<p>// The request message containing the user’s name.
+message HelloRequest {
+  string name = 1;
+}</p>
+
+<p>// The response message containing the greetings
+message HelloReply {
+  string message = 1;
+}</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+- 다음으로 gRPC 코드를 생성합니다.
+
+
+</code></pre></div></div>
+<p>protoc -I helloworld/ helloworld/helloworld.proto –go_out=plugins=grpc:helloworld</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+- 서버 및 클라이언트 코드를 수정한 후 실행하여 수정된 내용이 반영되었는지 확인합니다.
+
+- 서버코드 업데이트 – greeter_server/main.go
+
+
+</code></pre></div></div>
+<p>func (s <em>server) SayHelloAgain(ctx context.Context, in *pb.HelloRequest) (</em>pb.HelloReply, error) {
+    return &amp;pb.HelloReply{Message: “Hello again “ + in.Name}, nil
+}</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+- 클라이언트 업데이트 – greeter_client/main.go
+
+
+</code></pre></div></div>
+<p>r, err = c.SayHelloAgain(context.Background(), &amp;pb.HelloRequest{Name: name})
+if err != nil {
+    log.Fatalf(“could not greet: %v”, err)
+}
+log.Printf(“Greeting: %s”, r.Message)</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+- 코드 수정되었으면 실행하여 동작을 확인합니다.
+- 서버 실행
+
+
+</code></pre></div></div>
+<p>go run greeter_server/main.go</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+- 클라이언트 실행
+
+
+</code></pre></div></div>
+<p>go run greeter_client/main.go
+```</p>
+
+<ul>
+  <li>다음과 같이 실행결과를 확인합니다.
+<a href="https://postimg.cc/s10h1c9b"><img src="https://i.postimg.cc/L6mBCQq4/55231.png" width="700px" title="source: imgur.com" /></a></li>
+</ul>
+
+<h2 id="4-grpc의-장점">4. gRPC의 장점</h2>
+<ul>
+  <li>Low Latency, Highly scalable, distributed systems
+    <ul>
+      <li>클라우드 서버와 커뮤니케이션하는 모바일 클라이언트를 지원하는데에 초점이 맞춰져있습니다.</li>
+    </ul>
+  </li>
+  <li>http/2를 이용한 reverse proxy 가능
+    <ul>
+      <li>서버간에 http 1.1 keep-alive로 통신하고 있을 경우, 특정 요청이 holding되면 다음 요청도 전부 holding되는 문제가 생길 수 있습니다</li>
+      <li>http/2 reverse proxy를 통해 multiplex하게 서버와 요청을 주고 받을 수 있게 됩니다.</li>
+    </ul>
+  </li>
+  <li><a href="https://grpc.io/blog/vendastagrpc">vendasta에서 gRPC 사용을 통해 얻은 세 가지 이점</a>
+    <ul>
+      <li>gRPC를 이용해 5개 이상의 언어로 이루어진 SDK-서버 간의 통신을 통합할 수 있었습니다.
+        <ul>
+          <li>SDK 개발시에 더 이상 개발자가 api문서를 작성하지 않아도되고, api 형태가 어떤식으로 되어있는지 물어볼 필요가 없어졌습니다</li>
+          <li>vendasta에서는 하나의 서버에 통신하기 위해 여러 언어로 SDK를 만들어서 해당 이점이 극대화될 수 있었습니다.</li>
+        </ul>
+      </li>
+      <li>gRPC 사용을 통해, 어떤 요청이 끝날 때 까지 기다릴 필요가 없이, 첫 요청이 들어오면 순서와 관계없이 서버에서 응답을 내보내주면 되기 때문에 첫 화면 구성이 더 빨라졌습니다.</li>
+      <li>JSON을 프로토콜 버퍼로 변환하고난 뒤에, 서버/클라이언트에서 Serialization / Deserialization하는 것에 대한 어려움을 해소할 수 있게 되었습니다.
+        <ul>
+          <li>gRPC에서는 하나의 요청 / 응답 형태에서 타입이 정해진 message를 사용합니다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li><a href="https://developers.google.com/protocol-buffers/">Protocol Buffer</a>
+    <ul>
+      <li>XML, json등으로 들어온 요청 / 응답을 Protocol Buffer를 이용해 직렬화하여 더 작은 크기의 요청 / 응답으로 만들 수 있습니다.</li>
+      <li>기본적으로는 <a href="https://developers.google.com/protocol-buffers/docs/encoding">base128을 이용한 byte array</a> 직렬화를 사용하지만, 사용방식에 따라 json, text 직렬화로 사용 가능합니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="5-grpc-life-cycle">5. gRPC Life Cycle</h2>
+<ul>
+  <li>RPC 요청 1
+    <ul>
+      <li>처음 gRPC요청을 하기 위해 metadata를 서버에 전송하고, 서버에서는 deadline을 설정해서 client에 돌려줍니다.
+        <ul>
+          <li>deadline은 RPC 요청의 성공 여부와 관계 없이 해당 RPC 요청을 언제 timeout시켜서 종료할지에 대한 정보를 갖고 있습니다</li>
+        </ul>
+      </li>
+      <li>서버는 바로 서버의 metadata를 response하거나, client의 다음 요청을 기다립니다
+        <ul>
+          <li>서버의 metadata는 반드시 response보다 먼저 보내야 합니다.</li>
+        </ul>
+      </li>
+      <li>서버가 클라이언트로부터 요청을 받았다면, 어떤 것이든지 응답을 보내줘야 합니다</li>
+      <li>status가 ok라면 client가 응답을 받아서 요청을 완료합니다.</li>
+    </ul>
+  </li>
+  <li>Server streaming RPC
+    <ul>
+      <li>서버에서는 클라이언트에 response를 보내고 뒤따르는 메타데이터가 있다면 보낸 뒤에 complete를 의미하는 패킷을 보내는 것으로 연결을 종료합니다.</li>
+    </ul>
+  </li>
+  <li>Client streaming RPC
+    <ul>
+      <li>클라이언트에서는 request를 하나로 보내는 대신 여러 개를 스트리밍으로 보낼 수 있습니다.</li>
+      <li>서버는 일반적으로 하나의 response를 보내지만, 클라이언트가 모든 request를 보낼 때까지 기다릴 필요는 없습니다.</li>
+    </ul>
+  </li>
+  <li>Bidirectional streaming RPC
+    <ul>
+      <li>양방향 스트리밍 RPC에서는 클라이언트의 요청으로 stream이 연결된 뒤에, 서버에서는 클라이언트의 추가 요청을 기다립니다.</li>
+      <li>어플리케이션에 따라 다르겠지만, 클라이언트와 서버는 순서와 관계없이 읽기/쓰기를 반복할 것입니다
+        <ul>
+          <li>스트림은 완전하게 독립적으로 동작합니다.</li>
+        </ul>
+      </li>
+      <li>서버는 클라이언트의 모든 요청을 기다리거나, 핑퐁식으로 메시지를 주고받거나 할 수 있습니다.</li>
+    </ul>
+  </li>
+  <li>데드라인과 타임아웃
+    <ul>
+      <li>gRPC는 클라이언트가 DEADLINE_EXCEEDED 에러가 발생해서 RPC가 종료되기 전에 얼마나 RPC를 기다려야 하는지에 대해 정할 수 있습니다.</li>
+      <li>서버에서는 쿼리를 날려서 특정 RPC가 time out이 되었는지, RPC 커넥션 시간이 얼마나 남았는지를 확인할 수 있습니다.</li>
+      <li>언어별로 데드라인이나 타임아웃의 형태는 다르게 설정됩니다
+        <ul>
+          <li>어떤 언어에서는 디폴트 데드라인이 없기도 하고, 어떤 언어는 특정 시각이 지나면 데드라인으로 판단하기도하고, 몇몇 언어는 특정 시간이 지나면 타임아웃으로 판단하기도 합니다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>RPC Termination
+    <ul>
+      <li>gRPC에서는, RPC의 종료를 클라이언트 / 서버에서 각각 판단합니다.
+        <ul>
+          <li>서버에서는 response가 finish 됐을 때, 클라이언트에서는 deadline이 지났을 때 등.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Canceling RPCs
+    <ul>
+      <li>서버, 클라이언트 모두 어떤 시점에서든지 RPC 연결을 취소할 수 있습니다.
+        <ul>
+          <li>RPC를 취소한다는 것이 요청을 “롤백 (undo)” 한다는 의미는 아닙니다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Metadata
+    <ul>
+      <li><strong>metadata는 key-value list로 정의된 RPC 요청에 대한 정보입니다.</strong>
+        <ul>
+          <li>header와 비슷한 형태인듯합니다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Channels
+    <ul>
+      <li>채널은 client 에서 stub을 만들 때 생성되는 호스트와 포트로 특정되는 gRPC 서버 연결에 대한 정보를 가집니다.</li>
+      <li>채널의 설정을 변경하거나, state (connected, idle)를 확인할 수 있습니다.
+        <h2 id="6-grpc-적용전-환경세팅">6. gRPC 적용전 환경세팅</h2>
+      </li>
+    </ul>
+  </li>
+  <li>centOS 6에서 C++ gRPC가 빌드되지 않는 문제가 있었습니다 (2017년 1월 18일)
+    <ul>
+      <li>https://github.com/grpc/grpc/issues/9365</li>
+      <li>gRPC 자바를 사용하면 되긴 합니다(https://grpc.io/docs/quickstart/java.html)
+        <ul>
+          <li>JDK 7 이상</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>아직 웹에서는 안정적으로 사용할 수 없습니다.
+    <ul>
+      <li>다만 웹용 프로젝트가 2018년 10월 23일에 릴리즈되긴 했습니다(https://github.com/grpc/grpc-web, https://grpc.io/blog/grpc-web-ga)</li>
+      <li>gRPC-Web은 브라우저-서버간의 gRPC통신을 가능하게 만들어줍니다.
+<a href="https://postimg.cc/f3DxNbDK"><img src="https://i.postimg.cc/Xvyx9ZPT/45231.png" width="700px" title="source: imgur.com" /></a></li>
+    </ul>
+  </li>
+  <li>NGINX의 버전이 최소 1.13.10(18년 3월 20일 릴리즈, 18년 4월 17일 1.14.0에 포함되었습니다)이 되어야 합니다.
+    <ul>
+      <li>Server Push가 적용되어 있습니다</li>
+      <li>gRPC proxy pass가 적용되어있습니다.</li>
+    </ul>
+  </li>
+  <li>NGINX에 http/2 reverse proxy가 도입되지 않을 예정이기 때문에, http/2 또는 h2c로 nginx 서버간에 통신을 하기위해서는 gRPC를 사용하거나 server push를 사용해야 합니다.
+    <h2 id="7-서비스에-grpc-적용-방식-예정">7. 서비스에 gRPC 적용 방식 예정</h2>
+  </li>
+  <li>Mobile, PC
+    <ul>
+      <li>Client(web)-REST =&gt; Proxy Server (Nginx -&gt; gRPC Gateway) =&gt; Server (Nginx -&gt; gRPC stub -&gt; spring)</li>
+    </ul>
+  </li>
+  <li>client - server(load balancer) - server(backend) 사이의 stream은 하나를 공유해서 사용하게 되나요?
+    <ul>
+      <li>client - server(backend) 사이의 stream이 독립적이기 때문에, server (load balancer) - server(backend) 사이의 stream도 여러 개가 생성되게 됩니다.</li>
+    </ul>
+  </li>
+  <li>thrift와 비교해서 장점은 어떤 것이 있나요?
+    <ul>
+      <li>성능적인 장점은 없습니다. 다만, gRPC의 경우 proto 파일(message)을 통한 클라이언트 별 구현이 용이하기 때문에 thrift에 비해 커뮤니케이션 비용을 줄여줄 수 있다는 장점이 있습니다
+<a href="https://postimg.cc/pmTmYnW3"><img src="https://i.postimg.cc/y8h0KFw6/42314.png" width="700px" title="source: imgur.com" /></a></li>
+    </ul>
+  </li>
+  <li>당장 사용할 수 있나요?
+    <ul>
+      <li>api g/w 에서 보안 부분을 처리해줘야합니다 (gRPC 요청에 대한 hmac 인증 적용 등)</li>
+      <li>gRPC에서 채널단위 보안 / 요청단위 보안에 관련된 API를 제공하지만, token방식의 보안은 구글 OAuth2를 사용할 때만 지원하는듯 합니다. abstact 클래스를 직접 구현해서 기능을 확장하도록 권장하고 있습니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h1 id="reference">Reference</h1>
+
+<p><a href="https://developer.ibm.com/kr/cloud/blockchain/2017/03/26/grpc_overview_01/">IBM DEVELOPER</a></p>
+
+<p><a href="https://widian.github.io/blog/2018/11/23/grdc-%EC%A0%95%EB%A6%AC.html">Widian’s Hobby Notes</a></p>
+:ET

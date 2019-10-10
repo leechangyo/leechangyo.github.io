@@ -1,8 +1,0 @@
-I"™<h1 id="section-review">Section Review</h1>
-<ul>
-  <li>State space can grow too large to feasibly enumerate</li>
-  <li>Approximation methods allow us to compress number of parameters</li>
-  <li>Differentiable Model are good fit, because we can use stochastic gradient descent</li>
-  <li><strong>Online learning is good</strong> because if we have a long episode, agent can learn during the episode</li>
-</ul>
-:ET

@@ -1,0 +1,155 @@
+I"
+L<ul>
+  <li>Please install PyPDF2 which is a common python library to work with PDF files.</li>
+  <li>The library can be used to read text from PDF files</li>
+  <li>You can install the library as follows: pip install PyPDF2</li>
+</ul>
+
+<h1 id="extract-information-from-a-pdf">Extract information From A PDF</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">PyPDF2</span> <span class="kn">import</span> <span class="n">PdfFileWriter</span><span class="p">,</span> <span class="n">PdfFileReader</span>
+<span class="c1">#this is the module how to write or reader in python
+# two class we need
+# similar to CSV files operation
+# Read it as a binary files
+</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Harvard_Business_School.pdf'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span>
+<span class="c1"># rb is read binary means
+# Create a PDF reader object
+</span><span class="n">read_pdf</span> <span class="o">=</span> <span class="n">PdfFileReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="c1"># obtain some document information
+</span><span class="n">read_pdf</span><span class="o">.</span><span class="n">getDocumentInfo</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{'/Author': 'Barlow, Andrew Jonathan',
+ '/Company': 'Harvard University',
+ '/CreationDate': "D:20180817171357-04'00'",
+ '/Creator': 'Acrobat PDFMaker 18 for Word',
+ '/ModDate': "D:20180817171437-04'00'",
+ '/Producer': 'Adobe PDF Library 15.0',
+ '/SourceModified': 'D:20180817211351',
+ '/Title': 'I'}
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># apply the Number of pages attribute method to get the number of pages
+</span><span class="n">read_pdf</span><span class="o">.</span><span class="n">numPages</span>
+<span class="c1"># how many page we have read_pdf.numPages
+# 8
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Grab any page
+</span><span class="n">sample_page_text</span> <span class="o">=</span> <span class="n">read_pdf</span><span class="o">.</span><span class="n">getPage</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">extractText</span><span class="p">()</span>
+<span class="c1"># extracttext out of page
+# first page is it started from '0' in python
+</span></code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'IS \nBUSINESS \nSCHOOL \nRIGHT FOR \nYOU?\n Graduates of \nMBA \nprograms can be found in almost any type of organization. Business school will \nprepare you to create or lead an organization, manage resources, develop effective operational \nstrategies, and more. \nOnce \nadmitted, r\nequired coursework typically include\ns: Organizational \nBehavior, Marketing, Accounting, Finance, Strategy\n, \nand Operations Management. This is followed \nby elective coursework that allows the student to customize their experience. Some students \n\ncon\nsider an MBA as essential for advancement to a management role while others will use it as a \n\nmeans to change careers. As an undergraduate student, it is unlikely that you will be admitted to \n\nenter directly into an MBA program without first working for a fe\nw years. This period of \n\nemployment will give you time to think about your long term goals and help you determine if a \n\ngraduate degree is appropriate.\n Informational \nmeetings\n Talking with\n people (with or without MBAs) currently working in\n field\ns that inter\nest you\n can be \nextremely helpful as you consider your \nfuture career \noptions.\n Be sure to ask:\n How is an \nMBA viewed by the industry\n?Will an MBA improve your chances of being hired and moving ahead\n?If that person has an MBA, ask about their experience in the program they attended\nWhat was most helpful for you as you prepared your application?\nYour conversation can help you put into context how applicable the program will be to your career \n\ngoals. Also, speak with current students or those who have recently \ncompleted an MBA program. \nInquire about their experience in the program and how it has i\nmpact\ned their careers.\n What should you do to prepare for business school?\n There™s no magic formula for\n the perfect undergraduate conce\nntration\n, set of academic \nachievements, pre\n-MBA work experience\n, \nextracurricular accomplishments, essays\n, interviews, or \nrecommendation\ns. Nor is there a common \n\ncareer goal or industry in which you can \n\naspire to work. What MBAs have in common is \n\nthey find opportunities to take initiative, they \n\nare motivated, have a strong awareness of \n\nthemselves, and have a desire to learn and \n\ngrow.\n  \nBusiness schools tend to focus on impact \nmore than scale. Make sure, therefore, that the \n\nacademic and extracurricular choices you \n\nmake truly reflect your interests, demonstrate initiative, and give you opportunities to play a \n\nleadership role in the organization. A strong undergraduate academic record and GMAT (or \n\npossibly GRE) score are\n also\n important parts of your a\npplication to business school. Many sc\nhools \nallow you to sit in on a class to gain insight into what a typical course looks like. Take advantage of \n\nthis opportunity!\n Business schools look for leaders. In \nwhat ways have you demonstrated \ninitiative or translated a vision into a \n\nreality? Bear in mind that it™s not about \n\nthe size of your accomplishment, but the \npassion with which you invest in and \npursue your goals. \n'
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h1 id="copy-a-single-page-and-put-it-in-a-newly-created-pdf">Copy A single page and put it in a newly created PDF</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Read a sample page
+</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Harvard_Business_School.pdf'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span>
+<span class="n">read_pdf</span> <span class="o">=</span> <span class="n">PdfFileReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">sample_page</span> <span class="o">=</span> <span class="n">read_pdf</span><span class="o">.</span><span class="n">getPage</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="c1"># we got page
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Create a writer object
+</span><span class="n">write_pdf</span> <span class="o">=</span> <span class="n">PdfFileWriter</span><span class="p">()</span>
+<span class="n">write_pdf</span><span class="o">.</span><span class="n">addPage</span><span class="p">(</span><span class="n">sample_page</span><span class="p">)</span>
+<span class="c1">#write_pdf = PdfFileWriter() this mean write_pdf is nothing.
+#write_pdf.addPage(sample_page) means that input selected page into nothing
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># open a newly created file
+</span><span class="n">pdf_output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Harvard_New.pdf'</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span> <span class="c1">#writing porpuse like create new file
+</span><span class="n">write_pdf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pdf_output</span><span class="p">)</span> <span class="c1"># write_pdf contento input created from pdf_output
+</span><span class="n">pdf_output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># Close the new file
+</span><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># close the source file
+</span></code></pre></div></div>
+
+<h1 id="rotate-pdfs-and-write-them-to-a-new-pdf">ROTATE PDFS AND WRITE THEM TO A NEW PDF</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Open the Source file
+</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Harvard_Business_School.pdf'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span>
+<span class="n">read_pdf</span> <span class="o">=</span> <span class="n">PdfFileReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="c1"># Create a writer object
+</span><span class="n">write_pdf</span> <span class="o">=</span> <span class="n">PdfFileWriter</span><span class="p">()</span> <span class="c1"># we written anything yet
+</span>
+<span class="c1"># Read a page and rotate it
+</span><span class="n">rotated_page</span> <span class="o">=</span> <span class="n">read_pdf</span><span class="o">.</span><span class="n">getPage</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">rotateClockwise</span><span class="p">(</span><span class="mi">90</span><span class="p">)</span>
+
+<span class="c1"># Add the rotated page to the writer object
+# PLEASE DO NOT FOREGET THAT 'P' is uppercase!
+</span><span class="n">write_pdf</span><span class="o">.</span><span class="n">addPage</span><span class="p">(</span><span class="n">rotated_page</span><span class="p">)</span>
+
+<span class="c1"># Save the writer object somewhere!
+</span><span class="n">pdf_output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Harvard_New_rotated.pdf'</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span>
+<span class="n">write_pdf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pdf_output</span><span class="p">)</span>
+<span class="n">pdf_output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># Close the new file
+</span><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># Close the new file
+</span>
+</code></pre></div></div>
+
+<h1 id="read-multiple-pages">READ MULTIPLE PAGES</h1>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Harvard_Business_School.pdf'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span>
+<span class="n">read_pdf</span> <span class="o">=</span> <span class="n">PdfFileReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+<span class="n">pdf_text_all</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># Create an empty list to hold the data
+</span><span class="n">num_pages</span> <span class="o">=</span> <span class="n">read_pdf</span><span class="o">.</span><span class="n">numPages</span> <span class="c1"># this is how many page they are obtained
+</span>
+<span class="n">num_pages</span> <span class="c1"># 8
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pages</span><span class="p">):</span> <span class="c1"># range(8) means that to make (0,1,2,3,4,5,6,7) like number step by step
+</span>    <span class="n">one_page_text</span> <span class="o">=</span> <span class="n">read_pdf</span><span class="o">.</span><span class="n">getPage</span><span class="p">(</span><span class="n">page</span><span class="p">)</span><span class="o">.</span><span class="n">extractText</span><span class="p">()</span>
+    <span class="n">pdf_text_all</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">one_page_text</span><span class="p">)</span>
+<span class="nb">len</span><span class="p">(</span><span class="n">pdf_text_all</span><span class="p">)</span>
+<span class="c1"># 8
+</span><span class="n">pdf_text_all</span> <span class="c1"># Every single page summarized in a list!
+</span></code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>'Undergraduate Resource Series\nO˜ce of Career Services | 54 Dunster Street     \nHarvard University | Faculty of Arts and Sciences | 617.495.2595\nwww.ocs.fas.harvard.edu\nOCSAPPLYING  TO \nBUSINESS  SCHOOLPhoto: Harvard University News O˜ce\n',
+ '© 201 President and Fellows of Harvard CollegeAll rights reserved.\nNo part \nof this publication may be reproduc\ned in any wa\ny without the express written \npermission of the Harvard University Faculty of Arts &amp; Sciences Office of Career Services.08/1O˜ce of Career Services\nHarvard University\n\nFaculty of Arts &amp; Sciences\n\nCambridge, MA 02138\n\nPhone: (617) 495-2595\n\nwww.ocs.fas.harvard.edu\n',
+ 'IS \nBUSINESS \nSCHOOL \nRIGHT FOR \nYOU?\n Graduates of \nMBA \nprograms can be found in almost any type of organization. Business school will \nprepare you to create or lead an organization, manage resources, develop effective operational \nstrategies, and more. \nOnce \nadmitted, r\nequired coursework typically include\ns: Organizational \nBehavior, Marketing, Accounting, Finance, Strategy\n, \nand Operations Management. This is followed \nby elective coursework that allows the student to customize their experience. Some students \n\ncon\nsider an MBA as essential for advancement to a management role while others will use it as a \n\nmeans to change careers. As an undergraduate student, it is unlikely that you will be admitted to \n\nenter directly into an MBA program without first working for a fe\nw years. This period of \n\nemployment will give you time to think about your long term goals and help you determine if a \n\ngraduate degree is appropriate.\n Informational \nmeetings\n Talking with\n people (with or without MBAs) currently working in\n field\ns that inter\nest you\n can be \nextremely helpful as you consider your \nfuture career \noptions.\n Be sure to ask:\n How is an \nMBA viewed by the industry\n?Will an MBA improve your chances of being hired and moving ahead\n?If that person has an MBA, ask about their experience in the program they attended\nWhat was most helpful for you as you prepared your application?\nYour conversation can help you put into context how applicable the program will be to your career \n\ngoals. Also, speak with current students or those who have rec
+</code></pre></div></div>
+
+<h1 id="watermark-to-pdf">WaterMark to PDF</h1>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">PyPDF2</span> <span class="kn">import</span> <span class="n">PdfFileWriter</span><span class="p">,</span> <span class="n">PdfFileReader</span>
+
+<span class="c1"># Open watermark
+</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'watermark_conf_2.pdf'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span>
+<span class="n">read_watermark</span> <span class="o">=</span> <span class="n">PdfFileReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">watermark_page</span> <span class="o">=</span> <span class="n">read_watermark</span><span class="o">.</span><span class="n">getPage</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="c1"># Open file to be watermarked
+</span><span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Harvard_Business_School.pdf'</span><span class="p">,</span> <span class="s">'rb'</span><span class="p">)</span>
+<span class="n">read_pdf</span> <span class="o">=</span> <span class="n">PdfFileReader</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+
+<span class="c1"># Create a writer object
+</span><span class="n">write_pdf</span> <span class="o">=</span> <span class="n">PdfFileWriter</span><span class="p">()</span>
+
+<span class="c1"># watermark all pages
+</span><span class="n">num_pages</span> <span class="o">=</span> <span class="n">read_pdf</span><span class="o">.</span><span class="n">getNumPages</span><span class="p">()</span>
+<span class="n">num_pages</span>
+<span class="c1"># 8
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_pages</span><span class="p">):</span>
+    <span class="n">single_page</span> <span class="o">=</span> <span class="n">read_pdf</span><span class="o">.</span><span class="n">getPage</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+    <span class="n">single_page</span><span class="o">.</span><span class="n">mergePage</span><span class="p">(</span><span class="n">watermark_page</span><span class="p">)</span> <span class="c1"># merge watermark_page into read_pdf.file
+</span>    <span class="n">write_pdf</span><span class="o">.</span><span class="n">addPage</span><span class="p">(</span><span class="n">single_page</span><span class="p">)</span>
+
+
+<span class="c1"># Save the writer object somewhere!
+</span><span class="n">pdf_output</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">'Harvard_watermarked.pdf'</span><span class="p">,</span> <span class="s">'wb'</span><span class="p">)</span>
+<span class="c1">#wb is the writing funcition.
+</span><span class="n">write_pdf</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">pdf_output</span><span class="p">)</span>
+<span class="n">pdf_output</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># Close the new file
+</span><span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> <span class="c1"># Close the new file    
+</span></code></pre></div></div>
+:ET

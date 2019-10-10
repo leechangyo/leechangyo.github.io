@@ -1,0 +1,104 @@
+I"�<h1 id="n-step-methods">N-step Methods</h1>
+<ul>
+  <li>N-step Methods : Further our understanding of TD methods</li>
+  <li>we know so far： TD(0)</li>
+  <li>we will learn :
+    <ul>
+      <li>λ = 0 gives us TD(0), λ = 1 gives us monte Carlo</li>
+    </ul>
+  </li>
+  <li>any other λ is a trade-off(协调) between the two</li>
+</ul>
+
+<p><a href="https://postimg.cc/n9hf3sZq"><img src="https://i.postimg.cc/gjvckRTt/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>1-Step TD의 step을 증가시켜 나가면서 n까지 보게 된다면 n-step TD로 일반화 할 수 있다.</li>
+  <li>만약 step이 무한대에 가깝게 되면 MC와 동일하게 될 것이다.</li>
+  <li>2-Step TD에서 업데이트 방식은 척번째 보상과 두번째 보상 그리고 부전째 상태에서의 Value function의 합으로 업데이트가 된다.</li>
+</ul>
+
+<p><a href="https://postimg.cc/62Yp6xpL"><img src="https://i.postimg.cc/J0WDq1wg/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>n step TD에서의 Value 함수는 N-step 에서 얻은 총 보상에서 기존 Value 함수값과 차이를 알파만큼 가중치하여 더함으로서 업데이트가 되게 됩니다.</li>
+</ul>
+
+<p><a href="https://postimg.cc/RJtC76TG"><img src="https://i.postimg.cc/prG9tK5N/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>n 이 몇일때가 가장 최고의 결과값늘 나타낼까? 위에 그래프가 실험에 대한 결과 값입니다.</li>
+  <li>실시간 업데이트하는 온라인 방식, 에피소드 완료후 업데이트하는 오프라인 방식에 대한 결과는 비슷하게 나온다.</li>
+  <li>n이 커질수록 에러가 커지는 것을 볼 수 있다.</li>
+  <li>3~5 step 이 좋은거 같다.</li>
+</ul>
+
+<p><a href="https://postimg.cc/8J2fgVKK"><img src="https://i.postimg.cc/MHT7R6yS/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>n-step 에서 보상값을 다른 값으로 평균을 낼 수 있다.</li>
+  <li>하지만 2~4 step에서의 평균을 내어보면 위와 같은 식이 될 것이다.</li>
+  <li>이 두가지를 결합하여 효율적으로 만들수 있을까?</li>
+</ul>
+
+<p><a href="https://postimg.cc/WFwhDfsS"><img src="https://i.postimg.cc/FR2cB28t/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>답은 가능하다</li>
+  <li>여기서 람다 보상은 모든 n-step 까지의 가중평균된 보상이다.</li>
+  <li>기존에 n-step에서 사용한 보상은 총합이였다.</li>
+  <li>이렇게 평균을 이용하는 방식은 오류를 더 낮출 수 있다.</li>
+  <li>람다의 총합이 1 되도록 하기 위해 (1-lamda)계수로 노멀라이즈를 하여 0부터 1까지의 값을 갖도록 합니다.</li>
+  <li><strong>람다는 n-step이 커질 수록 보상에 대한 값을 감소시키게 합니다.</strong></li>
+  <li>마지막에 공식이 TD-Lamda 의 Value 함수입니다.</li>
+</ul>
+
+<p><a href="https://postimg.cc/HcVqsMx6"><img src="https://i.postimg.cc/KzNxfryh/4564.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Step 시간이 흐를수록 weight가 지수형태로 감소하는 것을 볼수 있다.</li>
+  <li>그리고 이들의 총합은 1이 된다.</li>
+  <li><strong>지수형태의 가중치</strong> 를 사용하는 것이 알고리즘 연상에 효율성을 주고 메모리를 덜 사용하게 되는 이점이 있다.</li>
+</ul>
+
+<p><a href="https://postimg.cc/t1Xp3DRJ"><img src="https://i.postimg.cc/1zFXZYLG/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Value 함수가 업데이트 하는 과정</li>
+  <li>동일하게 n-step까지 도닿라고 나서 얻은 보상들을 lamda를 이용하여 보상값을 업데이트 하게 된다.</li>
+  <li>정방향의 관점에서 보면 이론접이다.</li>
+  <li>반대방향 관점에서 보면 컴퓨터 적이다.</li>
+  <li>반대 방향으로 보면 TD(Lamda) 알고리즘은 온라인 방식과 같이 매 step마다 업데이트가 된다.</li>
+</ul>
+
+<p><a href="https://postimg.cc/HJJTxn6s"><img src="https://i.postimg.cc/5tgysFvv/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>위에서 번개가 발생한 이유는 자주 발생한 것이 영향이 큰지 최근에 발생한 것이 영향이 큰지를 결합하여 사용할 수 있다.</li>
+  <li>하나의 특정한 state를 방문하는 횟수에 따라서 Eligibility Traces해보면 위에와 같이 나온다.</li>
+</ul>
+
+<p><a href="https://postimg.cc/HVRqzmHV"><img src="https://i.postimg.cc/pLLP2V6Y/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>이를 적용해보면 각 state 마다 업데이트가 발생 될때 TD에러의 비율 만큼 업데이트를 가중적용하는 한다.</li>
+  <li>이것은 에피소드의 길이보다 짧은 기억을 하는 단기 메모리 같은 역할을 한다.</li>
+</ul>
+
+<p><a href="https://postimg.cc/xkKfyj4P"><img src="https://i.postimg.cc/pdSmvpQ3/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>lamda는 얼마나 빨리 값을 감소시키는가를 의미한다.</li>
+  <li>lamda의 값이 0이 되면 완전 가파르게 decay가 발생할 것이다.</li>
+  <li>결국 현재 state의 value 함수만 업데이트가 되며 니는 TD(0)가 동일한 방식이 된다.</li>
+</ul>
+
+<p><a href="https://postimg.cc/xkKfyj4P"><img src="https://i.postimg.cc/pdSmvpQ3/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p>Reference:</p>
+
+<p><a href="https://www.udemy.com/course/artificial-intelligence-reinforcement-learning-in-python/">Artificial Intelligence Reinforcement Learning</a></p>
+
+<p><a href="https://www.udemy.com/deep-reinforcement-learning-in-python/">Advance AI : Deep-Reinforcement Learning</a></p>
+
+<p><a href="https://www.udemy.com/cutting-edge-artificial-intelligence/learn/lecture/14650508#overview">Cutting-Edge Deep-Reinforcement Learning</a></p>
+:ET

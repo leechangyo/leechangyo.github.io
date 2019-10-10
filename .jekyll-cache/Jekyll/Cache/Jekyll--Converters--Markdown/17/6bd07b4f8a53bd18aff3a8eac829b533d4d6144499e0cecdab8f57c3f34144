@@ -1,0 +1,122 @@
+I"5<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">board</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span>
+         <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span>
+         <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">type</span><span class="p">(</span><span class="n">board</span><span class="p">)</span>
+<span class="c1"># list
+</span><span class="n">board</span>
+<span class="c1">#[0, 1, 2, 3, 4, 5, 6, 7, 8]
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">TicTacToe_draw</span><span class="p">():</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">board</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">board</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">board</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">board</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">board</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">board</span><span class="p">[</span><span class="mi">7</span><span class="p">],</span> <span class="n">board</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"good luck"</span><span class="p">)</span>
+<span class="n">TicTacToe_draw</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0 1 2
+3 4 5
+6 7 8
+good luck
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">Player_1</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Player#1, Enter your desired board location: "</span><span class="p">)</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>   
+        <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'X'</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'O'</span><span class="p">:</span>
+            <span class="n">board</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="s">'X'</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'This spot is taken, please choose somewhere else'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">Player_1</span><span class="p">()</span>
+<span class="n">TicTacToe_draw</span><span class="p">()</span>
+
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Player#1, Enter your desired board location:
+1
+0 X 2
+3 4 5
+6 7 8
+good luck
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="k">def</span> <span class="nf">Player_2</span><span class="p">():</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Player#2, Enter your desired board location: "</span><span class="p">)</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'X'</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">!=</span> <span class="s">'O'</span><span class="p">:</span>
+            <span class="n">board</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="s">'O'</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'This spot is taken, please choose somewhere else'</span><span class="p">)</span>
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">Player_2</span><span class="p">()</span>
+<span class="n">TicTacToe_draw</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Player#2, Enter your desired board location:
+1
+This spot is taken, please choose somewhere else
+Player#2, Enter your desired board location:
+1
+This spot is taken, please choose somewhere else
+Player#2, Enter your desired board location:
+1
+This spot is taken, please choose somewhere else
+Player#2, Enter your desired board location:
+2
+0 X O
+3 4 5
+6 7 8
+good luck
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">def</span> <span class="nf">Check_Winner</span><span class="p">(</span><span class="n">X_or_O</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+
+    <span class="c1"># Diagonal terms
+</span>    <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="n">board</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span> <span class="ow">and</span> <span class="n">board</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">==</span> <span class="n">X_or_O</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">Player_1</span><span class="p">()</span>
+    <span class="n">TicTacToe_draw</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">Check_Winner</span><span class="p">(</span><span class="s">'X'</span><span class="p">)</span><span class="o">==</span><span class="bp">True</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Player #1 Wins"</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+
+    <span class="n">Player_2</span><span class="p">()</span>
+    <span class="n">TicTacToe_draw</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">Check_Winner</span><span class="p">(</span><span class="s">'O'</span><span class="p">)</span><span class="o">==</span><span class="bp">True</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Player #2 Wins"</span><span class="p">)</span>
+        <span class="k">break</span><span class="p">;</span>
+
+</code></pre></div></div>
+:ET

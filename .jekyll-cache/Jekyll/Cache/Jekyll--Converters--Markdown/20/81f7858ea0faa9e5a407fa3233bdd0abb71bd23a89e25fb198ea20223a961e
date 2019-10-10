@@ -1,0 +1,166 @@
+I"�E<h1 id="detect-single-faces">Detect Single Faces</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_c</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s">'Trudeau.jpg'</span><span class="p">)</span>
+<span class="n">image_g</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image_c</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span> <span class="c1"># gray scale function.
+#cvtColor &lt;- means that change the color of image_c
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'Trudeau in Color'</span><span class="p">,</span> <span class="n">image_c</span><span class="p">)</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'Trudeau in Grayscale'</span><span class="p">,</span> <span class="n">image_g</span><span class="p">)</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">()</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># get CascadeClassifier (trained model)
+</span><span class="n">face_detection</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CascadeClassifier</span><span class="p">(</span><span class="s">'Haarcascades/haarcascade_frontalface_default.xml'</span><span class="p">)</span>
+<span class="c1">#path of our classifier
+#cascade means that 소통하달
+#haar is the developer of this
+</span></code></pre></div></div>
+
+<ul>
+  <li>CascadeClassifier.detectMultiScale(input image, Scale Factor , Min Neighbours)
+    <ul>
+      <li>Scale Factor
+        <ul>
+          <li>Specifies how much reduction takes place in the image size each time during pyramiding process.</li>
+          <li>or 1.2, it means image is reduced by 20% each time it’s scaled.</li>
+        </ul>
+      </li>
+      <li>Min Neighbours
+        <ul>
+          <li>Parameter specifying how many neighbours each candidate rectangle should have to retain it.</li>
+          <li>set it to a number between 3 and 6.</li>
+          <li>This parameter will affect the quality of the detected faces.</li>
+          <li>Higher value results in less detections but with higher quality.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># The face classifier returns the region of interest in a tuple
+# Two points: upper left and bottom right coordinates
+</span><span class="n">faces</span> <span class="o">=</span> <span class="n">face_detection</span><span class="o">.</span><span class="n">detectMultiScale</span><span class="p">(</span><span class="n">image_c</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="c1"># scale factor : sacle our image like smaller or large scale. like each point reduce
+# 사진들을 픽셀로 쪼개서 얼굴을 인식 한다.
+# min neighbors that detect around face "5" times
+</span><span class="n">faces</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># (1, 4)
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">faces</span> <span class="c1"># coordinate of face, pixel of face loacated
+# 332 x , 121 y , (208, 208) &lt;- retangle. size of the face
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">faces</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span>
+<span class="c1">#[:,1] &lt;- list in the 1
+#[:,2] &lt;- value list in the 2
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">h</span> <span class="o">=</span> <span class="n">faces</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">image_c</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">,</span><span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+<span class="c1">#x,y is top left corner.
+#w+x, y+h is the bottome of right corner
+#(0,255,255) yellow color
+# 3 is the thickness
+</span><span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'Single Face Detection'</span><span class="p">,</span> <span class="n">image_c</span><span class="p">)</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/621BZgvF"><img src="https://i.postimg.cc/3N3NsHJr/312412.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="detect-multiple-faces">Detect Multiple Faces</h1>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_c</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s">'Scientists.jpg'</span><span class="p">)</span>
+<span class="n">image_g</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image_c</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'Scientists in Color'</span><span class="p">,</span> <span class="n">image_c</span><span class="p">)</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">()</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+
+<span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'Scientists in GrayScale'</span><span class="p">,</span> <span class="n">image_g</span><span class="p">)</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">()</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># get CascadeClassifier (trained model)
+</span><span class="n">face_detection</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CascadeClassifier</span><span class="p">(</span><span class="s">'Haarcascades/haarcascade_frontalface_default.xml'</span><span class="p">)</span>
+<span class="n">faces</span> <span class="o">=</span> <span class="n">face_detection</span><span class="o">.</span><span class="n">detectMultiScale</span><span class="p">(</span><span class="n">image_c</span><span class="p">,</span> <span class="mf">1.1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">faces</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([[ 15, 131,  46,  46],
+       [ 42,   5,  37,  37],
+       [626, 149,  52,  52],
+       [196, 153,  59,  59],
+       [340, 157,  60,  60],
+       [ 66, 161,  57,  57],
+       [717, 144,  56,  56],
+       [496, 149,  55,  55],
+       [347, 203,  50,  50],
+       [540, 104,  46,  46],
+       [420, 107,  48,  48],
+       [272, 112,  55,  55],
+       [658, 114,  47,  47],
+       [ 12, 106,  54,  54],
+       [132,  31,  43,  43],
+       [527,  35,  38,  38],
+       [801,  35,  38,  38],
+       [134, 115,  53,  53],
+       [787, 115,  56,  56],
+       [309,  40,  46,  46],
+       [420,  56,  45,  45],
+       [199,  62,  46,  46]], dtype=int32)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">)</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">image_c</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">,</span><span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'Single Face Detection'</span><span class="p">,</span> <span class="n">image_c</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1">#valiable get value from per array each time for      
+</span><span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/14GQs8WL"><img src="https://i.postimg.cc/44MNvtpN/4124123.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="detect-eyes-and-faces">Detect Eyes and Faces</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_c</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s">'Trudeau.jpg'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">face_classifier</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CascadeClassifier</span><span class="p">(</span><span class="s">'Haarcascades/haarcascade_frontalface_default.xml'</span><span class="p">)</span>
+<span class="n">eye_classifier</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CascadeClassifier</span><span class="p">(</span><span class="s">'Haarcascades/haarcascade_eye.xml'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">faces</span> <span class="o">=</span> <span class="n">face_classifier</span><span class="o">.</span><span class="n">detectMultiScale</span><span class="p">(</span><span class="n">image_c</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">w</span><span class="p">,</span><span class="n">h</span><span class="p">)</span> <span class="ow">in</span> <span class="n">faces</span><span class="p">:</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">image_c</span><span class="p">,(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),(</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">,</span><span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'Trudeau Face and Eyes'</span><span class="p">,</span><span class="n">image_c</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Select the face
+</span>    <span class="n">face_region</span> <span class="o">=</span> <span class="n">image_c</span><span class="p">[</span><span class="n">y</span><span class="p">:</span><span class="n">y</span><span class="o">+</span><span class="n">h</span><span class="p">,</span><span class="n">x</span><span class="p">:</span><span class="n">x</span><span class="o">+</span><span class="n">w</span><span class="p">]</span>
+    <span class="c1">#y+h is hight of image
+</span>    <span class="c1">#x+w width of my face
+</span>
+    <span class="n">eyes</span> <span class="o">=</span> <span class="n">eye_classifier</span><span class="o">.</span><span class="n">detectMultiScale</span><span class="p">(</span><span class="n">face_region</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">eyes_x</span><span class="p">,</span> <span class="n">eyes_y</span><span class="p">,</span> <span class="n">eyes_w</span><span class="p">,</span><span class="n">eyes_h</span><span class="p">)</span> <span class="ow">in</span> <span class="n">eyes</span><span class="p">:</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">face_region</span><span class="p">,(</span><span class="n">eyes_x</span><span class="p">,</span> <span class="n">eyes_y</span><span class="p">),(</span><span class="n">eyes_x</span> <span class="o">+</span> <span class="n">eyes_w</span><span class="p">,</span> <span class="n">eyes_y</span> <span class="o">+</span> <span class="n">eyes_h</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'Trudeau Face and Eyes'</span><span class="p">,</span><span class="n">image_c</span><span class="p">)</span>
+        <span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/Pp88PWLb"><img src="https://i.postimg.cc/hj28ZMcY/14123.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+:ET

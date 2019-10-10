@@ -1,0 +1,158 @@
+I"cB<h1 id="code-to-select-white-pixels-out-of-the-image">CODE TO SELECT WHITE PIXELS OUT OF THE IMAGE</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="k">as</span> <span class="n">mpimg</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_color</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s">'image_lane_c.jpg'</span><span class="p">)</span>
+<span class="n">image_color</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># (540, 960, 3)
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_color</span><span class="p">)</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/Tprt5GV5"><img src="https://i.postimg.cc/c4z2jL6h/1.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_copy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">image_color</span><span class="p">)</span>
+<span class="n">image_copy</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1">#(540, 960, 3)
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_copy</span><span class="p">[</span> <span class="p">(</span><span class="n">image_copy</span><span class="p">[:,:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">image_copy</span><span class="p">[:,:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">image_copy</span><span class="p">[:,:,</span><span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">200</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># any value that is not white colour
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Display the image                 
+</span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_copy</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s">'gray'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/w7TkMJjZ"><img src="https://i.postimg.cc/vH52PtFY/4213213.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_color</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h1 id="code-to-perform-color-selection">CODE TO PERFORM COLOR SELECTION</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="k">as</span> <span class="n">mpimg</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">cv2</span>
+</code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_color</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s">'image_lane_c.jpg'</span><span class="p">)</span>
+<span class="n">image_color</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># (540, 960, 3)
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_color</span><span class="p">)</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/Tprt5GV5"><img src="https://i.postimg.cc/c4z2jL6h/1.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image_color</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_gray</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s">'gray'</span><span class="p">)</span>
+<span class="n">image_gray</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># (540, 960)
+</span></code></pre></div></div>
+
+<p><a href="https://postimg.cc/f3ZyW7w0"><img src="https://i.postimg.cc/tgnx5DwD/41232.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_copy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">image_gray</span><span class="p">)</span> <span class="c1">#copy image_gray
+</span><span class="n">image_copy</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># (540, 960)
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_copy</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>array([[191, 191, 192, ..., 191, 191, 191],
+       [191, 191, 191, ..., 191, 191, 191],
+       [191, 191, 191, ..., 191, 191, 191],
+       ...,
+       [161, 163, 160, ..., 190, 191, 191],
+       [170, 168, 160, ..., 185, 186, 187],
+       [164, 156, 145, ..., 172, 173, 173]], dtype=uint8)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_copy</span><span class="p">[</span> <span class="p">(</span><span class="n">image_copy</span><span class="p">[:,:]</span> <span class="o">&lt;</span> <span class="mi">250</span><span class="p">)</span> <span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># any value that is not white colour
+# any of the pixel value less than 250, 0
+# it store new array from [(image_copy[:,:])]
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Display the image                 
+</span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_copy</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s">'gray'</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/MX8SCZpv"><img src="https://i.postimg.cc/J7szBGwc/421321.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="code-to-perform-region-of-interest-roi-selection">CODE TO PERFORM REGION OF INTEREST (ROI) SELECTION</h1>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="k">as</span> <span class="n">mpimg</span>
+<span class="c1">#from matplotlib import pyplot as plt #plotting fram work.
+</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span> <span class="c1"># it is same as from matplotlib import pyplot as plt
+</span><span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+<span class="c1"># magic function in python, it help to see picture immediately in notebook jupiter
+</span>
+<span class="n">image_color</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s">'image_lane_c.jpg'</span><span class="p">)</span>
+<span class="c1">#image_color = mpimg.imread('image_lane_c.jpg') # import image as RGB instead of BGR
+</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="s">'Original Image'</span><span class="p">,</span> <span class="n">image_color</span><span class="p">)</span> <span class="c1"># opencv open with RGB as real picture
+</span><span class="n">cv2</span><span class="o">.</span><span class="n">waitKey</span><span class="p">()</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">destroyAllWindows</span><span class="p">()</span>
+<span class="n">image_color</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># (540, 960, 3)
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">height</span><span class="p">,</span> <span class="n">width</span> <span class="o">=</span> <span class="n">image_color</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="c1"># give to valeu height, width by list
+# height 540
+# width 960
+</span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_color</span><span class="p">)</span> <span class="c1"># plt. fucntion open with BGR color by matplotlib
+# that's why the cv.imshow and plt.imshow picture difference
+</span></code></pre></div></div>
+<p><a href="https://postimg.cc/yDRnCKd8"><img src="https://i.postimg.cc/vZqK9Hwf/3.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_color</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># (540, 960, 3)
+</span><span class="n">image_gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">image_color</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">image_gray</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s">'gray'</span><span class="p">)</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/RW1fTZhK"><img src="https://i.postimg.cc/L8wT2qMC/32.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">image_gray</span><span class="o">.</span><span class="n">shape</span> <span class="c1"># when it change to gray, the number of color is eare
+# (540, 960)
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Select points of the region of interest (ROI)
+</span><span class="n">ROI</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[(</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span><span class="p">),(</span><span class="mi">400</span><span class="p">,</span> <span class="mi">330</span><span class="p">),</span> <span class="p">(</span><span class="mi">550</span><span class="p">,</span> <span class="mi">330</span><span class="p">),</span> <span class="p">(</span><span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">)]],</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>    
+<span class="c1"># first point, second point, third point.
+# (0,height) means we gonna stop when height is reached ( corner point)
+# (width,height) means we gonna stop when width and height is reached ( corner point)
+</span>
+<span class="c1"># define a blank image with all zeros (ie: black)
+</span><span class="n">blank</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">image_gray</span><span class="p">)</span>   
+<span class="n">blank</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1">#(540, 960)
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1"># Fill the Region of interest with white color (ie: 255)!
+</span><span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">fillPoly</span><span class="p">(</span><span class="n">blank</span><span class="p">,</span> <span class="n">ROI</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+<span class="c1">#polyynomial specifying any of it our image which is our blank image our ROI
+#255 because we want to fill that rigion of interest with once(white)
+# Perform bitwise AND operation to select only the region of interest
+</span><span class="n">masked_image</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">bitwise_and</span><span class="p">(</span><span class="n">image_gray</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+<span class="c1"># take our image_gray and take mask.
+# like it all together.
+# bitwise means that put together
+</span><span class="n">masked_image</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1">#(540, 960)
+</span><span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span><span class="s">'gray'</span><span class="p">)</span>
+</code></pre></div></div>
+<p><a href="https://postimg.cc/wtmBkW0P"><img src="https://i.postimg.cc/tgrVpwPX/5.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">masked_image</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s">'gray'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/4myH91RC"><img src="https://i.postimg.cc/SN76HZZK/12.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+:ET

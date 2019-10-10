@@ -1,0 +1,661 @@
+I"�<h1 id="problem-statement">PROBLEM STATEMENT</h1>
+<ul>
+  <li>Predicting if the cancer diagnosis is benign or malignant based on several observations/features</li>
+  <li>30 features are used, examples:
+    <ul>
+      <li>radius (mean of distances from center to points on the perimeter 주의)</li>
+      <li>texture (standard deviation of gray-scale values)</li>
+      <li>perimeter(外缘)</li>
+      <li>area</li>
+      <li>smoothness (local variation in radius lengths)</li>
+      <li>compactness (perimeter^2 / area - 1.0)</li>
+      <li>concavity (severity of concave(凹面的) portions of the contour)</li>
+      <li>concave points (number of concave portions of the contour)</li>
+      <li>symmetry</li>
+      <li>fractal(分形) dimension (“coastline approximation” - 1)</li>
+    </ul>
+  </li>
+  <li>Datasets are linearly separable using all 30 input features</li>
+  <li>Number of Instances: 569</li>
+  <li>Class Distribution: 212 Malignant(恶性的), 357 Benign(善良的;)</li>
+  <li>Target Class
+    <ul>
+      <li>Malignant</li>
+      <li>Benign</li>
+    </ul>
+  </li>
+  <li>https://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+(Diagnostic)</li>
+</ul>
+
+<h2 id="step-1-importing-data">Step 1 Importing data</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># import libraries
+</span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="n">pd</span> <span class="c1"># Import Pandas for data manipulation using dataframes
+</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="n">np</span> <span class="c1"># Import Numpy for data statistical analysis
+</span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="n">plt</span> <span class="c1"># Import matplotlib for data visualisation
+</span><span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="n">sns</span> <span class="c1"># Statistical data visualization
+# %matplotlib inline
+# Import Cancer data drom the Sklearn library
+</span><span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">load_breast_cancer</span>
+<span class="n">cancer</span> <span class="o">=</span> <span class="n">load_breast_cancer</span><span class="p">()</span>
+<span class="n">cancer</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>{'data': array([[1.799e+01, 1.038e+01, 1.228e+02, ..., 2.654e-01, 4.601e-01,
+         1.189e-01],
+        [2.057e+01, 1.777e+01, 1.329e+02, ..., 1.860e-01, 2.750e-01,
+         8.902e-02],
+        [1.969e+01, 2.125e+01, 1.300e+02, ..., 2.430e-01, 3.613e-01,
+         8.758e-02],
+        ...,
+        [1.660e+01, 2.808e+01, 1.083e+02, ..., 1.418e-01, 2.218e-01,
+         7.820e-02],
+        [2.060e+01, 2.933e+01, 1.401e+02, ..., 2.650e-01, 4.087e-01,
+         1.240e-01],
+        [7.760e+00, 2.454e+01, 4.792e+01, ..., 0.000e+00, 2.871e-01,
+         7.039e-02]]),
+ 'target': array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0,
+        1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0,
+        1, 1, 1, 0, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1,
+        1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 1, 0,
+        0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 1,
+        1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 0, 0,
+        0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 1, 1, 0, 0,
+        1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1,
+        1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0,
+        0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0,
+        0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0,
+        1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 1, 1,
+        1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1,
+        1, 0, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0,
+        1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1,
+        1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1,
+        1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1]),
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cancer</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+<span class="c1"># dict_keys(['data', 'target', 'target_names', 'DESCR', 'feature_names'])
+</span><span class="k">print</span><span class="p">(</span><span class="n">cancer</span><span class="p">[</span><span class="s">'DESCR'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Breast Cancer Wisconsin (Diagnostic) Database
+=============================================
+
+Notes
+-----
+Data Set Characteristics:
+    :Number of Instances: 569
+
+    :Number of Attributes: 30 numeric, predictive attributes and the class
+
+    :Attribute Information:
+        - radius (mean of distances from center to points on the perimeter)
+        - texture (standard deviation of gray-scale values)
+        - perimeter
+        - area
+        - smoothness (local variation in radius lengths)
+        - compactness (perimeter^2 / area - 1.0)
+        - concavity (severity of concave portions of the contour)
+        - concave points (number of concave portions of the contour)
+        - symmetry
+        - fractal dimension ("coastline approximation" - 1)
+
+        The mean, standard error, and "worst" or largest (mean of the three
+        largest values) of these features were computed for each image,
+        resulting in 30 features.  For instance, field 3 is Mean Radius, field
+        13 is Radius SE, field 23 is Worst Radius.
+
+        - class:
+                - WDBC-Malignant
+                - WDBC-Benign
+
+    :Summary Statistics:
+
+    ===================================== ====== ======
+                                           Min    Max
+    ===================================== ====== ======
+    radius (mean):                        6.981  28.11
+    texture (mean):                       9.71   39.28
+    perimeter (mean):                     43.79  188.5
+    area (mean):                          143.5  2501.0
+    smoothness (mean):                    0.053  0.163
+    compactness (mean):                   0.019  0.345
+    concavity (mean):                     0.0    0.427
+    concave points (mean):                0.0    0.201
+    symmetry (mean):                      0.106  0.304
+    fractal dimension (mean):             0.05   0.097
+    radius (standard error):              0.112  2.873
+    texture (standard error):             0.36   4.885
+    perimeter (standard error):           0.757  21.98
+    area (standard error):                6.802  542.2
+    smoothness (standard error):          0.002  0.031
+    compactness (standard error):         0.002  0.135
+    concavity (standard error):           0.0    0.396
+    concave points (standard error):      0.0    0.053
+    symmetry (standard error):            0.008  0.079
+    fractal dimension (standard error):   0.001  0.03
+    radius (worst):                       7.93   36.04
+    texture (worst):                      12.02  49.54
+    perimeter (worst):                    50.41  251.2
+    area (worst):                         185.2  4254.0
+    smoothness (worst):                   0.071  0.223
+    compactness (worst):                  0.027  1.058
+    concavity (worst):                    0.0    1.252
+    concave points (worst):               0.0    0.291
+    symmetry (worst):                     0.156  0.664
+    fractal dimension (worst):            0.055  0.208
+    ===================================== ====== ======
+
+    :Missing Attribute Values: None
+
+    :Class Distribution: 212 - Malignant, 357 - Benign
+
+    :Creator:  Dr. William H. Wolberg, W. Nick Street, Olvi L. Mangasarian
+
+    :Donor: Nick Street
+
+    :Date: November, 1995
+
+This is a copy of UCI ML Breast Cancer Wisconsin (Diagnostic) datasets.
+https://goo.gl/U2Uwz2
+
+Features are computed from a digitized image of a fine needle
+aspirate (FNA) of a breast mass.  They describe
+characteristics of the cell nuclei present in the image.
+
+Separating plane described above was obtained using
+Multisurface Method-Tree (MSM-T) [K. P. Bennett, "Decision Tree
+Construction Via Linear Programming." Proceedings of the 4th
+Midwest Artificial Intelligence and Cognitive Science Society,
+pp. 97-101, 1992], a classification method which uses linear
+programming to construct a decision tree.  Relevant features
+were selected using an exhaustive search in the space of 1-4
+features and 1-3 separating planes.
+
+The actual linear program used to obtain the separating plane
+in the 3-dimensional space is that described in:
+[K. P. Bennett and O. L. Mangasarian: "Robust Linear
+Programming Discrimination of Two Linearly Inseparable Sets",
+Optimization Methods and Software 1, 1992, 23-34].
+
+This database is also available through the UW CS ftp server:
+
+ftp ftp.cs.wisc.edu
+cd math-prog/cpo-dataset/machine-learn/WDBC/
+
+References
+----------
+   - W.N. Street, W.H. Wolberg and O.L. Mangasarian. Nuclear feature extraction
+     for breast tumor diagnosis. IS&amp;T/SPIE 1993 International Symposium on
+     Electronic Imaging: Science and Technology, volume 1905, pages 861-870,
+     San Jose, CA, 1993.
+   - O.L. Mangasarian, W.N. Street and W.H. Wolberg. Breast cancer diagnosis and
+     prognosis via linear programming. Operations Research, 43(4), pages 570-577,
+     July-August 1995.
+   - W.H. Wolberg, W.N. Street, and O.L. Mangasarian. Machine learning techniques
+     to diagnose breast cancer from fine-needle aspirates. Cancer Letters 77 (1994)
+     163-171.
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">cancer</span><span class="p">[</span><span class="s">'target_names'</span><span class="p">])</span>
+<span class="c1"># Target name only have two malignant ,benign
+# ['malignant' 'benign']
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">cancer</span><span class="p">[</span><span class="s">'target'</span><span class="p">])</span>
+<span class="c1"># 0 , 1 is the who has a cancer or not
+</span></code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>print(cancer['target'])
+
+# 0 , 1 is the who has a cancer or not
+
+[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+ 1 0 0 0 0 0 0 0 0 1 0 1 1 1 1 1 0 0 1 0 0 1 1 1 1 0 1 0 0 1 1 1 1 0 1 0 0
+ 1 0 1 0 0 1 1 1 0 0 1 0 0 0 1 1 1 0 1 1 0 0 1 1 1 0 0 1 1 1 1 0 1 1 0 1 1
+ 1 1 1 1 1 1 0 0 0 1 0 0 1 1 1 0 0 1 0 1 0 0 1 0 0 1 1 0 1 1 0 1 1 1 1 0 1
+ 1 1 1 1 1 1 1 1 0 1 1 1 1 0 0 1 0 1 1 0 0 1 1 0 0 1 1 1 1 0 1 1 0 0 0 1 0
+ 1 0 1 1 1 0 1 1 0 0 1 0 0 0 0 1 0 0 0 1 0 1 0 1 1 0 1 0 0 0 0 1 1 0 0 1 1
+ 1 0 1 1 1 1 1 0 0 1 1 0 1 1 0 0 1 0 1 1 1 1 0 1 1 1 1 1 0 1 0 0 0 0 0 0 0
+ 0 0 0 0 0 0 0 1 1 1 1 1 1 0 1 0 1 1 0 1 1 0 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1
+ 1 0 1 1 0 1 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 1 1 1 0 1 0 1 1 1 1 0 0 0 1 1
+ 1 1 0 1 0 1 0 1 1 1 0 1 1 1 1 1 1 1 0 0 0 1 1 1 1 1 1 1 1 1 1 1 0 0 1 0 0
+ 0 1 0 0 1 1 1 1 1 0 1 1 1 1 1 0 1 1 1 0 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 1
+ 1 0 1 1 1 1 1 0 1 1 0 1 1 1 1 1 1 1 1 1 1 1 1 0 1 0 0 1 0 1 1 1 1 1 0 1 1
+ 0 1 0 1 1 0 1 0 1 1 1 1 1 1 1 1 0 0 1 1 1 1 1 1 0 1 1 1 1 1 1 1 1 1 1 0 1
+ 1 1 1 1 1 1 0 1 0 1 1 0 1 1 1 1 1 0 0 1 0 1 0 1 1 1 1 1 0 1 1 0 1 0 1 0 0
+ 1 1 1 0 1 1 1 1 1 1 1 1 1 1 1 0 1 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+ 1 1 1 1 1 1 1 0 0 0 0 0 0 1]
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">cancer</span><span class="p">[</span><span class="s">'feature_names'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>print(cancer['feature_names'])
+
+['mean radius' 'mean texture' 'mean perimeter' 'mean area'
+ 'mean smoothness' 'mean compactness' 'mean concavity'
+ 'mean concave points' 'mean symmetry' 'mean fractal dimension'
+ 'radius error' 'texture error' 'perimeter error' 'area error'
+ 'smoothness error' 'compactness error' 'concavity error'
+ 'concave points error' 'symmetry error' 'fractal dimension error'
+ 'worst radius' 'worst texture' 'worst perimeter' 'worst area'
+ 'worst smoothness' 'worst compactness' 'worst concavity'
+ 'worst concave points' 'worst symmetry' 'worst fractal dimension']
+
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">cancer</span><span class="p">[</span><span class="s">'data'</span><span class="p">])</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[[1.799e+01 1.038e+01 1.228e+02 ... 2.654e-01 4.601e-01 1.189e-01]
+ [2.057e+01 1.777e+01 1.329e+02 ... 1.860e-01 2.750e-01 8.902e-02]
+ [1.969e+01 2.125e+01 1.300e+02 ... 2.430e-01 3.613e-01 8.758e-02]
+ ...
+ [1.660e+01 2.808e+01 1.083e+02 ... 1.418e-01 2.218e-01 7.820e-02]
+ [2.060e+01 2.933e+01 1.401e+02 ... 2.650e-01 4.087e-01 1.240e-01]
+ [7.760e+00 2.454e+01 4.792e+01 ... 0.000e+00 2.871e-01 7.039e-02]]
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cancer</span><span class="p">[</span><span class="s">'data'</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="c1">#(569, 30)
+#569 raw as data set, 30 is the 30 feature.
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df_cancer</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">cancer</span><span class="p">[</span><span class="s">'data'</span><span class="p">],</span> <span class="n">cancer</span><span class="p">[</span><span class="s">'target'</span><span class="p">]],</span> <span class="n">columns</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cancer</span><span class="p">[</span><span class="s">'feature_names'</span><span class="p">],</span> <span class="p">[</span><span class="s">'target'</span><span class="p">]))</span>
+<span class="c1"># append two vecotr or two columns together. so we can have cancer name and target as well
+# to make better dataframe, we use that.
+# which means 30 columns all the data we had
+# then can additional column withch the first column that includes a target data wich is kind of you know we can include all the trains the in put and output
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">df_cancer</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+<span class="c1">#it showing our goal 'target'
+</span></code></pre></div></div>
+
+<p><a href="https://postimg.cc/grdpmGfq"><img src="https://i.postimg.cc/Vs0k96gT/12314.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">])</span>
+<span class="n">x</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># (3,)
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">Example</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">])]</span>
+<span class="n">Example</span><span class="o">.</span><span class="n">shape</span>
+<span class="c1"># (3, 2)
+</span></code></pre></div></div>
+
+<h2 id="step-2-visualize-data">Step 2 Visualize data</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="o">.</span><span class="n">pairplot</span><span class="p">(</span><span class="n">df_cancer</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s">'target'</span><span class="p">,</span> <span class="nb">vars</span> <span class="o">=</span> <span class="p">[</span><span class="s">'mean radius'</span><span class="p">,</span> <span class="s">'mean texture'</span><span class="p">,</span> <span class="s">'mean area'</span><span class="p">,</span> <span class="s">'mean perimeter'</span><span class="p">,</span> <span class="s">'mean smoothness'</span><span class="p">]</span> <span class="p">)</span>
+<span class="c1"># hue is the target of the data what we want to know about it
+</span></code></pre></div></div>
+
+<p><a href="https://postimg.cc/xNKqkg9x"><img src="https://i.postimg.cc/rsH4PY3k/index.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">df_cancer</span><span class="p">[</span><span class="s">'target'</span><span class="p">],</span> <span class="n">label</span> <span class="o">=</span> <span class="s">"Count"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/zHSXDBk4"><img src="https://i.postimg.cc/J0SyqHH7/124125123.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="s">'mean area'</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="s">'mean smoothness'</span><span class="p">,</span> <span class="n">hue</span> <span class="o">=</span> <span class="s">'target'</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">df_cancer</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/xc6NLxKh"><img src="https://i.postimg.cc/YCHNKTjr/5132143.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Let's check the correlation between the variables
+# Strong correlation between the mean radius and mean perimeter, mean area and mean primeter
+</span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">10</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">df_cancer</span><span class="o">.</span><span class="n">corr</span><span class="p">(),</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/LqLsQN1H"><img src="https://i.postimg.cc/vmS6BK86/55125.png" width="700px" title="source: imgur.com" /></a></p>
+
+<h2 id="step-3-model-training-finding-a-problem-solution">Step 3 MODEL TRAINING (FINDING A PROBLEM SOLUTION)</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c1"># Let's drop the target label coloumns because we only need input data.
+# target data is output we created
+# axis=1 is we all delete data of target
+</span><span class="n">X</span> <span class="o">=</span> <span class="n">df_cancer</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s">'target'</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/njTpN5ct"><img src="https://i.postimg.cc/j2Y2n0pC/155215123.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">y</span> <span class="o">=</span> <span class="n">df_cancer</span><span class="p">[</span><span class="s">'target'</span><span class="p">]</span>
+<span class="n">y</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0      0.0
+1      0.0
+2      0.0
+3      0.0
+4      0.0
+5      0.0
+6      0.0
+7      0.0
+8      0.0
+9      0.0
+10     0.0
+11     0.0
+12     0.0
+13     0.0
+14     0.0
+15     0.0
+16     0.0
+17     0.0
+18     0.0
+19     1.0
+20     1.0
+21     1.0
+22     0.0
+23     0.0
+24     0.0
+25     0.0
+26     0.0
+27     0.0
+28     0.0
+29     0.0
+      ...
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
+
+<span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span> <span class="o">=</span> <span class="mf">0.20</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="c1"># random_state is the just seed
+</span></code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span> <span class="c1"># (455, 30)
+</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span> <span class="c1"># (114, 30)
+</span><span class="n">y_train</span><span class="o">.</span><span class="n">shape</span> <span class="c1"># (455,)
+</span><span class="n">y_test</span><span class="o">.</span><span class="n">shape</span> <span class="c1"># (114,)
+</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span> <span class="c1">#support vector machine learning
+</span><span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">confusion_matrix</span>
+<span class="c1">#confusion_matrix 오차 행렬
+#matrix inside for moving foward
+</span>
+<span class="n">svc_model</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">()</span>
+<span class="n">svc_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>from sklearn.svm import SVC #support vector machine learning
+
+from sklearn.metrics import classification_report, confusion_matrix
+
+#confusion_matrix 오차 행렬
+
+#matrix inside for moving foward
+
+​
+
+svc_model = SVC()
+
+svc_model.fit(X_train, y_train)
+
+SVC(C=1.0, cache_size=200, class_weight=None, coef0=0.0,
+  decision_function_shape='ovr', degree=3, gamma='auto', kernel='rbf',
+  max_iter=-1, probability=False, random_state=None, shrinking=True,
+  tol=0.001, verbose=False)
+</code></pre></div></div>
+
+<h2 id="step-4-evaluating-the-model">Step 4 EVALUATING THE MODEL</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">y_predict</span> <span class="o">=</span> <span class="n">svc_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1">#annot is the showing the value
+#showing that there is the a lot of the error
+</span></code></pre></div></div>
+
+<p><a href="https://postimg.cc/tYvt9Cms"><img src="https://i.postimg.cc/0yPtdzY0/index.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>precision    recall  f1-score   support
+
+0.0       0.00      0.00      0.00        48
+1.0       0.58      1.00      0.73        66
+
+avg / total       0.34      0.58      0.42       114
+</code></pre></div></div>
+
+<h2 id="step-5-improving-the-model">Step 5 Improving the model</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">min_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="nb">min</span><span class="p">()</span>
+<span class="c1">#we are going to normalize the x-train. just get minimum value
+</span><span class="n">min_train</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mean radius                  6.981000
+mean texture                 9.710000
+mean perimeter              43.790000
+mean area                  143.500000
+mean smoothness              0.052630
+mean compactness             0.019380
+mean concavity               0.000000
+mean concave points          0.000000
+mean symmetry                0.106000
+mean fractal dimension       0.049960
+radius error                 0.111500
+texture error                0.362100
+perimeter error              0.757000
+area error                   6.802000
+smoothness error             0.001713
+compactness error            0.002252
+concavity error              0.000000
+concave points error         0.000000
+symmetry error               0.007882
+fractal dimension error      0.000950
+worst radius                 7.930000
+worst texture               12.020000
+worst perimeter             50.410000
+worst area                 185.200000
+worst smoothness             0.071170
+worst compactness            0.027290
+worst concavity              0.000000
+worst concave points         0.000000
+worst symmetry               0.156500
+worst fractal dimension      0.055040
+dtype: float64
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">range_train</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_train</span> <span class="o">-</span> <span class="n">min_train</span><span class="p">)</span><span class="o">.</span><span class="nb">max</span><span class="p">()</span>
+<span class="c1">#range to get maximum value of range_train
+</span><span class="n">range_train</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mean radius                  21.129000
+mean texture                 29.570000
+mean perimeter              144.710000
+mean area                  2355.500000
+mean smoothness               0.110770
+mean compactness              0.326020
+mean concavity                0.426800
+mean concave points           0.201200
+mean symmetry                 0.198000
+mean fractal dimension        0.045790
+radius error                  2.761500
+texture error                 4.522900
+perimeter error              21.223000
+area error                  518.798000
+smoothness error              0.029417
+compactness error             0.133148
+concavity error               0.396000
+concave points error          0.052790
+symmetry error                0.071068
+fractal dimension error       0.028890
+worst radius                 25.190000
+worst texture                37.520000
+worst perimeter             170.390000
+worst area                 3246.800000
+worst smoothness              0.129430
+worst compactness             1.030710
+worst concavity               1.105000
+worst concave points          0.291000
+worst symmetry                0.420900
+worst fractal dimension       0.152460
+dtype: float64
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">X_train_scaled</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_train</span> <span class="o">-</span> <span class="n">min_train</span><span class="p">)</span><span class="o">/</span><span class="n">range_train</span>
+<span class="n">X_train_scaled</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/PpcTtDZ6"><img src="https://i.postimg.cc/prVTJYdt/Capture.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="s">'mean area'</span><span class="p">],</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="s">'mean smoothness'</span><span class="p">],</span> <span class="n">hue</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/sM0nHJR0"><img src="https://i.postimg.cc/25CP6H9m/index.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">X_train_scaled</span><span class="p">[</span><span class="s">'mean area'</span><span class="p">],</span> <span class="n">y</span> <span class="o">=</span> <span class="n">X_train_scaled</span><span class="p">[</span><span class="s">'mean smoothness'</span><span class="p">],</span> <span class="n">hue</span> <span class="o">=</span> <span class="n">y_train</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/dDjcHgNH"><img src="https://i.postimg.cc/DftfZTrT/214123.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">min_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="nb">min</span><span class="p">()</span>
+<span class="n">range_test</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_test</span> <span class="o">-</span> <span class="n">min_test</span><span class="p">)</span><span class="o">.</span><span class="nb">max</span><span class="p">()</span>
+<span class="n">X_test_scaled</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_test</span> <span class="o">-</span> <span class="n">min_test</span><span class="p">)</span><span class="o">/</span><span class="n">range_test</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">SVC</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span><span class="p">,</span> <span class="n">confusion_matrix</span>
+
+<span class="n">svc_model</span> <span class="o">=</span> <span class="n">SVC</span><span class="p">()</span>
+<span class="n">svc_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+
+<span class="n">y_predict</span> <span class="o">=</span> <span class="n">svc_model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">)</span> <span class="c1"># we use new data set. because the
+# before normailzation, data is not good.
+</span><span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_predict</span><span class="p">)</span>
+
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span><span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">fmt</span><span class="o">=</span><span class="s">"d"</span><span class="p">)</span>
+<span class="c1">#fmt
+</span></code></pre></div></div>
+
+<p><a href="https://postimg.cc/4n7hpb8x"><img src="https://i.postimg.cc/T2QqMtgg/index.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">y_predict</span><span class="p">))</span>
+<span class="c1">#to make classification_report.
+#recall is how much well catch the true or not
+#precision is how much good predict
+</span></code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>         precision    recall  f1-score   support
+
+0.0       1.00      0.90      0.95        48
+1.0       0.93      1.00      0.96        66
+
+avg / total       0.96      0.96      0.96       114
+
+
+</code></pre></div></div>
+
+<h2 id="step-5-improving-the-model-part-2">Step 5 Improving the model part 2</h2>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span><span class="s">'C'</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="s">'gamma'</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">],</span> <span class="s">'kernel'</span><span class="p">:</span> <span class="p">[</span><span class="s">'rbf'</span><span class="p">]}</span>
+
+
+<span class="c1">#define our range.
+# learning rate C and Gamma of blanket
+#'C' parameter
+# kernal is the basic function.
+</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">GridSearchCV</span>
+<span class="c1">#optimization for model
+</span>
+<span class="n">grid</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">SVC</span><span class="p">(),</span><span class="n">param_grid</span><span class="p">,</span><span class="n">refit</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+<span class="c1"># how many value we want to display that verbos , 4 ,5 what ever for our grid
+# refit an estimator(추정법칙) using the best found parameters on the whole dataset
+# verbose(冗长的)
+</span>
+<span class="n">grid</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_scaled</span><span class="p">,</span><span class="n">y_train</span><span class="p">)</span>
+<span class="c1">#seaching for best value of gamma and c
+</span></code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Fitting 3 folds for each of 16 candidates, totalling 48 fits
+[CV] C=0.1, gamma=1, kernel=rbf ......................................
+[CV]  C=0.1, gamma=1, kernel=rbf, score=0.9671052631578947, total=   0.0s
+[CV] C=0.1, gamma=1, kernel=rbf ......................................
+[CV]  C=0.1, gamma=1, kernel=rbf, score=0.9210526315789473, total=   0.0s
+[CV] C=0.1, gamma=1, kernel=rbf ......................................
+[CV]  C=0.1, gamma=1, kernel=rbf, score=0.9470198675496688, total=   0.0s
+[CV] C=0.1, gamma=0.1, kernel=rbf ....................................
+[CV]  C=0.1, gamma=0.1, kernel=rbf, score=0.9144736842105263, total=   0.0s
+[CV] C=0.1, gamma=0.1, kernel=rbf ....................................
+[CV]  C=0.1, gamma=0.1, kernel=rbf, score=0.8881578947368421, total=   0.0s
+[CV] C=0.1, gamma=0.1, kernel=rbf ....................................
+[CV]  C=0.1, gamma=0.1, kernel=rbf, score=0.8675496688741722, total=   0.0s
+[CV] C=0.1, gamma=0.01, kernel=rbf ...................................
+[CV]  C=0.1, gamma=0.01, kernel=rbf, score=0.6381578947368421, total=   0.0s
+[CV] C=0.1, gamma=0.01, kernel=rbf ...................................
+[CV]  C=0.1, gamma=0.01, kernel=rbf, score=0.6381578947368421, total=   0.0s
+[CV] C=0.1, gamma=0.01, kernel=rbf ...................................
+[CV]  C=0.1, gamma=0.01, kernel=rbf, score=0.6423841059602649, total=   0.0s
+[CV] C=0.1, gamma=0.001, kernel=rbf ..................................
+[CV]  C=0.1, gamma=0.001, kernel=rbf, score=0.6381578947368421, total=   0.0s
+[CV] C=0.1, gamma=0.001, kernel=rbf ..................................
+[CV]  C=0.1, gamma=0.001, kernel=rbf, score=0.6381578947368421, total=   0.0s
+[CV] C=0.1, gamma=0.001, kernel=rbf ..................................
+[CV]  C=0.1, gamma=0.001, kernel=rbf, score=0.6423841059602649, total=   0.0s
+[CV] C=1, gamma=1, kernel=rbf ........................................
+[CV]  C=1, gamma=1, kernel=rbf, score=0.993421052631579, total=   0.0s
+[CV] C=1, gamma=1, kernel=rbf ........................................
+[CV]  C=1, gamma=1, kernel=rbf, score=0.9473684210526315, total=   0.0s
+[CV] C=1, gamma=1, kernel=rbf ........................................
+[CV]  C=1, gamma=1, kernel=rbf, score=0.9801324503311258, total=   0.0s
+[CV] C=1, gamma=0.1, kernel=rbf ......................................
+[CV]  C=1, gamma=0.1, kernel=rbf, score=0.9736842105263158, total=   0.0s
+[CV] C=1, gamma=0.1, kernel=rbf ......................................
+[CV]  C=1, gamma=0.1, kernel=rbf, score=0.9276315789473685, total=   0.0s
+[CV] C=1, gamma=0.1, kernel=rbf ......................................
+[CV]  C=1, gamma=0.1, kernel=rbf, score=0.9403973509933775, total=   0.0s
+[CV] C=1, gamma=0.01, kernel=rbf .....................................
+[CV]  C=1, gamma=0.01, kernel=rbf, score=0.9144736842105263, total=   0.0s
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">grid</span><span class="o">.</span><span class="n">best_params_</span>
+<span class="c1"># {'C': 10, 'gamma': 0.1, 'kernel': 'rbf'}
+</span><span class="n">grid</span><span class="o">.</span><span class="n">best_estimator_</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>SVC(C=10, cache_size=200, class_weight=None, coef0=0.0,
+  decision_function_shape='ovr', degree=3, gamma=0.1, kernel='rbf',
+  max_iter=-1, probability=False, random_state=None, shrinking=True,
+  tol=0.001, verbose=False)
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">grid_predictions</span> <span class="o">=</span> <span class="n">grid</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test_scaled</span><span class="p">)</span>
+<span class="n">cm</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">grid_predictions</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">cm</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/JsZbWcwh"><img src="https://i.postimg.cc/YCy8YbbQ/index.png" width="700px" title="source: imgur.com" /></a></p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span><span class="n">grid_predictions</span><span class="p">))</span>
+</code></pre></div></div>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>precision    recall  f1-score   support
+
+0.0       1.00      0.94      0.97        48
+1.0       0.96      1.00      0.98        66
+
+avg / total       0.97      0.97      0.97       114
+
+
+</code></pre></div></div>
+:ET

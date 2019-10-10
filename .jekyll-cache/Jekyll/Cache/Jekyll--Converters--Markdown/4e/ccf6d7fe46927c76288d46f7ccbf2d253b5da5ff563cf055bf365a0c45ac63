@@ -1,0 +1,40 @@
+I"/<p>A. TAKES A USERNAME AND PASSWORD FROM A USER, GRANT OR DENY ACCESS
+B. ONCE ACCESS IS GRANTED, THE SYSTEM REQUESTS TO GET THE TIME OF THE DAY FROM A USER
+C. THE SYSTEM THEN PROVIDES THE USER WITH DETAILS ON THE LECTURE TITLE AND LOCATION
+D. THE PROGRAM THEN PROVIDES THE STUDENT WITH PREVIOUS LECTURE NOTES, THE NOTES ARE CONTAINED IN THE PROVIDED FILE NAMED “LECTURE NOTES.TXT”</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">getpass</span> <span class="c1"># this is the function hide the password
+</span><span class="n">username</span> <span class="o">=</span> <span class="s">"Ryan"</span>
+<span class="n">password</span> <span class="o">=</span> <span class="s">"ysk</span><span class="si">%123</span><span class="s">"</span>
+<span class="c1">#create a id and passward.
+</span></code></pre></div></div>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># this is the process of to select the day_planner schedule.
+</span><span class="k">def</span> <span class="nf">day_planner</span><span class="p">(</span><span class="n">time_h_now</span><span class="p">):</span>
+    <span class="n">daily_task</span>    <span class="o">=</span> <span class="p">{</span><span class="mi">10</span><span class="p">:</span> <span class="s">'Programming Lecture, Room A'</span><span class="p">,</span>
+                     <span class="mi">12</span><span class="p">:</span> <span class="s">'Computer Vision Lecture, Room C'</span><span class="p">,</span>
+                     <span class="mi">13</span><span class="p">:</span> <span class="s">'Lunch @Cafeteria!'</span><span class="p">,</span>
+                     <span class="mi">15</span><span class="p">:</span> <span class="s">'Group Project Meeting, Room E'</span><span class="p">}</span>
+
+    <span class="k">for</span> <span class="n">task_time</span> <span class="ow">in</span> <span class="n">daily_task</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span> <span class="c1"># let's go to the daily_task.key()
+</span>        <span class="k">if</span> <span class="n">time_h_now</span> <span class="o">&lt;=</span> <span class="n">task_time</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">'You should attend:'</span><span class="p">,</span> <span class="n">daily_task</span><span class="p">[</span><span class="n">task_time</span><span class="p">])</span>
+            <span class="k">break</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">input_username</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Enter Username: "</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+<span class="c1"># that convert whatever word is lower key
+</span><span class="n">input_password</span> <span class="o">=</span> <span class="n">getpass</span><span class="o">.</span><span class="n">getpass</span><span class="p">(</span><span class="s">'Password:'</span><span class="p">)</span> <span class="c1"># this is the fuction hide the password(getpass.getpass)
+</span>
+<span class="k">if</span> <span class="n">username</span> <span class="o">==</span> <span class="n">input_username</span> <span class="ow">and</span> <span class="n">input_password</span> <span class="o">==</span> <span class="n">password</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Access granted, Welcome to the system"</span><span class="p">)</span>
+    <span class="n">time_h_now</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">"What's the time now [Use 24h format]? Insert Time between 8AM-3PM [8-15]?"</span><span class="p">))</span>
+
+    <span class="n">day_planner</span><span class="p">(</span><span class="n">time_h_now</span><span class="p">)</span> <span class="c1">#class.
+</span>
+    <span class="n">myfile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">"Lecture_Notes.txt"</span><span class="p">)</span> <span class="c1"># open the file
+</span>    <span class="k">print</span><span class="p">(</span><span class="n">myfile</span><span class="o">.</span><span class="n">read</span><span class="p">())</span> <span class="c1"># to read opend the file ('myfile')
+</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span><span class="p">(</span><span class="s">"Username or password is not correct, access denied"</span><span class="p">)</span>
+</code></pre></div></div>
+:ET

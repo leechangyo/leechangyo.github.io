@@ -1,0 +1,47 @@
+I",<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="n">answer</span> <span class="o">=</span> <span class="s">'y'</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s">'Welcome to the Fortune Teller!'</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s">'You will select a color and a number and I will tell you what the future holds for you!'</span><span class="p">)</span>
+</code></pre></div></div>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Welcome to the Fortune Teller!
+You will select a color and a number and I will tell you what the future holds for you!
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">while</span> <span class="n">answer</span> <span class="o">==</span> <span class="s">'y'</span><span class="p">:</span>
+
+    <span class="n">color</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Select a colour [yellow, green, blue, red] "</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">color</span> <span class="o">==</span> <span class="s">"yellow"</span> <span class="ow">or</span> <span class="n">color</span> <span class="o">==</span><span class="s">"green"</span><span class="p">:</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">"Select a number [1, 2, 5, 6]"</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="s">"Worried about your future career? Don't worry. You'll 100</span><span class="si">% </span><span class="s">get what you want, be patient!"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="s">"You will become a millionaire at the age of 35!"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">5</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="s">"You will have a great family with 10 kids!"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">6</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="s">"You will become famous and everyone will love you!"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="s">"Numbers 1, 2, 5, 6 are the only numbers allowed"</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">color</span> <span class="o">==</span> <span class="s">"blue"</span> <span class="ow">or</span> <span class="n">color</span> <span class="o">==</span> <span class="s">"red"</span><span class="p">:</span>
+        <span class="n">number</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">input</span><span class="p">(</span><span class="s">"Select a number [3, 4, 7, 8]"</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="s">"You will live a happy life for 100 years at least!"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">4</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="s">"You will become a successful doctor one day!"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">7</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="s">"All your dreams will come true, just be patient!"</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">number</span> <span class="o">==</span> <span class="mi">8</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="s">"You're lucky, You will have it all one day!"</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+              <span class="k">print</span><span class="p">(</span><span class="s">"Numbers 3, 4, 7, 8 are the only numbers allowed"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">"Colors [yellow, green, blue, red] are only allowed"</span><span class="p">)</span>
+
+    <span class="n">answer</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s">"Play again? insert 'y' for YES or 'n' for NO"</span><span class="p">)</span>
+
+</code></pre></div></div>
+:ET
