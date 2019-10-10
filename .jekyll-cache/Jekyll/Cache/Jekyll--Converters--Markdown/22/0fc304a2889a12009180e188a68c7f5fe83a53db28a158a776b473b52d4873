@@ -1,0 +1,222 @@
+I"0<h1 id="appendix-elementary-results-and-notations">Appendix: Elementary results and notations</h1>
+
+<h2 id="1derivatives">1.Derivatives</h2>
+<p><a href="https://postimg.cc/2V31NpXd"><img src="https://i.postimg.cc/J45ZJMNF/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li><strong>A gradient represents the slope of the tangent of the graph of the function. It gives the linear approximation of f at a point. It points toward the greatest rate of increase.</strong></li>
+</ul>
+
+<h2 id="2-hessian">2. Hessian</h2>
+
+<ul>
+  <li>Let f be twice differentiable.</li>
+</ul>
+
+<p><a href="https://postimg.cc/5jVrrbyG"><img src="https://i.postimg.cc/NG9w50cg/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>A Hessian gives a quadratic approximation of f at a point.</li>
+  <li>Gradient and Hessian are local properties that help us recognize local solutions and determine a direction to move at toward the next point.
+    <h2 id="mathematical-optimization">Mathematical optimization</h2>
+    <p><a href="https://postimg.cc/06JgJkBk"><img src="https://i.postimg.cc/1zvy240q/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+  </li>
+  <li><strong>optimal solution $x^*$</strong> has smallest value of $f_0$ among all vectors that satisfy the constraints</li>
+</ul>
+
+<h2 id="examples">Examples</h2>
+<ul>
+  <li>portfolio optimization
+    <ul>
+      <li>variables: amounts invested in different assets</li>
+      <li>constraints: budget, max./min. investment per asset, minimum return
+        <ul>
+          <li>max/min : minimum could be zero, so we’re not allowed to actually purchase</li>
+          <li>minimum return: we <strong>expect</strong> from this collection from this portfolio</li>
+        </ul>
+      </li>
+      <li>objective: overall risk or return variance
+        <ul>
+          <li>ex) 500 stocks in can invest in, in my mean return absolutely muse excess 11% period</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>device sizing in electronic circuits
+    <ul>
+      <li>variables: device widths and lengths</li>
+      <li>constraints: manufacturing limits, timing requirements, maximum area</li>
+      <li>objective: power consumption</li>
+    </ul>
+  </li>
+  <li>data fitting
+    <ul>
+      <li>variables: model parameters</li>
+      <li>constraints: prior information, parameter limits</li>
+      <li>objective: measure of misfit or prediction error</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="examples-1">Examples</h2>
+<p><a href="https://postimg.cc/PL2w92FL"><img src="https://i.postimg.cc/ZRhx9Q8L/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="examples-2">Examples</h2>
+<ul>
+  <li>Find <em>two nonnegative numbers</em> whose sum is up to 6 so <strong>that their product is a maximum.</strong></li>
+  <li>It is equivalent to find the largest area of a rectangular region provided that its perimeter is no greater than 12.</li>
+  <li>Problem: let the two numbers be x, y, solve
+<a href="https://postimg.cc/K47BXPpD"><img src="https://i.postimg.cc/xjhRzgKh/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+</ul>
+
+<h2 id="examples-3">Examples</h2>
+<ul>
+  <li>Find a line that “best” fit three given points (x1, y1) = (2, 1), (x2, y2) = (3, 6) and (x3, y3) = (5, 4).</li>
+  <li>Problem: let the <strong>line equation be y = ax + b</strong>, in the following least square sense:</li>
+</ul>
+
+<p><a href="https://postimg.cc/wy37PNPg"><img src="https://i.postimg.cc/9MYZDtYR/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="traveling-sales-man-problem-tsmp">Traveling sales man problem (TSMP)</h2>
+
+<p><a href="https://postimg.cc/3kxwcpzN"><img src="https://i.postimg.cc/T3rWhJ9V/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>A salesman needs to visit a number (n) of cities, denoted by city 1, 2, · · · , n.</li>
+  <li>The distances between cities are known, i.e. d_ij denotes the distance between city i and city j.</li>
+  <li>The salesman wants to travel each city once in turn and in the meantime minimize the total travel distance.</li>
+  <li>What order should be used?</li>
+  <li>Problem: denote the order of travelling by ($i_1$, · · · , $i_n$), model</li>
+  <li>this is polynomial time</li>
+</ul>
+
+<p><a href="https://postimg.cc/Y4yWp7J6"><img src="https://i.postimg.cc/50fqSNgR/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="solving-optimization-problems">Solving optimization problems</h2>
+<ul>
+  <li>general optimization problem (find a point: global optimization)
+    <ul>
+      <li>very difficult to solve</li>
+      <li>methods involve some compromise, e.g., very long computation time, or not always finding the solution</li>
+    </ul>
+  </li>
+  <li>exceptions : certain problem classes can be solved efficiently and reliably <strong>(Global solution)</strong>
+    <ul>
+      <li>least-squares problems (we get the answer in period)</li>
+      <li>linear programming problems (we get the answer in period)</li>
+      <li>convex optimization problems <strong>(Global solution)</strong></li>
+    </ul>
+  </li>
+  <li>most problem can not be optimized, but we use convex optimization solve the problem
+    <ul>
+      <li>ex) singular values, principal component analysis</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="convex-optimization-problem">Convex optimization problem</h2>
+<p><a href="https://postimg.cc/r095tpF7"><img src="https://i.postimg.cc/FRMp8dtF/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/wyZQhQtZ"><img src="https://i.postimg.cc/J04YCTRr/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/4KZ4BYH3"><img src="https://i.postimg.cc/HL8JW5pb/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/4Hhnjrf4"><img src="https://i.postimg.cc/SRg8YhH9/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></a></a></p>
+<ul>
+  <li>objective and constraint functions are convex:
+<a href="https://postimg.cc/pmnQH6dS"><img src="https://i.postimg.cc/FHTTjtXh/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+  <li>includes least-squares problems and linear programs as special cases</li>
+  <li>linear function are right on the boundary they have zero curvature(弯曲)</li>
+  <li>so one way to say convex is just positive curvature(can solve problem)
+<a href="https://postimg.cc/MM22ZNxr"><img src="https://i.postimg.cc/DZm263NF/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/q6CTxK0g"><img src="https://i.postimg.cc/5ys215R5/convex-upward-function.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></li>
+</ul>
+
+<h2 id="convex-optimization-problem-1">Convex optimization problem</h2>
+<p><a href="https://postimg.cc/LhHRqJr9"><img src="https://i.postimg.cc/zDhfcW7g/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/ygCfJSx7"><img src="https://i.postimg.cc/FR7wByQk/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></p>
+<ul>
+  <li>linear square problems
+<a href="https://postimg.cc/zyXYB6Mx"><img src="https://i.postimg.cc/x1LfsSPV/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+</ul>
+
+<h2 id="convex-optimization-problem-2">Convex optimization problem</h2>
+<ul>
+  <li>solving convex optimization problems
+    <ul>
+      <li>no analytical solution</li>
+      <li>reliable and efficient algorithms</li>
+      <li>computation time (roughly) proportional to max{n3, n2m, F}, where F is cost of evaluating $f_i$’s and their first and second derivatives(this is basically square)</li>
+      <li>almost a technology</li>
+    </ul>
+  </li>
+  <li>using convex optimization
+    <ul>
+      <li>often difficult to recognize</li>
+      <li>surprisingly many problems can be solved via convex optimization
+<a href="https://postimg.cc/ZBryRWvt"><img src="https://i.postimg.cc/B6z5mDq6/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="convex-optimization-example">Convex optimization example</h2>
+<ul>
+  <li>I have surface here with patches and I have some lamps here and we are going to choose the illumination powers in the lamps. that’s our variable. we’ll say the illumination on a patch here is going to be a sum of illumination from the lamps and it is going to be following proportional to the lamp power. and proportionality constant can be an inverse square law. R is the distance between patch and lamp, and there will be something which is a shading effect because obviously if we are coming in straight on. we get full power if this lamp for examples, put little illumination on here and if this were below it’s horizon if there were a lamp here, it would be not illuminate this patch at all</li>
+</ul>
+
+<h2 id="least-squares-problems">Least squares problems</h2>
+<p><a href="https://postimg.cc/R625PTMK"><img src="https://i.postimg.cc/Vvkfk7pG/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>A is structured like sparse(稀少的)(image processing like transformation)
+<a href="https://postimg.cc/R625PTMK"><img src="https://i.postimg.cc/Vvkfk7pG/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+</ul>
+
+<h2 id="variants-of-least-squares">Variants of Least squares</h2>
+<p><a href="https://postimg.cc/9wzPfGT8"><img src="https://i.postimg.cc/prJsqCdH/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="linear-programming">Linear Programming</h2>
+<ul>
+  <li>huge amount of qualitative intelligent things about linear program what we can not do is we can not write down formula for solution
+<a href="https://postimg.cc/XB8vthXt"><img src="https://i.postimg.cc/xqrbNVQj/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+  <li>solving linear programs
+    <ul>
+      <li>no analytical formula for solution ( there is no formula, there is no a transpose A inverse a transpose B)</li>
+      <li>reliable and efficient algorithms and software</li>
+      <li>computation time proportional to $n^2$m if m &gt;= n; less with structure (same as least square)
+        <ul>
+          <li>m : number of contain</li>
+        </ul>
+      </li>
+      <li>a mature technology</li>
+      <li>a few standard tricks used to convert problems into linear programs
+        <ul>
+          <li>e.g., problems involving $l_1$- or $l_∞$- norms, piecewise(分段)-linear functions</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="graphic-optimization-in-2d">Graphic optimization in 2D</h2>
+<p><a href="https://postimg.cc/kBWxjXnp"><img src="https://i.postimg.cc/L6bN8nG2/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="example-the-transportation-problem">Example: The transportation problem</h2>
+<p><a href="https://postimg.cc/WqgX6GW9"><img src="https://i.postimg.cc/Bbwk3NxG/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="optimal-transport">Optimal transport</h2>
+<p><a href="https://postimg.cc/dkMCRzbY"><img src="https://i.postimg.cc/mDkS44Vt/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="optimal-transport-lp">Optimal transport: LP</h2>
+<p><a href="https://postimg.cc/qNhSzK05"><img src="https://i.postimg.cc/W1XvYmyT/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="global-vs-local-solution">Global vs local solution</h2>
+<p><a href="https://postimg.cc/YvQcdFVm"><img src="https://i.postimg.cc/Njzgf7kb/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="global-vs-local-solution-1">Global vs local solution</h2>
+
+<p><a href="https://postimg.cc/9rnQP7Sh"><img src="https://i.postimg.cc/Njg2c8k5/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="graph">Graph</h2>
+
+<p><a href="https://postimg.cc/4YpnJ3LR"><img src="https://i.postimg.cc/nhPmGjqr/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="reference">Reference</h1>
+
+<p><a href="https://web.stanford.edu/class/ee364a/lectures.html"> Optimization method - Standford University </a></p>
+:ET
