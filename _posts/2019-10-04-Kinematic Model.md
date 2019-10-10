@@ -29,4 +29,5 @@ tag: ROBOTICS
 - Ex) there are two J1, J2 and if they are not coupled when J1 moved, J2 is staying joint value
 - Input to Forward Kinematics is position of Real Joints
 - Motor Encoder position must be adjusted
+
 <a href="https://postimg.cc/dDzHqgKw"><img src="https://i.postimg.cc/Wb4Q7PWF/20191010143540.jpg" width="700px" title="source: imgur.com" /><a>

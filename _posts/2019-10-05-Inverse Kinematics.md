@@ -6,6 +6,7 @@ tag: ROBOTICS
 ---
 
 # Inverse Kinematics
+
 <a href="https://postimg.cc/CnFj1CJC"><img src="https://i.postimg.cc/GtDzXqyf/20191010143752.jpg" width="700px" title="source: imgur.com" /><a>
 
 ## 1. General Derivation(起源)
@@ -17,6 +18,7 @@ tag: ROBOTICS
 ## 2. Non-Linear Porblem
 - Example: TCP moves linearly along axis z
 - Joints movements are highly non-linear
+
 <a href="https://postimg.cc/62HQrdtf"><img src="https://i.postimg.cc/T1xWX9sF/20191010144047.jpg" width="700px" title="source: imgur.com" /><a>
 
 ## 2.1 Non-unique solution
@@ -32,6 +34,7 @@ tag: ROBOTICS
 - find out that the position of the wrist point only depends on the first three joint axes of the robot
 - moving the fourth, fifth, sixth joint will not modify the position of the wrist point
 - so we can split into two part (wrist, arm) it called **Decoupling**
+
 <a href="https://postimg.cc/dhvLKQHd"><img src="https://i.postimg.cc/pL58zpK0/20191010144710.jpg" width="700px" title="source: imgur.com" /><a>
 <a href="https://postimg.cc/HrhKGn3s"><img src="https://i.postimg.cc/VNfcCbCM/20191010145903.jpg" width="700px" title="source: imgur.com" /><a>
 <a href="https://postimg.cc/4YxdLLFR"><img src="https://i.postimg.cc/7Zg2Lj3h/20191010150135.jpg" width="700px" title="source: imgur.com" /><a>
@@ -46,6 +49,8 @@ tag: ROBOTICS
 
 ## 5. Couple
 - output of inverse kinematics is position of real joints
+
 <a href="https://postimg.cc/s114qz1w"><img src="https://i.postimg.cc/DfPpWyhk/20191010151405.jpg" width="700px" title="source: imgur.com" /><a>
 - They must be adjusted to calculate correct motor on target positions
+
 <a href="https://postimg.cc/qzyyHvrX"><img src="https://i.postimg.cc/CL6NDR6t/20191010151543.jpg" width="700px" title="source: imgur.com" /><a>
