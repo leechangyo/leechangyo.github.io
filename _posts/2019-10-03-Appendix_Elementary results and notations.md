@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 3. Appendix: Elementary results and notations
+title: 3. Appendix- Elementary results and notations
 category: Optimization method
 tag: Optimization method
 ---
@@ -22,7 +22,7 @@ tag: Optimization method
 
 ## 3. Taylor’s series Expansion
 <a href="https://postimg.cc/N9JrRQzM"><img src="https://i.postimg.cc/gjdqFJyv/Capture.png" width="700px" title="source: imgur.com" /><a>
-
+- α is learning rate
 
 # Reference
 
