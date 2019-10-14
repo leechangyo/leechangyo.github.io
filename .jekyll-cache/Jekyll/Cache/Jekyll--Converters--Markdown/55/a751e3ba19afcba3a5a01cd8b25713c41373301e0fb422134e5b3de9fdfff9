@@ -1,0 +1,143 @@
+I"�<h1 id="tdλ">TD(λ)</h1>
+<ul>
+  <li>Generalize N-step method</li>
+  <li>λ is associated with something called the []”eligibility trace”(전격 흔적)](https://sumniya.tistory.com/14)
+    <ul>
+      <li>eligibility trace라는 개념 : 이는 과거에 방문했던 state 중에서 현재 얻게 되는 reward에 영향을 주는 state를 판단하여, 현재 얻게 되는 reward을 해당 state에 나누어주는 것입니다. 이때, 영향을 주었다고 판단하는 index를 credit이라고하고 이 credit을 assign할 때, 두 가지 기준을 씁니다. 1) Frequency heuristic(얼마나 자주 방문했는가?) 2) Recency heuristic(얼마나 최근에 방문 했는가?)</li>
+    </ul>
+  </li>
+  <li>N-step method code is complicated - not trivial to keep track of all rewards(then flush them once episode is over)</li>
+  <li>TD(λ) allows us a more elegant method to trade-off between TD(0) and MC</li>
+  <li>can update after just 1 step</li>
+  <li>λ = 0 gives us TD(0), λ=1 gives us Monte Carlo
+    <h2 id="n-step-method">N-step method</h2>
+  </li>
+  <li>Recall:</li>
+</ul>
+
+<p><a href="https://postimg.cc/kB92MvCf"><img src="https://i.postimg.cc/7YJ0VKW8/Capture.png" width="500px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>strange idea: combine these :</li>
+</ul>
+
+<p><a href="https://postimg.cc/zVtqkv0D"><img src="https://i.postimg.cc/htghc7mm/Capture.png" width="300px" title="source: imgur.com" /><a></a></a></p>
+<h2 id="tdλ-1">TD(λ)</h2>
+<ul>
+  <li>let’s take this strangeness to the next level - let’s combine more G’s, even an infinite number of G’s</li>
+</ul>
+
+<p><a href="https://postimg.cc/ZvnMYb3j"><img src="https://i.postimg.cc/MHm2DXGk/Capture.png" width="500px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>λ must sum to 1 so that the result is on the same scale as individual G’s</li>
+  <li>in TD(λ). we make the coefficients decrease geometrically</li>
+</ul>
+
+<p><a href="https://postimg.cc/p5jKJ3tR"><img src="https://i.postimg.cc/SRTVkpT2/Capture.png" width="500px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li><strong>Problem: these don’t sum to 1</strong></li>
+  <li>we are most interested in the case when n - &gt; ∞</li>
+  <li>we know this from calculus:</li>
+</ul>
+
+<p><a href="https://postimg.cc/34T4m1ZD"><img src="https://i.postimg.cc/fL3c4gt5/Capture.png" width="200px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>therefore, we should scale the sum by thins amount</li>
+  <li>we call this the <em>**</em></li>
+</ul>
+
+<p><a href="https://postimg.cc/fJtzWXc4"><img src="https://i.postimg.cc/Dy58gPmz/Capture.png" width="500px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>we assume our episode will end at some point(say, time step T)</li>
+  <li>when we reach step T - t, the episode is over, so any N-step return beyond this is the Full MC return, G(t)</li>
+  <li>separate the partial N-step returns and the full returns</li>
+</ul>
+
+<p><a href="https://postimg.cc/sM1sHW2H"><img src="https://i.postimg.cc/nhGrzYfx/Capture.png" width="500px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>manipulate 2nd term to simplify the sum</li>
+</ul>
+
+<p><a href="https://postimg.cc/fSk8QM0s"><img src="https://i.postimg.cc/prJ48TWm/Capture.png" width="500px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>simplify further</li>
+</ul>
+
+<p><a href="https://postimg.cc/TKQQ1yqx"><img src="https://i.postimg.cc/q7HFmyNN/Capture.png" width="500px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>when λ=0, we get the TD(0) return since $0^0$ = 1</li>
+  <li>when λ=1, we get the full return(MC)</li>
+  <li>any λ between 0 and 1 gives us a combination of individual returns(with geometrically decreasing weight)</li>
+</ul>
+
+<p><a href="https://postimg.cc/VJspKPKY"><img src="https://i.postimg.cc/QdcDxX5W/Capture.png" width="500px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>isn’t this much more computational effort than both MC and N-step methods?</li>
+  <li>yes, we would need to calculate G(t), $G^1$(t),…,$G^t$(t)</li>
+  <li>lots of work (benefit is not clear)</li>
+  <li>the algorithm we’re about to learn is an approximation to calculate the true λ-return(since that would be computationally infeasible)</li>
+</ul>
+
+<h2 id="td0">TD(0)</h2>
+<ul>
+  <li>let’s go back to TD(0) for a moment</li>
+  <li>we call target - prediction the TD error</li>
+</ul>
+
+<p><a href="https://postimg.cc/7CKKbC47"><img src="https://i.postimg.cc/B60kYDwh/Capture.png" width="500px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>parameter update is still gradient descent</li>
+</ul>
+
+<p><a href="https://postimg.cc/dZPr0vhr"><img src="https://i.postimg.cc/XqX8QY3H/Capture.png" width="200px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Eligibility trace is a vector the same size as parameter vector:</li>
+</ul>
+
+<p><a href="https://postimg.cc/dZPr0vhr"><img src="https://i.postimg.cc/XqX8QY3H/Capture.png" width="200px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li><strong>Eligibility Trace/ vector keeps track of old gradients</strong>, much like momentum from deep learning</li>
+  <li>λ tell us <strong>“how much” of the past we want to keep</strong>
+    <ul>
+      <li>$e_0$ = 0, $e_t$ = $∇<em>0$V($s_t$) + ɣλe</em>(t_1)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="back-to-tdλ">back to TD(λ)</h2>
+<ul>
+  <li>redefine the parameter update to use <em>e</em> instead of only gradient</li>
+</ul>
+
+<p><a href="https://postimg.cc/8FhjbYwm"><img src="https://i.postimg.cc/HLNXTDyR/Capture.png" width="300px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>recall how momentum works</li>
+  <li>update only depends on next state</li>
+  <li>we can do updates in 1 step rather than waiting N steps</li>
+  <li>but stil, just an approximation to using true λ-return</li>
+  <li>N-step method and true λ-return require waiting for future rewards
+    <ul>
+      <li>we call this the “forward view”</li>
+    </ul>
+  </li>
+  <li>in TD(λ), we update the current param based on past errors
+```
+Reference:</li>
+</ul>
+
+<p><a href="https://www.udemy.com/course/artificial-intelligence-reinforcement-learning-in-python/">Artificial Intelligence Reinforcement Learning</a></p>
+
+<p><a href="https://www.udemy.com/deep-reinforcement-learning-in-python/">Advance AI : Deep-Reinforcement Learning</a></p>
+
+<p><a href="https://www.udemy.com/cutting-edge-artificial-intelligence/learn/lecture/14650508#overview">Cutting-Edge Deep-Reinforcement Learning</a></p>
+:ET
