@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 5. Optimization basicsl
+title: 5. Optimization basics
 category: Optimization method
 tag: Optimization method
 ---
