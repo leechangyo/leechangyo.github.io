@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Include error
-category: ros
+category: ROS
 tag: debug
 ---
 
