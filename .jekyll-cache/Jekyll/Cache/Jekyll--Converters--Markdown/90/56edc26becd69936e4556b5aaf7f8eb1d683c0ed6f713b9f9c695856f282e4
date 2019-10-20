@@ -1,0 +1,268 @@
+I"HD<h1 id="1-golden-section-search">1. GOLDEN SECTION SEARCH</h1>
+<p><a href="https://postimg.cc/30wMDX9T"><img src="https://i.postimg.cc/wMX9ZFm7/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>The search methods we discuss in this and the next section allow us to determine the minimizer of a function <em>f</em> : R —&gt; R over a closed interval, say [$a_o$, $b_o$]</li>
+  <li>The only property that we assume of the objective function <em>f</em> is that it is unimodal(단 한가지의 모델)
+    <ul>
+      <li>which means that <em>f</em> has only one local minimizer</li>
+    </ul>
+  </li>
+  <li>The methods we discuss are based on evaluating the objective function at different points in the interval [$a_o$, $b_o$]</li>
+  <li>We choose these points in such a way that an approximation to the minimizer of / may be achieved in as few evaluations as possible.</li>
+  <li><strong>Our goal is to progressively narrow the range until the minimizer is “boxed in” with sufficient accuracy.</strong></li>
+</ul>
+
+<p><a href="https://postimg.cc/LhjgyzHT"><img src="https://i.postimg.cc/ZYMP5c21/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Consider a unimodal function / of one variable and the interval [$a_o$, $b_o$].
+    <ul>
+      <li>If we evaluate / at only one intermediate point of the interval, we cannot narrow the range within which we know the minimizer is located.</li>
+      <li>We have to evaluate <em>f</em> at two intermediate points</li>
+      <li>We choose the intermediate points in such a way that the reduction in the range is symmetric, in the sense that:</li>
+    </ul>
+  </li>
+</ul>
+
+<p><a href="https://postimg.cc/sBZgMrxc"><img src="https://i.postimg.cc/MG9MrZ8h/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>We then evaluate <em>f</em> at the intermediate points</li>
+</ul>
+
+<p><a href="https://postimg.cc/zy2jF9N6"><img src="https://i.postimg.cc/25rKrDKk/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>
+    <p>If f($a_1$) &lt; f($a_2$), then the minimizer
+must lie in the range [$a_0$, $b_1$]. If, on the other hand,f($a_1$) &gt;= f($a_2$), then the minimizer
+is located in the range [$a_1$, $b_0$]</p>
+  </li>
+  <li>Starting with the reduced range of uncertainty we can repeat the process and similarly find two new points, say $a_2$ and $b_2$ using the same value of p &lt; 1/2</li>
+  <li>However, we would like to minimize the number of the objective function evaluations while reducing the width of the uncertainty interval.</li>
+  <li>Suppose, for example, that f($a_1$) &lt; f($b_1$), as in Figure 7.3.</li>
+</ul>
+
+<p><a href="https://postimg.cc/hhSRwdTn"><img src="https://i.postimg.cc/y6R6DhND/Capture.png" width="300px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Because $a_1$ is already in the uncertainty interval and f ( $a_1$ ) is already known, we can make $a_1$
+coincide with $b_2$</li>
+  <li>Thus, only one new evaluation of <em>f</em> at $a_2$ would be necessary</li>
+</ul>
+
+<p><a href="https://postimg.cc/t7VWKsjr"><img src="https://i.postimg.cc/1RvBNFYZ/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>To find the value of <em>p</em> that results in only one new evaluation of <em>f</em></li>
+  <li>Without loss of generality, imagine that the original range [$a_0$, $b_0$] is of unit length.</li>
+</ul>
+
+<p><a href="https://postimg.cc/871S8fqM"><img src="https://i.postimg.cc/Sx9NMWdT/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/PPyW4Bhh"><img src="https://i.postimg.cc/Bn9mq0V8/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Thus, dividing a range in the ratio of p to 1 — p has the effect that the ratio of the shorter segment to the longer equals the ratio of the longer to the sum of the two.</li>
+  <li>This rule was referred to by ancient Greek geometers as the <em>Golden Section.</em></li>
+  <li>Using this Golden Section rule means that at every stage of the uncertainty range reduction (except the first one), the objective function <em>f</em> need only be evaluated at one new point.</li>
+  <li>The uncertainty range is reduced by the ratio 1 — p = 0.61803 at every stage.</li>
+  <li>Hence, N steps of reduction using the Golden Section method reduces the range by the factor</li>
+</ul>
+
+<p><a href="https://postimg.cc/cK0MB0ts"><img src="https://i.postimg.cc/6QGjwQ9G/Capture.png" width="300px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="example">Example</h2>
+<p><a href="https://postimg.cc/njZFLSWS"><img src="https://i.postimg.cc/G2THqZxR/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/nXRBBBx1"><img src="https://i.postimg.cc/k59srvhL/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/bSy11TZ3"><img src="https://i.postimg.cc/7h7X8tw8/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/7fb2Db0G"><img src="https://i.postimg.cc/yYyXmZNP/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/4KGyK371"><img src="https://i.postimg.cc/jjw7FwRB/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></a></a></a></a></p>
+
+<h1 id="2-fibonacci-search">2. FIBONACCI SEARCH</h1>
+<ul>
+  <li>Recall that the Golden Section method uses the same value of p throughout</li>
+  <li>Suppose now that we are allowed to vary the value p from stage to stage, so that at the <em>k</em> th stage in the reduction process we use a value $p_k$, at the next stage we use a value p(k+1), and so on.</li>
+</ul>
+
+<p><a href="https://postimg.cc/4K16yqdm"><img src="https://i.postimg.cc/CK3mPVpH/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>As in the Golden Section search, our goal is to select successive values of $p_k$, 0 &lt; $P_k$ &lt; 1/2, such that only one new function evaluation is required at each stage.</li>
+  <li>From Figure 7.5, we see that it is sufficient to choose the $p_k$ such that:</li>
+</ul>
+
+<p><a href="https://postimg.cc/PptBvgQc"><img src="https://i.postimg.cc/Qt5sws9X/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>There are many sequences $p_1$,$p_2$, • • • that satisfy the above law of formation, and the condition that 0 &lt; $p_k$ &lt; 1/2.</li>
+</ul>
+
+<p><a href="https://postimg.cc/vxyDnHNy"><img src="https://i.postimg.cc/0jMSLzGz/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Suppose that we are given a sequence $p_1$,$p_2$, - - • satisfying the above conditions, and we use this sequence in our search algorithm.</li>
+  <li>Then, after N iterations of the algorithm, the uncertainty range is reduced by a factor of</li>
+</ul>
+
+<p><a href="https://postimg.cc/679wJjm9"><img src="https://i.postimg.cc/Xv5v5tKy/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Depending on the sequence $p_1$,$p_2$,…, we get a different reduction factor.</li>
+  <li>The natural question is as follows: What sequence $p_1$,$p_2$,… minimizes the above reduction factor?</li>
+  <li>This problem is a constrained optimization problem that can be formally stated:</li>
+</ul>
+
+<p><a href="https://postimg.cc/62kmwTpd"><img src="https://i.postimg.cc/KjjSPMXs/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Before we give the solution to the above optimization problem, we first need to introduce the Fibonacci sequence, FI,F2,F3, — This sequence is defined as follows. First, let F(-1) = 0 and F(0) = 1 by convention. Then, for k &gt; 0,</li>
+</ul>
+
+<p><a href="https://postimg.cc/z3dknyrp"><img src="https://i.postimg.cc/QxDnZ7nL/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/sQghXJvz"><img src="https://i.postimg.cc/d18m5HFh/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>where the $F_k$ are the elements of the Fibonacci sequence.</li>
+  <li>The resulting algorithm is called the <strong>Fibonacci search</strong> method.</li>
+  <li>In the Fibonacci search method, the uncertainty range is reduced by the factor:</li>
+</ul>
+
+<p><a href="https://postimg.cc/WhghsyXr"><img src="https://i.postimg.cc/DyYsPkGC/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Because the Fibonacci method uses the optimal values of $p_1$,$p_2$, • • •» the above reduction factor is less than that of the Golden Section method.</li>
+  <li>In other words, the Fibonacci method is better than the Golden Section method in that it gives a smaller final uncertainty range.</li>
+  <li>We point out that there is an anomaly in the final iteration of the Fibonacci search method, because:</li>
+</ul>
+
+<p><a href="https://postimg.cc/7J4j0frq"><img src="https://i.postimg.cc/mk1RxHd1/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Recall that we need two intermediate points at each stage, one that comes from a previous iteration and another that is a new evaluation point.</li>
+  <li>However, with $p_N$ = 1/2, the two intermediate points coincide in the middle of the uncertainty interval, and therefore we cannot further reduce the uncertainty range.</li>
+  <li>To get around, this problem, we perform the new evaluation for the last iteration using $p_N$ = 1/2 - ε, where ε is the small number</li>
+  <li>In other words, the new evaluation point is just to the left or right of the midpoint of the uncertainty interval.</li>
+  <li>This modification to the Fibonacci method is, of course, of no significant practical consequence</li>
+  <li>As a result of the above modification, the reduction in the uncertainty range at the last iteration may be either</li>
+</ul>
+
+<p><a href="https://postimg.cc/sBVcY7v6"><img src="https://i.postimg.cc/mr95GSRs/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>depending on which of the two points has the smaller objective function value.</li>
+  <li>Therefore, in the worst case, the reduction factor in the uncertainty range for the Fibonacci method is</li>
+</ul>
+
+<p><a href="https://postimg.cc/WhwqMKgV"><img src="https://i.postimg.cc/kXkNdP52/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="example-1">Example</h2>
+
+<p><a href="https://postimg.cc/8fPcwkhV"><img src="https://i.postimg.cc/d3GCsL3D/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/Z9Rfk649"><img src="https://i.postimg.cc/mr3KHSnS/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/q68wcLXF"><img src="https://i.postimg.cc/Vvhh8ZSz/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/XpsHs20M"><img src="https://i.postimg.cc/t4jKCfSg/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/NLJmVZLx"><img src="https://i.postimg.cc/yYBjJHH2/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></a></a></a></a></p>
+
+<h1 id="3-newtons-method">3. NEWTON’S METHOD</h1>
+<ul>
+  <li>Suppose again that we are confronted(降临于) with the problem of minimizing a function <em>f</em> of a single real variable x.</li>
+  <li>We assume now that at <strong>each measurement point</strong> $x^k$ we can calculate f($x^k$), f’’($x^k$}, and f’’’($x^k$). We can fit a quadratic function through $x^k$ that matches its first and second derivatives with that of the function <em>f</em>.</li>
+  <li>This quadratic has the form :</li>
+</ul>
+
+<p><a href="https://postimg.cc/r093MM7s"><img src="https://i.postimg.cc/vTRs7mzr/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="example-1">Example 1</h2>
+
+<p><a href="https://postimg.cc/1gQvtbGq"><img src="https://i.postimg.cc/bvGW6hd3/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/v1bvMfy7"><img src="https://i.postimg.cc/tgVv3Nmc/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/NK4H6VhT"><img src="https://i.postimg.cc/Jhw5LVPT/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/87P5Sz3J"><img src="https://i.postimg.cc/Bn2128Bg/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Newton’s method works well if f “ ( x ) &gt; 0 every where (see Figure 7.6). However, if f”(x) &lt; 0 for some x, Newton’s method may fail to converge to the minimizer (see Figure 7.7).</li>
+</ul>
+
+<p><a href="https://postimg.cc/1fWg4FDc"><img src="https://i.postimg.cc/bwP1CHJM/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Newton’s method can also be viewed as a way to drive the first derivative of <em>f</em> to zero. Indeed, if we set g(x) = f ‘ ( x ) , then we obtain a formula for iterative solution of the equation g(x) = 0:</li>
+</ul>
+
+<p><a href="https://postimg.cc/7bHY76HB"><img src="https://i.postimg.cc/59vHhYZM/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="example-2">Example 2</h2>
+<p><a href="https://postimg.cc/2bPwsJSy"><img src="https://i.postimg.cc/Rh0DHxr7/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Newton’s method for solving equations of the form g(x) = 0 is also referred to as Newton’s method of tangents.</li>
+  <li>This name is easily justified if we look at a geometric interpretation of the method when applied to the solution of the equation g(x) = 0</li>
+</ul>
+
+<p><a href="https://postimg.cc/kBCZD674"><img src="https://i.postimg.cc/pX5tGz7D/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>If we draw a tangent to g(x) at the given point $x^k$, then the tangent line intersects the x-axis at the point x^(k+1), which we expect to be closer to the root x* of g(x) = 0.</li>
+</ul>
+
+<p><a href="https://postimg.cc/FdmWzwQ6"><img src="https://i.postimg.cc/RFJjszpv/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/JtzxFN7j"><img src="https://i.postimg.cc/rySHKjvZ/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="4-secant-method">4. SECANT METHOD</h1>
+<ul>
+  <li>Newton’s method for minimizing <em>f</em> uses second derivatives of <em>f</em>:</li>
+</ul>
+
+<p><a href="https://postimg.cc/qNNMDZSW"><img src="https://i.postimg.cc/9QpRM6pX/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>If the second derivative is not available, we may attempt to approximate it using first derivative information.</li>
+  <li>In particular, we may approximate f”($x^k$} above with</li>
+</ul>
+
+<p><a href="https://postimg.cc/hQX5RTn4"><img src="https://i.postimg.cc/zv7ZWFPh/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>Using the <strong>above approximation of the second derivative</strong>, we obtain the algorithm:</li>
+</ul>
+
+<p><a href="https://postimg.cc/6T4cw9RQ"><img src="https://i.postimg.cc/44BS6yxp/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>The above algorithm is called <strong>the secant method</strong>.</li>
+  <li>Note that the algorithm requires two initial points to start it, which we denote x^(-1) and x^(0)</li>
+  <li>The secant algorithm can be represented in the following equivalent form:</li>
+</ul>
+
+<p><a href="https://postimg.cc/dZ9LvkjX"><img src="https://i.postimg.cc/4yDt6p7J/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Observe that, like Newton’s method, the secant method does not directly involve values of f($x^k$). Instead, it tries to drive the derivative <em>f</em>’ to zero.</li>
+  <li>In fact, as we did for Newton’s method, we can interpret the secant method as an algorithm for solving equations of the form g(x) =Q.</li>
+  <li>Specifically, the secant algorithm for finding a root of the equation g(x) = 0 takes the form</li>
+</ul>
+
+<p><a href="https://postimg.cc/qzXFK8LY"><img src="https://i.postimg.cc/c4VGVh8s/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/gx71cG4k"><img src="https://i.postimg.cc/0N5vfQwm/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>The secant method for root finding is illustrated in Figure 7.10 (compare this with Figure 7.8).</li>
+  <li>Unlike Newton’s method, which uses the slope of g to determine the next point, the secant method uses the “secant” between the (k — l)st and kth points to determine the (k + l)st point.</li>
+</ul>
+
+<h2 id="example-1-1">Example 1</h2>
+
+<p><a href="https://postimg.cc/D8nTRfp9"><img src="https://i.postimg.cc/SNzx2J6x/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="example-2-1">Example 2</h2>
+<p><a href="https://postimg.cc/D8nTRfp9"><img src="https://i.postimg.cc/SNzx2J6x/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<h1 id="reference">Reference</h1>
+
+<p><a href="https://web.stanford.edu/class/ee364a/lectures.html"> Optimization method - Standford University </a></p>
+
+<p>https://www.youtube.com/results?search_query=convex+function</p>
+:ET

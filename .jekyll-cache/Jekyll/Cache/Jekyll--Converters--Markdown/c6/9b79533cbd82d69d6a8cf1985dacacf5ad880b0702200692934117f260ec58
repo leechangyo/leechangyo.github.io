@@ -1,0 +1,35 @@
+I"²<h1 id="optimization-basics">Optimization basics</h1>
+
+<h2 id="general-form-of-optimization">General form of optimization</h2>
+<p><a href="https://postimg.cc/fJJF36mQ"><img src="https://i.postimg.cc/m2wGn4rk/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/94MqVtsb"><img src="https://i.postimg.cc/8CddRZH2/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/HVM9qzQM"><img src="https://i.postimg.cc/vHq26ST0/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/ZvFq6C10"><img src="https://i.postimg.cc/Rh2n5td1/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/Z9p0J7Vr"><img src="https://i.postimg.cc/SKt97H9t/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></a></a></a></a></p>
+<h2 id="minimizers">Minimizers</h2>
+<p><a href="https://postimg.cc/vgPyy5Fr"><img src="https://i.postimg.cc/zvNGnkxc/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/0KgfbBsP"><img src="https://i.postimg.cc/qqqZDPDh/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></p>
+
+<h2 id="feasible-direction">Feasible direction</h2>
+<p><a href="https://postimg.cc/XX3xStQk"><img src="https://i.postimg.cc/RCJYfBty/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/nM0K8rsn"><img src="https://i.postimg.cc/CLVcqfSn/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/BLp19hpq"><img src="https://i.postimg.cc/prbQj4nn/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/1gpv6QmJ"><img src="https://i.postimg.cc/TPsFzdZM/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/njNMt67f"><img src="https://i.postimg.cc/8czvLGzc/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></a></a></a></a></p>
+
+<h2 id="example-linear-equality">Example: Linear equality</h2>
+<p><a href="https://postimg.cc/KK7MfshG"><img src="https://i.postimg.cc/BvkBqdhK/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/Yv1hHDXQ"><img src="https://i.postimg.cc/Cx2DbWkr/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></p>
+
+<h1 id="directional-derivatives">Directional derivatives</h1>
+
+<p><a href="https://postimg.cc/5Hrckbwg"><img src="https://i.postimg.cc/wvq6MBMC/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="example-linear-equality-1">Example: Linear equality</h2>
+<p><a href="https://postimg.cc/9wFnWkt0"><img src="https://i.postimg.cc/Bbx9C9jT/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<h1 id="reference">Reference</h1>
+
+<p><a href="https://web.stanford.edu/class/ee364a/lectures.html"> Optimization method - Standford University </a></p>
+
+<p>https://www.youtube.com/results?search_query=convex+function</p>
+:ET
