@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Introduction to Optimization
+title: 1.Introduction to Optimization
 category: Optimization method
 tag: Optimization method
 ---

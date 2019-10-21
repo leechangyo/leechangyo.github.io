@@ -1,10 +1,304 @@
-- post: what is Reinforcement Learning
+# C++ post
+- post: C++
   related:
-  - Defining Reinforcement Learning
-- post: nounontology2
+  - C++2
+  - C++3
+  - C++4
+  - C++5
+  - C++6
+- post: C++2
   related:
-  - nounontology
-  - word2vecpos2
-  - word2vecpos
-  - japan
-  - deepNLP
+  - C++
+  - C++3
+  - C++4
+  - C++5
+  - C++6
+- post: C++3
+  related:
+  - C++2
+  - C++4
+  - C++5
+  - C++6
+  - C++7
+- post: C++4
+  related:
+  - C++3
+  - C++5
+  - C++6
+  - C++7
+  - C++8
+- post: C++5
+  related:
+  - C++4
+  - C++6
+  - C++7
+  - C++8
+  - C++9
+- post: C++6
+  related:
+  - C++5
+  - C++7
+  - C++8
+  - C++9
+  - C++10
+- post: C++7
+  related:
+  - C++6
+  - C++8
+  - C++9
+  - C++10
+  - C++11
+- post: C++8
+  related:
+  - C++7
+  - C++9
+  - C++10
+  - C++11
+  - C++12
+- post: C++9
+  related:
+  - C++8
+  - C++10
+  - C++11
+  - C++12
+  - C++13
+- post: C++10
+  related:
+  - C++9
+  - C++11
+  - C++12
+  - C++13
+  - C++14
+- post: C++11
+  related:
+  - C++10
+  - C++12
+  - C++13
+  - C++14
+  - C++15
+- post: C++12
+  related:
+  - C++11
+  - C++13
+  - C++14
+  - C++15
+  - C++16
+- post: C++13
+  related:
+  - C++12
+  - C++14
+  - C++15
+  - C++16
+  - C++17
+- post: C++14
+  related:
+  - C++13
+  - C++15
+  - C++16
+  - C++17
+  - C++18
+- post: C++15
+  related:
+  - C++14
+  - C++16
+  - C++17
+  - C++18
+  - C++19
+- post: C++16
+  related:
+  - C++15
+  - C++17
+  - C++18
+  - C++19
+  - C++20
+- post: C++17
+  related:
+  - C++16
+  - C++18
+  - C++19
+  - C++20
+  - C++21
+- post: C++18
+  related:
+  - C++17
+  - C++19
+  - C++20
+  - C++21
+  - C++22
+- post: C++19
+  related:
+  - C++18
+  - C++20
+  - C++21
+  - C++22
+  - C++23
+- post: C++20
+  related:
+  - C++19
+  - C++21
+  - C++22
+  - C++23
+  - C++24
+- post: C++21
+  related:
+  - C++20
+  - C++22
+  - C++23
+  - C++24
+  - C++25
+- post: C++22
+  related:
+  - C++21
+  - C++23
+  - C++24
+  - C++25
+  - C++26
+- post: C++23
+  related:
+  - C++22
+  - C++24
+  - C++25
+  - C++26
+  - C++27
+- post: C++24
+  related:
+  - C++23
+  - C++25
+  - C++26
+  - C++27
+  - C++28
+- post: C++25
+  related:
+  - C++24
+  - C++26
+  - C++27
+  - C++28
+  - C++29
+- post: C++26
+  related:
+  - C++25
+  - C++27
+  - C++28
+  - C++29
+  - C++30
+- post: C++27
+  related:
+  - C++26
+  - C++28
+  - C++29
+  - C++30
+  - C++31
+- post: C++28
+  related:
+  - C++27
+  - C++29
+  - C++30
+  - C++31
+- post: C++29
+  related:
+  - C++28
+  - C++30
+  - C++31
+- post: C++30
+  related:
+  - C++29
+  - C++31
+- post: C++31
+  related:
+  - C++30
+# python
+- post: Guessing Game
+  related:
+  - Cartoon Effect
+  - Fortune Teller Game
+  - Detect Lane Lines in camera images
+  - Zodiac Sign
+  - Tic Tac Toe Game
+- post: Cartoon Effect
+  related:
+  - Guessing Game
+  - Fortune Teller Game
+  - Detect Lane Lines in camera images
+  - Zodiac Sign
+  - Tic Tac Toe Game
+- post: Fortune Teller Game
+  related:
+  - Cartoon Effect
+  - Detect Lane Lines in camera images
+  - Zodiac Sign
+  - Tic Tac Toe Game
+  - Sketch Effect using live webcam
+- post: Detect Lane Lines in camera images
+  related:
+  - Fortune Teller Game
+  - Zodiac Sign
+  - Tic Tac Toe Game
+  - Sketch Effect using live webcam
+  - Day Planner
+- post: Zodiac Sign
+  related:
+  - Detect Lane Lines in camera images
+  - Tic Tac Toe Game
+  - Sketch Effect using live webcam
+  - Day Planner
+  - Face and Eye Detection
+- post: Tic Tac Toe Game
+  related:
+  - Zodiac Sign
+  - Sketch Effect using live webcam
+  - Day Planner
+  - Face and Eye Detection
+  - PDF Files Manipulations
+- post: Sketch Effect using live webcam
+  related:
+  - Tic Tac Toe Game
+  - Day Planner
+  - Face and Eye Detection
+  - PDF Files Manipulations
+  - Amazon Review
+- post: Day Planner
+  related:
+  - Sketch Effect using live webcam
+  - Face and Eye Detection
+  - PDF Files Manipulations
+  - Amazon Review
+  - Avocado price predict
+- post: Face and Eye Detection
+  related:
+  - Day Planner
+  - PDF Files Manipulations
+  - Amazon Review
+  - Avocado price predict
+  - predicting revenue using simple linear Regression
+- post: PDF Files Manipulations
+  related:
+  - Face and Eye Detection
+  - Amazon Review
+  - Avocado price predict
+  - predicting revenue using simple linear Regression
+  - BREAST CANCER CLASSIFICATION
+- post: Amazon Review
+  related:
+  - PDF Files Manipulations
+  - Avocado price predict
+  - predicting revenue using simple linear Regression
+  - BREAST CANCER CLASSIFICATION
+  - SMILING FACES DETECTOR
+- post: Avocado price predict
+  related:
+  - Amazon Review
+  - predicting revenue using simple linear Regression
+  - BREAST CANCER CLASSIFICATION
+  - SMILING FACES DETECTOR
+- post: predicting revenue using simple linear Regression
+  related:
+  - Avocado price predict
+  - BREAST CANCER CLASSIFICATION
+  - SMILING FACES DETECTOR
+- post: BREAST CANCER CLASSIFICATION
+  related:
+  - predicting revenue using simple linear Regression
+  - SMILING FACES DETECTOR
+- post: SMILING FACES DETECTOR
+  related:
+  - BREAST CANCER CLASSIFICATION

@@ -1,0 +1,148 @@
+I"�<h1 id="work-space-monitoring">Work space monitoring</h1>
+<ul>
+  <li>Restrict the working space of the robot for safety reason
+    <ul>
+      <li>Safe zone, Forbidden zone</li>
+    </ul>
+  </li>
+  <li>Collision predicted at planning time</li>
+  <li>Movement can be absorbed before it start</li>
+  <li>Use cuboids(矩形体:직육면체) for simplicity</li>
+</ul>
+
+<h2 id="1-point-to-pointptp">1. Point to Point(PTP)</h2>
+<ul>
+  <li>Linear interpolation of joint axes
+<a href="https://postimg.cc/7bmYk5SY"><img src="https://i.postimg.cc/m2Gc7MDM/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+  <li>t is just parameter describing the curve from zero to one only geometrically</li>
+  <li>no direct control over TCP position and orientation</li>
+  <li>they have no control over the actual path of the end effector of the robot</li>
+  <li>cyclic call of the kinematic
+<a href="https://postimg.cc/4m6PyTNd"><img src="https://i.postimg.cc/L67byHcz/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></li>
+  <li>time-optimal movement(move as fast as joint axes can)</li>
+  <li>only movement that can modify joint configuration</li>
+</ul>
+
+<h2 id="2-path-interpolated-movements">2. path-interpolated movements</h2>
+
+<p><a href="https://postimg.cc/KRjLSSkw"><img src="https://i.postimg.cc/FsgxSh9r/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>orientation cannot be interpolated linearly when using Euler angle</li>
+</ul>
+
+<p><a href="https://postimg.cc/s1hdn1KN"><img src="https://i.postimg.cc/DfCvwXGn/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="3-quaternions">3. Quaternions</h2>
+<ul>
+  <li>convenient way to express an orientation
+<a href="https://postimg.cc/D4ZcMW3Y"><img src="https://i.postimg.cc/Rh1bqfs9/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/nXkCC3DB"><img src="https://i.postimg.cc/JhwJYg76/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></li>
+  <li>commutative means that (교환법칙이 성립할 때를 의미함)</li>
+  <li>Vs <strong>Euler angles</strong>
+    <ul>
+      <li>unique representation of rotation</li>
+      <li>can be easily interpolated</li>
+    </ul>
+  </li>
+  <li>Vs <strong>Rotation Matrix</strong>
+    <ul>
+      <li>more compact representation</li>
+      <li>easy to interpolate</li>
+      <li>do not suffer from numerical approximation</li>
+    </ul>
+  </li>
+  <li>slerp(Spherical Linear interpolation:구면보간법)
+    <ul>
+      <li>Optimal(shortest) path between $q_1$ and $q_2$</li>
+    </ul>
+  </li>
+</ul>
+
+<p><a href="https://postimg.cc/dhjcFXyP"><img src="https://i.postimg.cc/kgkJQPM4/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/7C47GChJ"><img src="https://i.postimg.cc/1znKdwZB/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="4-line-and-circle">4. Line and Circle</h2>
+<ul>
+  <li>Interpolate position linearly</li>
+</ul>
+
+<p><a href="https://postimg.cc/gwL5JTw2"><img src="https://i.postimg.cc/VNKc7ymn/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/5Y1ZRm09"><img src="https://i.postimg.cc/Hx7djZ1M/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Circle detail
+    <ul>
+      <li>point must be non collinear(동일선상)</li>
+      <li>N = $v_1$ x $v_2$</li>
+    </ul>
+  </li>
+  <li>direction N stays the same, only magnitude changed</li>
+  <li>normalize N after the product</li>
+</ul>
+
+<p><a href="https://postimg.cc/hhJFvsYw"><img src="https://i.postimg.cc/tRk9rmNX/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="5-spline매끄러운-곡선">5. spline(매끄러운 곡선)</h2>
+<ul>
+  <li>The operator needs a “smooth” path between points</li>
+</ul>
+
+<p><a href="https://postimg.cc/6T73Kdf6"><img src="https://i.postimg.cc/pVCnDC9j/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="51-practice">5.1 Practice</h2>
+<ul>
+  <li>place control point along targets</li>
+</ul>
+
+<p><a href="https://postimg.cc/p5v1sQ2Q"><img src="https://i.postimg.cc/qq6VMQSF/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/phWs8Wkk"><img src="https://i.postimg.cc/JnJvftXw/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/jwSh28dF"><img src="https://i.postimg.cc/tThvrw0p/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="6-transition변화">6 transition(변화)</h2>
+<ul>
+  <li>round edge</li>
+  <li>sharp edges are a problem
+    <ul>
+      <li>smooth geometrical path</li>
+      <li>increase path speed</li>
+      <li>reduces mechanical wear</li>
+    </ul>
+  </li>
+</ul>
+
+<p><a href="https://postimg.cc/PCLWgLVB"><img src="https://i.postimg.cc/2SG0BhQ8/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/PCL7S5Wq"><img src="https://i.postimg.cc/Vk4cLS5X/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="7-path-length-and-corrections">7 path length and corrections</h2>
+<ul>
+  <li>analytical calculation for lines and circles</li>
+</ul>
+
+<p><a href="https://postimg.cc/Z0dCz8JP"><img src="https://i.postimg.cc/59PvvgGr/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/bGw9mCc9"><img src="https://i.postimg.cc/nLvScg3g/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></p>
+
+<ul>
+  <li>numerically calculation for PTP and splines</li>
+</ul>
+
+<p><a href="https://postimg.cc/G9CJNmCp"><img src="https://i.postimg.cc/rydnDDZ5/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>external path corrections</li>
+</ul>
+
+<p><a href="https://postimg.cc/k26bG0mZ"><img src="https://i.postimg.cc/RZGQsmbM/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>happen at runtime, not planned, not predictable</li>
+  <li>typical case : conveyor tracking(increased productivity)</li>
+  <li>position limits must be monitored at runtime</li>
+  <li>path length changes, so dynamic limits must also be monitored at runtime</li>
+</ul>
+:ET

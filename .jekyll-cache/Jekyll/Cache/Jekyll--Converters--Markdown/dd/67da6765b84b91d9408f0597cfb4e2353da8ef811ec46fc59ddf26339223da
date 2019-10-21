@@ -1,0 +1,32 @@
+I"é<h1 id="graph">Graph</h1>
+<p><a href="https://postimg.cc/G8vTyHr3"><img src="https://i.postimg.cc/bJBx4tBn/Capture.png" width="500px" title="source: imgur.com" /><a></a></a></p>
+<h1 id="convex-and-concave">Convex and concave</h1>
+<p><a href="https://postimg.cc/G8vTyHr3"><img src="https://i.postimg.cc/bJBx4tBn/Capture.png" width="500px" title="source: imgur.com" /><a></a></a></p>
+<h2 id="1-safe-and-forbidden-zone">1. Safe and forbidden zone</h2>
+
+<p><a href="https://postimg.cc/nC4k4PdG"><img src="https://i.postimg.cc/qMY5TfyS/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/34jXXy1J"><img src="https://i.postimg.cc/G2VX1GsY/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="2self-collision">2.Self Collision</h2>
+<ul>
+  <li>Generate forbidden zone around Joints</li>
+  <li>Size depends on mechanical parameters</li>
+  <li>zones are not static</li>
+  <li>use direct kinematics to update zone position</li>
+</ul>
+
+<p><a href="https://postimg.cc/9zrTXn5Q"><img src="https://i.postimg.cc/Kc55N60B/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h2 id="3-multi-robot-monitoring">3. Multi-Robot Monitoring</h2>
+<ul>
+  <li>Exclusive zones</li>
+  <li>collision detection (capsules functions)</li>
+</ul>
+
+<p><a href="https://postimg.cc/DS9FsmmN"><img src="https://i.postimg.cc/5t0thCJf/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/v12r3FFC"><img src="https://i.postimg.cc/0QPV5Pt5/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<p><a href="https://postimg.cc/qg3FhQ2p"><img src="https://i.postimg.cc/fW2QPrLS/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+:ET
