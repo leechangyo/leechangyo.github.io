@@ -1,0 +1,247 @@
+I"÷´<ul>
+  <li>to understand TF look at the my <a href="https://leechangyo.github.io/robotics/2019/10/04/Kinematic-Model/"></a> post</li>
+</ul>
+
+<h1 id="cartesian-control">Cartesian Control</h1>
+
+<blockquote>
+  <p>Cartesian Control</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
+</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span><span class="p">,</span> <span class="n">Lock</span>
+
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">import</span> <span class="nn">tf</span>
+<span class="kn">from</span> <span class="nn">geometry_msgs.msg</span> <span class="kn">import</span> <span class="n">Transform</span>
+<span class="kn">from</span> <span class="nn">sensor_msgs.msg</span> <span class="kn">import</span> <span class="n">JointState</span>
+<span class="kn">from</span> <span class="nn">std_msgs.msg</span> <span class="kn">import</span> <span class="n">Float32</span>
+<span class="kn">from</span> <span class="nn">urdf_parser_py.urdf</span> <span class="kn">import</span> <span class="n">URDF</span>
+
+<span class="k">def</span> <span class="nf">S_matrix</span><span class="p">(</span><span class="n">w</span><span class="p">):</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">w</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">S</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span>  <span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span>  <span class="n">w</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">S</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">S</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="n">w</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">S</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span>  <span class="n">w</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">S</span>
+
+<span class="c1"># This is the function that must be filled in as part of the Project.
+</span><span class="k">def</span> <span class="nf">cartesian_control</span><span class="p">(</span><span class="n">joint_transforms</span><span class="p">,</span> <span class="n">b_T_ee_current</span><span class="p">,</span> <span class="n">b_T_ee_desired</span><span class="p">,</span>
+                      <span class="n">red_control</span><span class="p">,</span> <span class="n">q_current</span><span class="p">,</span> <span class="n">q0_desired</span><span class="p">):</span>
+    <span class="n">num_joints</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">joint_transforms</span><span class="p">)</span>
+    <span class="n">dq</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_joints</span><span class="p">)</span>
+    <span class="c1">#-------------------- Fill in your code here ---------------------------
+</span>    <span class="n">J</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span><span class="n">num_joints</span><span class="p">))</span>
+    <span class="n">ee_V_ee</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="c1"># array([0., 0., 0., 0., 0., 0.])
+</span>
+    <span class="n">T_to_desired</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">b_T_ee_current</span><span class="p">),</span><span class="n">b_T_ee_desired</span><span class="p">)</span> <span class="c1"># symmetry make
+</span>
+    <span class="n">angle</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="n">rotation_from_matrix</span><span class="p">(</span><span class="n">T_to_desired</span><span class="p">)</span>
+    <span class="c1">## in base frame
+</span>    <span class="n">delta_p</span> <span class="o">=</span> <span class="n">T_to_desired</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="c1">#
+</span>    <span class="n">delta_theta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">axis</span><span class="p">,</span><span class="n">angle</span><span class="p">)</span>
+
+    <span class="n">p_dot</span> <span class="o">=</span> <span class="n">delta_p</span><span class="o">*</span><span class="mi">1</span>
+    <span class="n">theta_dot</span> <span class="o">=</span> <span class="n">delta_theta</span><span class="o">*</span><span class="mi">1</span>
+
+    <span class="c1">#ee_T_b = numpy.linalg.inv(b_T_ee_current)
+</span>    <span class="n">ee_R_b</span> <span class="o">=</span> <span class="n">T_to_desired</span><span class="p">[:</span><span class="mi">3</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span>
+
+    <span class="n">ee_V_ee</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ee_R_b</span><span class="p">,</span><span class="n">p_dot</span><span class="p">)</span>
+    <span class="n">ee_V_ee</span><span class="p">[</span><span class="mi">3</span><span class="p">:]</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">ee_R_b</span><span class="p">,</span><span class="n">theta_dot</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_joints</span><span class="p">):</span>
+        <span class="n">J</span><span class="p">[:,</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">adjoint_matrix</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">b_T_ee_current</span><span class="p">),</span><span class="n">joint_transforms</span><span class="p">[</span><span class="n">i</span><span class="p">]))[:,</span><span class="mi">5</span><span class="p">]</span>
+    <span class="n">dq</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">J</span><span class="p">,</span><span class="mf">0.01</span><span class="p">),</span><span class="n">ee_V_ee</span><span class="p">)</span>
+    <span class="c1">#----------------------------------------------------------------------
+</span>    <span class="k">return</span> <span class="n">dq</span>
+
+<span class="k">def</span> <span class="nf">convert_from_message</span><span class="p">(</span><span class="n">t</span><span class="p">):</span>
+    <span class="n">trans</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">((</span><span class="n">t</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                                                  <span class="n">t</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                                                  <span class="n">t</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">z</span><span class="p">))</span>
+    <span class="n">rot</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">((</span><span class="n">t</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                                                <span class="n">t</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                                                <span class="n">t</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">z</span><span class="p">,</span>
+                                                <span class="n">t</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">w</span><span class="p">))</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span><span class="n">rot</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">T</span>
+
+<span class="k">def</span> <span class="nf">adjoint_matrix</span><span class="p">(</span><span class="n">i_T_j</span><span class="p">):</span>
+
+    <span class="n">i_p_j</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">i_T_j</span><span class="p">)[:</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="c1"># raw column
+</span>    <span class="n">i_R_j</span> <span class="o">=</span> <span class="n">i_T_j</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">Ad</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">6</span><span class="p">,</span><span class="mi">6</span><span class="p">))</span>
+    <span class="n">Ad</span><span class="p">[:</span><span class="mi">3</span><span class="p">,:</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">i_R_j</span>
+    <span class="n">Ad</span><span class="p">[</span><span class="mi">3</span><span class="p">:,</span><span class="mi">3</span><span class="p">:]</span> <span class="o">=</span> <span class="n">i_R_j</span>
+    <span class="n">Ad</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">:]</span> <span class="o">=</span> <span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">i_R_j</span><span class="p">,</span><span class="n">S_matrix</span><span class="p">(</span><span class="n">i_p_j</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">Ad</span>
+
+<span class="c1"># Returns the angle-axis representation of the rotation contained in the input matrix
+# Use like this:
+# angle, axis = rotation_from_matrix(R)
+</span><span class="k">def</span> <span class="nf">rotation_from_matrix</span><span class="p">(</span><span class="n">matrix</span><span class="p">):</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">R33</span> <span class="o">=</span> <span class="n">R</span><span class="p">[:</span><span class="mi">3</span><span class="p">,</span> <span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+    <span class="c1"># axis: unit eigenvector of R33 corresponding to eigenvalue of 1
+</span>    <span class="n">l</span><span class="p">,</span> <span class="n">W</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">R33</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"no unit eigenvector corresponding to eigenvalue 1"</span><span class="p">)</span>
+    <span class="n">axis</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">W</span><span class="p">[:,</span> <span class="n">i</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
+    <span class="c1"># point: unit eigenvector of R33 corresponding to eigenvalue of 1
+</span>    <span class="n">l</span><span class="p">,</span> <span class="n">Q</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">eig</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="nb">ValueError</span><span class="p">(</span><span class="s">"no unit eigenvector corresponding to eigenvalue 1"</span><span class="p">)</span>
+    <span class="c1"># rotation angle depending on axis
+</span>    <span class="n">cosa</span> <span class="o">=</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">R33</span><span class="p">)</span> <span class="o">-</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">/</span> <span class="mf">2.0</span>
+    <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">axis</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">1e-8</span><span class="p">:</span>
+        <span class="n">sina</span> <span class="o">=</span> <span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">cosa</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span><span class="o">*</span><span class="n">axis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">axis</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">axis</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">abs</span><span class="p">(</span><span class="n">axis</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mf">1e-8</span><span class="p">:</span>
+        <span class="n">sina</span> <span class="o">=</span> <span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">cosa</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span><span class="o">*</span><span class="n">axis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">axis</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">axis</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">sina</span> <span class="o">=</span> <span class="p">(</span><span class="n">R</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">cosa</span><span class="o">-</span><span class="mf">1.0</span><span class="p">)</span><span class="o">*</span><span class="n">axis</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">axis</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span> <span class="o">/</span> <span class="n">axis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">atan2</span><span class="p">(</span><span class="n">sina</span><span class="p">,</span> <span class="n">cosa</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">angle</span><span class="p">,</span> <span class="n">axis</span>
+
+<span class="k">class</span> <span class="nc">CartesianControl</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="c1">#Initialization
+</span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#Loads the robot model, which contains the robot's kinematics information
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">URDF</span><span class="o">.</span><span class="n">from_parameter_server</span><span class="p">()</span>
+
+        <span class="c1">#Subscribes to information about what the current joint values are.
+</span>        <span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="s">"/joint_states"</span><span class="p">,</span> <span class="n">JointState</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">joint_callback</span><span class="p">)</span>
+
+        <span class="c1">#Subscribes to command for end-effector pose
+</span>        <span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="s">"/cartesian_command"</span><span class="p">,</span> <span class="n">Transform</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">command_callback</span><span class="p">)</span>
+
+        <span class="c1">#Subscribes to command for redundant dof
+</span>        <span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="s">"/redundancy_command"</span><span class="p">,</span> <span class="n">Float32</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">redundancy_callback</span><span class="p">)</span>
+
+        <span class="c1"># Publishes desired joint velocities
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">pub_vel</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="s">"/joint_velocities"</span><span class="p">,</span> <span class="n">JointState</span><span class="p">,</span> <span class="n">queue_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1">#This is where we hold the most recent joint transforms
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">joint_transforms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_current</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_current</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">identity_matrix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">R_base</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">identity_matrix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_target</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">identity_matrix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q0_desired</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_command_time</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_red_command_time</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Initialize timer that will trigger callbacks
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">timer</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Timer</span><span class="p">(</span><span class="n">rospy</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="mf">0.1</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">timer_callback</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">command_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x_target</span> <span class="o">=</span> <span class="n">convert_from_message</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_command_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">redundancy_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q0_desired</span> <span class="o">=</span> <span class="n">command</span><span class="o">.</span><span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_red_command_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>        
+
+    <span class="k">def</span> <span class="nf">timer_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">JointState</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_command_time</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+            <span class="n">dq</span> <span class="o">=</span> <span class="n">cartesian_control</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">joint_transforms</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">x_current</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_target</span><span class="p">,</span>
+                                   <span class="bp">False</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_current</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q0_desired</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">dq</span>
+        <span class="k">elif</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_red_command_time</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+            <span class="n">dq</span> <span class="o">=</span> <span class="n">cartesian_control</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">joint_transforms</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">x_current</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_current</span><span class="p">,</span>
+                                   <span class="bp">True</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_current</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q0_desired</span><span class="p">)</span>
+            <span class="n">msg</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">dq</span>
+        <span class="k">else</span><span class="p">:</span>            
+            <span class="n">msg</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">7</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pub_vel</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">joint_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_values</span><span class="p">):</span>
+        <span class="n">root</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">identity_matrix</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joint_transforms</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_current</span> <span class="o">=</span> <span class="n">joint_values</span><span class="o">.</span><span class="n">position</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">process_link_recursive</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">joint_values</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">align_with_z</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">identity_matrix</span><span class="p">()</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">dot</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">z</span><span class="p">,</span><span class="n">axis</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dot</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="n">T</span>
+        <span class="k">if</span> <span class="n">dot</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformation</span><span class="o">.</span><span class="n">rotation_matrix</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+        <span class="n">rot_axis</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">acos</span><span class="p">(</span><span class="n">dot</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">rotation_matrix</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span> <span class="n">rot_axis</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">process_link_recursive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">joint_values</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">link</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">child_map</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">x_current</span> <span class="o">=</span> <span class="n">T</span>
+            <span class="k">return</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">child_map</span><span class="p">[</span><span class="n">link</span><span class="p">])):</span>
+            <span class="p">(</span><span class="n">joint_name</span><span class="p">,</span> <span class="n">next_link</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">child_map</span><span class="p">[</span><span class="n">link</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">joint_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">joint_map</span><span class="p">:</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">logerror</span><span class="p">(</span><span class="s">"Joint not found in map"</span><span class="p">)</span>
+                <span class="k">continue</span>
+            <span class="n">current_joint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">joint_map</span><span class="p">[</span><span class="n">joint_name</span><span class="p">]</span>        
+
+            <span class="n">trans_matrix</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">((</span><span class="n">current_joint</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                                  <span class="n">current_joint</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                                                  <span class="n">current_joint</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">xyz</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+            <span class="n">rot_matrix</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">euler_matrix</span><span class="p">(</span><span class="n">current_joint</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">rpy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                         <span class="n">current_joint</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">rpy</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                                         <span class="n">current_joint</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">rpy</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="s">'rxyz'</span><span class="p">)</span>
+            <span class="n">origin_T</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">trans_matrix</span><span class="p">,</span> <span class="n">rot_matrix</span><span class="p">)</span>
+            <span class="n">current_joint_T</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">origin_T</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">current_joint</span><span class="o">.</span><span class="nb">type</span> <span class="o">!=</span> <span class="s">'fixed'</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">current_joint</span><span class="o">.</span><span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">joint_values</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                    <span class="n">rospy</span><span class="o">.</span><span class="n">logerror</span><span class="p">(</span><span class="s">"Joint not found in list"</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="c1"># compute transform that aligns rotation axis with z
+</span>                <span class="n">aligned_joint_T</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">current_joint_T</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">align_with_z</span><span class="p">(</span><span class="n">current_joint</span><span class="o">.</span><span class="n">axis</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">joint_transforms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">aligned_joint_T</span><span class="p">)</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">joint_values</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">current_joint</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">angle</span> <span class="o">=</span> <span class="n">joint_values</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="n">joint_rot_T</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">rotation_matrix</span><span class="p">(</span><span class="n">angle</span><span class="p">,</span>
+                                                                 <span class="n">numpy</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">current_joint</span><span class="o">.</span><span class="n">axis</span><span class="p">))</span>
+                <span class="n">next_link_T</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">current_joint_T</span><span class="p">,</span> <span class="n">joint_rot_T</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">next_link_T</span> <span class="o">=</span> <span class="n">current_joint_T</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">process_link_recursive</span><span class="p">(</span><span class="n">next_link</span><span class="p">,</span> <span class="n">next_link_T</span><span class="p">,</span> <span class="n">joint_values</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s">'cartesian_control'</span><span class="p">,</span> <span class="n">anonymous</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">cc</span> <span class="o">=</span> <span class="n">CartesianControl</span><span class="p">()</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">spin</span><span class="p">()</span>
+
+
+
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/Hc2jxBXX"><img src="https://i.postimg.cc/wMKNwrBf/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/xJkFjFWF"><img src="https://i.postimg.cc/ZRjkcGjZ/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/Yv9Py9dH"><img src="https://i.postimg.cc/Hk4Cn85V/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></p>
+:ET

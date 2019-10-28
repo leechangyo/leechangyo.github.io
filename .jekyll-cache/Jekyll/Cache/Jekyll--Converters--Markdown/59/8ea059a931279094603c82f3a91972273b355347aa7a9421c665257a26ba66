@@ -1,0 +1,12 @@
+I"k<p>Step1: Find the path where your cv2.so is installed (if you use the python-cv wheel to install the opencv)</p>
+
+<p>Step2: Export the path to your .bashrc or .zshrc file, just like this:</p>
+
+<blockquote>
+  <p>예시</p>
+</blockquote>
+
+<p>export PYTHONPATH=”/home/userx/anaconda3/lib/python3.5/site-package‌​s:$PYTHONPATH”</p>
+
+<p>해결 됩니다.</p>
+:ET

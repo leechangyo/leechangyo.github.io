@@ -1,0 +1,275 @@
+I"\Ã<ul>
+  <li>to understand TF look at the my <a href="https://leechangyo.github.io/robotics/2019/10/03/Trasnformation-Frame/">Transformation Frame</a> post
+    <h1 id="tf-example">TF Example</h1>
+  </li>
+</ul>
+
+<blockquote>
+  <p>TF_Example.py</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python  
+</span><span class="kn">import</span> <span class="nn">rospy</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">tf2_ros</span>
+<span class="kn">import</span> <span class="nn">geometry_msgs.msg</span>
+
+<span class="k">def</span> <span class="nf">publish_transforms</span><span class="p">():</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">TransformStamped</span><span class="p">()</span>
+    <span class="n">t1</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">t1</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">"world"</span>
+    <span class="n">t1</span><span class="o">.</span><span class="n">child_frame_id</span> <span class="o">=</span> <span class="s">"F1"</span>
+    <span class="n">t1</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">t1</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">t1</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">q1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">t1</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">q1</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">t1</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">q1</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">t1</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">q1</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">t1</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">q1</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">br</span><span class="o">.</span><span class="n">sendTransform</span><span class="p">(</span><span class="n">t1</span><span class="p">)</span>
+
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">TransformStamped</span><span class="p">()</span>
+    <span class="n">t2</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">t2</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">"F1"</span>
+    <span class="n">t2</span><span class="o">.</span><span class="n">child_frame_id</span> <span class="o">=</span> <span class="s">"F2"</span>
+    <span class="n">t2</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="mf">1.0</span>
+    <span class="n">t2</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">t2</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="mf">0.0</span>
+    <span class="n">q2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_about_axis</span><span class="p">(</span><span class="mf">1.57</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">t2</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">q2</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">t2</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">q2</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">t2</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">q2</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">t2</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">q2</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">br</span><span class="o">.</span><span class="n">sendTransform</span><span class="p">(</span><span class="n">t2</span><span class="p">)</span>
+
+    <span class="n">T1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)),</span>
+                   <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">(</span><span class="n">q1</span><span class="p">))</span>
+    <span class="n">T1_inverse</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">inverse_matrix</span><span class="p">(</span><span class="n">T1</span><span class="p">)</span>
+
+    <span class="n">t3</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">TransformStamped</span><span class="p">()</span>
+    <span class="n">t3</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">t3</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">"F3"</span>
+    <span class="n">t3</span><span class="o">.</span><span class="n">child_frame_id</span> <span class="o">=</span> <span class="s">"F4"</span>
+    <span class="n">tr3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_from_matrix</span><span class="p">(</span><span class="n">T1_inverse</span><span class="p">)</span>
+    <span class="n">t3</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">tr3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">t3</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">tr3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">t3</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">tr3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">q3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_matrix</span><span class="p">(</span><span class="n">T1_inverse</span><span class="p">)</span>
+    <span class="n">t3</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">q3</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">t3</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">q3</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">t3</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">q3</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">t3</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">q3</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">br</span><span class="o">.</span><span class="n">sendTransform</span><span class="p">(</span><span class="n">t3</span><span class="p">)</span>
+
+    <span class="n">T2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">((</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">)),</span>
+                   <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">(</span><span class="n">q2</span><span class="p">))</span>
+    <span class="n">T2_inverse</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">inverse_matrix</span><span class="p">(</span><span class="n">T2</span><span class="p">)</span>
+
+    <span class="n">t4</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">TransformStamped</span><span class="p">()</span>
+    <span class="n">t4</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">t4</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">"F2"</span>
+    <span class="n">t4</span><span class="o">.</span><span class="n">child_frame_id</span> <span class="o">=</span> <span class="s">"F3"</span>
+    <span class="n">tr4</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_from_matrix</span><span class="p">(</span><span class="n">T2_inverse</span><span class="p">)</span>
+    <span class="n">t4</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">tr4</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">t4</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">tr4</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">t4</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">tr4</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">q4</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_matrix</span><span class="p">(</span><span class="n">T2_inverse</span><span class="p">)</span>
+    <span class="n">t4</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">q4</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">t4</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">q4</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">t4</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">q4</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">t4</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">q4</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">br</span><span class="o">.</span><span class="n">sendTransform</span><span class="p">(</span><span class="n">t4</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s">'tf2_examples'</span><span class="p">)</span>
+
+    <span class="n">br</span> <span class="o">=</span> <span class="n">tf2_ros</span><span class="o">.</span><span class="n">TransformBroadcaster</span><span class="p">()</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">rospy</span><span class="o">.</span><span class="n">is_shutdown</span><span class="p">():</span>
+        <span class="n">publish_transforms</span><span class="p">()</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/pmrg9MdW"><img src="https://i.postimg.cc/L83RbHK1/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/d7KmbGpb"><img src="https://i.postimg.cc/L83RbHK1/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></p>
+
+<h1 id="second-tutorial">second Tutorial</h1>
+
+<blockquote>
+  <p>second Tutorial.py</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python  
+</span><span class="kn">import</span> <span class="nn">rospy</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">tf2_ros</span>
+<span class="kn">import</span> <span class="nn">geometry_msgs.msg</span>
+
+<span class="k">def</span> <span class="nf">message_from_transform</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+	<span class="n">msg</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">Transform</span><span class="p">()</span>
+	<span class="n">q</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_matrix</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+	<span class="n">p</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_from_matrix</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+	<span class="n">msg</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">msg</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	<span class="n">msg</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+	<span class="n">msg</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">msg</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	<span class="n">msg</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+	<span class="n">msg</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+	<span class="k">return</span> <span class="n">msg</span>
+
+<span class="k">def</span> <span class="nf">publish_transforms</span><span class="p">():</span>
+    <span class="n">object_transform</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">TransformStamped</span><span class="p">()</span>
+    <span class="n">object_transform</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">object_transform</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">"base_frame"</span>
+    <span class="n">object_transform</span><span class="o">.</span><span class="n">child_frame_id</span> <span class="o">=</span> <span class="s">"object_frame"</span>
+    <span class="n">T_1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">concatenate_matrices</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="mf">0.79</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.79</span><span class="p">)),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">]))</span>
+    <span class="n">object_transform</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">message_from_transform</span><span class="p">(</span><span class="n">T_1</span><span class="p">)</span>
+    <span class="n">br</span><span class="o">.</span><span class="n">sendTransform</span><span class="p">(</span><span class="n">object_transform</span><span class="p">)</span>
+
+    <span class="n">robot_transform</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">TransformStamped</span><span class="p">()</span>
+    <span class="n">robot_transform</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">robot_transform</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">"base_frame"</span>
+    <span class="n">robot_transform</span><span class="o">.</span><span class="n">child_frame_id</span> <span class="o">=</span> <span class="s">"robot_frame"</span>
+    <span class="n">T_2</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">concatenate_matrices</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">]))</span>
+    <span class="n">robot_transform</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">message_from_transform</span><span class="p">(</span><span class="n">T_2</span><span class="p">)</span>
+    <span class="n">br</span><span class="o">.</span><span class="n">sendTransform</span><span class="p">(</span><span class="n">robot_transform</span><span class="p">)</span>
+
+    <span class="n">camera_transform</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">TransformStamped</span><span class="p">()</span>
+    <span class="n">camera_transform</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">camera_transform</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">"robot_frame"</span>
+    <span class="n">camera_transform</span><span class="o">.</span><span class="n">child_frame_id</span> <span class="o">=</span> <span class="s">"camera_frame"</span>
+    <span class="n">T_3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">concatenate_matrices</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">]),</span>
+    <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">,</span><span class="mf">0.</span><span class="p">)))</span>
+
+    <span class="n">Tr</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">concatenate_matrices</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">inverse_matrix</span><span class="p">(</span><span class="n">T_3</span><span class="p">),</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">inverse_matrix</span><span class="p">(</span><span class="n">T_2</span><span class="p">),</span><span class="n">T_1</span><span class="p">)</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_from_matrix</span><span class="p">(</span><span class="n">Tr</span><span class="p">)</span>
+    <span class="nb">dir</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]),</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]]))</span>
+    <span class="n">theta</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">/</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">p</span><span class="p">[</span><span class="mi">2</span><span class="p">]])))</span>
+    <span class="n">T_3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">concatenate_matrices</span><span class="p">(</span><span class="n">T_3</span><span class="p">,</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">rotation_matrix</span><span class="p">(</span><span class="n">theta</span><span class="p">,</span><span class="nb">dir</span><span class="p">))</span>
+    <span class="c1">#p = tf.transformations.translation_from_matrix(T_3)
+</span>    <span class="c1">#theta = numpy.arccos(p[0]/numpy.linalg.norm(numpy.array([p[0],p[1],p[2]])))
+</span>    <span class="c1">#T_3 = tf.transformations.concatenate_matrices(T_3,tf.transformations.quaternion_matrix(tf.transformations.quaternion_from_euler(theta,0.0,0.0)))
+</span>
+    <span class="n">camera_transform</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">message_from_transform</span><span class="p">(</span><span class="n">T_3</span><span class="p">)</span>
+    <span class="n">br</span><span class="o">.</span><span class="n">sendTransform</span><span class="p">(</span><span class="n">camera_transform</span><span class="p">)</span>
+
+    <span class="c1"># co = geometry_msgs.msg.TransformStamped()
+</span>    <span class="c1"># co.header.stamp = rospy.Time.now()
+</span>    <span class="c1"># co.header.frame_id = "camera_frame"
+</span>    <span class="c1"># co.child_frame_id = "asd"
+</span>    <span class="c1"># Tr = tf.transformations.concatenate_matrices(tf.transformations.inverse_matrix(T_3),tf.transformations.inverse_matrix(T_2),T_1)
+</span>    <span class="c1"># #p = tf.transformations.translation_from_matrix(Tr)
+</span>    <span class="c1"># #theta = numpy.arccos(p[0]/numpy.linalg.norm(numpy.array([p[0],p[1],p[2]])))
+</span>    <span class="c1"># co.transform = message_from_transform(Tr)
+</span>    <span class="c1"># #Tr = tf.transformations.concatenate_matrices(Tr,tf.transformations.quaternion_matrix(tf.transformations.quaternion_from_euler(theta,0.0,0.0)))
+</span>    <span class="c1"># br.sendTransform(co)
+</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s">'project2_solution'</span><span class="p">)</span>
+
+    <span class="n">br</span> <span class="o">=</span> <span class="n">tf2_ros</span><span class="o">.</span><span class="n">TransformBroadcaster</span><span class="p">()</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">rospy</span><span class="o">.</span><span class="n">is_shutdown</span><span class="p">():</span>
+        <span class="n">publish_transforms</span><span class="p">()</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/G9YGvX2v"><img src="https://i.postimg.cc/xjp5D7Vp/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="third-tutorial">Third Tutorial</h1>
+
+<blockquote>
+  <p>Thrid Tutorial.py</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python  
+</span><span class="kn">import</span> <span class="nn">rospy</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">tf2_ros</span>
+<span class="kn">import</span> <span class="nn">geometry_msgs.msg</span>
+
+<span class="k">def</span> <span class="nf">message_from_transform</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+
+    <span class="n">msg</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">Transform</span><span class="p">()</span>
+    <span class="n">q</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_matrix</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">translation</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_from_matrix</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">translation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">translation</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">translation</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">msg</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">q</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">msg</span>
+
+<span class="k">def</span> <span class="nf">publish_transforms</span><span class="p">():</span>
+    <span class="n">object_transform</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">TransformStamped</span><span class="p">()</span>
+    <span class="n">object_transform</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">object_transform</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">"base_frame"</span>
+    <span class="n">object_transform</span><span class="o">.</span><span class="n">child_frame_id</span> <span class="o">=</span> <span class="s">"object_frame"</span>
+    <span class="n">q1</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="mf">0.79</span><span class="p">,</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.79</span><span class="p">)</span>
+    <span class="n">T1</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">(</span><span class="n">q1</span><span class="p">),</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">((</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">1.0</span><span class="p">)))</span>
+    <span class="n">object_transform</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">message_from_transform</span><span class="p">(</span><span class="n">T1</span><span class="p">)</span>
+    <span class="n">br</span><span class="o">.</span><span class="n">sendTransform</span><span class="p">(</span><span class="n">object_transform</span><span class="p">)</span>
+
+    <span class="n">robot_transform</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">TransformStamped</span><span class="p">()</span>
+    <span class="n">robot_transform</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">robot_transform</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">"base_frame"</span>
+    <span class="n">robot_transform</span><span class="o">.</span><span class="n">child_frame_id</span> <span class="o">=</span> <span class="s">"robot_frame"</span>
+    <span class="n">q2</span><span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.5</span><span class="p">)</span>
+    <span class="n">T2</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">(</span><span class="n">q2</span><span class="p">),</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">((</span><span class="mf">0.0</span><span class="p">,</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">)))</span>
+    <span class="n">robot_transform</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">message_from_transform</span><span class="p">(</span><span class="n">T2</span><span class="p">)</span>
+    <span class="n">br</span><span class="o">.</span><span class="n">sendTransform</span><span class="p">(</span><span class="n">robot_transform</span><span class="p">)</span>
+
+    <span class="n">camera_transform</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">TransformStamped</span><span class="p">()</span>
+    <span class="n">camera_transform</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">camera_transform</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">"robot_frame"</span>
+    <span class="n">camera_transform</span><span class="o">.</span><span class="n">child_frame_id</span> <span class="o">=</span> <span class="s">"camera_frame"</span>
+
+    <span class="c1">#T1 is TBO
+</span>    <span class="c1">#T2 is TBR
+</span>
+    <span class="n">TRC</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">((</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.1</span><span class="p">,</span><span class="mf">0.1</span><span class="p">))</span>
+    <span class="n">TBC</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T2</span><span class="p">,</span><span class="n">TRC</span><span class="p">)</span>
+    <span class="n">TCO</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">inverse_matrix</span><span class="p">(</span><span class="n">TBC</span><span class="p">),</span><span class="n">T1</span><span class="p">)</span>
+    <span class="n">v1_n</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_from_matrix</span><span class="p">(</span><span class="n">TCO</span><span class="p">)</span>
+    <span class="n">v1</span> <span class="o">=</span> <span class="n">v1_n</span><span class="o">/</span><span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v1_n</span><span class="p">)</span> <span class="c1"># vector or matrix norm
+</span>    <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">cross</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">v1</span><span class="p">)</span> <span class="c1">#cross product
+</span>    <span class="n">rt</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">v1_n</span><span class="p">))</span>
+    <span class="n">q3</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_about_axis</span><span class="p">(</span><span class="n">rt</span><span class="p">,</span><span class="n">w</span><span class="p">)</span>
+    <span class="n">T3</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">TRC</span><span class="p">,</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">(</span><span class="n">q3</span><span class="p">))</span>
+    <span class="n">camera_transform</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">message_from_transform</span><span class="p">(</span><span class="n">T3</span><span class="p">)</span>
+    <span class="n">br</span><span class="o">.</span><span class="n">sendTransform</span><span class="p">(</span><span class="n">camera_transform</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s">'project2_solution'</span><span class="p">)</span>
+
+    <span class="n">br</span> <span class="o">=</span> <span class="n">tf2_ros</span><span class="o">.</span><span class="n">TransformBroadcaster</span><span class="p">()</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">rospy</span><span class="o">.</span><span class="n">is_shutdown</span><span class="p">():</span>
+        <span class="n">publish_transforms</span><span class="p">()</span>
+        <span class="n">rospy</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.05</span><span class="p">)</span>
+
+</code></pre></div></div>
+<p><a href="https://postimg.cc/G9YGvX2v"><img src="https://i.postimg.cc/xjp5D7Vp/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+:ET

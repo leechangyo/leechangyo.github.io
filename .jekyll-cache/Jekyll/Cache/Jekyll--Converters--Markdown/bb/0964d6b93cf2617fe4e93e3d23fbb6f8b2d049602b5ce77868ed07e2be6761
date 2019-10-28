@@ -1,0 +1,15 @@
+I"€<h1 id="ros-launch">ROS launch</h1>
+<ul>
+  <li>Group Multiple Ros nodes in one file
+    <ul>
+      <li>launch file in xml format</li>
+    </ul>
+  </li>
+  <li>start up all nodes in the launch file
+    <ul>
+      <li>arguments, node specific paramters, namespaces</li>
+    </ul>
+  </li>
+  <li>also possible to include launch files from other packages in the same launch file</li>
+</ul>
+:ET

@@ -1,0 +1,97 @@
+I"�<h1 id="1-create-msg">1. Create Msg</h1>
+<ul>
+  <li>folder inisde project name “msg”</li>
+  <li>create file “Twoints.msg”</li>
+  <li>put it the data format</li>
+</ul>
+
+<blockquote>
+  <p>TwoInts.msg</p>
+</blockquote>
+
+<pre><code class="language-pyhton">int16 a
+int16 b
+</code></pre>
+
+<ul>
+  <li>we can use publish or script from the Twoints.msg(int16 a/int16 b)</li>
+  <li>and go to CMakeList.txt, add it msg file in the “add_message_files “</li>
+</ul>
+
+<blockquote>
+  <p>CMakeList.txt</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1"># Generate messages in the 'msg' folder
+</span><span class="n">add_message_files</span><span class="p">(</span>
+  <span class="n">FILES</span>
+  <span class="n">TwoInts</span><span class="o">.</span><span class="n">msg</span>
+<span class="p">)</span>
+</code></pre></div></div>
+<ul>
+  <li>and roscd /cd.. catkin_make</li>
+</ul>
+
+<h1 id="2-use-it-1">2. use it (1)</h1>
+
+<blockquote>
+  <p>two_int_talker.py</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python  
+</span><span class="kn">import</span> <span class="nn">random</span>
+
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">from</span> <span class="nn">std_msgs.msg</span> <span class="kn">import</span> <span class="n">Int16</span>
+<span class="kn">from</span> <span class="nn">project1_solution.msg</span> <span class="kn">import</span> <span class="n">TwoInts</span>
+
+<span class="k">def</span> <span class="nf">talker</span><span class="p">():</span>
+    <span class="n">pub</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="s">'two_ints'</span><span class="p">,</span> <span class="n">TwoInts</span><span class="p">,</span> <span class="n">queue_size</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s">'two_int_talker'</span><span class="p">,</span> <span class="n">anonymous</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">rate</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Rate</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>  
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">()</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">rospy</span><span class="o">.</span><span class="n">is_shutdown</span><span class="p">():</span>
+
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">TwoInts</span><span class="p">()</span>
+
+        <span class="n">msg</span><span class="o">.</span><span class="n">a</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">msg</span><span class="o">.</span><span class="n">b</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+        <span class="n">pub</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="n">rate</span><span class="o">.</span><span class="n">sleep</span><span class="p">()</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">talker</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">rospy</span><span class="o">.</span><span class="n">ROSInterruptException</span><span class="p">:</span>
+        <span class="k">pass</span>
+</code></pre></div></div>
+
+<h1 id="2-use-it-1-1">2. use it (1)</h1>
+
+<blockquote>
+  <p>sum.py</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python  
+</span><span class="kn">import</span> <span class="nn">rospy</span>
+
+<span class="kn">from</span> <span class="nn">std_msgs.msg</span> <span class="kn">import</span> <span class="n">Int16</span>
+<span class="kn">from</span> <span class="nn">project1_solution.msg</span> <span class="kn">import</span> <span class="n">TwoInts</span>
+
+<span class="k">def</span> <span class="nf">cb</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+    <span class="k">global</span> <span class="n">SumMsg</span><span class="p">,</span><span class="n">addPub</span>
+    <span class="n">SumMsg</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">a</span> <span class="o">+</span> <span class="n">msg</span><span class="o">.</span><span class="n">b</span>
+    <span class="n">addPub</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">SumMsg</span><span class="p">)</span> <span class="c1"># publish in the addpub topic("/sum")
+</span>
+<span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s">'solution'</span><span class="p">)</span>
+
+<span class="n">SumMsg</span> <span class="o">=</span> <span class="n">Int16</span><span class="p">()</span>
+<span class="n">addPub</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="s">'/sum'</span><span class="p">,</span><span class="n">Int16</span><span class="p">,</span><span class="n">queue_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">Sub</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="s">'/two_ints'</span><span class="p">,</span><span class="n">TwoInts</span><span class="p">,</span><span class="n">cb</span><span class="p">)</span> <span class="c1">#cb is callback the data read it in the function
+</span>
+<span class="n">rospy</span><span class="o">.</span><span class="n">spin</span><span class="p">()</span>
+
+</code></pre></div></div>
+:ET

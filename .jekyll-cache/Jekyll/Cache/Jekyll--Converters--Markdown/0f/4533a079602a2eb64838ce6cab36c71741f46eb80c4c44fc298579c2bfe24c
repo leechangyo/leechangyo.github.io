@@ -1,0 +1,402 @@
+I"Yé<ul>
+  <li>to understand TF look at the my <a href="https://leechangyo.github.io/robotics/2019/10/04/Kinematic-Model/"></a> post</li>
+</ul>
+
+<h1 id="motion-planning">Motion Planning</h1>
+
+<blockquote>
+  <p>Motion Planning</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
+</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="kn">import</span> <span class="n">deepcopy</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span><span class="p">,</span> <span class="n">Lock</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+<span class="kn">import</span> <span class="nn">actionlib</span>
+<span class="kn">import</span> <span class="nn">control_msgs.msg</span>
+<span class="kn">import</span> <span class="nn">geometry_msgs.msg</span>
+<span class="kn">import</span> <span class="nn">moveit_commander</span>
+<span class="kn">import</span> <span class="nn">moveit_msgs.msg</span>
+<span class="kn">import</span> <span class="nn">moveit_msgs.srv</span>
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">import</span> <span class="nn">sensor_msgs.msg</span>
+<span class="kn">import</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">trajectory_msgs.msg</span>
+
+<span class="k">def</span> <span class="nf">convert_to_message</span><span class="p">(</span><span class="n">T</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">Pose</span><span class="p">()</span>
+    <span class="n">position</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_from_matrix</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">orientation</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_matrix</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">position</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">orientation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">orientation</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">orientation</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">orientation</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>        
+    <span class="k">return</span> <span class="n">t</span>
+
+<span class="k">def</span> <span class="nf">convert_from_message</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">((</span><span class="n">msg</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                                              <span class="n">msg</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                                              <span class="n">msg</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">z</span><span class="p">,</span>
+                                              <span class="n">msg</span><span class="o">.</span><span class="n">orientation</span><span class="o">.</span><span class="n">w</span><span class="p">))</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">((</span><span class="n">msg</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                                               <span class="n">msg</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                                               <span class="n">msg</span><span class="o">.</span><span class="n">position</span><span class="o">.</span><span class="n">z</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">R</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">convert_from_trans_message</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">((</span><span class="n">msg</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                                              <span class="n">msg</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                                              <span class="n">msg</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">z</span><span class="p">,</span>
+                                              <span class="n">msg</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">w</span><span class="p">))</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">((</span><span class="n">msg</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">x</span><span class="p">,</span>
+                                               <span class="n">msg</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                                               <span class="n">msg</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">z</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">numpy</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">R</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Node</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">config</span><span class="p">):</span>
+        <span class="c1"># config list
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="bp">None</span>
+
+    <span class="k">def</span> <span class="nf">SetParent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">parent</span><span class="p">):</span>
+        <span class="c1"># Parent Node type
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+
+    <span class="k">def</span> <span class="nf">GetParent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span>
+
+    <span class="k">def</span> <span class="nf">GetConfig</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span>
+
+<span class="k">class</span> <span class="nc">MoveArm</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span> <span class="s">"Motion Planning Initializing..."</span>
+        <span class="c1"># Prepare the mutex for synchronization
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+
+        <span class="c1"># Some info and conventions about the robot that we hard-code in here
+</span>        <span class="c1"># min and max joint values are not read in Python urdf, so we must hard-code them here
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">num_joints</span> <span class="o">=</span> <span class="mi">7</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_min</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_max</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_min</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mf">3.1459</span><span class="p">);</span><span class="bp">self</span><span class="o">.</span><span class="n">q_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">3.1459</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_min</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mf">3.1459</span><span class="p">);</span><span class="bp">self</span><span class="o">.</span><span class="n">q_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">3.1459</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_min</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mf">3.1459</span><span class="p">);</span><span class="bp">self</span><span class="o">.</span><span class="n">q_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">3.1459</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_min</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mf">3.1459</span><span class="p">);</span><span class="bp">self</span><span class="o">.</span><span class="n">q_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">3.1459</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_min</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mf">3.1459</span><span class="p">);</span><span class="bp">self</span><span class="o">.</span><span class="n">q_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">3.1459</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_min</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mf">3.1459</span><span class="p">);</span><span class="bp">self</span><span class="o">.</span><span class="n">q_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">3.1459</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_min</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="mf">3.1459</span><span class="p">);</span><span class="bp">self</span><span class="o">.</span><span class="n">q_max</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">3.1459</span><span class="p">)</span>
+        <span class="c1"># How finely to sample each joint
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">q_sample</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joint_names</span> <span class="o">=</span> <span class="p">[</span><span class="s">"lwr_arm_0_joint"</span><span class="p">,</span>
+                            <span class="s">"lwr_arm_1_joint"</span><span class="p">,</span>
+                            <span class="s">"lwr_arm_2_joint"</span><span class="p">,</span>
+                            <span class="s">"lwr_arm_3_joint"</span><span class="p">,</span>
+                            <span class="s">"lwr_arm_4_joint"</span><span class="p">,</span>
+                            <span class="s">"lwr_arm_5_joint"</span><span class="p">,</span>
+                            <span class="s">"lwr_arm_6_joint"</span><span class="p">]</span>
+
+        <span class="c1"># Subscribes to information about what the current joint values are.
+</span>        <span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="s">"/joint_states"</span><span class="p">,</span> <span class="n">sensor_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">JointState</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">joint_states_callback</span><span class="p">)</span>
+
+        <span class="c1"># Subscribe to command for motion planning goal
+</span>        <span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="s">"/motion_planning_goal"</span><span class="p">,</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">Transform</span><span class="p">,</span>
+                         <span class="bp">self</span><span class="o">.</span><span class="n">move_arm_cb</span><span class="p">)</span>
+
+        <span class="c1"># Publish trajectory command
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">pub_trajectory</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="s">"/joint_trajectory"</span><span class="p">,</span> <span class="n">trajectory_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">JointTrajectory</span><span class="p">,</span>
+                                              <span class="n">queue_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>        
+
+        <span class="c1"># Initialize variables
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">joint_state</span> <span class="o">=</span> <span class="n">sensor_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">JointState</span><span class="p">()</span>
+
+        <span class="c1"># Wait for moveit IK service
+</span>        <span class="n">rospy</span><span class="o">.</span><span class="n">wait_for_service</span><span class="p">(</span><span class="s">"compute_ik"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ik_service</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">ServiceProxy</span><span class="p">(</span><span class="s">'compute_ik'</span><span class="p">,</span>  <span class="n">moveit_msgs</span><span class="o">.</span><span class="n">srv</span><span class="o">.</span><span class="n">GetPositionIK</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">"IK service ready"</span>
+
+        <span class="c1"># Wait for validity check service
+</span>        <span class="n">rospy</span><span class="o">.</span><span class="n">wait_for_service</span><span class="p">(</span><span class="s">"check_state_validity"</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_valid_service</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">ServiceProxy</span><span class="p">(</span><span class="s">'check_state_validity'</span><span class="p">,</span>  
+                                                      <span class="n">moveit_msgs</span><span class="o">.</span><span class="n">srv</span><span class="o">.</span><span class="n">GetStateValidity</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">"State validity service ready"</span>
+
+        <span class="c1"># Initialize MoveIt
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">moveit_commander</span><span class="o">.</span><span class="n">RobotCommander</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scene</span> <span class="o">=</span> <span class="n">moveit_commander</span><span class="o">.</span><span class="n">PlanningSceneInterface</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_name</span> <span class="o">=</span> <span class="s">"lwr_arm"</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group</span> <span class="o">=</span> <span class="n">moveit_commander</span><span class="o">.</span><span class="n">MoveGroupCommander</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group_name</span><span class="p">)</span>
+        <span class="k">print</span> <span class="s">"MoveIt! interface ready"</span>
+
+        <span class="c1"># Options
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">subsample_trajectory</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">print</span> <span class="s">"Initialization done."</span>
+
+    <span class="k">def</span> <span class="nf">get_joint_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_state</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">joint_state</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">"ERROR: joint name not found"</span>
+            <span class="k">return</span> <span class="mi">0</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">joint_state</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">joint_state</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">set_joint_val</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_state</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">joint_state</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">"ERROR: joint name not found"</span>
+        <span class="n">i</span> <span class="o">=</span> <span class="n">joint_state</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">joint_state</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">q</span>
+
+    <span class="s">""" Given a complete joint_state data structure, this function finds the values for
+    our arm's set of joints in a particular order and returns a list q[] containing just
+    those values.
+    """</span>
+    <span class="k">def</span> <span class="nf">q_from_joint_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_state</span><span class="p">):</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">num_joints</span><span class="p">):</span>
+            <span class="n">q</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_joint_val</span><span class="p">(</span><span class="n">joint_state</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">joint_names</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+        <span class="k">return</span> <span class="n">q</span>
+
+    <span class="s">""" Given a list q[] of joint values and an already populated joint_state, this
+    function assumes that the passed in values are for a our arm's set of joints in
+    a particular order and edits the joint_state data structure to set the values
+    to the ones passed in.
+    """</span>
+    <span class="k">def</span> <span class="nf">joint_state_from_q</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_state</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">num_joints</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_joint_val</span><span class="p">(</span><span class="n">joint_state</span><span class="p">,</span> <span class="n">q</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">joint_names</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+
+    <span class="s">""" This function will perform IK for a given transform T of the end-effector. It
+    returns a list q[] of 7 values, which are the result positions for the 7 joints of
+    the left arm, ordered from proximal to distal. If no IK solution is found, it
+    returns an empy list.
+    """</span>
+    <span class="k">def</span> <span class="nf">IK</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">T_goal</span><span class="p">):</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">moveit_msgs</span><span class="o">.</span><span class="n">srv</span><span class="o">.</span><span class="n">GetPositionIKRequest</span><span class="p">()</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">ik_request</span><span class="o">.</span><span class="n">group_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_name</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">ik_request</span><span class="o">.</span><span class="n">robot_state</span> <span class="o">=</span> <span class="n">moveit_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">RobotState</span><span class="p">()</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">ik_request</span><span class="o">.</span><span class="n">robot_state</span><span class="o">.</span><span class="n">joint_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">joint_state</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">ik_request</span><span class="o">.</span><span class="n">avoid_collisions</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">ik_request</span><span class="o">.</span><span class="n">pose_stamped</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">PoseStamped</span><span class="p">()</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">ik_request</span><span class="o">.</span><span class="n">pose_stamped</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">"world_link"</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">ik_request</span><span class="o">.</span><span class="n">pose_stamped</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">get_rostime</span><span class="p">()</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">ik_request</span><span class="o">.</span><span class="n">pose_stamped</span><span class="o">.</span><span class="n">pose</span> <span class="o">=</span> <span class="n">convert_to_message</span><span class="p">(</span><span class="n">T_goal</span><span class="p">)</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">ik_request</span><span class="o">.</span><span class="n">timeout</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="mf">3.0</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ik_service</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">error_code</span><span class="o">.</span><span class="n">val</span> <span class="o">==</span> <span class="n">res</span><span class="o">.</span><span class="n">error_code</span><span class="o">.</span><span class="n">SUCCESS</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_from_joint_state</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">solution</span><span class="o">.</span><span class="n">joint_state</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">q</span>
+
+    <span class="s">""" This function checks if a set of joint angles q[] creates a valid state, or
+    one that is free of collisions. The values in q[] are assumed to be values for
+    the joints of the left arm, ordered from proximal to distal.
+    """</span>
+    <span class="k">def</span> <span class="nf">is_state_valid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q</span><span class="p">):</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">moveit_msgs</span><span class="o">.</span><span class="n">srv</span><span class="o">.</span><span class="n">GetStateValidityRequest</span><span class="p">()</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">group_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_name</span>
+        <span class="n">current_joint_state</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">joint_state</span><span class="p">)</span>
+        <span class="n">current_joint_state</span><span class="o">.</span><span class="n">position</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">current_joint_state</span><span class="o">.</span><span class="n">position</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joint_state_from_q</span><span class="p">(</span><span class="n">current_joint_state</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">robot_state</span> <span class="o">=</span> <span class="n">moveit_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">RobotState</span><span class="p">()</span>
+        <span class="n">req</span><span class="o">.</span><span class="n">robot_state</span><span class="o">.</span><span class="n">joint_state</span> <span class="o">=</span> <span class="n">current_joint_state</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_valid_service</span><span class="p">(</span><span class="n">req</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">valid</span>
+
+    <span class="k">def</span> <span class="nf">valid_point_func</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">q_start</span><span class="p">,</span><span class="n">q_goal</span><span class="p">):</span>
+        <span class="c1">## inputs : q_start,q_goal Node
+</span>        <span class="c1">## outputs : point without colision Node
+</span>
+        <span class="n">step</span> <span class="o">=</span> <span class="mf">0.2</span>
+        <span class="c1">#### descritize the path
+</span>        <span class="n">start_to_goal</span> <span class="o">=</span> <span class="n">q_goal</span> <span class="o">-</span> <span class="n">q_start</span>
+        <span class="n">norm_stg</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">start_to_goal</span><span class="p">)</span>
+        <span class="n">unit_stg</span> <span class="o">=</span> <span class="n">start_to_goal</span><span class="o">/</span><span class="n">norm_stg</span>
+        <span class="c1">#n = numpy.max(numpy.abs(unit_stg/self.q_sample))
+</span>        <span class="c1">#step = (1/n)*unit_stg
+</span>        <span class="c1">#num_of_points = norm_stg/numpy.linalg.norm(step)
+</span>        <span class="n">disc_points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">step</span><span class="p">,</span><span class="n">norm_stg</span><span class="p">,</span><span class="n">step</span><span class="p">),</span><span class="n">unit_stg</span><span class="p">)</span> <span class="o">+</span> <span class="n">q_start</span>
+        <span class="c1">#disc_points = numpy.outer(numpy.arange(1,num_of_points+ 1),step) + q_start
+</span>        <span class="c1">#print(disc_points)
+</span>        <span class="n">past_point</span> <span class="o">=</span> <span class="p">[</span><span class="n">q_start</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">disc_point</span> <span class="ow">in</span> <span class="n">disc_points</span><span class="p">:</span>
+            <span class="c1">#print(self.is_state_valid(disc_point))
+</span>            <span class="c1">#print(past_point)
+</span>            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_state_valid</span><span class="p">(</span><span class="n">disc_point</span><span class="p">)</span> <span class="o">==</span> <span class="bp">False</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">past_point</span>
+            <span class="n">past_point</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">disc_point</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">q_goal</span>
+<span class="c1">####################################################################################
+</span>    <span class="k">def</span> <span class="nf">motion_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_start</span><span class="p">,</span> <span class="n">q_goal</span><span class="p">,</span> <span class="n">q_min</span><span class="p">,</span> <span class="n">q_max</span><span class="p">):</span>
+        <span class="c1">#print(q_goal)
+</span>        <span class="c1"># Replace this with your code
+</span>        <span class="n">q_space</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">q_start</span><span class="p">],</span><span class="n">dtype</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+        <span class="n">q_index</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># start from the second point
+</span>        <span class="c1">#V = []
+</span>        <span class="c1">#E = []
+</span>        <span class="n">step</span> <span class="o">=</span> <span class="mf">0.5</span>
+
+        <span class="c1">#V.append(Node(q_start.tolist()))
+</span>
+        <span class="c1">#for itr in range(100):
+</span>        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="c1">#print(itr)
+</span>            <span class="k">if</span> <span class="n">numpy</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">valid_point_func</span><span class="p">(</span><span class="n">q_space</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span><span class="n">q_goal</span><span class="p">),</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">q_goal</span><span class="p">])):</span>
+                <span class="c1">#print(self.valid_point_func(q_space[-1],q_goal))
+</span>                <span class="c1">#print(numpy.array(q_goal))
+</span>                <span class="n">nearest_point</span> <span class="o">=</span> <span class="n">q_space</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">q_index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">q_space</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+                <span class="n">q_space</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q_space</span><span class="p">,</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">q_goal</span><span class="p">]),</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+                <span class="c1">#node = Node(q_goal)
+</span>                <span class="c1"># for i in range(len(V)):
+</span>                <span class="c1">#     if numpy.all(V[i].GetConfig() == nearest_point.tolist()):
+</span>                <span class="c1">#         parent_node = V[i]
+</span>                <span class="c1">#         break
+</span>                <span class="c1">#node.SetParent(-1)
+</span>                <span class="c1">#V.append(node)
+</span>                <span class="k">break</span>
+
+            <span class="c1">#### generate random sample
+</span>            <span class="n">q_random</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_joints</span><span class="p">):</span>                
+                <span class="c1">#q_random.append(random.uniform(-1,1)*3.1459)
+</span>                <span class="n">q_random</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">3.1459</span><span class="p">,</span><span class="mf">3.1459</span><span class="p">))</span>
+
+            <span class="c1">#### find nearest point
+</span>
+            <span class="n">q_random_np</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">q_random</span><span class="p">])</span>
+            <span class="n">vec_to_points</span> <span class="o">=</span> <span class="n">q_space</span> <span class="o">-</span> <span class="n">q_random_np</span>
+
+            <span class="n">index_to_nearest</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="nb">sum</span><span class="p">((</span><span class="n">vec_to_points</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)))</span>
+            <span class="c1">#print(numpy.sqrt(numpy.sum((vec_to_points)**2)))
+</span>            <span class="c1">#print(len(vec_to_points))
+</span>            <span class="n">nearest_point</span> <span class="o">=</span> <span class="n">q_space</span><span class="p">[</span><span class="n">index_to_nearest</span><span class="p">]</span>
+
+            <span class="c1">#### point lies in 0.25 distance from point to the generated point
+</span>            <span class="n">nearest_to_random</span> <span class="o">=</span> <span class="n">q_random_np</span> <span class="o">-</span> <span class="n">nearest_point</span>
+            <span class="n">norm_ntr</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">nearest_to_random</span><span class="p">)</span>
+            <span class="n">unit_ntr</span> <span class="o">=</span> <span class="n">nearest_to_random</span><span class="o">/</span><span class="n">norm_ntr</span>
+            <span class="c1"># point in directed direction
+</span>            <span class="n">next_point</span> <span class="o">=</span> <span class="n">nearest_point</span> <span class="o">+</span> <span class="n">unit_ntr</span><span class="o">*</span><span class="n">step</span>
+
+            <span class="c1">#### return a valid point
+</span>            <span class="n">valid_point</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">valid_point_func</span><span class="p">(</span><span class="n">nearest_point</span><span class="p">,</span><span class="n">next_point</span><span class="p">)</span>
+
+            <span class="c1">#########################################################################################################
+</span>
+
+            <span class="c1">#### append it to the array
+</span>            <span class="n">q_space</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q_space</span><span class="p">,</span><span class="n">valid_point</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">q_index</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index_to_nearest</span><span class="p">)</span>
+            <span class="c1">#node = Node(valid_point[0].tolist())
+</span>            <span class="c1">#for i in range(len(V)):
+</span>            <span class="c1">#    if numpy.all(V[i].GetConfig() == nearest_point.tolist()):
+</span>            <span class="c1">#        parent_node = V[i]
+</span>            <span class="c1">#        break
+</span>            <span class="c1">#node.SetParent(parent_node)
+</span>            <span class="c1">#V.append(node)
+</span>            <span class="c1">#print(q_space)
+</span>
+        <span class="c1">#print('X'*50)
+</span>        <span class="c1">#node = V[-1]
+</span>        <span class="c1">#print(q_index)
+</span>        <span class="c1">#print(q_space)
+</span>        <span class="n">q_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">cur_index</span> <span class="o">=</span> <span class="n">q_index</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">q_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q_goal</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">q_space</span><span class="p">)):</span>
+            <span class="k">if</span>  <span class="n">numpy</span><span class="o">.</span><span class="nb">all</span><span class="p">(</span><span class="n">q_space</span><span class="p">[</span><span class="n">cur_index</span><span class="p">]</span> <span class="o">==</span> <span class="n">q_start</span><span class="p">):</span>        
+                <span class="n">q_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q_start</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+                <span class="k">break</span>
+            <span class="n">q_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">q_space</span><span class="p">[</span><span class="n">cur_index</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+            <span class="n">cur_index</span> <span class="o">=</span> <span class="n">q_index</span><span class="p">[</span><span class="n">cur_index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1">#    q_list.append(node.GetConfig())
+</span>        <span class="c1">#    node = node.GetParent()
+</span>
+        <span class="c1">#print(q_start)
+</span>        <span class="c1">#print(q_goal)
+</span>        <span class="n">q_list</span><span class="o">.</span><span class="n">reverse</span><span class="p">()</span>
+        <span class="c1">#print(q_list)
+</span>        <span class="k">return</span> <span class="n">q_list</span>
+
+
+    <span class="k">def</span> <span class="nf">create_trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_list</span><span class="p">,</span> <span class="n">v_list</span><span class="p">,</span> <span class="n">a_list</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="n">joint_trajectory</span> <span class="o">=</span> <span class="n">trajectory_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">JointTrajectory</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">q_list</span><span class="p">)):</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">trajectory_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">JointTrajectoryPoint</span><span class="p">()</span>
+            <span class="n">point</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">q_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">point</span><span class="o">.</span><span class="n">velocities</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">v_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">point</span><span class="o">.</span><span class="n">accelerations</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">a_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">point</span><span class="o">.</span><span class="n">time_from_start</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Duration</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">joint_trajectory</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="n">joint_trajectory</span><span class="o">.</span><span class="n">joint_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">joint_names</span>
+        <span class="k">return</span> <span class="n">joint_trajectory</span>
+
+    <span class="k">def</span> <span class="nf">create_trajectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_list</span><span class="p">):</span>
+        <span class="n">joint_trajectory</span> <span class="o">=</span> <span class="n">trajectory_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">JointTrajectory</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">q_list</span><span class="p">)):</span>
+            <span class="n">point</span> <span class="o">=</span> <span class="n">trajectory_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">JointTrajectoryPoint</span><span class="p">()</span>
+            <span class="n">point</span><span class="o">.</span><span class="n">positions</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">q_list</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">joint_trajectory</span><span class="o">.</span><span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="n">joint_trajectory</span><span class="o">.</span><span class="n">joint_names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">joint_names</span>
+        <span class="k">return</span> <span class="n">joint_trajectory</span>
+
+    <span class="k">def</span> <span class="nf">project_plan</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">q_start</span><span class="p">,</span> <span class="n">q_goal</span><span class="p">,</span> <span class="n">q_min</span><span class="p">,</span> <span class="n">q_max</span><span class="p">):</span>
+        <span class="n">q_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">motion_plan</span><span class="p">(</span><span class="n">q_start</span><span class="p">,</span> <span class="n">q_goal</span><span class="p">,</span> <span class="n">q_min</span><span class="p">,</span> <span class="n">q_max</span><span class="p">)</span>
+        <span class="n">joint_trajectory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_trajectory</span><span class="p">(</span><span class="n">q_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">joint_trajectory</span>
+
+    <span class="k">def</span> <span class="nf">move_arm_cb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="n">T</span> <span class="o">=</span> <span class="n">convert_from_trans_message</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="n">q_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_from_joint_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">joint_state</span><span class="p">)</span>
+        <span class="c1">#print(self.is_state_valid([0.9332970208293161, 0.7256278570990718, 2.5594325471094663, 1.7652295464395606, 0.4708529716243601, -0.17818698208150993, 0.5357455372788732]))
+</span>        <span class="k">print</span> <span class="s">"Solving IK"</span>
+        <span class="n">q_goal</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">IK</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">q_goal</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">"IK failed, aborting"</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+            <span class="k">return</span>
+        <span class="k">print</span> <span class="s">"IK solved, planning"</span>
+        <span class="n">trajectory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_plan</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">q_start</span><span class="p">),</span> <span class="n">q_goal</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_max</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">trajectory</span><span class="o">.</span><span class="n">points</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">"Motion plan failed, aborting"</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">print</span> <span class="s">"Trajectory received with "</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">trajectory</span><span class="o">.</span><span class="n">points</span><span class="p">))</span> <span class="o">+</span> <span class="s">" points"</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="n">trajectory</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">joint_states_callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_state</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="o">.</span><span class="n">acquire</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">joint_state</span> <span class="o">=</span> <span class="n">joint_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mutex</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_trajectory</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pub_trajectory</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">joint_trajectory</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">moveit_commander</span><span class="o">.</span><span class="n">roscpp_initialize</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s">'move_arm'</span><span class="p">,</span> <span class="n">anonymous</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">ma</span> <span class="o">=</span> <span class="n">MoveArm</span><span class="p">()</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">spin</span><span class="p">()</span>
+
+
+</code></pre></div></div>
+
+<p><a href="https://postimg.cc/cvyt4Dbk"><img src="https://i.postimg.cc/qvgswSXr/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/w34bPNGj"><img src="https://i.postimg.cc/YqtKvfNY/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></p>
+:ET

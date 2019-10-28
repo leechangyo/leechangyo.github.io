@@ -1,0 +1,50 @@
+I"ã<p>when we get this error</p>
+
+<blockquote>
+  <p>import moveit_commander
+Failed to import pyassimp, see https://github.com/ros-planning/moveit/issues/86 for more info</p>
+</blockquote>
+
+<p>the pyassimp problem</p>
+
+<p>when single import pyassimp problem</p>
+
+<blockquote>
+  <p>Traceback (most recent call last):
+  File â€œ<stdin>", line 1, in <module>
+  File "/usr/lib/python2.7/dist-packages/pyassimp/__init__.py", line 1, in <module></module></module></stdin></p>
+</blockquote>
+
+<p>we got this error</p>
+
+<h1 id="first-solution">first solution</h1>
+<ul>
+  <li>install pyssimp library</li>
+</ul>
+
+<h1 id="second">second</h1>
+
+<ul>
+  <li>go to /usr/lib/python2.7/dist-packages/pyassimp</li>
+  <li>and open core.py</li>
+  <li>and change it</li>
+</ul>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">---</span> <span class="n">old</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">py</span>	<span class="mi">2016</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">07</span> <span class="mi">14</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="mf">11.948880646</span> <span class="o">+</span><span class="mi">0200</span>
+<span class="o">+++</span> <span class="n">new</span><span class="o">/</span><span class="n">core</span><span class="o">.</span><span class="n">py</span>	<span class="mi">2016</span><span class="o">-</span><span class="mi">06</span><span class="o">-</span><span class="mi">07</span> <span class="mi">14</span><span class="p">:</span><span class="mi">12</span><span class="p">:</span><span class="mf">59.357306268</span> <span class="o">+</span><span class="mi">0200</span>
+<span class="o">@@</span> <span class="o">-</span><span class="mi">30</span><span class="p">,</span><span class="mi">7</span> <span class="o">+</span><span class="mi">30</span><span class="p">,</span><span class="mi">7</span> <span class="o">@@</span>
+     <span class="s">"""
+     Assimp-Singleton
+     """</span>
+<span class="o">-</span>    <span class="n">load</span><span class="p">,</span> <span class="n">load_mem</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">dll</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">search_library</span><span class="p">()</span>
+<span class="o">+</span>    <span class="n">load_mem</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">dll</span> <span class="o">=</span> <span class="n">helper</span><span class="o">.</span><span class="n">search_library</span><span class="p">()</span>
+ <span class="n">_assimp_lib</span> <span class="o">=</span> <span class="n">AssimpLib</span><span class="p">()</span>
+
+ <span class="k">def</span> <span class="nf">make_tuple</span><span class="p">(</span><span class="n">ai_obj</span><span class="p">,</span> <span class="nb">type</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+</code></pre></div></div>
+
+<p>and run. it will work</p>
+
+<h1 id="reference">Reference</h1>
+<p>https://github.com/shadow-robot/sr_interface/issues/234</p>
+:ET

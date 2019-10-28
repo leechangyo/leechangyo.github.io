@@ -1,0 +1,146 @@
+I"„6<h1 id="sensor_info">Sensor_info</h1>
+
+<blockquote>
+  <p>SensorInformation.msg</p>
+</blockquote>
+
+<pre><code class="language-msg">sensor_msgs/Range sensor_data
+string maker_name
+uint32 part_number
+</code></pre>
+
+<blockquote>
+  <p>sensor_info_publisher.py</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
+</span><span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">from</span> <span class="nn">hrwros_msgs.msg</span> <span class="kn">import</span> <span class="n">SensorInformation</span>
+<span class="kn">from</span> <span class="nn">hrwros_utilities.sim_sensor_data</span> <span class="kn">import</span> <span class="n">distSensorData</span> <span class="k">as</span> <span class="n">getSensorData</span>
+
+<span class="k">def</span> <span class="nf">sensorInfoPublisher</span><span class="p">():</span>
+    <span class="n">si_publisher</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="s">'sensor_info'</span><span class="p">,</span> <span class="n">SensorInformation</span><span class="p">,</span> <span class="n">queue_size</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s">'sensor_info_publisher'</span><span class="p">,</span> <span class="n">anonymous</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">rate</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Rate</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="c1"># Create a new SensorInformation object and fill in its contents.
+</span>    <span class="n">sensor_info</span> <span class="o">=</span> <span class="n">SensorInformation</span><span class="p">()</span>
+
+    <span class="c1"># Fill in the header information.
+</span>    <span class="n">sensor_info</span><span class="o">.</span><span class="n">sensor_data</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">sensor_info</span><span class="o">.</span><span class="n">sensor_data</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="s">'distance_sensor_frame'</span>
+
+    <span class="c1"># Fill in the sensor data information.
+</span>    <span class="n">sensor_info</span><span class="o">.</span><span class="n">sensor_data</span><span class="o">.</span><span class="n">radiation_type</span> <span class="o">=</span> <span class="n">sensor_info</span><span class="o">.</span><span class="n">sensor_data</span><span class="o">.</span><span class="n">ULTRASOUND</span>
+    <span class="n">sensor_info</span><span class="o">.</span><span class="n">sensor_data</span><span class="o">.</span><span class="n">field_of_view</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1"># Field of view of the sensor in rad.
+</span>    <span class="n">sensor_info</span><span class="o">.</span><span class="n">sensor_data</span><span class="o">.</span><span class="n">min_range</span> <span class="o">=</span> <span class="mf">0.02</span> <span class="c1"># Minimum distance range of the sensor in m.
+</span>    <span class="n">sensor_info</span><span class="o">.</span><span class="n">sensor_data</span><span class="o">.</span><span class="n">max_range</span> <span class="o">=</span> <span class="mf">2.0</span> <span class="c1"># Maximum distance range of the sensor in m.
+</span>
+    <span class="c1"># Fill in the manufacturer name and part number.
+</span>    <span class="n">sensor_info</span><span class="o">.</span><span class="n">maker_name</span> <span class="o">=</span> <span class="s">'The Ultrasound Company'</span>
+    <span class="n">sensor_info</span><span class="o">.</span><span class="n">part_number</span> <span class="o">=</span> <span class="mi">123456</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">rospy</span><span class="o">.</span><span class="n">is_shutdown</span><span class="p">():</span>
+        <span class="c1"># Read the sensor data from a simulated sensor.
+</span>        <span class="n">sensor_info</span><span class="o">.</span><span class="n">sensor_data</span><span class="o">.</span><span class="nb">range</span> <span class="o">=</span> <span class="n">getSensorData</span><span class="p">(</span><span class="n">sensor_info</span><span class="o">.</span><span class="n">sensor_data</span><span class="o">.</span><span class="n">radiation_type</span><span class="p">,</span>
+            <span class="n">sensor_info</span><span class="o">.</span><span class="n">sensor_data</span><span class="o">.</span><span class="n">min_range</span><span class="p">,</span> <span class="n">sensor_info</span><span class="o">.</span><span class="n">sensor_data</span><span class="o">.</span><span class="n">max_range</span><span class="p">)</span>
+
+        <span class="c1"># Publish the sensor information on the /sensor_info topic.
+</span>        <span class="n">si_publisher</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">sensor_info</span><span class="p">)</span>
+        <span class="c1"># Print log message if all went well.
+</span>        <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">"All went well. Publishing topic "</span><span class="p">)</span>
+        <span class="n">rate</span><span class="o">.</span><span class="n">sleep</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">sensorInfoPublisher</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">rospy</span><span class="o">.</span><span class="n">ROSInterruptException</span><span class="p">:</span>
+        <span class="k">pass</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>sensor_info_subscriber.py</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
+</span><span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">from</span> <span class="nn">hrwros_msgs.msg</span> <span class="kn">import</span> <span class="n">SensorInformation</span>
+
+<span class="k">def</span> <span class="nf">sensorInfoCallback</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">'Distance reading from the sensor is: </span><span class="si">%</span><span class="s">f'</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">sensor_data</span><span class="o">.</span><span class="nb">range</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">sensorInfoListener</span><span class="p">():</span>
+
+    <span class="c1"># In ROS, nodes are uniquely named. If two nodes with the same
+</span>    <span class="c1"># name are launched, the previous one is kicked off. The
+</span>    <span class="c1"># anonymous=True flag means that rospy will choose a unique
+</span>    <span class="c1"># name for our 'sensorInfoListener' node so that multiple listeners can
+</span>    <span class="c1"># run simultaneously.
+</span>    <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s">'sensor_info_subscriber'</span><span class="p">,</span> <span class="n">anonymous</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="s">'sensor_info'</span><span class="p">,</span> <span class="n">SensorInformation</span><span class="p">,</span> <span class="n">sensorInfoCallback</span><span class="p">)</span>
+
+    <span class="c1"># spin() simply keeps python from exiting until this node is stopped
+</span>    <span class="n">rospy</span><span class="o">.</span><span class="n">spin</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">sensorInfoListener</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h1 id="template">Template</h1>
+
+<blockquote>
+  <p>template_publisher.py</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
+</span><span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">from</span> <span class="nn">std_msgs.msg</span> <span class="kn">import</span> <span class="n">String</span>
+
+<span class="k">def</span> <span class="nf">simplePublisher</span><span class="p">():</span>
+    <span class="n">simple_publisher</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="s">'topic_1'</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">queue_size</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s">'node_1'</span><span class="p">,</span> <span class="n">anonymous</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">rate</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Rate</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+    <span class="n">topic1_content</span> <span class="o">=</span> <span class="s">"Welcome to Hello (Real) World with ROS!!!"</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">rospy</span><span class="o">.</span><span class="n">is_shutdown</span><span class="p">():</span>
+        <span class="n">simple_publisher</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">topic1_content</span><span class="p">)</span>
+        <span class="n">rate</span><span class="o">.</span><span class="n">sleep</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">simplePublisher</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">rospy</span><span class="o">.</span><span class="n">ROSInterruptException</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>template_subscriber.py</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">from</span> <span class="nn">std_msgs.msg</span> <span class="kn">import</span> <span class="n">String</span>
+
+<span class="k">def</span> <span class="nf">stringListenerCallback</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">loginfo</span><span class="p">(</span><span class="s">'</span><span class="si">%</span><span class="s">s'</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">stringListener</span><span class="p">():</span>
+
+    <span class="c1"># In ROS, nodes are uniquely named. If two nodes with the same
+</span>    <span class="c1"># name are launched, the previous one is kicked off. The
+</span>    <span class="c1"># anonymous=True flag means that rospy will choose a unique
+</span>    <span class="c1"># name for our 'stringListener' node so that multiple listeners can
+</span>    <span class="c1"># run simultaneously.
+</span>    <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s">'node_2'</span><span class="p">,</span> <span class="n">anonymous</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+
+    <span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="s">'topic_1'</span><span class="p">,</span> <span class="n">String</span><span class="p">,</span> <span class="n">stringListenerCallback</span><span class="p">)</span>
+
+    <span class="c1"># spin() simply keeps python from exiting until this node is stopped
+</span>    <span class="n">rospy</span><span class="o">.</span><span class="n">spin</span><span class="p">()</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">stringListener</span><span class="p">()</span>
+</code></pre></div></div>
+:ET

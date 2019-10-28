@@ -1,0 +1,172 @@
+I"5b<ul>
+  <li>to understand TF look at the my <a href="https://leechangyo.github.io/robotics/2019/10/04/Kinematic-Model/">Forward Kinematic</a> post</li>
+</ul>
+
+<h1 id="forward-kinematic">Forward Kinematic</h1>
+
+<blockquote>
+  <p>Forward Kinematic</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">#!/usr/bin/env python
+</span>
+<span class="kn">import</span> <span class="nn">numpy</span>
+
+<span class="kn">import</span> <span class="nn">geometry_msgs.msg</span>
+<span class="kn">import</span> <span class="nn">rospy</span>
+<span class="kn">from</span> <span class="nn">sensor_msgs.msg</span> <span class="kn">import</span> <span class="n">JointState</span>
+<span class="kn">import</span> <span class="nn">tf</span>
+<span class="kn">import</span> <span class="nn">tf.msg</span>
+<span class="kn">from</span> <span class="nn">urdf_parser_py.urdf</span> <span class="kn">import</span> <span class="n">URDF</span>
+
+<span class="s">""" Starting from a computed transform T, creates a message that can be
+communicated over the ROS wire. In addition to the transform itself, the message
+also specifies who is related by this transform, the parent and the child."""</span>
+<span class="k">def</span> <span class="nf">convert_to_message</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">child</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+    <span class="n">t</span> <span class="o">=</span> <span class="n">geometry_msgs</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">TransformStamped</span><span class="p">()</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">frame_id</span> <span class="o">=</span> <span class="n">parent</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">stamp</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Time</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">child_frame_id</span> <span class="o">=</span> <span class="n">child</span>
+    <span class="n">translation</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_from_matrix</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">rotation</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_matrix</span><span class="p">(</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">translation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">translation</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">translation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">translation</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">rotation</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">rotation</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">z</span> <span class="o">=</span> <span class="n">rotation</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">t</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">rotation</span><span class="o">.</span><span class="n">w</span> <span class="o">=</span> <span class="n">rotation</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>        
+    <span class="k">return</span> <span class="n">t</span>
+
+<span class="c1">#Our main class for computing Forward Kinematics
+</span><span class="k">class</span> <span class="nc">ForwardKinematics</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+
+    <span class="c1">#Initialization
+</span>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="s">"""Announces that it will publish forward kinematics results, in the form of tfMessages.
+        "tf" stands for "transform library", it's ROS's way of communicating around information
+        about where things are in the world"""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pub_tf</span> <span class="o">=</span> <span class="n">rospy</span><span class="o">.</span><span class="n">Publisher</span><span class="p">(</span><span class="s">"/tf"</span><span class="p">,</span> <span class="n">tf</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">tfMessage</span><span class="p">,</span> <span class="n">queue_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1">#Loads the robot model, which contains the robot's kinematics information
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">robot</span> <span class="o">=</span> <span class="n">URDF</span><span class="o">.</span><span class="n">from_parameter_server</span><span class="p">()</span>
+
+        <span class="c1">#Subscribes to information about what the current joint values are.
+</span>        <span class="n">rospy</span><span class="o">.</span><span class="n">Subscriber</span><span class="p">(</span><span class="s">"/joint_states"</span><span class="p">,</span> <span class="n">JointState</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">callback</span><span class="p">)</span>
+
+
+    <span class="s">"""This function is called every time the robot publishes its joint values. We must use
+    the information we get to compute forward kinematics.
+
+    We will iterate through the entire chain, and publish the transform for each link we find.
+    """</span>
+    <span class="k">def</span> <span class="nf">callback</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">joint_values</span><span class="p">):</span>
+        <span class="c1"># First, we must extract information about the kinematics of the robot from its URDF.
+</span>        <span class="c1"># We will start at the root and add links and joints to lists
+</span>        <span class="n">link_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">get_root</span><span class="p">()</span>
+        <span class="n">link_names</span> <span class="o">=</span> <span class="p">[</span><span class="s">'base_link'</span><span class="p">,</span><span class="s">'shoulder_link'</span><span class="p">,</span><span class="s">'upper_arm_link'</span><span class="p">,</span><span class="s">'forearm_link'</span><span class="p">,</span><span class="s">'wrist_1_link'</span><span class="p">,</span><span class="s">'wrist_2_link'</span><span class="p">,</span><span class="s">'wrist_3_link'</span><span class="p">]</span>
+        <span class="n">joints</span> <span class="o">=</span> <span class="p">[</span><span class="s">'shoulder_pan_joint'</span><span class="p">,</span><span class="s">'shoulder_lift_joint'</span><span class="p">,</span><span class="s">'elbow_joint'</span><span class="p">,</span><span class="s">'wrist_1_joint'</span><span class="p">,</span><span class="s">'wrist_2_joint'</span><span class="p">,</span><span class="s">'wrist_3_joint'</span><span class="p">]</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="c1"># Find the joint connected at the end of this link, or its "child"
+</span>            <span class="c1"># Make sure this link has a child
+</span>            <span class="k">if</span> <span class="n">link_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">child_map</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="c1"># Make sure it has a single child (we don't deal with forks)
+</span>            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">child_map</span><span class="p">[</span><span class="n">link_name</span><span class="p">])</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">logerr</span><span class="p">(</span><span class="s">"Forked kinematic chain!"</span><span class="p">);</span>
+                <span class="k">break</span>
+            <span class="c1"># Get the name of the child joint, as well as the link it connects to
+</span>            <span class="p">(</span><span class="n">joint_name</span><span class="p">,</span> <span class="n">next_link_name</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">child_map</span><span class="p">[</span><span class="n">link_name</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># Get the actual joint based on its name
+</span>            <span class="k">if</span> <span class="n">joint_name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">joint_map</span><span class="p">:</span>
+                <span class="n">rospy</span><span class="o">.</span><span class="n">logerr</span><span class="p">(</span><span class="s">"Joint not found in map"</span><span class="p">)</span>
+                <span class="k">break</span><span class="p">;</span>
+            <span class="n">joints</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">robot</span><span class="o">.</span><span class="n">joint_map</span><span class="p">[</span><span class="n">joint_name</span><span class="p">])</span>
+            <span class="n">link_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">next_link_name</span><span class="p">)</span>
+
+            <span class="c1"># Move to the next link
+</span>            <span class="n">link_name</span> <span class="o">=</span> <span class="n">next_link_name</span>
+
+        <span class="c1"># Compute all the transforms based on the information we have
+</span>        <span class="n">all_transforms</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_transforms</span><span class="p">(</span><span class="n">link_names</span><span class="p">,</span> <span class="n">joints</span><span class="p">,</span> <span class="n">joint_values</span><span class="p">)</span>
+
+        <span class="c1"># Publish all the transforms
+</span>        <span class="bp">self</span><span class="o">.</span><span class="n">pub_tf</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">all_transforms</span><span class="p">)</span>
+
+
+    <span class="s">""" This is the function that performs the main forward kinematics computation. It accepts as
+    parameters all the information needed about the joints and links of the robot, as well as the current
+    values of all the joints, and must compute and return the transforms from the world frame to all the
+    links, ready to be published through tf.
+
+    Parameters are as follows:
+    - link_names: a list with all the names of the robot's links, ordered from proximal to distal.
+    These are also the names of the link's respective coordinate frame. In other words, the transform
+    from the world to link i should be published with "world_link" as the parent frame and link_names[i]
+    as the child frame.    
+
+    - joints: a list of all the joints of the robot, in the same order as the links listed above. Each
+    entry in this list is an object which contains the following fields:
+     * joint.origin.xyz: the translation from the frame of the previous joint to this one
+     * joint.origin.rpy: the rotation from the frame of the previous joint to this one,
+       in ROLL-PITCH-YAW XYZ convention
+     * joint.type: either 'fixed' or 'revolute'. A fixed joint does not move; it is meant to
+       contain a static transform.
+     * joint.name: the name of the current joint in the robot description
+     * joint.axis: (only if type is 'revolute') the axis of rotation of the joint
+
+     - joint_values contains information about the current joint values in the robot. It contains
+     information about *all* the joints, and the ordering can vary, so we must find the relevant value
+     for a particular joint you are considering. We can use the following fields:
+      * joint_values.name: a list of the names of *all* the joints in the robot
+      * joint_values.position: a list of the current values of *all* the joints in the robot, in the same
+        order as the names in the list above.
+     To find the value of the joint we care about, we must find its name in the "name" list, then take
+     the value found at the same index in the "position" list.
+
+    The function must return one tf message. The "transforms" field of this message must list *all* the
+    transforms from the world coordinate frame to the links of the robot. In other words, when you are done,
+    all_transforms.transforms must contain a list in which you must place all the transforms from the
+    "world_link" coordinate frame to each of the coordinate frames listed in "link_names". You can use the
+    "convert_to_message" function (defined above) for a convenient way to create a tf message from a
+    transformation matrix.
+    """</span>
+
+    <span class="k">def</span> <span class="nf">compute_transforms</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">link_names</span><span class="p">,</span> <span class="n">joints</span><span class="p">,</span> <span class="n">joint_values</span><span class="p">):</span>
+        <span class="n">all_transforms</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">msg</span><span class="o">.</span><span class="n">tfMessage</span><span class="p">()</span>
+        <span class="c1"># We start with the identity
+</span>        <span class="n">T</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">identity_matrix</span><span class="p">()</span>
+
+        <span class="c1"># YOUR CODE GOES HERE
+</span>        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">link_names</span><span class="p">)):</span>
+            <span class="n">link_name</span> <span class="o">=</span> <span class="n">link_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">joint_name</span> <span class="o">=</span> <span class="n">joints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">name</span>
+            <span class="k">if</span> <span class="n">joint_name</span> <span class="o">==</span> <span class="s">'world_link_lwr_arm_base_joint'</span><span class="p">:</span>
+                <span class="c1">#joint_index = joint_values.name.index(joint_name)
+</span>                <span class="n">T</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">concatenate_matrices</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">(</span><span class="n">joints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">xyz</span><span class="p">))</span>
+                <span class="n">joint_rpy</span> <span class="o">=</span> <span class="n">joints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">rpy</span>
+                <span class="n">T</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">concatenate_matrices</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="n">joint_rpy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">joint_rpy</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">joint_rpy</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+                <span class="c1">#all_transforms.transforms.append(convert_to_message(T,link_name,'world_link'))
+</span>                <span class="n">all_transforms</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">convert_to_message</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">link_name</span><span class="p">,</span><span class="s">'world'</span><span class="p">))</span>
+                <span class="k">continue</span>    
+
+            <span class="n">joint_index</span> <span class="o">=</span> <span class="n">joint_values</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="n">joint_name</span><span class="p">)</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">concatenate_matrices</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">translation_matrix</span><span class="p">(</span><span class="n">joints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">xyz</span><span class="p">))</span>
+            <span class="n">joint_rpy</span> <span class="o">=</span> <span class="n">joints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">origin</span><span class="o">.</span><span class="n">rpy</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">concatenate_matrices</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="n">joint_rpy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">joint_rpy</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">joint_rpy</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+            <span class="n">joint_pose</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">joints</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">)</span><span class="o">*</span><span class="n">joint_values</span><span class="o">.</span><span class="n">position</span><span class="p">[</span><span class="n">joint_index</span><span class="p">]</span>
+            <span class="n">T</span> <span class="o">=</span> <span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">concatenate_matrices</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_matrix</span><span class="p">(</span><span class="n">tf</span><span class="o">.</span><span class="n">transformations</span><span class="o">.</span><span class="n">quaternion_from_euler</span><span class="p">(</span><span class="n">joint_pose</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">joint_pose</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="n">joint_pose</span><span class="p">[</span><span class="mi">2</span><span class="p">])))</span>
+            <span class="c1">#all_transforms.transforms.append(convert_to_message(T,link_name,'world_link'))
+</span>            <span class="n">all_transforms</span><span class="o">.</span><span class="n">transforms</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">convert_to_message</span><span class="p">(</span><span class="n">T</span><span class="p">,</span><span class="n">link_name</span><span class="p">,</span><span class="s">'world'</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">all_transforms</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">'__main__'</span><span class="p">:</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">init_node</span><span class="p">(</span><span class="s">'fwk'</span><span class="p">,</span> <span class="n">anonymous</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">fwk</span> <span class="o">=</span> <span class="n">ForwardKinematics</span><span class="p">()</span>
+    <span class="n">rospy</span><span class="o">.</span><span class="n">spin</span><span class="p">()</span>
+
+
+</code></pre></div></div>
+:ET
