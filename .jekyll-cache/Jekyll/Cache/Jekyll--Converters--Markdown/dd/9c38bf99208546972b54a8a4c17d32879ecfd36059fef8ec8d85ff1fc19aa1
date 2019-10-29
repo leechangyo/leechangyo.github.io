@@ -1,0 +1,41 @@
+I"<h1 id="urdf">URDF</h1>
+
+<ul>
+  <li>Defined the structure of the robot
+    <ul>
+      <li>link</li>
+      <li>joint</li>
+    </ul>
+  </li>
+  <li>Defined basic geometry
+    <ul>
+      <li>Box</li>
+    </ul>
+  </li>
+  <li>Update the dimensions</li>
+  <li>specify a color</li>
+  <li>place it on the floor</li>
+  <li>put it in the right location</li>
+  <li>Adjust the size the shape</li>
+  <li>Raise the object so that it rests on the floor</li>
+  <li>change the color</li>
+  <li>update its location</li>
+  <li>the default origin for primitive shapes is the center of the shape, which means that the box is half sunk into the floor. to fix this, the z offset the origin needs to be changed to half the height of the object</li>
+  <li>to change the location of the object, the offset from the world needs to be redefined. this is done by changing the x and y coordinates of the “origin” element within the joint that connects the object to the world</li>
+</ul>
+
+<h2 id="object-create-step">object create Step</h2>
+<ol>
+  <li>Import the model definition(xacro macro)</li>
+  <li>Add the model to the factory(instantiation)</li>
+  <li>fixating(정착시키다) it in place(joint)</li>
+  <li>updating orientation</li>
+  <li>the import statement consists of a few parts:
+    <ul>
+      <li>the xacro:include statement itself</li>
+      <li>the filename attribute specifying the name of the file to import(using a package relative path)</li>
+    </ul>
+  </li>
+  <li>Finally, we also need to add the macro cell, which will actually instantiate(예시) the model.</li>
+</ol>
+:ET
