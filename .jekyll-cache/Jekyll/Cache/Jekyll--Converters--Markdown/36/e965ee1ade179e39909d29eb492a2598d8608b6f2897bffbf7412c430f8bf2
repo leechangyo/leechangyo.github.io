@@ -1,0 +1,7 @@
+I"Ñ<h1 id="problem">Problem</h1>
+<p>robot_state controller cannot connect the problems</p>
+
+<h1 id="solution">solution</h1>
+
+<p>make sure gazebo config controller.yaml and moveit controller.yaml name is same</p>
+:ET

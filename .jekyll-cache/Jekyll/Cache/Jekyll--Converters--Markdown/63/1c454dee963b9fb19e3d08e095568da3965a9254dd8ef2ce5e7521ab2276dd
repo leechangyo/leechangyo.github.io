@@ -1,12 +1,0 @@
-I"<h1 id="ros-launch">ROS launch</h1>
-<ul>
-  <li>Group Multiple Ros nodes in one file
-    <ul>
-      <li>launch file in xml format</li>
-    </ul>
-  </li>
-  <li>
-    <h2 id="start-up-all-nodes-in-the-launch-file">start up all nodes in the launch file</h2>
-  </li>
-</ul>
-:ET

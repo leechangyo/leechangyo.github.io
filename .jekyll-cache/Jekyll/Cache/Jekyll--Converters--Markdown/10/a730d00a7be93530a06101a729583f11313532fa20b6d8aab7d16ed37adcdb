@@ -1,0 +1,49 @@
+I"�<h1 id="tf2-ros-introduction">TF2 ROS Introduction</h1>
+<ul>
+  <li>command line tool
+    <ul>
+      <li>tf_echo(static)</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>example</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>tf tf_echo world robot2_pedestal_link
+</code></pre></div></div>
+
+<ul>
+  <li>tf2_ros package
+    <ul>
+      <li>implement functional aspects, and actively maintain relations</li>
+      <li>Transform Pose: allows for “time travel” - look up the spatiotemporal時空 relation</li>
+    </ul>
+  </li>
+  <li>was there a TF(1) package?
+    <ul>
+      <li>yes</li>
+      <li>used in many applications</li>
+      <li>command line tools</li>
+      <li>All in one (vs clear separation in TF2)</li>
+    </ul>
+  </li>
+  <li>All TF functionalities are migrated to tf2_ros
+    <ul>
+      <li>availability of a transform buffer in tf2_ros</li>
+    </ul>
+  </li>
+  <li>Information representation
+    <ul>
+      <li>Quantification
+        <ul>
+          <li>3D Transfromation</li>
+          <li>ROS topic: /tf (tf2_msgs/TFMessage)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li></li>
+</ul>
+:ET

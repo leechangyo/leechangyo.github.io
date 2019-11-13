@@ -1,0 +1,11 @@
+I")<h1 id="problem">Problem</h1>
+<p>could not find a package configuration file provided by soem with any of the follwoing names:
+soemConfig.cmake
+soem-config.cmake</p>
+
+<h1 id="solution">solution</h1>
+<p>go to
+https://github.com/mgruhler/soem</p>
+
+<p>and git it in source folder and catkin_make</p>
+:ET

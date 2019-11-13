@@ -1,0 +1,113 @@
+I"�<h1 id="ros-manipulation-overview">ROS Manipulation Overview</h1>
+<ul>
+  <li>Moveit! - a ROS package for manipulation</li>
+  <li>Moveit! setup assistant - configure robot setups to use moveit</li>
+  <li>plan and execute motion - the “Move_group” Ros Node</li>
+  <li>Implement a simple pick and place pipeline</li>
+  <li>interact with the environment and modify it using a robot to perform useful tasks
+    <ul>
+      <li>pick and place an object</li>
+      <li>fasten two parts of a car chassis</li>
+    </ul>
+  </li>
+  <li>An integral part of automation</li>
+</ul>
+
+<p><a href="https://postimg.cc/4nZNzK45"><img src="https://i.postimg.cc/kMR6P8kk/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Moveit : open source software library for manipulation
+    <ul>
+      <li>easy integration with ros</li>
+      <li>maintain information consistency</li>
+      <li>integrate robot kinematic information with planning</li>
+      <li>report and request alternative motion plans in case of collisions</li>
+      <li>Account for any hardware limitations such as joint limits</li>
+      <li>keep track of the current state of the robot and its environment while performing a manipulation task</li>
+      <li>talk to the robot hardware/simulation and notify the ros application once a desired manipulation task is complete</li>
+    </ul>
+  </li>
+  <li>Moveit! - from a user’s perspective
+    <ul>
+      <li>move_group Ros node
+        <ul>
+          <li>several ros Service and actions (APIs)</li>
+          <li>Configuring the move_group node
+            <ul>
+              <li>robot description (URDF/XACRO)</li>
+              <li>robot_semantic description(SRDF)</li>
+              <li>joint limit, planner</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>where are trajectories executed
+    <ul>
+      <li>simulated robot or real hardware</li>
+    </ul>
+  </li>
+  <li>what controls trajectory execution in simulation or hardware
+    <ul>
+      <li>controller on a simulator or a hardware driver</li>
+      <li>simulation package hrwros_gazebo</li>
+    </ul>
+  </li>
+  <li>how does moveit! talk to the controllers from simulation?
+    <ul>
+      <li>ros topics and actions servers</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="basic-commands">Basic commands</h2>
+<blockquote>
+  <p>command</p>
+</blockquote>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#!/bin/bash</span>
+rosrun moveit_commander moveit_commander_cmdline.py /joint_states:<span class="o">=</span>/combined_joint_states joint_states:<span class="o">=</span>/combined_joint_states
+</code></pre></div></div>
+
+<ul>
+  <li>list all usable command
+    <ul>
+      <li>help</li>
+    </ul>
+  </li>
+  <li>select the “group” to use
+    <ul>
+      <li>use <group_name></group_name></li>
+    </ul>
+  </li>
+  <li>plan and execute motion form srdf
+    <ul>
+      <li>go <up I="" down="" left="" right="" forward="" backward=""> <distance_in_m></distance_in_m></up></li>
+    </ul>
+  </li>
+  <li>get current joint state and pose
+    <ul>
+      <li>current</li>
+    </ul>
+  </li>
+  <li>Execute multiple commands
+    <ul>
+      <li>load &lt;path_to_script_file/scrip_file_name&gt;</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="movegroup-interface">MoveGroup Interface</h2>
+<ul>
+  <li>A collection of APIs to access the various capabilities of Move_group Ros node</li>
+  <li>Create Moveit!-based ROS applications</li>
+  <li>Setup a simple pick and plcae pipline in code with movegroup APIs
+    <ul>
+      <li>using ROS action client</li>
+    </ul>
+  </li>
+</ul>
+
+<p><a href="https://postimg.cc/NyrYF1wk"><img src="https://i.postimg.cc/hG2GCry6/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+:ET

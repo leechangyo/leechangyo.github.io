@@ -1,0 +1,146 @@
+I"�+<h1 id="1-gradient-methods-introduction">1. Gradient Methods Introduction</h1>
+<ul>
+  <li>we consider a class of search methods for real-valued functions on $R^n$</li>
+  <li>we use terms like level sets, normal vectors, tangent vectors, and so on</li>
+  <li><strong>Recall that a level set of a function f:$R^n$ -&gt; R is the set of points x satisfying f(x) = c for some constant c.</strong></li>
+  <li>simple and intuitive</li>
+  <li>every iteration is inexpensive</li>
+  <li>does not require second derivatives</li>
+  <li>extensions: nonsmooth optimization, combining with duality splitting, coordinate descent, alternating direction, stochastic, online learning</li>
+  <li>suitable for large-scale problem, parallelization</li>
+</ul>
+
+<h1 id="2-geometric-interpretation-of-gradients-and-gradient-descent">2. Geometric interpretation of gradients and gradient descent</h1>
+
+<p><a href="https://postimg.cc/KKf0t0CR"><img src="https://i.postimg.cc/j50B09XQ/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+<ul>
+  <li>∇f($x_0$),if it is not zero, is orthogonal to the tangent of the level set curves of f passing $x_0$ on the level set f(x) = c, point outward(点向外)</li>
+  <li>Thus, the direction of maximum rate of increase of a real-valued differentiable function at a point is orthogonal to the level set of the function through that point.</li>
+  <li>In other words, the gradient acts in such a direction that for a given small displacement, the function f increases more in the direction of the gradient than in any other direction</li>
+  <li>To prove this statement, recall that &lt;∇f(x),d&gt;, IIdII = 1, is the rate of increase of f in the direction d at the point x By the Cauchy-Schwarz inequality,</li>
+</ul>
+
+<p><a href="https://postimg.cc/bdHDRdTS"><img src="https://i.postimg.cc/Vs2qmC0g/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/mz0rLWB9"><img src="https://i.postimg.cc/fybSvMP8/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></p>
+
+<ul>
+  <li>Thus, the direction in which ∇f(x) points the direction of maximum rate of increase of f at x.</li>
+  <li>The direction in which —∇f(x) points is the direction of maximum rate of decrease of f at x.</li>
+  <li>Hence, the direction of negative gradient is a good direction to search if we want to find a function minimizer</li>
+</ul>
+
+<p><a href="https://postimg.cc/Wd0jrYgG"><img src="https://i.postimg.cc/Z5MqG1qM/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/ftCghmXS"><img src="https://i.postimg.cc/qqHfyGvw/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></p>
+
+<ul>
+  <li>We refer to the above as a <em>gradient descent algorithm</em> (or simply a gradient algorithm).</li>
+  <li>The gradient varies as the search proceeds, tending to zero as we approach the minimizer.</li>
+  <li>We have the option of either taking very small steps and re-evaluating the gradient at every step, or we can take large steps each time.</li>
+  <li>The first approach results in a laborious method of reaching the minimizer, whereas the second approach may result in a more zigzag path to the minimizer.</li>
+</ul>
+
+<p><a href="https://postimg.cc/Sn2mgN8p"><img src="https://i.postimg.cc/RZGqVWZq/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>The advantage of the second approach is a possibly fewer number of the gradient evaluations.</li>
+  <li>Among many different methods that use the above philosophy(思想体系) the most popular is the method of steepest descent</li>
+  <li>Gradient methods are simple to implement and often perform well.</li>
+</ul>
+
+<h1 id="3-descent-direction">3. Descent direction</h1>
+
+<p><a href="https://postimg.cc/BLThsyLv"><img src="https://i.postimg.cc/G2N6Pnbv/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="4-classical-gradient-method">4. Classical Gradient Method</h1>
+
+<p><a href="https://postimg.cc/f3BcKN9m"><img src="https://i.postimg.cc/k4dT7MM1/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>Small stepsizes: iterations are more likely converge, but it might requires more iteration and thus evaluations of ∇f</li>
+  <li>Large step sizes: better use of ∇f(x) and it may reduce the total number of iterations, but it can cause oversmoothing and zig-zags which lead to divergent iterations</li>
+  <li>Choice of stepsizes: fixed:k constant; 1D line search (backtracking, exact, Barzilai-Borwein with nonmonotone line search)</li>
+</ul>
+
+<h1 id="5-stopping-criteria">5. Stopping Criteria</h1>
+
+<p><a href="https://postimg.cc/yk1v0v5M"><img src="https://i.postimg.cc/4Ntqk01x/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="6-calculation-of-gradients">6. Calculation of Gradients</h1>
+
+<ul>
+  <li>Analytic form: use pen and paper or Mathematica/Matlab</li>
+</ul>
+
+<p><a href="https://postimg.cc/RJzbrmgh"><img src="https://i.postimg.cc/HnJGys5w/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="7-the-method-of-steepest-descent">7. The method of steepest descent</h1>
+<ul>
+  <li>Also known as gradient descent with exact line search</li>
+  <li>The method of steepest descent is a gradient algorithm where the step size $α_k$ is chosen to achieve the maximum amount of decrease of the objective function at each individual step.</li>
+  <li>Stepsize $α_k$ is determined by</li>
+</ul>
+
+<p><a href="https://postimg.cc/62NnhpHH"><img src="https://i.postimg.cc/9MDbC4yj/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<ul>
+  <li>For quadratic program, $α_k$ has closed form.</li>
+  <li>For problem with inexpensive evaluation values but expensive gradient evaluations</li>
+  <li>To summarize, the steepest descent algorithm proceeds as follows: at each step, starting from the point $x^k$, we conduct a line search in the direction -∇f($x^k$) until a minimizer, x^(k+1),is found.</li>
+</ul>
+
+<h1 id="8-orthogonality">8. orthogonality</h1>
+
+<p><a href="https://postimg.cc/s1P9wqZn"><img src="https://i.postimg.cc/VspGLcsc/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></p>
+
+<h1 id="9-function-decreasing">9. Function Decreasing</h1>
+
+<p><a href="https://postimg.cc/hfsFW2Ns"><img src="https://i.postimg.cc/dVPJCXBb/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/68DTn6zy"><img src="https://i.postimg.cc/hGGxFfdb/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/WFDvn03V"><img src="https://i.postimg.cc/Ssdxmrbn/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></p>
+
+<ul>
+  <li>relative(比较的)</li>
+</ul>
+
+<p><a href="https://postimg.cc/CRFd46VV"><img src="https://i.postimg.cc/bwnbpKCd/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/4K1z4hbz"><img src="https://i.postimg.cc/FKMGZyYn/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/F78tGYSg"><img src="https://i.postimg.cc/BnQqSDQy/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/v1pcsYCW"><img src="https://i.postimg.cc/wvBJD3Vb/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></a></a></p>
+
+<h1 id="10-steepest-descent-for-quadratic-programming">10. Steepest descent for quadratic programming</h1>
+
+<p><a href="https://postimg.cc/F7d3kKQJ"><img src="https://i.postimg.cc/SNVr5XTV/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/kDkFcSsy"><img src="https://i.postimg.cc/dt0HJmTg/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/JsgkrVF5"><img src="https://i.postimg.cc/Jh7cQRcv/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/wyMZhN2p"><img src="https://i.postimg.cc/LX3SFBZn/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/dh79mBPn"><img src="https://i.postimg.cc/FHpnvWPt/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/cr0jmPXh"><img src="https://i.postimg.cc/gkZWYWhC/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></a></a></a></a></a></a></p>
+
+<h1 id="11-convergence-for-quadratic-programming">11. Convergence for quadratic programming</h1>
+<ul>
+  <li>The method of steepest descent is an example of an iterative algorithm.</li>
+  <li>This means that the algorithm generates a sequence of points, each calculated on the basis of the points preceding it.</li>
+  <li>The method is a descent method because as each new point is generated by the algorithm, the corresponding value of the objective function decreases in value (i.e., the algorithm possesses the descent property).</li>
+  <li>We say that an iterative algorithm is globally convergent if for any arbitrary starting point the algorithm is guaranteed to generate a  sequence of points converging to a point that satisfies the FONC for a minimizer.</li>
+  <li>When the algorithm is not globally convergent, it may still generate a sequence that converges to a point satisfying the FONC, provided the initial point is sufficiently close to the point.</li>
+  <li>In this case, we say that the algorithm is locally convergent.</li>
+  <li>How close to a solution point we need to start for the algorithm to converge depends on the local convergence properties of the algorithm.</li>
+  <li>related issue of interest pertaining to a given locally or globally convergent algorithm is the rate of convergence; that is, how fast the  algorithm converges to a solution point.</li>
+</ul>
+
+<p><a href="https://postimg.cc/HV5TFGgy"><img src="https://i.postimg.cc/FsC1dmCD/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/5Y7wcY8n"><img src="https://i.postimg.cc/BbsNK2b9/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/8sfFk0G1"><img src="https://i.postimg.cc/7PmSVFQT/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/B8CzKpGb"><img src="https://i.postimg.cc/W3RcxYWG/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/kBFpV9P9"><img src="https://i.postimg.cc/X7TSz72Z/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/SXpLcY6v"><img src="https://i.postimg.cc/g0xMFvnm/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/v4PMV5wQ"><img src="https://i.postimg.cc/rpTp79ht/Capture.png" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/p9xGR66r"><img src="https://i.postimg.cc/VN03By9q/Capture.png" width="700px" title="source: imgur.com" /><a></a></a></a></a></a></a></a></a></a></a></a></a></a></a></a></a></p>
+
+<ul>
+  <li>Monotonically (无变化地)
+<a href="https://web.stanford.edu/class/ee364a/lectures.html"> Optimization method - Standford University </a></li>
+</ul>
+
+<p>https://www.youtube.com/results?search_query=convex+function</p>
+:ET
