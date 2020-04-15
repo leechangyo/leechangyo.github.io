@@ -28,7 +28,7 @@ you can check my resume <a href="https://leechangyo.github.io/public/CV.pdf">her
   <li> <a href="https://leechangyo.github.io/public/project.pdf">path planning</a> </li>
 
 
-<h3>Award and Honor<h3>
+<h3>Award and Honor</h3>
 <p> Seoul City Technical Skill competition </p>
   <li> Silver prize on CNC lathe </li>
 <p> Ecovacs Robotics Design Competition </p>
