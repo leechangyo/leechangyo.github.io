@@ -19,7 +19,6 @@ you can check my resume <a href="https://leechangyo.github.io/public/CV.pdf">her
 
 <h3>Research Project</h3>
 <p>Undergraduate program</p>
-  <li> <a href="https://leechangyo.github.io/public/CV.pdf">Capston</a> </li>
   <li> <a href="http://robot.ecovacs.cn/thread-99539-1-sortid-1.html">wall painting robot design</a> </li>
   <li> <a href="https://leechangyo.github.io/public/졸업논문_이찬교.pdf">Optimization HVAC system</a> </li>
 <p>graduate program</p>
