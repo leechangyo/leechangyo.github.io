@@ -5,12 +5,12 @@ title: About
 
 <div style="font-size: 0.9rem; font-weight:300; line-height: 1.6rem;">
 
-안녕하세요. 로봇 인공지능 분야를 공부하고 있는 이찬교 입니다. 현재 공부하는 분야는
+안녕하세요. SLAM과 Autonomous Navigation 분야를 공부하고 있는 이찬교 입니다.
 
-<p class="message" style="font-size: 0.9rem; font-weight: 700">
-Machine Learning, Deep Learning, Machine Vision, Reinforcement Learning, Robot Operation System, Robotics
-</p>
-입니다.<br>
+<!-- <p class="message" style="font-size: 0.9rem; font-weight: 700">
+
+</p> -->
+
 궁금한 점이나 조언해주실 내용 있으시면 사이드바 중앙에 있는 이메일, 깃허브, 페이스북, 링크인 등으로 언제든지 연락주세요. 블로그 포스팅 하단에 질문할 수 있는 공간 또한 만들어뒀습니다. <br>
 
 제 이력서에 관한 것은 <a href="https://leechangyo.github.io/public/CV.pdf">이곳</a>에서 확인할 수 있습니다.
