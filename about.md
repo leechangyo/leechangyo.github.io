@@ -30,11 +30,11 @@ you can check my resume <a href="https://leechangyo.github.io/public/CV.pdf">her
 
 
 <h3>Award and Honor</h3>
-<p> Seoul City Technical Skill competition </p>
+<h4> Seoul City Technical Skill competition </h4>
   <li> Silver prize on CNC lathe </li>
-<p> Ecovacs Robotics Design Competition </p>
+<h4> Ecovacs Robotics Design Competition </h4>
   <li> The Excellent Robot design award </li>
-<p> China Scholarship Council </p>
+<h4> China Scholarship Council </h4>
   <li> A grade </li>
 
 <h3> Skill </h3>
