@@ -25,6 +25,8 @@ you can check my resume <a href="https://leechangyo.github.io/public/CV.pdf">her
   <li> <a href="https://leechangyo.github.io/public/CV.pdf">Q 235 Vicker’s Hardness Test</a></li>
   <li> <a href="https://leechangyo.github.io/public/ObjectDetectionPoseEstimation.pdf">Object Detection and Pose Estimation using Mask-RNN</a> </li>
   <li> <a href="https://leechangyo.github.io/public/project.pdf">path planning</a> </li>
+  <li> Semanticl SLAM system and Data fusion in EKF </li>
+  <li> Autonomous exploration in an unknown environment using Hybrid Motion Planning Planner(RRTs, APF) </li>
 
 
 <h3>Award and Honor</h3>
