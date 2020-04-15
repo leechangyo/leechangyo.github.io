@@ -5,14 +5,48 @@ title: About
 
 <div style="font-size: 0.9rem; font-weight:300; line-height: 1.6rem;">
 
-안녕하세요. SLAM과 Autonomous Navigation 분야를 공부하고 있는 이찬교 입니다.
+Hi my name is chan. I'm currently a Master student in Shanghai Jiao tong University Mechanical Engineering school
+
+I'm learning and researching interests are mainly in the area of robotics such as SLAM, Control manipulator, Motion Planning, Data Fusion.
 
 <!-- <p class="message" style="font-size: 0.9rem; font-weight: 700">
 
 </p> -->
 
-궁금한 점이나 조언해주실 내용 있으시면 사이드바 중앙에 있는 이메일, 깃허브, 페이스북, 링크인 등으로 언제든지 연락주세요. 블로그 포스팅 하단에 질문할 수 있는 공간 또한 만들어뒀습니다. <br>
+if you have any questions or suggestions, please feel free to contact me by e-mail, Github, Facebook, Linkin, etc in center of the sidebar<br>
 
-제 이력서에 관한 것은 <a href="https://leechangyo.github.io/public/CV.pdf">이곳</a>에서 확인할 수 있습니다.
+you can check my resume <a href="https://leechangyo.github.io/public/CV.pdf">here</a>
+
+## Research Project
+- Undergraduate program
+  - <a href="https://leechangyo.github.io/public/CV.pdf">Capston</a>
+  - <a href="http://robot.ecovacs.cn/thread-99539-1-sortid-1.html">wall painting robot design</a>
+  - <a href="https://leechangyo.github.io/public/졸업논문_이찬교.pdf">Optimization HVAC system</a>
+- graduate program
+  - <a href="https://leechangyo.github.io/public/CV.pdf">Q 235 Vicker’s Hardness Test</a>
+  - <a href="https://leechangyo.github.io/public/ObjectDetectionPoseEstimation.pdf">Object Detection and Pose Estimation using Mask-RNN</a>
+  - <a href="https://leechangyo.github.io/public/project.pdf">path planning</a>
+
+
+## Award and Honor
+-  Seoul City Technical Skill competition
+  - Silver prize on CNC lathe
+- Ecovacs Robotics Design Competition
+  - The Excellent Robot design award
+- China Scholarship Council
+  - A grade
+
+## Skill
+- C++
+- python
+- ROS
+- Matlab
+- Solidworks
+
+## Language
+- Chinese
+- Korean
+- English
+
 
 </div>
