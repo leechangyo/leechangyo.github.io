@@ -5,9 +5,9 @@ title: About
 
 <div style="font-size: 0.9rem; font-weight:300; line-height: 1.6rem;">
 
-Hi my name is chan. I'm currently a Master student in Shanghai Jiao tong University Mechanical Engineering school
+Hi my name is chan. I'm currently a Master student in Shanghai Jiao tong University Mechanical Engineering school<br>
 
-I'm learning and researching interests are mainly in the area of robotics such as SLAM, Control manipulator, Motion Planning, Data Fusion.
+I'm learning and researching interests are mainly in the area of robotics such as SLAM, Control manipulator, Motion Planning, Data Fusion.<br>
 
 <!-- <p class="message" style="font-size: 0.9rem; font-weight: 700">
 
@@ -15,38 +15,38 @@ I'm learning and researching interests are mainly in the area of robotics such a
 
 if you have any questions or suggestions, please feel free to contact me by e-mail, Github, Facebook, Linkin, etc in center of the sidebar<br>
 
-you can check my resume <a href="https://leechangyo.github.io/public/CV.pdf">here</a>
+you can check my resume <a href="https://leechangyo.github.io/public/CV.pdf">here</a><br>
 
-## Research Project
-- Undergraduate program
-  - <a href="https://leechangyo.github.io/public/CV.pdf">Capston</a>
-  - <a href="http://robot.ecovacs.cn/thread-99539-1-sortid-1.html">wall painting robot design</a>
-  - <a href="https://leechangyo.github.io/public/졸업논문_이찬교.pdf">Optimization HVAC system</a>
-- graduate program
-  - <a href="https://leechangyo.github.io/public/CV.pdf">Q 235 Vicker’s Hardness Test</a>
-  - <a href="https://leechangyo.github.io/public/ObjectDetectionPoseEstimation.pdf">Object Detection and Pose Estimation using Mask-RNN</a>
-  - <a href="https://leechangyo.github.io/public/project.pdf">path planning</a>
+<h3>Research Project</h3>
+<p>Undergraduate program</p>
+  <li> <a href="https://leechangyo.github.io/public/CV.pdf">Capston</a> </li>
+  <li> <a href="http://robot.ecovacs.cn/thread-99539-1-sortid-1.html">wall painting robot design</a> </li>
+  <li> <a href="https://leechangyo.github.io/public/졸업논문_이찬교.pdf">Optimization HVAC system</a> </li>
+<p>graduate program</p>
+  <li> <a href="https://leechangyo.github.io/public/CV.pdf">Q 235 Vicker’s Hardness Test</a></li>
+  <li> <a href="https://leechangyo.github.io/public/ObjectDetectionPoseEstimation.pdf">Object Detection and Pose Estimation using Mask-RNN</a> </li>
+  <li> <a href="https://leechangyo.github.io/public/project.pdf">path planning</a> </li>
 
 
-## Award and Honor
--  Seoul City Technical Skill competition
-  - Silver prize on CNC lathe
-- Ecovacs Robotics Design Competition
-  - The Excellent Robot design award
-- China Scholarship Council
-  - A grade
+<h3>Award and Honor<h3>
+<p> Seoul City Technical Skill competition </p>
+  <li> Silver prize on CNC lathe </li>
+<p> Ecovacs Robotics Design Competition </p>
+  <li> The Excellent Robot design award </li>
+<p> China Scholarship Council </p>
+  <li> A grade </li>
 
-## Skill
-- C++
-- python
-- ROS
-- Matlab
-- Solidworks
+<h3> Skill </h3>
+<li> C++</li>
+<li> python</li>
+<li> ROS</li>
+<li> Matlab</li>
+<li> Solidworks</li>
 
-## Language
-- Chinese
-- Korean
-- English
+<h3>Language</h3>
+<li> Chinese </li>
+<li> Korean </li>
+<li> English </li>
 
 
 </div>
