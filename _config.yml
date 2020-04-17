@@ -25,7 +25,7 @@ version: 1.0.0
 # About/contact
 author:
   name: chan
-  description: <strong>Hi !</strong> thank you for visiting my blog, have a nice day!
+  description: <strong>Hi!</strong> thank you for visiting my blog!
   gravatar: 4e29fdf9344e43f141d0e24a2af2bca7 # md5 hash of your email address
   contact:
     linkedin:  https://www.linkedin.com/in/chan-gyo-lee-480b1a185/
