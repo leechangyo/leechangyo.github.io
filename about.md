@@ -26,14 +26,14 @@ you can check my resume <a href="https://leechangyo.github.io/public/CV.pdf">her
   <li> <a href="https://leechangyo.github.io/public/ObjectDetectionPoseEstimation.pdf">Object Detection and Pose Estimation using Mask-RNN</a> </li>
   <li> <a href="https://leechangyo.github.io/public/project.pdf">path planning</a> </li>
   <li> Semantic SLAM system and Data fusion in EKF </li>
-  <li> Autonomous exploration in an unknown environment using Hybrid Motion Planning Planner(RRTs, APF) </li>
+  <li> Fast Frontier-based Autonomous exploration in an unknown environment using sampling based planner </li>
 
 
 <h3>Award and Honor</h3>
-<h4> Seoul City Technical Skill competition </h4>
-  <li> Silver prize on CNC lathe </li>
+<li> Win the Silver Medal in CNC lathe Seoul Skill Competition </li>
+<li> Win the Silver Medal in CNC lathe Seoul High School Skill Competition </li>
 <h4> Ecovacs Robotics Design Competition </h4>
-  <li> The Excellent Robot design award </li>
+  <li> Win the Robot design </li>
 <h4> China Scholarship Council </h4>
   <li> A grade </li>
 
