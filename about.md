@@ -17,11 +17,11 @@ if you have any questions or suggestions, please feel free to contact me by e-ma
 
 you can check my resume <a href="https://leechangyo.github.io/public/CV.pdf">here</a><br>
 
-<h3>Research Project</h3>
-<p>Undergraduate program</p>
+<h2>Research Project</h2>
+<h3>Undergraduate program</h3>
   <li> <a href="http://robot.ecovacs.cn/thread-99539-1-sortid-1.html">wall painting robot design</a> </li>
   <li> <a href="https://leechangyo.github.io/public/졸업논문_이찬교.pdf">Optimization HVAC system</a> </li>
-<p>graduate program</p>
+<h3>Graduate program</h3>
   <li> <a href="https://leechangyo.github.io/public/CV.pdf">Q 235 Vicker’s Hardness Test</a></li>
   <li> <a href="https://leechangyo.github.io/public/ObjectDetectionPoseEstimation.pdf">Object Detection and Pose Estimation using Mask-RNN</a> </li>
   <li> <a href="https://leechangyo.github.io/public/project.pdf">path planning</a> </li>
@@ -29,7 +29,7 @@ you can check my resume <a href="https://leechangyo.github.io/public/CV.pdf">her
   <li> Fast Frontier-based Autonomous exploration in an unknown environment using sampling based planner </li>
 
 
-<h3>Award and Honor</h3>
+<h2>Award and Honor</h2>
 <li> Win the Silver Medal in CNC lathe Seoul Skill Competition </li>
 <li> Win the Silver Medal in CNC lathe Seoul High School Skill Competition </li>
 <h4> Ecovacs Robotics Design Competition </h4>
