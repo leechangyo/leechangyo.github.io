@@ -1,8 +1,8 @@
 ---
 layout: post
 title: 1. Fundamental of Sensor Fusion
-category: Robotics
-tag: Robotics
+category: Sensor fusion
+tag: Sensor fusion
 ---
 
 # Sensor Fusion

@@ -1,8 +1,8 @@
 ---
 layout: post
 title: 2. Sensor Fusion for Localization and Multi-object Tracking
-category: Robotics
-tag: Robotics
+category: Sensor fusion
+tag: Sensor fusion
 ---
 
 <a href="https://postimg.cc/5XBhbGss"><img src="https://i.postimg.cc/rw3MC2x2/Capture.jpg" width="700px" title="source: imgur.com" /><a>

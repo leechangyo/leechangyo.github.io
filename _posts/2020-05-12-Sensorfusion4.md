@@ -1,8 +1,8 @@
 ---
 layout: post
 title: 4. Tracking a Single Object with an IMM Filter
-category: Robotics
-tag: Robotics
+category: Sensor fusion
+tag: Sensor fusion
 ---
 
 <a href="https://postimg.cc/B8h2FSht"><img src="https://i.postimg.cc/zBN793Kw/Capture.jpg" width="700px" title="source: imgur.com" /><a>

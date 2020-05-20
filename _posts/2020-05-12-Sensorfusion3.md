@@ -1,8 +1,8 @@
 ---
 layout: post
 title: 3. Fusing a GPS and IMU to Estimate Pose
-category: Robotics
-tag: Robotics
+category: Sensor fusion
+tag: Sensor fusion
 ---
 
 <a href="https://postimg.cc/Fdm4XvbF"><img src="https://i.postimg.cc/G2ThYhHD/Capture.jpg" width="700px" title="source: imgur.com" /><a>

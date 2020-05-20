@@ -1,8 +1,8 @@
 ---
 layout: post
 title: 5. how to track multiple object at once
-category: Robotics
-tag: Robotics
+category: Sensor fusion
+tag: Sensor fusion
 ---
 
 <a href="https://postimg.cc/ZCBjhMTX"><img src="https://i.postimg.cc/ZKjQpGXY/Capture.jpg" width="700px" title="source: imgur.com" /><a>
