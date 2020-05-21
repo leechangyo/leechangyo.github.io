@@ -2,7 +2,7 @@
 layout: post
 title: Seoul Robotics 후기
 category: daily
-tag: Job
+tag: daily
 ---
 
 인턴쉽을 찾는 도중 한국에 Seoul Robotics라는 회사를 발견하였다.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 20. RBF Neural Networks
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

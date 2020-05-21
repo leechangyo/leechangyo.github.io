@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 16. DeepLearning Overview
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

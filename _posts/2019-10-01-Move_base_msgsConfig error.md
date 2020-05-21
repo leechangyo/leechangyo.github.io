@@ -2,7 +2,7 @@
 layout: post
 title: Move_base_msgsConfig error
 category: ROS
-tag: Debug
+tag: ROS
 ---
 
 # problem statement
@@ -39,7 +39,7 @@ Call Stack (most recent call first):
 ```
 
 # Solution
-- it is not installed move_base msg, therefore need to install 
+- it is not installed move_base msg, therefore need to install
 ```
 sudo apt-get ros-kinetic-navigation
 ```

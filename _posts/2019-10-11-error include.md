@@ -2,7 +2,7 @@
 layout: post
 title: Include error
 category: ROS
-tag: debug
+tag: ROS
 ---
 
 # 进入代码目录并编译

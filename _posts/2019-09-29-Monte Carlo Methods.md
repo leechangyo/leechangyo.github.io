@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 12. Monte Carlo Methods
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

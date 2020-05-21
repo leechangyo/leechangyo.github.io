@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 8. Tic-Tac-Toe
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

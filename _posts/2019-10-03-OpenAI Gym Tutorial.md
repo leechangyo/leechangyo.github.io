@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 17. OpenAI Gym Tutorial
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 23. N-step Methods
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

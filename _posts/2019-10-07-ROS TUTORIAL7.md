@@ -2,7 +2,7 @@
 layout: post
 title: 7. URDF
 category: ROS
-tag: Tutorial
+tag: ROS
 ---
 # URDF - Overview
 - limitation of URDF

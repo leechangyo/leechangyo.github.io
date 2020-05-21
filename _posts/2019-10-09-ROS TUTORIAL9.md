@@ -2,7 +2,7 @@
 layout: post
 title: 9. ROS Manipulate
 category: ROS
-tag: Tutorial
+tag: ROS
 ---
 # ROS Manipulation Overview
 - Moveit! - a ROS package for manipulation

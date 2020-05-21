@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 14. Approximation Methods
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

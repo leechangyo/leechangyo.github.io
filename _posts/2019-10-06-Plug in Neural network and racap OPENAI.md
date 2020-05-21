@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 22. Plug in Neural network and racap OPENAI
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

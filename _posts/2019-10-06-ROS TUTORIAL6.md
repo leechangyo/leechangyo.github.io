@@ -2,7 +2,7 @@
 layout: post
 title: 6. object_generator
 category: ROS
-tag: Tutorial
+tag: ROS
 ---
 
 # Object Generator

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 21. RBF Neural Network with cartpole
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

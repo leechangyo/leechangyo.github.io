@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 18. Random Search within OpenAI
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 11. Introduction to Dynamic Programming
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 7. The Value function
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 1. Reinforcement Learning Introduction
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

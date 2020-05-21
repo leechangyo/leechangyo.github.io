@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 3. Multi Armed Bandit
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

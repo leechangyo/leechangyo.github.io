@@ -2,7 +2,7 @@
 layout: post
 title: 3. Forward Kinematic
 category: ROS
-tag: Tutorial
+tag: ROS
 ---
 - to understand TF look at the my [Forward Kinematic](https://leechangyo.github.io/robotics/2019/10/04/Kinematic-Model/) post
 

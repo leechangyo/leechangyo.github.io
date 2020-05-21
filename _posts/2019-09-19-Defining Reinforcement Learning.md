@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 2. Defining Reinforcement Learning
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

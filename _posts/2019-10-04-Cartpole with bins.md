@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 19. Cartpole with bins
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

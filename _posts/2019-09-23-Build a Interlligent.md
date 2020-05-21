@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 6. Build a Intelligence
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

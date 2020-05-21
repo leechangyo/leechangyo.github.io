@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 9. Markov Decision Processes
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

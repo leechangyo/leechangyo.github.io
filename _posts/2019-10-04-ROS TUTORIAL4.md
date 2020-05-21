@@ -2,7 +2,7 @@
 layout: post
 title: 4. Cartesian Control
 category: ROS
-tag: Tutorial
+tag: ROS
 ---
 - to understand TF look at the my [](https://leechangyo.github.io/robotics/2019/10/04/Kinematic-Model/) post
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 4. UCB1 and Bayesian Method
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

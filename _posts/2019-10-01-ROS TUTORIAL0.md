@@ -2,7 +2,7 @@
 layout: post
 title: 0. ROS Basic
 category: ROS
-tag: Tutorial
+tag: ROS
 ---
 # Fundamental Concepts
 - ROS file system -nomenclature

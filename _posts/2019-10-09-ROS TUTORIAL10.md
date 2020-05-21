@@ -2,7 +2,7 @@
 layout: post
 title: 10. TF2 ROS
 category: ROS
-tag: Tutorial
+tag: ROS
 ---
 # TF2 ROS Introduction
 - command line tool
@@ -28,4 +28,4 @@ tf tf_echo world robot2_pedestal_link
   - Quantification
     - 3D Transfromation
     - ROS topic: /tf (tf2_msgs/TFMessage)
-- 
+-

@@ -2,7 +2,7 @@
 layout: post
 title: 0.1 ROS Basic
 category: ROS
-tag: Tutorial
+tag: ROS
 ---
 # Sensor_info
 

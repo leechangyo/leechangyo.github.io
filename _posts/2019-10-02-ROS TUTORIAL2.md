@@ -2,7 +2,7 @@
 layout: post
 title: 2. TF tutorial
 category: ROS
-tag: Tutorial
+tag: ROS
 ---
 - to understand TF look at the my [Transformation Frame](https://leechangyo.github.io/robotics/2019/10/03/Trasnformation-Frame/) post
 # TF Example

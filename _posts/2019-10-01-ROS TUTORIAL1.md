@@ -2,7 +2,7 @@
 layout: post
 title: 1. Make Msg file and scripts
 category: ROS
-tag: Tutorial
+tag: ROS
 ---
 
 # 1. Create Msg

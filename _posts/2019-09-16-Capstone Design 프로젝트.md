@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Smart Stick for the blind
-category: Project
+category: Capstone Design
 tag: Capstone Design
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 5. Nonstationary bandit
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 13. TD Temporal Difference Learning
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

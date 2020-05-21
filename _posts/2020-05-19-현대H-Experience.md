@@ -1,8 +1,8 @@
 ---
 layout: post
 title: 현대 H-Experience 자율주행 센서퓨전 개발 면접 후기
-category: Daily
-tag: job
+category: daily
+tag: daily
 ---
 
 노동절날 웨이하이에서 휴가를 즐기는 도중, 현대 H-Experience라는 연구 인턴쉽을 보게 되었다.

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 10. Value Function(2) & Bellman Equation
-category: AI
+category: Reinforcement Learning
 tag: Reinforcement Learning
 ---
 

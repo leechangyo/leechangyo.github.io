@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Multi-Agent path finding(MAPF) & Search algorithm
-category: ROBOTICS
+category: Multi-Agent Path Finding
 tag: Multi-Agent Path Finding
 ---
 

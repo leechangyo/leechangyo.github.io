@@ -2,7 +2,7 @@
 layout: post
 title: 8. ROS Navigation stack
 category: ROS
-tag: Tutorial
+tag: ROS
 ---
 # ROS Navigation stack
 - 2D Navigation
