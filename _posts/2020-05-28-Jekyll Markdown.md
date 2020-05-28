@@ -13,9 +13,10 @@ tag: 博客
 
 **Syntax**
 
->
+```
 이것은 헤더입니다.
 ===
+```
 
 **Example**
 
@@ -26,9 +27,11 @@ tag: 博客
 
 **Syntax**
 
->
+```
 이것은 부제목입니다.
 ---
+```
+
 
 **Example**
 
@@ -39,14 +42,14 @@ tag: 博客
 
 **Syntax**
 
->
+```
  # H1
  ## H2
  ### H3
  #### H4
  ##### H5
  ###### H6
-
+```
 
 **Example**
 
@@ -63,10 +66,10 @@ tag: 博客
 
 **Syntax**
 
->
+```
 Link: [참조 키워드][링크변수]
 [링크변수]: WebAddress "Descriptions"
-
+```
 
 **Example**
 
@@ -74,9 +77,9 @@ Link : [Google][https://google.com]
 
 **Syntax**
 
->
+```
 Link: [Google](https://google.com)
-
+```
 
 **Example**
 
@@ -86,12 +89,12 @@ Link: [Google](https://google.com)
 
 **Syntax**
 
->
+```
  >이것은 Block Quote
  >이것은 Block Quote
   >이것은 Block Quote
   >이것은 Block Quote
-
+```
 
 **Example**
 >이것은 Block Quote
@@ -104,11 +107,11 @@ Link: [Google](https://google.com)
 
 **Syntax**
 
->
+```
  1. 순서가 있는 목록
  2. 순서가 있는 목록
  3. 순서가 있는 목록
-
+```
 
 **Example**
 1. 순서가 있는 목록
@@ -119,11 +122,11 @@ Link: [Google](https://google.com)
 
 **Syntax**
 
->
+```
  - 순서가 없는 목록
  - 순서가 있는 목록
  - 순서가 있는 목록
-
+```
 
 **Example**
 - 순서가 없는 목록
@@ -136,11 +139,11 @@ Link: [Google](https://google.com)
 
 **Syntax**
 
->
+```
  <pre> Code block open
  <code> write a code here</code>
  code block close</pre>
-
+```
 
 **Example**
 <pre> Code block open
@@ -150,7 +153,7 @@ code block close</pre>
 ## - python
 
 **Syntax**
->
+```
   ```python
      # This program adds up integers in the command line
   import sys
@@ -160,7 +163,7 @@ code block close</pre>
   except ValueError:
       print 'Please supply integer arguments'
   ```
-
+```
 
 **Example**
 ```python
@@ -176,7 +179,7 @@ except ValueError:
 ## Ruby
 
 **Syntax**
->
+```
   ```ruby
   a = [ 45, 3, 19, 8 ]
   b = [ 'sam', 'max', 56, 98.9, 3, 10, 'jill' ]
@@ -186,7 +189,7 @@ except ValueError:
   a << 57 << 9 << 'phil'
   print "A: ", a.join(' '), "\n"
   ```
-
+```
 
 **Example**
 
@@ -203,7 +206,7 @@ print "A: ", a.join(' '), "\n"
 ## C++
 
 **Syntax**
->
+```
   ```c++
   int str_equals(char *equal1, char *eqaul2)
   {
@@ -217,7 +220,7 @@ print "A: ", a.join(' '), "\n"
      else {return -1};
   }
   ```
-
+```
 
 **Example**
 
@@ -238,7 +241,7 @@ int str_equals(char *equal1, char *eqaul2)
 ## C#
 
 **Syntax**
->
+```
   ```c#
   using System;
   using System.Collections.Generic;
@@ -278,7 +281,7 @@ int str_equals(char *equal1, char *eqaul2)
       }
   }
   ```
-
+```
 
 **Example**
 
@@ -325,7 +328,7 @@ namespace Inheritance
 ## JABA
 
 **Syntax**
->
+```
   ```go
   package main
 
@@ -353,7 +356,7 @@ namespace Inheritance
      fmt.Printf("\n")  
   }
   ```
-
+```
 
 **Example**
 
@@ -388,7 +391,7 @@ func main() {
 ## Swift
 
 **Syntax**
->
+```
   ```swift
   let password = "HelloWorld"
   let repeatPassword = "HelloWorld"
@@ -399,7 +402,7 @@ func main() {
      print("Passwords are not equal")
   }
   ```
-
+```
 
 **Example**
 
@@ -417,9 +420,9 @@ if ((password.elementsEqual(repeatPassword)) == true)
 # 7. Strketthrough(취소선)
 
 **Syntax**
->
+```
   ~~ 이것은 취소선 입니다. ~~
-
+```
 
 **Example**
 
@@ -428,11 +431,11 @@ if ((password.elementsEqual(repeatPassword)) == true)
 # 8. Bold, Italic
 
 **Syntax**
->
+```
   [Italic]          * 기울임 *
   [Bold]           ** 강조 **
   [Bold & Italic] *** 강조와 기울임 ***
-
+```
 **Example**
 
 *기울임*
@@ -442,9 +445,9 @@ if ((password.elementsEqual(repeatPassword)) == true)
 # 9. Image
 
 **Syntax**
->
+```
   <a href="https://postimg.cc/Kkz1fJFW"><img src="https://i.postimg.cc/9MPyWnkc/Capture.jpg" width="700px" title="source: imgur.com" /><a>
-
+```
 **Example**
 
 <a href="https://postimg.cc/Kkz1fJFW"><img src="https://i.postimg.cc/9MPyWnkc/Capture.jpg" width="700px" title="source: imgur.com" /><a>
