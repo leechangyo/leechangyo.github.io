@@ -5,7 +5,7 @@ title: About
 
 <div style="font-size: 0.9rem; font-weight:300; line-height: 1.6rem;">
 
-Hi my name is CHANGYO LEEE. I'm currently a student in Mechanical Engineering school of Shanghai Jiao tong University for engineering master degree. <br>
+Hi my name is CHANGYO LEE（李灿教）. I'm currently a student in Mechanical Engineering school of Shanghai Jiao tong University for engineering master degree. <br>
 
 I'm learning and researching interests are mainly in the area of robotics such as SLAM, Control manipulator, Motion Planning, Data Fusion, machine learning and deep learning.<br>
 
@@ -28,7 +28,7 @@ you can check my Linkedin <a href="https://www.linkedin.com/in/chan-gyo-lee-480b
   <li> Semantic SLAM system and Data fusion in EKF </li>
   <li> <a href="https://youtu.be/-H2u51xzO54">Fast Frontier-based Autonomous exploration in an unknown environment using sampling based planner</a>  </li>
 
-  
+
 <h2>Award and Honor</h2>
 <li> Win the Silver Medal in CNC lathe Seoul Skill Competition </li>
 <li> Win the Silver Medal in CNC lathe Seoul High School Skill Competition </li>
