@@ -164,6 +164,7 @@ code block close</pre>
       print 'Please supply integer arguments'
   ```
 ```
+```
 
 **Example**
 ```python
@@ -189,6 +190,7 @@ except ValueError:
   a << 57 << 9 << 'phil'
   print "A: ", a.join(' '), "\n"
   ```
+```
 ```
 
 **Example**
@@ -220,6 +222,7 @@ print "A: ", a.join(' '), "\n"
      else {return -1};
   }
   ```
+```
 ```
 
 **Example**
@@ -282,6 +285,8 @@ int str_equals(char *equal1, char *eqaul2)
   }
   ```
 ```
+```
+
 
 **Example**
 
@@ -328,6 +333,7 @@ namespace Inheritance
 ## JABA
 
 **Syntax**
+
 ```
   ```go
   package main
@@ -357,6 +363,8 @@ namespace Inheritance
   }
   ```
 ```
+```
+
 
 **Example**
 
@@ -391,7 +399,9 @@ func main() {
 ## Swift
 
 **Syntax**
+
 ```
+
   ```swift
   let password = "HelloWorld"
   let repeatPassword = "HelloWorld"
@@ -402,6 +412,8 @@ func main() {
      print("Passwords are not equal")
   }
   ```
+
+```
 ```
 
 **Example**
