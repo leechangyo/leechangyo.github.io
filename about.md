@@ -5,9 +5,9 @@ title: About
 
 <div style="font-size: 0.9rem; font-weight:300; line-height: 1.6rem;">
 
-Hi my name is chan. I'm currently a Master student in Shanghai Jiao tong University Mechanical Engineering school<br>
+Hi my name is CHANGYO LEEE. I'm currently a student in Mechanical Engineering school of Shanghai Jiao tong University for engineering master degree. <br>
 
-I'm learning and researching interests are mainly in the area of robotics such as SLAM, Control manipulator, Motion Planning, Data Fusion.<br>
+I'm learning and researching interests are mainly in the area of robotics such as SLAM, Control manipulator, Motion Planning, Data Fusion, machine learning and deep learning.<br>
 
 <!-- <p class="message" style="font-size: 0.9rem; font-weight: 700">
 
@@ -15,7 +15,7 @@ I'm learning and researching interests are mainly in the area of robotics such a
 
 if you have any questions or suggestions, please feel free to contact me by e-mail, Github, Facebook, Linkin, etc in center of the sidebar<br>
 
-you can check my resume <a href="https://leechangyo.github.io/public/CV.pdf">here</a><br>
+you can check my Linkedin <a href="https://www.linkedin.com/in/chan-gyo-lee-480b1a185/">here</a><br>
 
 <h2>Research Project</h2>
 <h3>Undergraduate program</h3>
@@ -26,9 +26,9 @@ you can check my resume <a href="https://leechangyo.github.io/public/CV.pdf">her
   <li> <a href="https://leechangyo.github.io/public/ObjectDetectionPoseEstimation.pdf">Object Detection and Pose Estimation using Mask-RNN</a> </li>
   <li> <a href="https://leechangyo.github.io/public/project.pdf">path planning</a> </li>
   <li> Semantic SLAM system and Data fusion in EKF </li>
-  <li> Fast Frontier-based Autonomous exploration in an unknown environment using sampling based planner </li>
+  <li> <a href="https://youtu.be/-H2u51xzO54">Fast Frontier-based Autonomous exploration in an unknown environment using sampling based planner</a>  </li>
 
-
+  
 <h2>Award and Honor</h2>
 <li> Win the Silver Medal in CNC lathe Seoul Skill Competition </li>
 <li> Win the Silver Medal in CNC lathe Seoul High School Skill Competition </li>
