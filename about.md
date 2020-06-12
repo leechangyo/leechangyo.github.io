@@ -24,7 +24,7 @@ you can check my Linkedin <a href="https://www.linkedin.com/in/chan-gyo-lee-480b
 <h3>Graduate program</h3>
   <li> <a href="https://leechangyo.github.io/public/CV.pdf">Q 235 Vicker’s Hardness Test</a></li>
   <li> <a href="https://leechangyo.github.io/public/ObjectDetectionPoseEstimation.pdf">Object Detection and Pose Estimation using Mask-RNN</a> </li>
-  <li> <a href="https://youtu.be/oHN6IxD7TDc">Shape Recognition and camera pose </a> </li>
+  <li> <a href="https://youtu.be/oHN6IxD7TDc">Shape Recognition and camera pose estimation </a> </li>
   <li> <a href="https://youtu.be/IS2WA1j4Uro">Designing Dual arm for pick and place in Gazebo Simulation</a> </li>
   <li> <a href="https://youtu.be/xZGpy88DP90">Designing Mobile Manipulator in Gazebo Simulation</a> </li>
   <li> <a href="https://leechangyo.github.io/public/project.pdf">path planning</a> </li>
