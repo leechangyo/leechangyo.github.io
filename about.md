@@ -30,7 +30,7 @@ you can check my Linkedin <a href="https://www.linkedin.com/in/chan-gyo-lee-480b
   <li> <a href="https://leechangyo.github.io/public/project.pdf">path planning</a> </li>
   <li> Semantic SLAM system and Data fusion in EKF </li>
   <li> <a href="https://youtu.be/-H2u51xzO54">Fast Frontier-based Autonomous exploration in an unknown environment using sampling based planner</a>  </li>
-
+  <li> <a href="https://youtu.be/m540Aad6ZZ0">Fast Frontier-based Autonomous exploration in an unknown environment using sampling based planner(applying it to Real Robot)</a>  </li>
 
 <h2>Award and Honor</h2>
 <li> Win the Silver Medal in CNC lathe Seoul Skill Competition </li>
