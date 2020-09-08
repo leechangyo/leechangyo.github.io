@@ -28,7 +28,7 @@ you can check my LinkedIn <a href="https://www.linkedin.com/in/chan-gyo-lee-480b
   <li> <a href="https://youtu.be/IS2WA1j4Uro">Designing Dual arm for pick and place in Gazebo Simulation</a> </li>
   <li> <a href="https://youtu.be/xZGpy88DP90">Designing Mobile Manipulator in Gazebo Simulation</a> </li>
   <li> <a href="https://leechangyo.github.io/public/project.pdf">path planning</a> </li>
-  <li> Semantic SLAM system and Data fusion in EKF </li>
+  <li> <a href="https://ieeexplore.ieee.org/abstract/document/9158880">Semantic SLAM system and Data fusion in EKF</a> </li>
   <li> <a href="https://youtu.be/-H2u51xzO54">Fast Frontier-based Autonomous exploration in an unknown environment using sampling based planner</a>  </li>
   <li> <a href="https://youtu.be/m540Aad6ZZ0">Fast Frontier-based Autonomous exploration in an unknown environment using sampling based planner(applying it to Real Robot)</a>  </li>
 
