@@ -15,7 +15,7 @@ I'm learning and researching interests are mainly in the area of robotics such a
 
 if you have any questions or suggestions, please feel free to contact me by e-mail, Github, Facebook, LinkedIn, etc in center of the sidebar<br>
 
-you can check my LinkedIn <a href="https://www.linkedin.com/in/chan-gyo-lee-480b1a185/">here</a>. and I have another blog that introducing student life in china <a href="https://blog.naver.com/laowaibang">here</a><br>
+you can check my LinkedIn <a href="https://www.linkedin.com/in/chan-gyo-lee-480b1a185/">here</a> and <a href="https://leechangyo.github.io/public/RESUME.pdf">RESUME</a>. Also I have another blog that introducing student life in china <a href="https://blog.naver.com/laowaibang">here</a><br>
 
 <h2>Research Project</h2>
 <h3>Undergraduate program</h3>
