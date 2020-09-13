@@ -22,7 +22,6 @@ you can check my LinkedIn <a href="https://www.linkedin.com/in/chan-gyo-lee-480b
   <li> <a href="http://robot.ecovacs.cn/thread-99539-1-sortid-1.html">wall painting robot design</a> </li>
   <li> <a href="https://leechangyo.github.io/public/졸업논문_이찬교.pdf">Optimization HVAC system</a> </li>
 <h3>Graduate program</h3>
-  <li> <a href="https://leechangyo.github.io/public/CV.pdf">Q 235 Vicker’s Hardness Test</a></li>
   <li> <a href="https://leechangyo.github.io/public/ObjectDetectionPoseEstimation.pdf">Object Detection and Pose Estimation using Mask-RNN</a> </li>
   <li> <a href="https://youtu.be/oHN6IxD7TDc">Shape Recognition and camera pose estimation </a> </li>
   <li> <a href="https://youtu.be/IS2WA1j4Uro">Designing Dual arm for pick and place in Gazebo Simulation</a> </li>
