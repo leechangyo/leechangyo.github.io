@@ -11,11 +11,11 @@ tag: ROBOTICS
 
 두 이미지에 매칭하는 피처포인트에 대해서 frame과 frame 간의 연결 할때 생기는 epipole 그리고 3차원 공간에서서 교차해서 만나는 포인트를 찾기 위해
 
-epipole과 interest 특징점을 연결을 한 선이 epipoline으로, 프래임간 에피폴라라인으로 서칭을 통해 매칭점을 찾는다.
+epipole과 interest 특징점을 연결을 한 선이 epipoline으로, 프래임간 에피폴라라인으로 서칭을 통해 매칭점에 대한 3차원 위치를 찾는다.
 
 이 찾게 된 3D 상에 매칭점은 epipoline과 baseline, epipole 등으로 통해 Fundamental Matrix를 구할 수 있으며
 
-Essential Matrix는 K^t* F * K인 카메라 파라미터를 통해 구할 수 있다.
+Essential Matrix는 E = K^t* F * K인 카메라 파라미터를 통해 구할 수 있다.
 
 구해진 Essential Matrix는 essential matrix triangulation을 통해서 3D Mappoints가 구해지게 된다.
 

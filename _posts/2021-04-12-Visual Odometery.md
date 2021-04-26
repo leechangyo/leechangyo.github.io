@@ -35,7 +35,7 @@ tag: ROBOTICS
 
 5. 이를 통해서도 3D Mappoints를 구현할 수 있다.(triangulation)
 
-6. 문제는 monocular는 baseline이 없기 때문에 부정확한 pose estimation 및 맵포인트를 생산하게 된다.
+6. 문제는 monocular는 baseline이 없기 때문에 연속되는 이미지의 시간을 가지고 이미지가 이동한 거리로 베이스라인을하여 계산하는데 이것을 **Structure from Motion** 이라고 한다.
 
 7. Stereo는 baseline이 주어지므로 보다 정확한 pose estimation과 맵포인트를 생산하게 된다.
 
