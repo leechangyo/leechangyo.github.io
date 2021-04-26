@@ -34,6 +34,7 @@ tag: ROBOTICS
     5. RecoverPose(essential matrix, keypoint1, keypoint2, R, t, focal_lengh, principal point);
 
 5. 이를 통해서도 3D Mappoints를 구현할 수 있다.(triangulation)
+  - 구해진 3D Mappoints들은 다시 이미지 프레임으로 RE-projection하여서 관측된 2D 매칭점과 Re projection된 2D 포인트를 least Square 방법을 통해 최적화 하여서 Visual Odometery를 추정하는 방법이 많이 쓰인다.
 
 6. 문제는 monocular는 baseline이 없기 때문에 연속되는 이미지의 시간을 가지고 이미지가 이동한 거리로 베이스라인을하여 계산하는데 이것을 **Structure from Motion** 이라고 한다.
 
