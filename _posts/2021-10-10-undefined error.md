@@ -1,6 +1,6 @@
 ---
 layout: post
-title: [C++, ROS] undefined reference
+title: undefined reference[C++, ROS]
 category: Programming
 tag: Programming
 ---

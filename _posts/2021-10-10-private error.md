@@ -1,6 +1,6 @@
 ---
 layout: post
-title: [C++, ROS] ""~ is private within this context"
+title: ~ is private within this context"[C++, ROS] 
 category: Programming
 tag: Programming
 ---
