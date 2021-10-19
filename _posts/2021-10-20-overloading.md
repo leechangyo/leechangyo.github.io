@@ -1,0 +1,61 @@
+---
+layout: post
+title: 오버로딩, friend class
+category: C++
+tag: C++
+---
+오버로딩은 똑같은 이름을 가지고 함수를 가지고 있을태인데, 그것을 구분해서 로딩을 하는 것이다.
+
+즉
+
+```c++
+void print(int);
+void print(long);
+void print(int, long);
+```
+
+이중에 함수를 사용을 할떄 parameter의 데이터 타입과 크기에 따라 자동적으로 오버로딩이 된다.
+
+friend class는 접근하고자 하는 private 멤버를 갖는 클래스 내부에 클래스 함수를 선언 한다.
+프렌드 함수를 선언할 때는 함수명 앞에 friend들을 붙인다.
+
+```c++
+#include <iostream>
+using namespace std;
+class Complex
+{
+private:
+  int real, image;
+public:
+  Complex(inr r = 0, int i = 0) : real(r), image(i) {};
+  void showComplex() const;
+  friend void prn(Complex* pCOM);
+};
+void Complex::showComplex() const
+{
+  cout << real << image << endl;
+}
+
+void prn(Complex* pCOM)
+{
+  for(int i =0; i<4; i++)
+  {
+    cout<<pCOM[i].real << pCOM[i].image;
+  }
+}
+
+void main()
+{
+  Complex arr[4] = {
+    Complex(2,4),
+    Complex(4,8),
+    Complex(8,16),
+    Complex(16,32),
+  }
+  prn(arr);
+
+  Complex *p =arr;
+  P->showComplex();
+  (p+1)->showComplex();
+}
+```
