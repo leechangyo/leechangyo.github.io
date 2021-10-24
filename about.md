@@ -5,9 +5,11 @@ title: About
 
 <div style="font-size: 0.9rem; font-weight:300; line-height: 1.6rem;">
 
-Hi my name is CHANGYO LEE（李灿教）. I'm currently a student in Mechanical Engineering school of Shanghai Jiao tong University for engineering master degree. <br>
+Hi my name is CHANGYO LEE（李灿教）. I'm currently Robotic Software Engineer at Hyundai Motor Company's RoboticsLABs <br>
 
-I'm learning and researching interests are mainly in the area of robotics such as SLAM, Control manipulator, Motion Planning, Data Fusion, machine learning and deep learning.<br>
+i graduated from Shanghai JiaoTong University with Master Degree in Mechanical Engineering. <br>
+
+I'm learning and researching interests are mainly in the area of robotics such as SLAM, Computer Vision, Perception, Object Detection, Sensor Fusion, machine learning and deep learning.<br>
 
 <!-- <p class="message" style="font-size: 0.9rem; font-weight: 700">
 
@@ -38,6 +40,8 @@ you can check my LinkedIn <a href="https://www.linkedin.com/in/chan-gyo-lee-480b
   <li> Win the Robot design </li>
 <h4> China Scholarship Council </h4>
   <li> A grade </li>
+<h4> Publication </h4>
+  <li> <a href="https://ieeexplore.ieee.org/abstract/document/9158880">Asynchronous Fusion of Visual and Wheel Odometer for SLAM Applications</a>  </li>
 
 <h3> Skill </h3>
 <li> C++</li>
@@ -51,5 +55,14 @@ you can check my LinkedIn <a href="https://www.linkedin.com/in/chan-gyo-lee-480b
 <li> Korean </li>
 <li> English </li>
 
-
+<h3> Working Experience </h3>
+<li> Research Assistance at Seoul National University of Science and Technology(2017.03~2017.12, Seoul)</li>
+<li> Technical Support Engineer at Seoul National University of Science and Technology(2018.01~2018.06, Seoul)</li>
+<li> Korean Translation at Shanghai Edu(2020.01~2020.05, Shanghai)</li>
+<li> Graduate Researcher at Shanghai JiaoTong University(2019.01~2020.09, Shanghai)</li>
+<li> Research Engineer Intern at Midea Group(2020.09~2020.12, Shanghai)</li>
+<li> Application Engineer at PTC(2021.06~2021.06, Shanghai)</li>
+<li> Research Engineer Intern at HMC(2021.07~2021.08, Seoul)</li>
+<li> ADAS BU Sensor Fusion Engineer at Mando(2021.09~2021.09, Seoul)</li>
+<li> Robotics Software Engineer at HMC(2021.10 ~ , Seoul)</li>
 </div>
