@@ -5,9 +5,9 @@ title: About
 
 <div style="font-size: 0.9rem; font-weight:300; line-height: 1.6rem;">
 
-Hi my name is CHANGYO LEE（李灿教）. I'm currently Robotic Software Engineer at Hyundai Motor Company's RoboticsLABs <br>
+Hi my name is CHANGYO LEE（李灿教）. I'm currently a Robotic Software Engineer at Hyundai Motor Company's RoboticsLABs <br>
 
-i graduated from Shanghai JiaoTong University with Master Degree in Mechanical Engineering. <br>
+I graduated from Shanghai JiaoTong University with Master Degree in Mechanical Engineering. <br>
 
 I'm learning and researching interests are mainly in the area of robotics such as SLAM, Computer Vision, Perception, Object Detection, Sensor Fusion, machine learning and deep learning.<br>
 
@@ -41,7 +41,7 @@ you can check my LinkedIn <a href="https://www.linkedin.com/in/chan-gyo-lee-480b
 <h4> China Scholarship Council </h4>
   <li> A grade </li>
 <h4> Publication </h4>
-  <li> <a href="https://ieeexplore.ieee.org/abstract/document/9158880">Asynchronous Fusion of Visual and Wheel Odometer for SLAM Applications</a>  </li>
+  <li> <a href="https://ieeexplore.ieee.org/abstract/document/9158880">Asynchronous Fusion of Visual and Wheel Odometer for SLAM Applications(IEEE/ASME AIM CONFERENCE, 2020)</a>  </li>
 
 <h3> Skill </h3>
 <li> C++</li>
