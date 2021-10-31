@@ -1,6 +1,6 @@
 ---
 layout: post
-title: 1
+title: VISLAM 필요한 이유 및 도전과제
 category: SLAM
 tag: SLAM
 ---
