@@ -1,6 +1,6 @@
 ---
 layout: post
-title: VI SLAM Research
+title: VI_SLAM_Research
 category: SLAM
 tag: SLAM
 ---
