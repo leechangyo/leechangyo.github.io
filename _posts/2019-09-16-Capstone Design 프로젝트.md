@@ -1,8 +1,13 @@
 ---
 layout: post
 title: Smart Stick for the blind
+<<<<<<< HEAD
 category: Sensor fusion
 tag: Sensor fusion
+=======
+category: sensor fusion
+tag: sensor fusion
+>>>>>>> 33d8309b86615641a9c8a35a2a90efb81425fc2d
 ---
 
 이번 글에서는 대학교 3학년때 프로젝트를 하면서 개발한 Smart Stick 소개드리려 합니다.
