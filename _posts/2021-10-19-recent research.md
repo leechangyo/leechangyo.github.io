@@ -1,6 +1,6 @@
 ---
 layout: post
-title: VISLAM Research
+title: 1
 category: SLAM
 tag: SLAM
 ---
