@@ -1,10 +1,9 @@
 ---
 layout: post
 title: Difference between Variance and Standard Deviation
-category: calculus
+category: calculus
 tag: calculus
 ---
-
 
 ### BASIC
 
