@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 연산자 Operator 활용하기
-category: C++
+category: C++
 tag: C++
 ---
 
