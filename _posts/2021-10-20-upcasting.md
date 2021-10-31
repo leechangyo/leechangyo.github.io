@@ -1,9 +1,10 @@
 ---
 layout: post
 title: upcasting, downcasting 과 virtual, override 관계
-category: C++
+category: C++
 tag: C++
 ---
+
 상속 관계로 이뤄진 기반 클래스와 파생 클래스는 한 식구가 있다고 한다면 업캐스팅은 파생클래스에서 기반클래스로 캐스팅하는 것이다 즉
 
 ```c++
