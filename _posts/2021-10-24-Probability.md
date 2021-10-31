@@ -20,3 +20,6 @@ Plane Segementation을 하는데 있어 많이 사용하는 방법이 Integral I
 8. 이렇게 된다면 2x2 사이즈의 Normal Surface를 얻게 됨으로 500x500에서, 250x250 수만큼 줄어들게 된다.
 9. 얻어진 eigenvalue를 통해 Normal Surface에 대한 shape를 구하고, curvature를 구하여서 너무 휜 현상을 제거하게 한다.
 10. 각 normal surface의 plane coefficiene를 구하여 Ransac을 통해 Object와 plane을 구분하게 된다.
+
+
+다른 방법 보다 속도가 빠르기 떄문에 많이들 사용한다.
