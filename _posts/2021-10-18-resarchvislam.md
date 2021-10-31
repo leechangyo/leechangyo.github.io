@@ -1,8 +1,8 @@
 ---
 layout: post
 title: VI SLAM 필요한 이유 및 도전과제
-category: SLAM
-tag: SLAM
+category: Visual SLAM
+tag: Visual SLAM
 ---
 
 Lidar - Robust but cost
