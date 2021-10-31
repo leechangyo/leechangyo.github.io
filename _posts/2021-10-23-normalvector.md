@@ -2,7 +2,7 @@
 layout: post
 title: 법선 벡터을 이용한 어플리케이션 및 방법
 category: calculus
-tag: calculus
+tag: calculus
 ---
 
 법선 벡터(normal vector)를 이용하여 컴퓨터 비전에 많은 어플리케이션에 사용이 된다. 주로 사용되는 어플리케이션은 Ground Segementation일 것이다.
