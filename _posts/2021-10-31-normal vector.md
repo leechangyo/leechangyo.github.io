@@ -17,4 +17,4 @@ https://www.slideshare.net/nsimmons/11-x1-t05-05-perpendicular-distance
 
 이 것이 왜 중요하냐 하면
 
-plane segmentation을 할때 perpendicular distance를 통해 다른 plane과 merge을 할지 혹은 split을 할지 결정을 한다.
+plane segmentation을 할때 perpendicular distance를 통해 다른 plane과 merge를 할지 혹은 split을 할지 결정을 한다.

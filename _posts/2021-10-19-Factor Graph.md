@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Factor Grpah
-category: Optimization method
-tag: Optimization method
+category: SLAM
+tag: SLAM
 ---
 
 https://gisbi-kim.github.io/blog/2021/03/04/slambackend-1.html

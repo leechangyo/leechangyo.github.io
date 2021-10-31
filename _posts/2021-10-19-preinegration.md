@@ -1,7 +1,7 @@
 ---
 layout: post
-title: pre integration imu
-category: Sensor fusion
+title: pre_integration imu
+category: Sensor fusion
 tag: Sensor fusion
 ---
 
