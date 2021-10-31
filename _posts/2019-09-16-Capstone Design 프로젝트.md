@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Smart Stick for the blind
-category: Capstone Design
-tag: Capstone Design
+category: Sensor fusion
+tag: Sensor fusion
 ---
 
 이번 글에서는 대학교 3학년때 프로젝트를 하면서 개발한 Smart Stick 소개드리려 합니다.

@@ -2,7 +2,7 @@
 layout: post
 title: Linux 중요한 명령어
 category: Programming
-tag: Linux
+tag: Programming
 ---
 
 ## 1.SUDO
