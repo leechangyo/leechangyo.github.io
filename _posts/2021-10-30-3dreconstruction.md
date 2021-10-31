@@ -1,8 +1,8 @@
 ---
 layout: post
 title: 3-D Reconstruction with Vision
-category: Visual SLAM
-tag: Visual SLAM
+category: Machine Vision
+tag: Machine Vision
 ---
 
 https://towardsdatascience.com/3-d-reconstruction-with-vision-ef0f80cbb299
