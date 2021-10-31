@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Jekyll markdown
-category: 博客
-tag: 博客
+category: Programming
+tag: Programming
 ---
 
 블로그가 Jekyll로 만들어져있어 게시물을 게시할때 깔끔하게 정리할 수 있는 markdown을 정리해보았다.
