@@ -1,6 +1,6 @@
 ---
 layout: post
-title: [C++] 나만의 모듈화 및 몇가지 구조화 규칙
+title: 나만의 모듈화 및 몇가지 구조화 규칙[C++]
 category: Programming
 tag: Programming
 ---
@@ -15,7 +15,7 @@ virtual destructor를 하는데, 그 이유는 모듈안에 겹치는 class가 �
 
 헤더 파일
 
-```
+```c
 namespace elevation_mapping {
 
 /*!
@@ -37,7 +37,7 @@ class ElevationMap {
 
 cpp 파일
 
-```
+```c
 namespace elevation_mapping {
 
 ElevationMap::ElevationMap(ros::NodeHandle nodeHandle)

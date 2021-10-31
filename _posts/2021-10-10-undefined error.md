@@ -1,6 +1,6 @@
 ---
 layout: post
-title: [C++, ROS] undefined reference
+title: undefined reference[C++, ROS]
 category: Programming
 tag: Programming
 ---
@@ -33,3 +33,5 @@ tag: Programming
 - .cpp에 scope를 잘 지정했는가? void ClassName::method(){}이렇게 namespace를 잘 지정해줬는가?
 
 - 1. 생성자 구현을 헤더 파일안에서 inline으로 해주거나, 2. g++로 컴파일할때 링크를 건드리거나.
+
+- 이에 Cmake에서는 add_library를 target_link_libraries에다 연걸 마지막 add_executable, 실행 파일에다가 링크 지정을 해줘야 한다. 그래야 undefined error를 피할 수 있다.
