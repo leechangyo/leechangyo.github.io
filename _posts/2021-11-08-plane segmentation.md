@@ -24,6 +24,10 @@ RANSAC Segmentation RANSAC
 https://medium.com/@ajithraj_gangadharan/3d-ransac-algorithm-for-lidar-pcd-segmentation-315d2a51351
 
 
+3차원에서의 RANSAC 방법
+https://towardsdatascience.com/detecting-the-fault-line-using-k-mean-clustering-and-ransac-9a74cb61bb96
+
+
 ### Summary :
 
 RANSAC Plane Segmentation를 사용하는 이유는 모든 포인트들을 Ellipse 혹은 rectangle화 하여서 Normal vector(normal surface를)를 구하거나 모든 포인트의 네이버 3개를 이용하여서 normal vector(normal surface)를 구해 얻어진 plane coefficient를 raw point들을 대입하여 distance "d"를 구하여서 Threshold안에 들면 plane에 존재하는 inlier을 존재하거나 normal surface curvature를 통해 plane인지 object인지를 구분하는데 많은 calculation cost와 time cost가 생긴다.
@@ -32,7 +36,7 @@ RANSAC Plane Segmentation를 사용하는 이유는 모든 포인트들을 Ellip
 
 RANSAC은 머신러닝에서 혹은 컴퓨터 비전에 inlier 와 outlier를 나누는데 많이 쓰인다.
 
-위에 쎃은 링크대로 램덤하게 포인트를 잡고 gradient를 구하여서 주변 포인트들이 특정 gradient와의 distance가 특정 Threshold안에 든다면, 그것인 inlier로 간주를 한다.
+위에 쎃은 링크대로 램덤하게 포인트를 잡고 gradient(3차원일 경우 normal surface(plane))를 구하여서 주변 포인트들이 특정 gradient와의 distance가 특정 Threshold안에 든다면, 그것인 inlier로 간주를 한다.
 
 이를 iteration을 하여서 inlier를 구한다.
 
