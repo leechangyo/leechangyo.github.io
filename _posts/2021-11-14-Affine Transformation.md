@@ -30,6 +30,9 @@ https://en.wikipedia.org/wiki/3D_projection
 
 #### Eigen Expression
 
+class Eigen::AngleAxis< _Scalar > Represents a 3D rotation as a rotation angle around an arbitrary 3D axis. This is defined in the Geometry module.
+
+
 ```c++
 // g++ eigen_test.cpp -o eigen_test -I /usr/include/eigen3/
 
