@@ -160,3 +160,18 @@ while (current_frame_list_[0] != number_of_frames_ &&
     ros::spinOnce();
 }
 ```
+
+### Point Type indices
+
+```c++
+enum PointTypeVal
+{
+    INVALID_TYPE = -1,
+    UNKNOWN = 0,
+    GROUND = 1,
+    GRADIENT_EDGE = 2,
+    UNCLASSIFIED_OBSTACLES = 3
+};
+
+std::vector<PointTypeVal> point_type_indices;
+```
