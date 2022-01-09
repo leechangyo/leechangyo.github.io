@@ -35,6 +35,11 @@ Vanilla algorithm meaning : In computer science, vanilla is the term used to ref
 
 주 최적화 방법은 즉 error function에 2차 편미분을 하여서(Jacobian Matrix, Hessian Matrix) Gaussian Newton(Decent) 방식으로 변환을 하여서, delta X에 대한 값(pose and landmark or just pose(landmark))를 x에 업데이트를 Iteration K만큼 해주면서 업데이트에 적용되는 delta x에 대해 최소값을 만드는 것이다.
 
+<a href="https://postimg.cc/ZB2d6wj0"><img src="https://i.postimg.cc/tJCNQfxd/Kakao-Talk-Image-2022-01-09-22-17-42.jpg" width="700px" title="source: imgur.com" /><a>
+
+<a href="https://postimg.cc/T52PsS0t"><img src="https://i.postimg.cc/cCw8vGnG/Kakao-Talk-Image-2022-01-09-22-20-28.jpg" width="700px" title="source: imgur.com" /><a>
+
+
 
 다양한 방법들
 
