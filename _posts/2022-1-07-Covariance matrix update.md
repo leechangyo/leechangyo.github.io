@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Covariance Matrix Propagation and Information Matrix Propagation relationship with Gaussian(Normal) Distribution, Optimization
-category: SLAM
-tag: SLAM
+category: Optimization method
+tag: Optimization method
 ---
 
 <a href="https://postimg.cc/3WN1p6rr"><img src="https://i.postimg.cc/ZYFQkt1N/Kakao-Talk-Image-2022-01-09-22-16-27.jpg" width="700px" title="source: imgur.com" /><a>
