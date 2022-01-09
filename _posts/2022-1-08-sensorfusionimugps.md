@@ -1,6 +1,6 @@
 ---
 layout: post
-title: GPS-IMU Sensor Fusion(Kalman Filter)
+title: GPS-IMU Sensor Fusion 원리 및 2D mobile robot sensor fusion Implementation(Kalman Filter and Extended Kalman filter)
 category: Sensor fusion
 tag: Sensor fusion
 ---
@@ -29,7 +29,9 @@ Predict 데이터를 통해, 절대좌표에서 측정된 데이턱 값을 업�
 
 아래와 같다.
 
-<a href="https://postimg.cc/XG33bLDm"><img src="https://i.postimg.cc/d1Z0GSRs/Kakao-Talk-Image-2022-01-09-13-02-57.jpg" width="700px" title="source: imgur.com" /><a>
+예를 들어 2D Mobile robot의 Localization을 추정한다고 한다면,
+
+<a href="https://postimg.cc/mtpsDqjW"><img src="https://i.postimg.cc/qv4MmHCq/Kakao-Talk-Photo-2022-01-09-16-00-08.jpg" width="700px" title="source: imgur.com" /><a>
 
 여기서 C는 error Matrix이다.
 
@@ -37,8 +39,9 @@ Predict 데이터를 통해, 절대좌표에서 측정된 데이턱 값을 업�
 
 Kalman Filter도 마찬가지로 비선형 방식인 Extended Kalman Filter가 있는데 간단히 Motion Model과 Measurement Model에 Talor Series expension를 통하여 Jacobian Matrix로 상태추정을 하는 것입니다.
 
-<a href="https://postimg.cc/w3Y5CGcF"><img src="https://i.postimg.cc/ZYCfdk9k/Kakao-Talk-Image-2022-01-09-13-32-24.jpg" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/dkFMpKsr"><img src="https://i.postimg.cc/fLtw3w12/Kakao-Talk-Photo-2022-01-09-16-00-22.jpg" width="700px" title="source: imgur.com" /><a>
 
+J는 때에 따라 XYZ에 대한 자코비안만 하는 경우가 많다.(즉 Transition Matrix A(x_k-1, y_k-1,vx_k-1,vy_k-1,theta_k-1)만 고려, Control Matrix에 대해 Jacobian 하지 않음)
 
 ### Code Reference
 
