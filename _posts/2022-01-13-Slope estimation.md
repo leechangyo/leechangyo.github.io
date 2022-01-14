@@ -1,6 +1,6 @@
 ---
 layout: post
-title: The way Slope Estimation(Tangent Vector 응용 : 곡선 길이 및 곡률 계산)
+title: The way Slope Estimation(곡선 길이 및 곡률 계산 by tangent vector)
 category: Machine Vision
 tag: Machine Vision
 ---
