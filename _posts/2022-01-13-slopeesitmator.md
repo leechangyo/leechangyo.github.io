@@ -91,6 +91,7 @@ for(int idx = 0; idx < Gradient.size(); idx++)
 #### 3D Case
 
 Fomular
+
 ```
 r'(t).cross(r''(t))= A;
 k(t) = (sqrt(A.dot(A))) / (sqrt(r'.dot(r'))^3
@@ -172,7 +173,3 @@ about 2D
 https://www.delftstack.com/ko/howto/numpy/curvature-formula-numpy/
 
 all about curavture
-
-https://math.libretexts.org/Bookshelves/Calculus/Supplemental_Modules_(Calculus)/Vector_Calculus/2%3A_Vector-Valued_Functions_and_Motion_in_Space/2.3%3A_Curvature_and_Normal_Vectors_of_a_Curve
-
-https://openstax.org/books/calculus-volume-3/pages/3-3-arc-length-and-curvature
