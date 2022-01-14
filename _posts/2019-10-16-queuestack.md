@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Queue and Stack
-category: Data structure_1
-tag: Data structure_1
+category: SLAM
+tag: SLAM
 ---
 
 # 1. Introduction
