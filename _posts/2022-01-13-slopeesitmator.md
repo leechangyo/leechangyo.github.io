@@ -89,3 +89,9 @@ for(int idx = 0; idx < Gradient.size(); idx++)
 }
 
 ```
+
+#### 3D Case
+
+https://www.youtube.com/watch?v=NlcvU67YWpQ
+
+Fomular
