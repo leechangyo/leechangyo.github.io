@@ -20,8 +20,6 @@ Normal vector마다 곡률을 구할 수 있느데, 한번 해보자
 #### 2d case
 
 
-<a href="https://postimg.cc/jDr1gv0C"><img src="https://i.postimg.cc/JzyWhdp3/Kakao-Talk-Image-2022-01-13-18-29-10.jpg" width="700px" title="source: imgur.com" /><a>
-
 Fomular
 
 ```
