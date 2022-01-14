@@ -170,6 +170,4 @@ for(int idx = 0; idx < Gradient.size(); idx++)
 
 about 2D
 
-https://www.delftstack.com/ko/howto/numpy/curvature-formula-numpy/
-
 all about curavture
