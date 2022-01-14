@@ -31,7 +31,7 @@ k(t) = (x'y'' - x''y') / (x' * x' + y' * y')^(3/2)
 
 ```c
 Eigen::MatrixXf m(2,7);
-m = {{1,1},{1.5,2},{2,3},{2.5,3.5},{3,4},{3.5,4.25},{4,4.5}};
+
 Eigen::Vector2f Gradient(7);
 
 //  Step 1 : Gradient(vector)
@@ -48,4 +48,5 @@ for(int idx = 0; idx < m.cols()-1; idx++)
   //  [0.5   0.25 ]
   //  [0.5   0.25 ]]
 }
+
 ```
