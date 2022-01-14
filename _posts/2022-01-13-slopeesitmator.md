@@ -91,9 +91,6 @@ for(int idx = 0; idx < Gradient.size(); idx++)
 #### 3D Case
 
 Fomular
-
-<a href="https://postimg.cc/jwGcWdRC"><img src="https://i.postimg.cc/d30xxLXR/Kakao-Talk-Image-2022-01-13-18-29-15.jpg" width="700px" title="source: imgur.com" /><a>
-
 ```
 r'(t).cross(r''(t))= A;
 k(t) = (sqrt(A.dot(A))) / (sqrt(r'.dot(r'))^3
