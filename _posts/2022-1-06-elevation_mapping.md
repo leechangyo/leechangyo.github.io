@@ -1,8 +1,8 @@
 ---
 layout: post
-title: Robot-Centric Elevation Mapping with uncertainty estimate(sensor variance, motion variance활)
-category: SLAM
-tag: SLAM
+title: Robot-Centric Elevation Mapping with uncertainty estimate(sensor variance, motion variance활용)
+category: Machine Vision
+tag: Machine Vision
 ---
 
 - Goal : find a representation of the terrain that takes the uncertainties of the range measurements and the state estimation into account
