@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Robot-Centric Elevation Mapping with uncertainty estimate
+title: Robot-Centric Elevation Mapping with uncertainty estimate(sensor variance, motion variance활)
 category: SLAM
 tag: SLAM
 ---
