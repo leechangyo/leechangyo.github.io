@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Affine Tranformation(2D, 3D)
-category: Programming
-tag: Programming
+category: ROBOTICS
+tag: ROBOTICS
 ---
 
 Homogeneous Coordinate로 나타내는 것이 Affine Tranformation이다.
