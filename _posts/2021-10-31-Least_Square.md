@@ -22,7 +22,7 @@ error * information matrix * error
 
 Eq{1} [e1,e2,e3][][e1,e2,e3]^T <- e1,e2,e3 are sensors
 
-skew-matrix on information matrix meant relationship between each sensors.
+skew-matrix on information matrix meant relationship between each sensors in covariance matrix.
 
 if we assume each sensor doesn't impact on other, then, we can define skew matrix's elements to "0"
 
