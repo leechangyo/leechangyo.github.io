@@ -5,4 +5,4 @@ category: Machine Vision
 tag: Machine Vision
 ---
 
-<a href="https://postimg.cc/bD9mygLm"><img src="https://i.postimg.cc/gJfQKBhb/Kakao-Talk-Photo-2022-01-29-17-07-15.jpg" width="700px" title="source: imgur.com" /><a>
+<a href="https://postimg.cc/N24dnzh6"><img src="https://i.postimg.cc/Th8BpzC4/Screen-Shot-2022-01-29-at-9-11-01-PM.png" width="700px" title="source: imgur.com" /><a>
