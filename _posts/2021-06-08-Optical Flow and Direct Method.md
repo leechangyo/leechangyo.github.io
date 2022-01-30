@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Opitcal Flow 혹은 Direct Method로 구하는 Mappoints 및 Pose estimation
-category: ROBOTICS
-tag: ROBOTICS
+category: Visual SLAM
+tag: Visual SLAM
 ---
 
 ### Optical Flow

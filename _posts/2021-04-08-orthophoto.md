@@ -1,8 +1,8 @@
 ---
 layout: post
 title: orthophoto
-category: ROBOTICS
-tag: ROBOTICS
+category: Machine Vision
+tag: Machine Vision
 ---
 
 

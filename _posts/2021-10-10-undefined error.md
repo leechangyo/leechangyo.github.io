@@ -1,8 +1,8 @@
 ---
 layout: post
 title: undefined reference[C++, ROS]
-category: Programming
-tag: Programming
+category: ROS
+tag: ROS
 ---
 
 ```

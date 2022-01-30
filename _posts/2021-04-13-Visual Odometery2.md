@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Visual Odometery & Pose Estimation(using Direct Method(intensity))
-category: ROBOTICS
-tag: ROBOTICS
+category: Visual SLAM
+tag: Visual SLAM
 ---
 
 1. feature extract feature point 방법의 단점은 키포인트들과 Descriptor(매칭점을 찾는데 사용됨) 계산이 많이 소모 된다

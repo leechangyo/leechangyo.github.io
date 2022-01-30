@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Graph SLAM
-category: ROBOTICS
-tag: ROBOTICS
+category: SLAM
+tag: SLAM
 ---
 
  Graph SLAM은 Pose graph optimization의 방식으로 odometery(휠엔코더)로 생성된 로봇 포즈에 대한 값을 Node로 저장을 한다.

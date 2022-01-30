@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Factor Graph
-category: ROBOTICS
-tag: ROBOTICS
+category: SLAM
+tag: SLAM
 ---
 
 Grahp SLAM이나 Pose Graph optimization, Bundle Adjustment 에 많이 사용함

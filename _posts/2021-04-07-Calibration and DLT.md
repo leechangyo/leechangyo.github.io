@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Zhang's Method Calibration & Direct Linear Transformation
-category: ROBOTICS
-tag: ROBOTICS
+category: Machine Vision
+tag: Machine Vision
 ---
 
 Zhang's method는 체크보드와 Direct Linear Transformation을 통해 캘리브레이션 하는 방법을 소개한다.

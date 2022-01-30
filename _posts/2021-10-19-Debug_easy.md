@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Debug 쉽게하는 법[C++, ROS]
-category: Programming
-tag: Programming
+category: ROS
+tag: ROS
 ---
 
 ### C++ DEBUG

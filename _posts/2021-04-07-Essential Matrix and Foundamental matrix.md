@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Essential Matrix, Fundamental Matrix
-category: ROBOTICS
-tag: ROBOTICS
+category: Machine Vision
+tag: Machine Vision
 ---
 
 스테레오 카메라를 이용해서 3D mappoints를 구하는데 있어 필요한 essential Matrix와 Fundamental matrix가 있다.

@@ -1,8 +1,8 @@
 ---
 layout: post
-title: ~ is private within this context"[C++, ROS] 
-category: Programming
-tag: Programming
+title: ~ is private within this context"[C++, ROS]
+category: ROS
+tag: ROS
 ---
 
 ```

@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Epipolar Contraint으로 얻어지는 Essential Matrix, Fundamental Matrix, Homography Matrix의 미지수들을 어떻게 구할까??
-category: ROBOTICS
-tag: ROBOTICS
+category: Visual SLAM
+tag: Visual SLAM
 ---
 
 두 이미지 시퀀스에서 특징점과 디스크립터를 FLANN알고리즘을 통해 매칭점을 찾습니다. 찾아진 매칭점들은 두 이미지 시퀀스간의 관계를 나타내는 Epipolar Contraint을 통해서 Essential Matrix와 Fundamental Matrix를 구하여서, Triangulation을 통한 맵포인트 생성과 PnP알고리즘을 통해 카메라 포즈를 구할 수 있습니다.

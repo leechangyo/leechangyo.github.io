@@ -1,8 +1,8 @@
 ---
 layout: post
 title: Visual Odometery & Pose Estimation
-category: ROBOTICS
-tag: ROBOTICS
+category: Visual SLAM
+tag: Visual SLAM
 ---
 
 ### 2D - 2D Pose Estimation(Monocular, Stero를 이용한 방법)
