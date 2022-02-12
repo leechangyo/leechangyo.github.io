@@ -39,6 +39,12 @@ Reference R Value일 경우, L Value는 순수하게 Address를 읽는다.
 
 Pointer = 메모리공간의 일련번호(address) 그렇기 때문에 Pointer는 Address를 가르켜야 한다.
 
+NOTE : 예제 3번에 마지막 cout에 b앞에 "*"를 넣어줘야 한다.
+
+포인터는 어드레스를 읽지만, 표현할때(RValue로 사용할 때에는)에는 어드레이스에 있는 밸류를 표현하기 때문이다.
+
+만약 RVALUE로 사용할때 앞에 "*" 붙여주지 않는다면, pointer의 address로 표현이 될것이다
+
 <a href="https://postimg.cc/VdBPhQw8"><img src="https://i.postimg.cc/MKgZvqrv/Screen-Shot-2022-02-12-at-2-48-34-PM.png" width="700px" title="source: imgur.com" /><a>
 
 
@@ -50,7 +56,7 @@ void text(int& j)
 
 void text(int* j)
 {
-  cout << j << endl;
+  cout << *j << endl;
 }
 
 // those are samething
