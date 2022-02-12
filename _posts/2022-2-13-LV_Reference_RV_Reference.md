@@ -51,10 +51,21 @@ NOTE : 예제 3번에 마지막 cout에 b앞에 "*"를 넣어줘야 한다.
 int i = 5;
 int* p = &i;
 *p = 2;
+
+// 이런식으로 표혀할 수도 있고,
+int*p = nullptr; //initialize 하여서
+int i = 5;
+*p = i; // 이런식으로 바로 사용할 수 있다.
+
+// 이미 이니셜라이즈가 되었는데 address를 새로 주려고 한다면 error 가 생긴다
+
+int i = 5;
+int* p = nullptr;
+*p = &i; // 컴파일 에러! 에러! 에러! 에러! 이미 이니셜라이즈 했는데 address를 받는 것이므로 
 ```
 
 아래식으로 compile에러 없이 pointer에 밸류를 바꿀 수 있다. 이는 i의 값도 바뀌게 된다.
-이는 포인터가 initialize가 되었을때에 value값을 바꾸는 방법이다. 
+이는 포인터가 initialize가 되었을때에 value값을 바꾸는 방법이다.
 
 <a href="https://postimg.cc/VdBPhQw8"><img src="https://i.postimg.cc/MKgZvqrv/Screen-Shot-2022-02-12-at-2-48-34-PM.png" width="700px" title="source: imgur.com" /><a>
 
