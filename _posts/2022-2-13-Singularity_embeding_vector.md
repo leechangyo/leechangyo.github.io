@@ -9,7 +9,7 @@ tag: calculus
 
 Singularity란 무엇인가. Matrix에서의 Linear dependency이다.
 
-즉 A라는 행렬이 있다면, 행렬의 역수 A^-1이 0이라는 점이고, 이는 최적화 할때 Linear Problem이나 Non Linear Problem문제를 풀때 Least Square를 많이 사용하는데, 미지수에 대한 값을 구할 수 없다는 것이다.
+즉 A라는 행렬이 있다면, 행렬의 역수 A^-1이 0이라는 점이고(Matrix Determinant "0"), 이는 최적화 할때 Linear Problem이나 Non Linear Problem문제를 풀때 Least Square를 많이 사용하는데, 미지수에 대한 값을 구할 수 없다는 것이다.(reprenst gimber lock problem of euler angle rotation matrix)
 
 Singularity Matrix를 푸는 방법은 없다.
 
