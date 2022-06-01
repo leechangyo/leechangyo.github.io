@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Covariance Matrix Propagation and Information Matrix Propagation relationship with Gaussian(Normal) Distribution, Optimization
+title: Covariance Matrix Propagation and Information Matrix Propagation relationship with Gaussian(Normal) Distribution, Optimization, Probabilistic notion
 category: Optimization method
 tag: Optimization method
 ---

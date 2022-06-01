@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Vector Normalization
+title: Vector Normalization(Covariance Matrix, mass points)
 category: calculus
 tag: calculus
 ---
