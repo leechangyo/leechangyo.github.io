@@ -5,6 +5,8 @@ category: calculus
 tag: calculus
 ---
 
+https://swjman.tistory.com/104
+
 로봇공학을 공부하다 보면, 무조건 만나게 되는 개념 중에 가능도(likelihood)과 확률(Probability)라는 개념이 있다. (특히 Probabilisitic Robotics라는 엄청난 책도 있다.). 한 참 공부하다가 보면 이 기능도와 확률에 대해 헷갈리게 된다. 그래서 한번 복습할 겸 다시 한번 정리 해보고자 한다.
 
 위키의 정의를 보면,
