@@ -1,8 +1,8 @@
 ---
 layout: post
-title: VIM useful Command
-category: Programming
-tag: Programming
+title: BagFromImage Package for Noetic
+category: ROS
+tag: ROS
 ---
 
 因为需要自己制作图像集。
