@@ -21,7 +21,7 @@ Normal Plane과 8개 특징점에 대한 Epipolar Contraint을 통해서 선형�
 
 두 이미지 시퀀스에 대한 epipolar Contraint에서 많이 나오는 것이 Homography이다. Homography는 두 이미지 플래인간에 투영관계를 나타내고 있다. 만약 특정점이 두 이미지 플래인에 나타나고 있다면, 이 Homography를 통해 모션에 대한 예측을 할 수 있다.
 즉 두 이미지플래인에 매쳐있는 공동의 특징점들을 Homography를 통해 모션에 대한 예측을 한다. 이 Homography Matrix를 구하는것은 Fundamental Matrix를 구하는 것과 비슷하다.
-이때 4개의 매칭점을 이용을 하여서 rank가 8인 Homography Matrix를 구하게 된다. 이를 Direct Linear Transform이다.(카메라 켈리브래이션할때도 많이 사용된다.) 자세한 식은 구글이나 유트브에 잘 나와있다.
+이때 4개의 매칭점을 이용을 하여서 rank가 8인 Homography Matrix를 구하게 된다. 이를 Direct Linear Transform 방법과 비슷하게 문제를 푼다(카메라 내부 파라미터를 구할때 많이 사용된다. 2d image points and 3d word points비교를 통한, CheckBoard, Linaer Equation) 자세한 식은 구글이나 유트브에 잘 나와있다.
 
 얻어진 Homography Matrix는 Essential Matrix와 마찬가지로 행렬분해를 통해 Rotation과 Translation을 구할 수 있다.
 
@@ -36,6 +36,8 @@ Homography Matrix가 슬램에서 중요한 이유는, 특징점 및 카메라 �
 
 3. Essential Matrix 혹은 Homography Matrix를 통해 Rotation과 Tranlation을 구하게 되었다면, 두 이미지 시퀀스의 카메라 자세, Transformation과 두 이미지간의 매칭포인트들을 통해 Mappoints를 생성 할 수있다.
 
-4. 이렇게 생성된 카메라 자세와 Mappoints들은 PnP 알고리즘을 통해 카메라 자세를 구할 수 있다.(주로 스테레오카메라, 뎁스카메라.)(1,2,3 방법은 모노카메라 방법)
+4. 모노 카메라일경우 1,2,3 번을 통해서 초기 Relative Rotation과 Relative Translation값을 가지고 3d mappoints를 만들고, 그후 solve pnp(3d-2d) 방법을 통해서 다음 카메라 자세 추정을 한다음 3d Triangulation를 반복적으로 한다.
+
+5. 스테레오 카메라 및 Depth카메라일 경우 위의 Essential Matrix 및 essential matrix를 찾아 Relative Pose를 찾는 것이 아니라, 바로 3d triangulation을 만들고 solvepnp를 통해서 카메라 포즈 및 맵포인트들을 만든다.
 
 5. PnP는 주로 Direct Linear Transformation, Bundle Adjustment로 두개가 있다.(3D-2D 방법), (3D-3D는 ICP 방법)
