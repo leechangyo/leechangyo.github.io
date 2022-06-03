@@ -1,6 +1,6 @@
 ---
 layout: post
-title: orthogonal procrustes problem(to find Rotation and Translation)
+title: Orthogonal procrustes problem(to find Rotation and Translation/3D RIGID TRANSFROMATION)
 category: Machine Vision
 tag: Machine Vision
 ---
