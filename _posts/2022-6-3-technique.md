@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Vision Algorithm Engineer로 자주 사용되는 Technique(Keep Update)
+title: Vision Algorithm Engineer로 자주 사용되는 Technique 및 경험(Keep Update)
 category: daily
 tag: daily
 ---
@@ -126,3 +126,10 @@ Elevation Mapping :
   - Intel processors are more powerful and speedier than ARM processors. ARM chips, on the other hand, are more mobile-friendly than Intel processors (in most cases). People who were adamant about one side or the other have been upset over the last few years.
   - kernel(비트) 체제가 다를 수 있기 때문에, 호환되는 프로그램이 arm이 적음
   - [운영체제 비트 차이에 대한 설명](https://www.studytonight.com/post/x86-vs-x64-what-is-the-difference-between-x86-and-x64-architecture)
+
+- USB bandwidth 혹은 bus power insufficient문제로 멀티카메라나 멀티 센서를 이용할때 센서가 불안정해지는 경우가 있다.
+- 이미지 리트리버를 잘 찾기 위해서는 object detection이랑 맞물려서 IoU와 BoW를 통한 이미지 리트리버가 도움이 많이 될 것 같다.
+- Compare 할때는 List를 써서 쉽게 할 수 있다.
+- 전압측정기에는 전압 측정과, 같은 적극끼리 확인하는 기능이 있는데, 같은 전극끼리 확인하는 기능을 쓰면 삐 소리가 난다. -.+를 조심해야하기 때문에 그렇다. 전극확인하는것을 쓴다.
+- USB 128걔까지 물릴 수 있다. 다만 대역폭(Gbps)이 있기 때문에 그 이상 넘어가면 유에스비 연결이 안된다.
+- Reflector intensity Super High
