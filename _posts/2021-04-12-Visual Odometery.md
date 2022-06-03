@@ -14,7 +14,7 @@ tag: Visual SLAM
  - KD-Treess, Hamming stance(Discriptor가 있을 경우 (ORB)), FLANN 을 사용하여서 매칭
  - 너무 지저분하게 매칭이 생기면 RANSAC을 통해 inlier 매칭점만 찾음
 
-3. 찾은 매칭점은 Epipolar Contraint를 통해 Fundamental Matrix와 Essential Matrix구함
+3. 찾은 매칭점(points)은 Epipolar Contraint를 통해 Fundamental Matrix와 Essential Matrix구함
  - 두 이미지에 매칭되는 점은 epipolar line(pixel 좌표와 베이스라인으로 두 다른 이미지가 마주보는 점의 라인), epipole(베이스라인으로 두이지미가 마주보는 이미지 프레인간의 점)을 통해서 호모지니어스 좌표계에서의 매칭 포인트를 찾고(epipolar line을 통해 서칭해서 찾는다)
  - 이를 통해 epipolar plane이 형성이 된다.
  - 이를 통해 Fundamental Matrix, Essential Matrix를 구할 수 있다.
@@ -33,26 +33,26 @@ tag: Visual SLAM
     4. homography matrix(keypoint1,keypoint2,RANSAC,3,noArray(),2000,0.99);
     5. RecoverPose(essential matrix, keypoint1, keypoint2, R, t, focal_lengh, principal point);
 
-5. 이를 통해서도 3D Mappoints를 구현할 수 있다.(triangulation)
+5. 이를 통해서도 3D Mappoints를 구함.(triangulation)
   - 구해진 3D Mappoints들은 다시 이미지 프레임으로 RE-projection하여서 관측된 2D 매칭점과 Re projection된 2D 포인트를 least Square 방법을 통해 최적화 하여서 Visual Odometery를 추정하는 방법이 많이 쓰인다.
 
-6. 문제는 monocular는 baseline이 없기 때문에 연속되는 이미지의 시간을 가지고 이미지가 이동한 거리로 베이스라인을하여 계산하는데 이것을 **Structure from Motion** 이라고 한다.
+6. Solve Pnp를 통해 (3D-2D) 카메라 포즈를 찾는다.(3D-3D일 경우 ICP)
 
-7. Stereo는 baseline이 주어지므로 보다 정확한 pose estimation과 맵포인트를 생산하게 된다.
+**NOTE: 모노 카메라일경우 위에 같은 방식으로 VO를 구함, 다만 Stereo나 RBGD같은 경우 바로 3D Mappoints를 만들고 solve pnp를 통해 카메라 포즈를 구한다.**
 
-### 3D - 2D Pose Estimation(RGB-D 이용한 방법)
+### 3D - 2D Pose Estimation
 
 1. 특징점 추출 이용하여서 특징점 추출
-2. 틱징점 매칭
-3. 찾은 매칭점은 주어진 Depth Image를 3D Mappoints 생성
-4. 이때도 Direct Linear Transform을 사용하여서 Rotation, Translation 값을 구함(Pose Estimation)
+2. 특징점 매칭
+3. Fundamental Matrix 및 Essential Matrix 구하기
+3. 찾은 매칭점(뎁스이미지 일 경우 특징점(1,2,3번 제외))에 Triangulation을 통해(Depth 카메라일경우 제외) 3D Mappoints 생성
+4. 이때도 solvePnP 및 DLT 사용하여서 Rotation, Translation 값을 구함(Pose Estimation)
 
 ### 3D - 3D pose estimation(RGB-D or Lidar or raders)(ICP Method)
 
 - RGB-D Sensor를 제외한 lidar 나 radars는 preprossess가 필요없으므로 바로 3D Mappoints생성 가능
 - ICP 방법을 써서 pose Estimation(이전 스캔과 현재 스캔의 맵포인트 매칭을 통한 Pose Estimation)
 
-
 ### Bundle Adjustment(번외)
 
-- 위에 NPnP 방식들은 이후 bundle Adjustment를 통해 현재 생성되는 3D Mappoint가 이미지 데이터베이스에서 이미 공유되고 있는 3D Mappoint일 경우 현재 3D Mappoint를 공유하고 있는 이미지들 플래인에 투영을 하여서 이전에 투영된 포인트화 현재 투영된 포인트를 Least Square를 통해 에러를 최소화 하면서 Camera Pose와 Mappoints들을 교정한다.
+- 3D Mappoint가 이미지 프레임에서 특징점과 이미 공유되고 있는 3D Mappoint일 경우, 현재 3D Mappoint를 공유하고 있는 이미지들 플래인에 투영을 하여서 이전에 투영된 포인트화 현재 투영된 포인트를 Least Square를 통해 에러를 최소화 하면서 Camera Pose와 Mappoints들을 교정한다.
