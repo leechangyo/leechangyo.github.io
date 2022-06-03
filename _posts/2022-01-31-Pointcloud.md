@@ -1,6 +1,6 @@
 ---
 layout: post
-title: PointcloudXYZNormal && Correspondence(ICP에 사용)
+title: PointcloudXYZNormal && Correspondence(ICP/GICP에 사용)
 category: SLAM
 tag: SLAM
 ---
