@@ -21,4 +21,4 @@ eightpoints is selected by RANSAC
 5. now with eesstianl matrix and intrinsic parameter to make fundamental matrix.
 6. and with fundamental matrix, using SVD to get Relative rotation Matrix and Traslation.(initialize pose)
 7. now we can generate 3d triangulation point by them
-8. and do PnP solve(3d - 2d) next camera pose estimatation and iterately generate 3d triangulation point(creating map) until camera frame no longer exist
+8. and do PnP solve(3d - 2d) next camera pose estimation and literately generate 3d triangulation point(creating map) until camera frame no longer exist
