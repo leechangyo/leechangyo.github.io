@@ -93,13 +93,17 @@ int main()
 ```
 
 ### Note
-A pointer in C++ is a variable that holds the memory address of another variable.
+**A pointer in C++ is a variable that holds the memory address of another variable.**
+**Reference is C++ is an address(box of memory address and value)**
 
 A reference is an alias for an already existing variable. Once a reference is initialized to a variable, it cannot be changed to refer to another variable. Hence, a reference is similar to a const pointer.
 
-reference not copy variblae. just chage it in directly in the allocating memory of it.
-there fore reference alreday exsiting changed
+reference is often used in LValue which is not copy variable. just alias it in directly in the allocating memory of it and change value directly already in
 
-and pointer need to have create allocate memory or pointing to already exisint memory in heap or stack somewhere.
+on Rvalue of reference is address(box) of value or some value.
 
-thats why it need to pointing reference memory of varaible and initilaize pointer.
+and pointer need to have create allocate memory or pointing to already existent memory in heap or stack somewhere.
+
+thats why it need to pointing reference(Rvalue way, address) memory of variable and initialise pointer.
+
+easy understand address is box and value is inside box
