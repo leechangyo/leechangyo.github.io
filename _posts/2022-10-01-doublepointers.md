@@ -107,3 +107,5 @@ and pointer need to have create allocate memory or pointing to already existent 
 thats why it need to pointing reference(Rvalue way, address) memory of variable and initialise pointer.
 
 easy understand address is box and value is inside box
+
+point가 Lvalue일때는 어드레스를 가르키고, RVALUE일때는 Value를 가르켜야하기 때문에 "*"를 쓴다.
