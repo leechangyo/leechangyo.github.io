@@ -108,4 +108,8 @@ thats why it need to pointing reference(Rvalue way, address) memory of variable 
 
 easy understand address is box and value is inside box
 
+## 간단
+
 point가 Lvalue일때는 어드레스를 가르키고, RVALUE일때는 Value를 가르켜야하기 때문에 "*"를 쓴다.
+
+Reference가 LValue일때는 Rvalue(variable)에 대한 Alias, RValue일때는 variable에 대한 Address
