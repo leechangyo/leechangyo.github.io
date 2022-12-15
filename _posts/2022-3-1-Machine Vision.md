@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Multi Plane Segmenation Idea(42个PCL Tutorials)
+title: Multi Plane Segmenation Idea(그리고 PCL구조 이해 42个PCL Tutorials)
 category: Machine Vision
 tag: Machine Vision
 ---
@@ -413,12 +413,13 @@ PLUGINLIB_EXPORT_CLASS(soma_perception::PlaneSegmentationNodelet, nodelet::Nodel
 [example code](https://www.freesion.com/article/82121073186/)
 
 
-### ORGANIZED POINTCLOUD by Integral Image(Covaraince MAtrix -> SVD -> Normal Surface Parameter -> Region Connecting by curvurter, angle, distance of normal surface of covariance matrix -> Ground and Object Segmenet)
+## ORGANIZED POINTCLOUD by Integral Image
+- Covaraince MAtrix -> SVD -> Normal Surface Parameter -> Region Connecting by curvurter, angle, distance of normal surface of covariance matrix -> Ground and Object Segmenet
 
+## ORGANIZED POINTCLOUD by cross product
+- gradient -> Cross Prodcut -> Normal Surface Parameter -> Region Connecting by curvurter, angle, distance of normal surface  (Grouping) -> Ground and Object Segementation
 
-### ORGANIZED POINTCLOUD by cross product(gradient -> Cross Prodcut -> Normal Surface Parameter -> Region Connecting by curvurter, angle, distance of normal surface  (Grouping) -> Ground and Object Segementation)
-
-KD TREE를 이용하여서 정확한 그룹힝도 할 수 있을 것 같다.
+KD TREE를 이용하여서 정확한 그룹핑도 할 수 있을 것 같다.
 
 
 느낌점 : PCL로 기본적인 것들을 다 할 수 있다. 즉, 오픈 소스를 통해서 웬만한 개발은 다할 수 있고, 이를 응용하여서 업그레이드 시킬 수 있다. 즉, 해당 소스들을 가져와서 포팅할 수있는 그런 능력이 필요하다.
@@ -426,3 +427,37 @@ KD TREE를 이용하여서 정확한 그룹힝도 할 수 있을 것 같다.
 input output만 맞춰주고, 안에 알고리즘을 가져와 쓰는 것이 중요하고, 직접 하나하나 해보면서 이해하는 것이 중요하다.
 
 급하게 하지 말고 한땀 한땀 한다고 생각을하고 장인정신으로 꼼꼼하게 개발을 하고 거기다 customize할 수 있는 능력이 있으면 된다.
+
+## PCL에서 배울 수 있는 구조
+
+impl meaning in pcl
+
+The pimpl idiom is **a modern C++ technique to hide implementation, to minimize coupling, and to separate interfaces**
+. Pimpl is short for "pointer to implementation." You may already be familiar with the concept but know it by other names like Cheshire Cat or Compiler Firewall idiom.
+
+### Opensource PLC 활용 방법!
+
+header file →.h 선언하는 곳
+
+실제로 algorithm이 구현되는곳 impl(implementation)/hpp
+
+src에는 boost library로 process running을 하기 떄문에 Boost library에 thread로 돌리기 위함으로 되어 있다/.
+
+```cpp
+#include <pcl/features/impl/integral_image_normal.hpp>
+
+#ifndef PCL_NO_PRECOMPILE
+#include <pcl/point_types.h>
+#include <pcl/impl/instantiate.hpp>
+// Instantiations of specific point types
+#ifdef PCL_ONLY_CORE_POINT_TYPES
+  PCL_INSTANTIATE_PRODUCT(IntegralImageNormalEstimation, ((pcl::PointXYZ)(pcl::PointXYZRGB)(pcl::PointXYZRGBA)(pcl::PointXYZRGBNormal))((pcl::Normal)(pcl::PointXYZRGBNormal)))
+#else
+  PCL_INSTANTIATE_PRODUCT(IntegralImageNormalEstimation, (PCL_XYZ_POINT_TYPES)(PCL_NORMAL_POINT_TYPES))
+#endif
+#endif    // PCL_NO_PRECOMPILE
+```
+
+즉, src/cpp 만 보지 말고, hpp에 대해 implementation이 있을 수 있으니, 이를 주의해서 보자!!
+
+이걸로 pcl의 데한 소스코드를 마음대로 긁어와서 활용할 수 있다!
