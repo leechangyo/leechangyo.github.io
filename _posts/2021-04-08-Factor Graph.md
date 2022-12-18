@@ -28,3 +28,16 @@ Factor Graph를 쓰면 probability distrubution이 간단해 진다.
 e(x-x^) M e(x-x^)^t 와 같이
 
 (관측값 - 예측값) x information Matrix(covariance matrix) x (콴측값- 예측값)^t 을 통해 에러를 최적화 시킨다.
+
+
+## Object Function 안에 있는 것을 Factor 라고 하는구만!
+
+VIO factor,
+
+GPS factor
+
+Semantic Factor
+
+IMU Factor
+
+etc,

@@ -33,3 +33,16 @@ Pure IMU integration will lead to large drift (especially cheap IMUs)
 In navigation, dead reckoning is the process of calculating current position of some moving object by using a previously determined position, or fix, and then incorporating estimations of speed, heading direction, and course over elapsed time.
 
 Pre Integration IMU는 즉 IMU를 Odometery로, 카메라 포즈로 쓰고, 카메라는 Map constructing 혹은 keyframe추출 loop closure 같은 것으로 쓰는 것이다. 이렇게 되면, PnP알고리즘을 통해 camera pose를 구하는 CPU Computation을 줄일 수 있다.
+
+
+## NOTATION
+
+IMU Preintegration : this is used for obtaining frame pose using imu.
+
+many imu preintegration way using mid point integration(interpoliation)
+
+output
+
+pvq:pose, velocity, quaternion.
+
+mid integration study that i need.

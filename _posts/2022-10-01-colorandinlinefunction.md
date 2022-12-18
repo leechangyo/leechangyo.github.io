@@ -1,6 +1,6 @@
 ---
 layout: post
-title: colorized std::cout and definition of inline function and typename and using and typedef
+title: colorized std::cout and definition of inline function and typename and using and typedef and header
 category: C++
 tag: C++
 ---
@@ -36,3 +36,28 @@ tag: C++
 [difference between class and typename](https://stackoverflow.com/questions/2023977/difference-of-keywords-typename-and-class-in-templates)
 
 [difference between typedef and using](https://stackoverflow.com/questions/10747810/what-is-the-difference-between-typedef-and-using-in-c11)
+
+
+### Haeder print method
+
+```
+
+void PrintHeading1(const std::string& heading) {
+
+std::cout << std::endl << std::string(78, '=') << std::endl;
+
+std::cout << heading << std::endl;
+
+std::cout << std::string(78, '=') << std::endl << std::endl;
+
+}
+
+void PrintHeading2(const std::string& heading) {
+
+std::cout << std::endl << heading << std::endl;
+
+std::cout << std::string(std::min<int>(heading.size(), 78), '-') << std::endl;
+
+}
+
+```

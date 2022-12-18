@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Create File or Dir in C++
+title: Create File or Dir and ignore directory in C++
 category: C++
 tag: C++
 ---
@@ -16,3 +16,6 @@ tag: C++
             }
             /*  */
 ```
+
+
+https://mymanual.tistory.com/1
